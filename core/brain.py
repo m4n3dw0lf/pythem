@@ -30,6 +30,7 @@ import subprocess
 class Jarvis(object):
 
 	def __init__(self):
+		self.array = []
 		self.serialport = self.arduino_check()
 		self.rec = sr.Recognizer()
 		self.engine = pyttsx.init()
