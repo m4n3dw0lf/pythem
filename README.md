@@ -5,6 +5,17 @@ PytheM is a python network/pentesting tool. Same has been developed in the hope 
 #Installation
 
 $sudo git clone https://github.com/m4n3dw0lf/PytheM/ <br />
+
+(OPTIONAL)<br />
+plug your Arduino Leonardo <br />
+open the arduino IDE > Tools > Board then select Arduino Leonardo <br />
+go to Tools> Serial port and check the serial port of the Arduino Leonardo <br />
+press CTRL+O <br />
+navigate to the directory: path/../Jarvis/core/heart/jarvis/ <br />
+select the jarvis.ino file then upload to the Arduino Leonardo. <br />
+(CLOSE OPTIONAL) <br />
+
+$cd PytheM
 $sudo pip install -r requirements.txt <br />
 $sudo ./pythem <br/>
 
@@ -141,5 +152,3 @@ type jarvis-help to see the jarvis help page.<br />
 
 
 by: m4n3dw0lf<br />
-
-
