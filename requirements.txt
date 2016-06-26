@@ -1,8 +1,8 @@
+git+git://github.com/kti/python-netfilterqueue
 decorator==4.0.10
 ecdsa==0.13
 mechanize==0.2.5
 netaddr==0.7.18
-NetfilterQueue==0.6
 praw==3.5.0
 PyAudio==0.2.9
 pyserial==3.1.1
