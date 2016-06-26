@@ -11,7 +11,7 @@ plug your Arduino Leonardo <br />
 open the arduino IDE > Tools > Board then select Arduino Leonardo <br />
 go to Tools> Serial port and check the serial port of the Arduino Leonardo <br />
 press CTRL+O <br />
-navigate to the directory: path/../Jarvis/core/heart/jarvis/ <br />
+navigate to the directory: path/../PytheM/core/heart/jarvis/ <br />
 select the jarvis.ino file then upload to the Arduino Leonardo. <br />
 (CLOSE OPTIONAL) <br />
 
