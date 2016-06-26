@@ -29,7 +29,6 @@ import os
 class Processor(object):
 
 	def __init__(self):
-		self.array = []
 		self.random = Randomstorm()
 		self.Jarvis = Jarvis()
 		self.RedditNews = RedditNews()
