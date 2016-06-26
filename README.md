@@ -120,7 +120,7 @@ arguments:<br />
    pythem> geoip<br />
 
 
-- decode and encode	Decode or encode a string with choosen pattern<br />
+- decode and encode:	Decode or encode a string with choosen pattern<br />
 
   examples:<br />
 
