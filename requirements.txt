@@ -1,0 +1,14 @@
+decorator==4.0.10
+ecdsa==0.13
+mechanize==0.2.5
+netaddr==0.7.18
+NetfilterQueue==0.6
+praw==3.5.0
+PyAudio==0.2.9
+pyserial==3.1.1
+pyttsx==1.1
+requests==2.10.0
+scapy==2.3.2
+six==1.10.0
+SpeechRecognition==3.4.6
+update-checker==0.11
