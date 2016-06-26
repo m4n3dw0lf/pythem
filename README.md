@@ -27,7 +27,7 @@ $sudo ./pythem <br/>
 - exit/quit:		Leave the program.<br />
 
 
-- set			Set a parameter value.<br />
+- set:			Set a parameter value.<br />
 
  parameters:<br />
 
