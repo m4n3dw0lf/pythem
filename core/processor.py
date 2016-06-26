@@ -51,7 +51,7 @@ class Processor(object):
 
 					if self.input_list[0] == "exit":
 						self.Jarvis.Say(self.random.random('salutes'))
-						break
+						exit()
 
 					elif self.input_list[0] == "sleep":
 						while 1:
