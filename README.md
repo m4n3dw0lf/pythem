@@ -130,13 +130,13 @@ arguments:<br />
 
 link: https://github.com/m4n3dw0lf/Jarvis<br />
 
-[*] jarvis <br />
+- jarvis <br />
 
 type jarvis-help to see the jarvis help page.<br />
 
   examples:<br />
 
-   pythem> jarvis
+   pythem> jarvis<br />
    pythem> jarvis-help<br />
 
 
