@@ -277,16 +277,15 @@ arguments:
 
 link: https://github.com/m4n3dw0lf/Jarvis
 
-[*] call jarvis by speaking "Jarvis"
+[*] jarvis
 
 type jarvis-help to see the jarvis help page.
 
-  example:
+  examples:
 
+   pythem> jarvis
    pythem> jarvis-help
 
 
 by: m4n3dw0lf
-
-
 """.format(version)
