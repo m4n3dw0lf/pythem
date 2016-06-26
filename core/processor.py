@@ -47,7 +47,8 @@ class Processor(object):
 					self.command = self.Jarvis.Listen()
        		        		self.message = self.command.split()
         			        self.input_list = [str(a) for a in self.message]
-
+        			        
+					self.Jarvis.Say("i heard, {}".format(self.command))
 					if self.input_list[0] == "exit":
 						self.Jarvis.Say(self.random.random('salutes'))
 						exit()
