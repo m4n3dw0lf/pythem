@@ -40,7 +40,7 @@ class RedditNews(object):
 	    	for sub in self.subs:
     	    		self.headlines.append(sub.title)
    	    	self.first = " ".join(self.headlines)
-   	    	self.news = self.first.replace(".", ". \n\n\n\n")
+   	    	self.news = self.first.replace(".", ". \n\nNext\n\n")
     	    	self.news.encode('ascii', 'ignore')
     	    	return self.news
 
