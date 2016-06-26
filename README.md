@@ -17,6 +17,12 @@ select the jarvis.ino file then upload to the Arduino Leonardo. <br />
 
 $cd PytheM<br/>
 $sudo pip install -r requirements.txt <br />
+
+(if PyAudio gcc error)<br />
+$sudo apt-get update
+$sudo apt-get install libasound-dev libjack-jackd2-dev portaudio19-dev
+(Close PyAudio gcc error) <br />
+
 $sudo ./pythem <br/>
 
 #Features
