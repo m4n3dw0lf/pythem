@@ -5,7 +5,6 @@ PytheM is a python pentesting framework. Same has been developed in the hope tha
 #Installation
 
 $sudo git clone https://github.com/m4n3dw0lf/PytheM/ <br />
-
 (OPTIONAL)<br />
 plug your Arduino Leonardo <br />
 open the arduino IDE > Tools > Board then select Arduino Leonardo <br />
@@ -16,7 +15,13 @@ select the jarvis.ino file then upload to the Arduino Leonardo. <br />
 (CLOSE OPTIONAL) <br />
 
 $cd PytheM<br/>
+
 $sudo pip install -r requirements.txt <br />
+(if NetfilterQueue error)<br />
+$sudo apt-get update<br />
+$sudo apt-get install build-essential python-dev libnetfilter-queue-dev<br />
+$sudo pip install -r requirements.txt <br />
+(Close NetfilterQueue error) <br />
 
 (if PyAudio gcc error)<br />
 $sudo apt-get update<br />
@@ -24,7 +29,8 @@ $sudo apt-get install libasound-dev libjack-jackd2-dev portaudio19-dev python-py
 $sudo pip install -r requiremenst.txt <br />
 (Close PyAudio error) <br />
 
-Now you are ready to rock: <br />
+Now you are ready to rock:<br /> 
+(Stay in the main directory to use all resources)<br />
 $sudo ./pythem <br/>
 
 #Features
