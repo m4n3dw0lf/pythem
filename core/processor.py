@@ -63,7 +63,7 @@ class Processor(object):
 					elif self.input_list[0] == "newspaper":
 						self.Jarvis.Say("Here are the news sir.")
 						self.titles = self.RedditNews.get_headlines()
-						self.RedditNews.speak_headlines(titles)
+						self.RedditNews.speak_headlines(self.titles)
 
 					elif self.input_list[0] == "start":
 						self.Jarvis.SerialWrite(self.input_list[1])
