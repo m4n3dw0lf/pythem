@@ -35,13 +35,13 @@ $sudo ./pythem <br/>
 
 #Features
 
-- help:			Print this help message.<br />
+- help		        (Print this help message.)<br />
 
 
-- exit/quit:		Leave the program.<br />
+- exit/quit		(Leave the program.)<br />
 
 
-- set:			Set a parameter value.<br />
+- set			(Set a parameter value.)<br />
 
  parameters:<br />
 
@@ -56,7 +56,7 @@ $sudo ./pythem <br/>
    pythem> set interface         |open input to set<br />
 
 
-- scan			Make a tcp/manualport/arp scan.<br />
+- scan			(Make a tcp/manualport/arp scan.)<br />
 
 (Should be called after setting interface and target)<br />
 
@@ -65,7 +65,7 @@ $sudo ./pythem <br/>
    pythem> scan<br />
 
 
-- arpspoof		Start or stop a arpspoofing attack.<br />
+- arpspoof		(Start or stop a ARP spoofing attack.)<br />
 
 (Optional setting arpmode to select arpspoofing mode should be filled with rep or req)<br />
 (rep to spoof responses, req to spoof requests) <br />
@@ -80,7 +80,7 @@ arguments:<br />
    arpspoof stop <br />
 
 
-- dnsspoof		Start a dnsspoofing attack.<br />
+- dnsspoof		(Start a DNS spoofing attack.)<br />
 
 (Should be called after a arpspoofing attack have been started)<br />
 
@@ -90,7 +90,7 @@ arguments:<br />
    pythem> dnsspoof stop<br />
 
 
-- sniff			Start sniffing packets.<br />
+- sniff			(Start sniffing packets.)<br />
 
 (Should be called after setting interface)<br />
 
@@ -99,7 +99,7 @@ arguments:<br />
    pythem> sniff<br />
    [+] Enter the filter: port 1337 and host 10.0.1.5  | tcpdump like format<br />
 
-- pforensic		Start a packet-analyzer<br />
+- pforensic		(Start a packet-analyzer)<br />
 
 (Should be called after setting interface and file with a .pcap file)
 
@@ -108,7 +108,7 @@ arguments:<br />
    pythem> pforensic<br />
    pforensic> help<br />
 
-- brute-force		Start a brute-force attack.<br />
+- brute-force		(Start a brute-force attack.)<br />
 
 (Should be called after setting target and wordlist file path)<br />
 
@@ -124,8 +124,7 @@ arguments:<br />
    pythem> brute-force ssh<br />
 
 
-- geoip			Geolocalizate approximately the location of a IP address.<br />
-
+- geoip			(Geolocalizate approximately the location of a IP address.)<br />
 
 (Should be called after setting target (Ip address))<br />
 
@@ -134,7 +133,7 @@ arguments:<br />
    pythem> geoip<br />
 
 
-- decode and encode:	Decode or encode a string with choosen pattern<br />
+- decode and encode	(Decode or encode a string with choosen pattern.)<br />
 
   examples:<br />
 
@@ -142,7 +141,7 @@ arguments:<br />
    pythem> encode ascii<br />
 
 
-- cookiedecode		Decode a base64 url encoded cookie value.<br />
+- cookiedecode		(Decode a base64 url encoded cookie value.)<br />
 
   example:<br />
 
@@ -166,3 +165,4 @@ type jarvis-help to see the jarvis help page.<br />
 
 
 by: m4n3dw0lf<br />
+
