@@ -72,8 +72,8 @@ $sudo ./pythem <br/>
 
 arguments:<br />
 
- - start
- - stop
+  - start
+  - stop
 
   examples:<br />
    arpspoof start <br />
@@ -83,6 +83,11 @@ arguments:<br />
 - dnsspoof		(Start a DNS spoofing attack.)<br />
 
 (Should be called after a arpspoofing attack have been started)<br />
+
+arguments:<br />
+
+  - start
+  - stop
 
   examples:<br />
 
@@ -114,9 +119,9 @@ arguments:<br />
 
 arguments:<br />
 
- - ssh		| ip address as target<br />
- - url		| url (with http:// or https://) as target<br />
- - webform	| url (with http:// or https://)as target<br />
+  - ssh		| ip address as target<br />
+  - url		| url (with http:// or https://) as target<br />
+  - webform	| url (with http:// or https://)as target<br />
 
   examples:<br />
 
