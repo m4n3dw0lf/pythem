@@ -75,7 +75,15 @@ class Processor(object):
 					elif self.input_list[0] == "run":
 						self.Jarvis.Say(self.random.random('affirmative'))
 						os.system("./scripts/{}.sh".format(self.input_list[1]))
-
+						
+					elif self.input_list[0] == "input":
+                                                try:
+                                                        self.Jarvis.SerialWrite(self.input_list[1])
+                                                        self.Jarvis.Say(self.random.random('affirmative'))
+                                                except:
+                                                        self.Jarvis.Say("Feature not working master, plug your Arduino Leonardo then try again.")
+                                                        pass
+                                                        
 					elif self.input_list[0] == "editor":
 						self.Jarvis.Say("Starting edition mode sir.")
                                 	        while 1:
@@ -88,7 +96,7 @@ class Processor(object):
 									self.Jarvis.SerialWrite(self.mesg)
                                        	        			self.Jarvis.Say(self.random.random('affirmative'))
 								except:
-									print "[!] Feature not working, plug you Arduino Leonardo then try again."
+									self.Jarvis.Say("Feature not working, plug you Arduino Leonardo then try again.")
 									break
                                                 	else:
 								pass
