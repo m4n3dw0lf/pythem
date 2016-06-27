@@ -3,9 +3,9 @@
 
 # Copyright (c) 2016 m4n3dw0lf
 #
-# This file is part of the program PytheM
+# This file is part of the program Jarvis
 #
-# PytheM is free software; you can redistribute it and/or
+# Jarvis is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation; either version 3 of the
 # License, or (at your option) any later version.
@@ -98,11 +98,11 @@ class Jarvis(object):
 
 	def start(self,path):
 		try:
-			devnull = open(os.devnull, 'wb')
-			p = subprocess.Popen(["python", path], shell=False, stdout=subprocess.PIPE, stderr=devnull)
+			#devnull = open(os.devnull, 'wb')
+			#p = subprocess.Popen(["python", path], shell=False, stdout=subprocess.PIPE, stderr=devnull)
+			with open("log/jarvisout.txt", "a+") as stdout, open("log/jarviserr.txt", "a+") as stderr:
+				self.p = subprocess.Popen(["python", path], shell=False, stdout=stdout, stderr=stderr)
 
 		except Exception as e:
 			print "[!] Exception caught: {}".format(e)
 
-	def log(self):
-		stdout, stderr = p.communicate()

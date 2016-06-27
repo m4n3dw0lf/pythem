@@ -32,6 +32,17 @@ class Processor(object):
 					elif self.command == "jarvis":
 						self.Jarvis.start('core/start.py')
 
+					elif self.command == "jarvis-log":
+						print "[+] Jarvis log system."
+						print "[.] Error log  - type: err"
+						print "[.] Output log - type: out"
+						self.jarvislog = raw_input("[+] Select: ")
+						try:
+							os.system("tail -f log/jarvis{}.txt".format(self.jarvislog))
+						except Exception as e:
+							print "[!] Exception caught: {}".format(e)
+							pass
+
 					elif self.command == "exit" or self.command == "quit":
 						exit()
 

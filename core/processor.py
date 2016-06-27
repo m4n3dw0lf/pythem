@@ -3,9 +3,9 @@
 
 # Copyright (c) 2016 m4n3dw0lf
 #
-# This file is part of the program PytheM
+# This file is part of the program Jarvis
 #
-# PytheM is free software; you can redistribute it and/or
+# Jarvis is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation; either version 3 of the
 # License, or (at your option) any later version.
@@ -47,7 +47,7 @@ class Processor(object):
 					self.command = self.Jarvis.Listen()
        		        		self.message = self.command.split()
         			        self.input_list = [str(a) for a in self.message]
-        			        
+					print self.command
 					self.Jarvis.Say("i heard, {}".format(self.command))
 					if self.input_list[0] == "exit":
 						self.Jarvis.Say(self.random.random('salutes'))

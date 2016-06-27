@@ -159,7 +159,7 @@ type jarvis-help to see the jarvis help page.<br />
   examples:<br />
     pythem> jarvis<br />
     pythem> jarvis-help<br />
-
+    pythem> jarvis-log<br />
 
 by: m4n3dw0lf<br />
 
