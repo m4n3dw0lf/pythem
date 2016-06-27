@@ -52,8 +52,7 @@ $sudo ./pythem <br/>
  - arpmode
 
   examples: <br />
-
-   pythem> set interface         |open input to set<br />
+    pythem> set interface         | open input to set value<br />
 
 
 - scan			(Make a tcp/manualport/arp scan.)<br />
@@ -61,7 +60,7 @@ $sudo ./pythem <br/>
  (Should be called after setting interface and target)<br />
 
   examples:<br />
-   pythem> scan<br />
+    pythem> scan<br />
 
 
 - arpspoof		(Start or stop a ARP spoofing attack.)<br />
@@ -75,8 +74,8 @@ $sudo ./pythem <br/>
  - stop
 
   examples:<br />
-   arpspoof start <br />
-   arpspoof stop <br />
+    pythem> arpspoof start <br />
+    pythem> arpspoof stop <br />
 
 
 - dnsspoof		(Start a DNS spoofing attack.)<br />
@@ -89,8 +88,8 @@ $sudo ./pythem <br/>
  - stop
 
   examples:<br />
-   pythem> dnsspoof start<br />
-   pythem> dnsspoof stop<br />
+    pythem> dnsspoof start<br />
+    pythem> dnsspoof stop<br />
 
 
 - sniff			(Start sniffing packets.)<br />
@@ -98,8 +97,8 @@ $sudo ./pythem <br/>
  (Should be called after setting interface)<br />
 
   examples:<br />
-   pythem> sniff<br />
-   [+] Enter the filter: port 1337 and host 10.0.1.5  | tcpdump like format<br />
+    pythem> sniff<br />
+    [+] Enter the filter: port 1337 and host 10.0.1.5  | tcpdump like format<br />
 
 
 - pforensic		(Start a packet-analyzer)<br />
@@ -107,8 +106,8 @@ $sudo ./pythem <br/>
  (Should be called after setting interface and file with a .pcap file)
 
   examples:<br />
-   pythem> pforensic<br />
-   pforensic> help<br />
+    pythem> pforensic<br />
+    pforensic> help<br />
 
 
 - brute-force		(Start a brute-force attack.)<br />
@@ -122,8 +121,8 @@ $sudo ./pythem <br/>
  - webform	| url (with http:// or https://)as target<br />
 
   examples:<br />
-   pythem> brute-force webform<br />
-   pythem> brute-force ssh<br />
+    pythem> brute-force webform<br />
+    pythem> brute-force ssh<br />
 
 
 - geoip			(Geolocalizate approximately the location of a IP address.)<br />
@@ -131,20 +130,20 @@ $sudo ./pythem <br/>
  (Should be called after setting target (Ip address))<br />
 
   examples:<br />
-   pythem> geoip<br />
+    pythem> geoip<br />
 
 
 - decode and encode	(Decode or encode a string with choosen pattern.)<br />
 
   examples:<br />
-   pythem> decode base64<br />
-   pythem> encode ascii<br />
+    pythem> decode base64<br />
+    pythem> encode ascii<br />
 
 
 - cookiedecode		(Decode a base64 url encoded cookie value.)<br />
 
   example:<br />
-   pythem> cookiedecode<br />
+    pythem> cookiedecode<br />
 
 
 * Anything else will be executed in the terminal like cd, ls, nano, cat, etc. *<br />
@@ -158,9 +157,8 @@ link: https://github.com/m4n3dw0lf/Jarvis<br />
 type jarvis-help to see the jarvis help page.<br />
 
   examples:<br />
-
-   pythem> jarvis<br />
-   pythem> jarvis-help<br />
+    pythem> jarvis<br />
+    pythem> jarvis-help<br />
 
 
 by: m4n3dw0lf<br />
