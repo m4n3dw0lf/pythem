@@ -70,7 +70,7 @@ $sudo ./pythem <br/>
 (Optional setting arpmode to select arpspoofing mode should be filled with rep or req)<br />
 (rep to spoof responses, req to spoof requests) <br />
 
-arguments:<br />
+ arguments:<br />
 
   - start
   - stop
@@ -84,7 +84,7 @@ arguments:<br />
 
 (Should be called after a arpspoofing attack have been started)<br />
 
-arguments:<br />
+ arguments:<br />
 
   - start
   - stop
@@ -117,7 +117,7 @@ arguments:<br />
 
 (Should be called after setting target and wordlist file path)<br />
 
-arguments:<br />
+ arguments:<br />
 
   - ssh		| ip address as target<br />
   - url		| url (with http:// or https://) as target<br />
