@@ -58,7 +58,7 @@ $sudo ./pythem <br/>
 
 - scan			(Make a tcp/manualport/arp scan.)<br />
 
-(Should be called after setting interface and target)<br />
+ (Should be called after setting interface and target)<br />
 
   examples:<br />
    pythem> scan<br />
@@ -95,7 +95,7 @@ $sudo ./pythem <br/>
 
 - sniff			(Start sniffing packets.)<br />
 
-(Should be called after setting interface)<br />
+ (Should be called after setting interface)<br />
 
   examples:<br />
    pythem> sniff<br />
@@ -104,7 +104,7 @@ $sudo ./pythem <br/>
 
 - pforensic		(Start a packet-analyzer)<br />
 
-(Should be called after setting interface and file with a .pcap file)
+ (Should be called after setting interface and file with a .pcap file)
 
   examples:<br />
    pythem> pforensic<br />
@@ -117,8 +117,8 @@ $sudo ./pythem <br/>
 
  arguments:<br />
 
- - ssh		| ip address as target<br />
- - url		| url (with http:// or https://) as target<br />
+ - ssh		   | ip address as target<br />
+ - url		   | url (with http:// or https://) as target<br />
  - webform	| url (with http:// or https://)as target<br />
 
   examples:<br />
@@ -128,7 +128,7 @@ $sudo ./pythem <br/>
 
 - geoip			(Geolocalizate approximately the location of a IP address.)<br />
 
-(Should be called after setting target (Ip address))<br />
+ (Should be called after setting target (Ip address))<br />
 
   examples:<br />
    pythem> geoip<br />
