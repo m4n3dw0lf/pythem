@@ -111,6 +111,12 @@ voice commands:
 
  browser   = start google-chrome browser
  terminal  = start a terminal
+ 
+[*] input [keystroke]:   Send a command to the Arduino Leonardo without entering editor mode
+
+        * ARDUINO LEONARDO REQUIRED *
+
+voice commands: (Same as EDITOR MODE )
 
 [*] editor: 		Start the editor mode.
 
