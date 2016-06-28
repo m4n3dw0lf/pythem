@@ -46,14 +46,13 @@ class ARPspoof(object):
 		self.myip	= myip
 		self.mymac	= mymac
 		self.arp_cache	= {}
+		self.socket = conf.L3socket(iface=self.interface)
+		self.socket2 = conf.L2socket(iface=self.interface)
 
 
 	def start(self):
-		self.socket = conf.L3socket(iface=self.interface)
-		self.socket2 = conf.L2socket(iface=self.interface)
 		set_ip_forwarding(1)
 		iptables()
-
 
 		if self.arpmode == 'rep':
 			t = threading.Thread(name='ARPspoof-rep', target=self.spoof, args=('is-at',))
@@ -196,7 +195,7 @@ class ARPspoof(object):
 	def stop(self):
 		self.send = False
 		sleep(2)
-		count = 2
+		count = 4
 
 		if self.targets is None:
 			print "[*] Restoring sub-net connection with {} packets".format(count)
@@ -224,4 +223,3 @@ class ARPspoof(object):
 		set_ip_forwarding(0)
 		self.socket.close()
 		self.socket2.close()
-		print "[-] ARPspoof finalized"
