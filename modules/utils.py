@@ -148,8 +148,8 @@ def print_help(version):
 	print """\n
 
            ---_ ...... _/_ -
-          /  .      ./ .'*\
-          :''         /_|-'  \.
+          /  .      ./ .'*  '
+          |''         /_|-'  '.
          /                     )
        _/                  >   '
      /   .   .       _.-" /  .'
@@ -160,6 +160,7 @@ def print_help(version):
           `\/     / /
            \__`\/ /
                \_|
+
 
 
 [ PytheM - Pentest/Network Framework v{} ]
