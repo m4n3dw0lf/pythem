@@ -34,20 +34,19 @@ class RedditNews(object):
 		self.Jarvis.Say(" ")
 
 	def get_headlines(self, limit=10):
-	    	self.r = praw.Reddit(user_agent="Lyndon's news reader  by /u/LyndonArmitage")
+	    	self.r = praw.Reddit(user_agent="Jarvis  by /u/m4n3dw0lf")
 	    	self.subs = self.r.get_subreddit("worldnews").get_hot(limit=limit)
 		self.headlines = []
 	    	for sub in self.subs:
     	    		self.headlines.append(sub.title)
-   	    	self.first = " ".join(self.headlines)
-   	    	self.news = self.first.replace(".", ". \n\n Next \n\n")
-    	    	self.news.encode('ascii', 'ignore')
-    	    	return self.news
+    	    	return self.headlines
 
 	def speak_headlines(self, news=[]):
     		try:
-			#print self.news
-    			self.Say(news)
+			for a in news:
+				return a
+    				self.Say(news)
+    				self.Say('Next')
 		except KeyboardInterrupt:
 			print "[*] User requested interrupt"
 			exit()
