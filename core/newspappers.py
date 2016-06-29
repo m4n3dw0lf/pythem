@@ -44,7 +44,7 @@ class RedditNews(object):
 	def speak_headlines(self, news=[]):
     		try:
 			for a in news:
-				return a
+				print a
     				self.Say(news)
     				self.Say('Next')
 		except KeyboardInterrupt:
