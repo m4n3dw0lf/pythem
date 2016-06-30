@@ -44,11 +44,11 @@ $sudo ./pythem <br/>
 
  parameters:<br />
 
- - interface
- - gateway
- - target
- - file
- - arpmode
+ - interface ( network interface )
+ - gateway (LAN gateway IP address )
+ - target ( IP range/address )
+ - file ( Path to file )
+ - arpmode ( rep or req )
 
   examples: <br />
     pythem> set interface         | open input to set value<br />
@@ -63,6 +63,8 @@ $sudo ./pythem <br/>
 
 
 - arpspoof		(Start or stop a ARP spoofing attack.)<br />
+
+ (Should be called after setting interface, target and gateway)
 
  (Optional setting arpmode to select arpspoofing mode should be filled with rep or req)<br />
  (rep to spoof responses, req to spoof requests) <br />
