@@ -24,18 +24,24 @@ import serial
 import pyttsx
 import speech_recognition as sr
 import serial.tools.list_ports
+import praw
+import sqlite3
+import random
 import os
 import subprocess
 
 class Jarvis(object):
 
 	def __init__(self):
+		self.version = "0.0.6"
 		self.array = []
+		self.numbers = []
+		self.con = sqlite3.connect('config/Jarbas.db');
 		self.serialport = self.arduino_check()
 		self.rec = sr.Recognizer()
 		self.engine = pyttsx.init()
 		self.rate = self.engine.getProperty('rate')
-		self.engine.setProperty('rate', self.rate-70)
+		self.engine.setProperty('rate', self.rate-60)
 		self.voices = self.engine.getProperty('voices')
 		self.engine.setProperty('voice',self.voices[16].id) #1,9,10,11,16,22,25
 		self.ser = serial.Serial()
@@ -51,6 +57,11 @@ class Jarvis(object):
 		self.engine.connect('finished-utterance', self.onEnd)
 		self.engine.say(self.string)
 		self.engine.startLoop()
+
+	def SayIgnore(self, text):
+		self.result = text.encode('ascii','ignore')
+		self.Say(self.result)
+		self.Say(" ")
 
 	def Say(self, text):
 		self.Jarvis(text)
@@ -91,6 +102,7 @@ class Jarvis(object):
 			pass
 
 
+
 	def SerialWrite(self, list):
 		self.command = str(list)
 		self.ser.write(self.command)
@@ -105,4 +117,37 @@ class Jarvis(object):
 
 		except Exception as e:
 			print "[!] Exception caught: {}".format(e)
+
+
+	def GetNews(self, limit=10):
+		self.r = praw.Reddit(user_agent="Jarvis by /u/m4n3dw0lf")
+		self.subs = self.r.get_subreddit("worldnews").get_hot(limit=limit)
+		self.headlines = []
+		for sub in self.subs:
+			self.headlines.append(sub.title)
+		return self.headlines
+
+	def SpeakNews(self, news=[]):
+		try:
+			for a in news:
+				self.SayIgnore(a)
+				self.SayIgnore("Next")
+			self.Say("I Finished reading the news sir.")
+		except KeyboardInterrupt:
+			print "[*] User requested interrupt"
+			exit()
+		except Exception as e:
+			print "[!] Exception caught: {}".format(e)
+			exit()
+
+	def random(self, arg):
+		with self.con:
+			self.cur = self.con.cursor()
+                        cont = self.cur.execute("SELECT max(id) FROM {}".format(arg))
+                        cont = self.cur.fetchone()
+                        for i in range(1,cont[0]+1):
+                                self.numbers.append(i)
+                        self.cur.execute("SELECT * FROM {} where id = {} limit 1".format(arg,random.choice(self.numbers)))
+                        id,msg = self.cur.fetchone()
+                        return msg
 

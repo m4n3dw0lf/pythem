@@ -293,6 +293,8 @@ type jarvis-help to see the jarvis help page.
    pythem> jarvis
    pythem> jarvis-help
    pythem> jarvis-log
+   pythem> jarvis-say
+   pythem> jarvis-read 	| Should be called after setting file
 
 by: m4n3dw0lf
 """.format(version)

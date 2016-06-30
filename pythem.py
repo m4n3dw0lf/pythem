@@ -19,11 +19,11 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-from core.core import Processor
+from core.interface import Processor
 import os
 import sys
 
-version = "0.3.0"
+version = "0.3.1"
 Processor = Processor(version)
 
 if os.geteuid() != 0:

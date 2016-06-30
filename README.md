@@ -160,6 +160,8 @@ type jarvis-help to see the jarvis help page.<br />
     pythem> jarvis<br />
     pythem> jarvis-help<br />
     pythem> jarvis-log<br />
+    pythem> jarvis-say<br />
+    pythem> jarvis-read | Should be called after setting file <br />
 
 by: m4n3dw0lf<br />
 

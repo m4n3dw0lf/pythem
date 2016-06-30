@@ -4,7 +4,7 @@
 from scapy.all import *
 from modules.utils import *
 from modules.banners import *
-from brain import Jarvis
+from jarvis import Jarvis
 import os
 
 class Processor(object):
@@ -27,10 +27,10 @@ class Processor(object):
 						print_help(self.version)
 
 					elif self.command == "jarvis-help":
-						jarvis_help("0.0.5")
+						jarvis_help(self.Jarvis.version)
 
 					elif self.command == "jarvis":
-						self.Jarvis.start('core/start.py')
+						self.Jarvis.start('core/processor.py')
 
 					elif self.command == "jarvis-log":
 						print "[+] Jarvis log system."
@@ -45,6 +45,28 @@ class Processor(object):
 
 					elif self.command == "exit" or self.command == "quit":
 						exit()
+
+					elif self.input_list[0] == "jarvis-say":
+						try:
+							message = raw_input("[+] Jarvis speaker: ")
+							self.Jarvis.Say(message)
+						except KeyboardInterrupt:
+							pass
+						except Exception as e:
+							print "[!] Exception caught: {}".format(e)
+
+					elif self.input_list[0] == "jarvis-read":
+						try:
+							file = open(self.file, "r")
+							text = file.read()
+							self.Jarvis.Say(text)
+                                                except TypeError:
+                                                	print "[!] You probably forgot to set the wordlist file path."
+                                                        pass
+						except KeyboardInterrupt:
+							pass
+						except Exception as e:
+							print "[!] Exception caught: {}".format(e)
 
 					elif self.input_list[0] == "set" or self.input_list[0] == "SET":
 						if self.input_list[1] == "interface":

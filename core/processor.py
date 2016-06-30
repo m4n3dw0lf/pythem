@@ -20,18 +20,14 @@
 # USA
 
 
-from brain import Jarvis
-from randomizer import Randomstorm
-from newspappers import RedditNews
+from jarvis import Jarvis
 import serial.tools.list_ports
 import os
 
 class Processor(object):
 
 	def __init__(self):
-		self.random = Randomstorm()
 		self.Jarvis = Jarvis()
-		self.RedditNews = RedditNews()
 
 	def start(self):
 		try:
@@ -41,7 +37,7 @@ class Processor(object):
 			print "[!] Arduino Leonardo not found, features that use keyboard will not work."
 
 		try:
-			self.Jarvis.Say(self.random.random('greetings'))
+			self.Jarvis.Say(self.Jarvis.random('greetings'))
 			while 1:
 				try:
 					self.command = self.Jarvis.Listen()
@@ -50,36 +46,36 @@ class Processor(object):
 					print self.command
 					self.Jarvis.Say("i heard, {}".format(self.command))
 					if self.input_list[0] == "exit":
-						self.Jarvis.Say(self.random.random('salutes'))
+						self.Jarvis.Say(self.Jarvis.random('salutes'))
 						exit()
 
 					elif self.input_list[0] == "sleep":
 						while 1:
 							self.wait = self.Jarvis.Listen()
 							if self.wait == "Jarvis":
-								self.Jarvis.Say(self.random.random('affirmative'))
+								self.Jarvis.Say(self.Jarvis.random('affirmative'))
 								break
 
 					elif self.input_list[0] == "newspaper":
 						self.Jarvis.Say("Here are the news sir.")
-						self.titles = self.RedditNews.get_headlines()
-						self.RedditNews.speak_headlines(self.titles)
+						self.titles = self.Jarvis.GetNews()
+						self.Jarvis.SpeakNews(self.titles)
 
 					elif self.input_list[0] == "start":
 						self.Jarvis.SerialWrite(self.input_list[1])
-						self.Jarvis.Say(self.random.random('affirmative'))
+						self.Jarvis.Say(self.Jarvis.random('affirmative'))
 
 					elif self.input_list[0] == "say":
 						self.Jarvis.Say(self.input_list[1:])
 
 					elif self.input_list[0] == "run":
-						self.Jarvis.Say(self.random.random('affirmative'))
+						self.Jarvis.Say(self.Jarvis.random('affirmative'))
 						os.system("./scripts/{}.sh".format(self.input_list[1]))
 						
 					elif self.input_list[0] == "input":
                                                 try:
                                                         self.Jarvis.SerialWrite(self.input_list[1])
-                                                        self.Jarvis.Say(self.random.random('affirmative'))
+                                                        self.Jarvis.Say(self.Jarvis.random('affirmative'))
                                                 except:
                                                         self.Jarvis.Say("Feature not working master, plug your Arduino Leonardo then try again.")
                                                         pass
@@ -94,7 +90,7 @@ class Processor(object):
                                        	        	if self.mesg is not None:
 								try:
 									self.Jarvis.SerialWrite(self.mesg)
-                                       	        			self.Jarvis.Say(self.random.random('affirmative'))
+                                       	        			self.Jarvis.Say(self.Jarvis.random('affirmative'))
 								except:
 									self.Jarvis.Say("Feature not working, plug you Arduino Leonardo then try again.")
 									break
@@ -106,7 +102,7 @@ class Processor(object):
 
 					else:
                        				print '[!] Input a valid option, enter "help" to see valid commands.'
-						self.Jarvis.Say(self.random.random('dntunderstand'))
+						self.Jarvis.Say(self.Jarvis.random('dntunderstand'))
 
 				except IndexError:
 					pass
@@ -115,8 +111,13 @@ class Processor(object):
 
 		except KeyboardInterrupt:
 			print "\n[*] User requested shutdown"
-			self.Jarvis.Say(self.random.random('salutes'))
+			self.Jarvis.Say(self.Jarvis.random('salutes'))
 			exit()
 		except Exception as e:
 			print "[!] Exception caught: {}".format(e)
 
+
+
+if __name__ == '__main__':
+	processor = Processor()
+	processor.start()
