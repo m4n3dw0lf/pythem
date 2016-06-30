@@ -30,7 +30,6 @@ $sudo pip install -r requiremenst.txt <br />
 (Close PyAudio error) <br />
 
 Now you are ready to rock:<br /> 
-(Stay in the main directory to use all resources)<br />
 $sudo ./pythem <br/>
 
 #Features
