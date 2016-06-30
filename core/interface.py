@@ -3,7 +3,6 @@
 
 from scapy.all import *
 from modules.utils import *
-from modules.banners import *
 from jarvis import Jarvis
 import os
 
