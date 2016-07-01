@@ -62,8 +62,11 @@ class Processor(object):
 						self.Jarvis.SpeakNews(self.titles)
 
 					elif self.input_list[0] == "start":
-						self.Jarvis.SerialWrite(self.input_list[1])
-						self.Jarvis.Say(self.Jarvis.random('affirmative'))
+						try:
+							self.Jarvis.SerialWrite(self.input_list[1])
+							self.Jarvis.Say(self.Jarvis.random('affirmative'))
+						except:
+							self.Jarvis.Say("Feature not working master, plug your Arduino Leonardo then restart the program.")
 
 					elif self.input_list[0] == "say":
 						self.Jarvis.Say(self.input_list[1:])
@@ -77,7 +80,7 @@ class Processor(object):
                                                         self.Jarvis.SerialWrite(self.input_list[1])
                                                         self.Jarvis.Say(self.Jarvis.random('affirmative'))
                                                 except:
-                                                        self.Jarvis.Say("Feature not working master, plug your Arduino Leonardo then try again.")
+                                                        self.Jarvis.Say("Feature not working master, plug your Arduino Leonardo then restart the program.")
                                                         pass
                                                         
 					elif self.input_list[0] == "editor":
@@ -92,7 +95,7 @@ class Processor(object):
 									self.Jarvis.SerialWrite(self.mesg)
                                        	        			self.Jarvis.Say(self.Jarvis.random('affirmative'))
 								except:
-									self.Jarvis.Say("Feature not working, plug you Arduino Leonardo then try again.")
+									self.Jarvis.Say("Feature not working, plug you Arduino Leonardo then restart the program.")
 									break
                                                 	else:
 								pass
