@@ -1,11 +1,11 @@
 #!/usr/bin/env python2.7
 #coding=UTF-8
 
-# Copyright (c) 2016 m4n3dw0lf
+# Copyright (c) 2016 Angelo Moura
 #
-# This file is part of the program Jarvis
+# This file is part of the program PytheM
 #
-# Jarvis is free software; you can redistribute it and/or
+# PytheM is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation; either version 3 of the
 # License, or (at your option) any later version.
@@ -23,6 +23,7 @@
 from jarvis import Jarvis
 import serial.tools.list_ports
 import os
+import webbrowser
 
 class Processor(object):
 
@@ -61,12 +62,32 @@ class Processor(object):
 						self.titles = self.Jarvis.GetNews()
 						self.Jarvis.SpeakNews(self.titles)
 
-					elif self.input_list[0] == "start":
+					elif self.input_list[0] == "browser":
 						try:
-							self.Jarvis.SerialWrite(self.input_list[1])
+							webbrowser.open("https://www.google.com")
 							self.Jarvis.Say(self.Jarvis.random('affirmative'))
-						except:
-							self.Jarvis.Say("Feature not working master, plug your Arduino Leonardo then restart the program.")
+						except Exception as e:
+							print "[!] Exception caught: {}".format(e)
+							pass
+
+					elif self.input_list[0] == "terminal":
+						try:
+							os.system("gnome-terminal")
+							self.Jarvis.Say(self.Jarvis.random('affirmative'))
+						except Exception as e:
+							print "[!] Exception caught: {}".format(e)
+							pass
+
+					elif self.input_list[0] == "search":
+						try:
+							search = self.input_list[1:]
+							real = "".join(search)
+							url = "https://www.google.com/search?q={}".format(real)
+							webbrowser.open(url)
+							self.Jarvis.Say(self.Jarvis.random('affirmative'))
+						except Exception as e:
+							print "[!] Exception caught: {}".format(e)
+							pass
 
 					elif self.input_list[0] == "say":
 						self.Jarvis.Say(self.input_list[1:])
@@ -107,10 +128,12 @@ class Processor(object):
                        				print '[!] Input a valid option, enter "help" to see valid commands.'
 						self.Jarvis.Say(self.Jarvis.random('dntunderstand'))
 
+
 				except IndexError:
 					pass
 				except AttributeError:
 					pass
+
 
 		except KeyboardInterrupt:
 			print "\n[*] User requested shutdown"
@@ -118,6 +141,7 @@ class Processor(object):
 			exit()
 		except Exception as e:
 			print "[!] Exception caught: {}".format(e)
+
 
 
 

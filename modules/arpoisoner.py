@@ -1,7 +1,7 @@
 #!/usr/bin/env python2.7
 #coding=UTF-8
 
-# Copyright (c) 2016 m4n3dw0lf
+# Copyright (c) 2016 Angelo Moura
 #
 # This file is part of the program PytheM
 #
@@ -25,8 +25,8 @@ import threading
 from time import sleep
 from utils import *
 
-class ARPspoof(object):
 
+class ARPspoof(object):
 
 	def __init__(self, gateway, targets, interface, arpmode, myip, mymac):
 
@@ -48,7 +48,6 @@ class ARPspoof(object):
 		self.arp_cache	= {}
 		self.socket = conf.L3socket(iface=self.interface)
 		self.socket2 = conf.L2socket(iface=self.interface)
-
 
 	def start(self):
 		set_ip_forwarding(1)
@@ -100,7 +99,7 @@ class ARPspoof(object):
 			return target_list
 
 		except AddrFormatError:
-			sys.exit("[!] Select a valid IP  address/range as target")
+			sys.exit("[!] Select a valid IP address/range as target")
 
 	def start_arp_mon(self):
 		sniff(prn=self.arp_mon_callback, filter="arp", store=0)
@@ -135,8 +134,8 @@ class ARPspoof(object):
 						self.socket.send(packet)
 				except Exception as e:
 					if "Interrupted system call" not in e:
-						print "[ARPmon] Excption caught while re-poisoning packet: {}".format(e)
-
+						#print "[ARPmon] Excption caught while re-poisoning packet: {}".format(e)
+						pass
 
 	def resolve_target_mac(self, targetip):
 		targetmac = None
@@ -159,9 +158,6 @@ class ARPspoof(object):
 			else:
 				pass
 		return targetmac
-
-
-
 
 
 	def spoof(self, arpmode):

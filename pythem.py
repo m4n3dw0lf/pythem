@@ -1,7 +1,7 @@
 #!/usr/bin/env python2.7
 #coding=UTF-8
 
-# Copyright (c) 2016 m4n3dw0lf
+# Copyright (c) 2016 Angelo Moura
 #
 # This file is part of the program PytheM
 #
@@ -23,7 +23,7 @@ from core.interface import Processor
 import os
 import sys
 
-version = "0.3.1"
+version = "0.3.2"
 Processor = Processor(version)
 
 if os.geteuid() != 0:

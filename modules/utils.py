@@ -1,7 +1,7 @@
 #!/usr/bin/env python2.7
 #coding=UTF-8
 
-# Copyright (c) 2016 m4n3dw0lf
+# Copyright (c) 2016 Angelo Moura
 #
 # This file is part of the program PytheM
 #
@@ -84,39 +84,57 @@ def jarvis_help(version):
 	print """\n
 [ Jarvis - Personal Assistence - v{} ]
 
-[*] exit:	 	Terminate the program.
+[*] exit:	 	 Terminate the program.
 
-[*] sleep:		Sleep untill you say "Jarvis"
 
-[*] newspaper:		Read the top trending news from reddit.
+[*] sleep:		 Sleep untill you say "Jarvis"
 
-[*] say [message]:      Ask Jarbas to say something.
 
- examples:
+[*] newspaper:		 Read the top trending news from reddit.
+
+
+[*] say [message]:       Ask Jarvis to say something.
+
+ examples(say):
 
   say i like donnuts
   say my name is jarvis
 
-[*] run [script]:	Run .sh script that you place on the scripts folder with chmod +x
 
- example:
+[*] run [script]:	 Run .sh script that you place on the scripts folder with chmod +x
 
-  run firewall		| Place a firewall.sh on the scripts folder and give execution privilege first
+ example(say):
 
-[*] start [program]:	Ask Jarbas to start a program.
+  run firewall		 | Place a firewall.sh on the scripts folder and give execution privilege first
 
-	* ARDUINO LEONARDO REQUIRED *
 
-voice commands:
+[*] browser:		 Ask Jarvis to start your default browser.
 
- browser   = start google-chrome browser
- terminal  = start a terminal
+ example(say):
+
+  browser
+
+
+[*] terminal:		 Ask Jarvis to open a gnome-terminal.
+
+ example(say):
+
+  terminal
+
+
+[*] search [term]	 Ask Jarvis to search term on google.
+
+ example(say):
+
+  search python programming.
+
  
 [*] input [keystroke]:   Send a command to the Arduino Leonardo without entering editor mode
 
         * ARDUINO LEONARDO REQUIRED *
 
 voice commands: (Same as EDITOR MODE )
+
 
 [*] editor: 		Start the editor mode.
 
@@ -163,7 +181,7 @@ def print_help(version):
 
 
 
-[ PytheM - Pentest/Network Framework v{} ]
+[ PytheM - Penetration Testing Framework v{} ]
 
 [*] help:		Print this help message.
 
@@ -171,19 +189,28 @@ def print_help(version):
 [*] exit/quit:		Leave the program.
 
 
-[*] set			Set a parameter value.
+[*] set			Set a variable value.
 
 parameters:
 
- interface
- gateway
- target
- file
- arpmode
+ - interface
+ - gateway
+ - target
+ - file
+ - arpmode
 
   examples:
 
-   pythem> set interface         |open input to set
+   pythem> set interface         | open input to set
+	  or
+   pythem> set interface wlan0   | don't open input to set value
+
+
+[*] print		Print variable value.
+
+  examples:
+
+   pythem> print gateway
 
 
 [*] scan		Make a tcp/manualport/arp scan.
@@ -193,6 +220,8 @@ parameters:
   examples:
 
    pythem> scan
+	  or
+   pythem> scan tcp
 
 
 [*] arpspoof		Start or stop a arpspoofing attack.
@@ -226,8 +255,11 @@ arguments:
 
   examples:
 
+   pythem> sniff http
+	  or
    pythem> sniff
-   [+] Enter the filter: port 1337 and host 10.0.1.5  | tcpdump like format
+   [+] Enter the filter: port 1337 and host 10.0.1.5  | tcpdump like format or http,dns specific filter.
+
 
 [*] pforensic		Start a packet-analyzer<br />
 
@@ -237,6 +269,7 @@ arguments:
 
    pythem> pforensic
    pforensic> help
+
 
 [*] brute-force		Start a brute-force attack.
 
@@ -253,6 +286,7 @@ arguments:
    pythem> brute-force webform
    pythem> brute-force ssh
 
+
 [*] geoip		Geolocalizate approximately the location of a IP address.
 
 
@@ -261,6 +295,8 @@ arguments:
   examples:
 
    pythem> geoip
+	  or
+   pythem> geoip 8.8.8.8
 
 
 [*] decode and encode	Decode or encode a string with choosen pattern
@@ -290,11 +326,21 @@ type jarvis-help to see the jarvis help page.
 
   examples:
 
-   pythem> jarvis
-   pythem> jarvis-help
-   pythem> jarvis-log
-   pythem> jarvis-say
-   pythem> jarvis-read 	| Should be called after setting file
+   pythem> jarvis	  (Call Jarvis in speech recognition mode)
+
+   pythem> jarvis-help    (Print Jarvis help message)
+
+   pythem> jarvis-log     (Check Jarvis log)
+	  or
+   pythem> jarvis-log err
+
+   pythem> jarvis-say     (Ask Jarvis to say something)
+	  or
+   pythem> jarvis-say hello my name is jarvis.
+
+   pythem> jarvis-read 	  (If no file specified, should be called after setting file)
+   	  or
+   pythem> jarvis-read file.txt
 
 by: m4n3dw0lf
 """.format(version)

@@ -1,6 +1,26 @@
 #!/usr/bin/env python2.7
 #coding=UTF-8
 
+# Copyright (c) 2016 Angelo Moura
+#
+# This file is part of the program PytheM
+#
+# PytheM is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+# USA
+
+import logging
+logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 from scapy.all import *
 from modules.utils import *
 from jarvis import Jarvis
@@ -12,6 +32,11 @@ class Processor(object):
 		self.version = version
 		self.arpmode = "rep"
 		self.Jarvis = Jarvis()
+		self.targets = None
+		self.file = None
+		self.interface = None
+		self.gateway = None
+		self.status = 0
 
 	def start(self):
 		try:
@@ -30,23 +55,41 @@ class Processor(object):
 
 					elif self.command == "jarvis":
 						self.Jarvis.start('core/processor.py')
+						self.status = 1
 
-					elif self.command == "jarvis-log":
-						print "[+] Jarvis log system."
-						print "[.] Error log  - type: err"
-						print "[.] Output log - type: out"
-						self.jarvislog = raw_input("[+] Select: ")
+					elif self.input_list[0] == "jarvis-log":
 						try:
-							os.system("tail -f log/jarvis{}.txt".format(self.jarvislog))
-						except Exception as e:
-							print "[!] Exception caught: {}".format(e)
-							pass
+							jarvislog = self.input_list[1]
+							try:
+								os.system("tail -f log/jarvis{}.txt".format(jarvislog))
+							except Exception as e:
+								print "[!] Exception caught: {}".format(e)
+								pass
+
+						except IndexError:
+							print "[+] Jarvis log system."
+							print "[.] Error log  - type: err"
+							print "[.] Output log - type: out"
+							jarvislog = raw_input("[+] Select: ")
+							try:
+								os.system("tail -f log/jarvis{}.txt".format(jarvislog))
+							except Exception as e:
+								print "[!] Exception caught: {}".format(e)
+								pass
 
 					elif self.command == "exit" or self.command == "quit":
-						exit()
+						if self.status == 1:
+							self.Jarvis.Say(self.Jarvis.random('salutes'))
+							self.Jarvis.stop()
+							exit()
+						else:
+							exit()
 
 					elif self.input_list[0] == "jarvis-say":
 						try:
+							message = self.input_list[1:]
+							self.Jarvis.Say(message)
+						except IndexError:
 							message = raw_input("[+] Jarvis speaker: ")
 							self.Jarvis.Say(message)
 						except KeyboardInterrupt:
@@ -56,11 +99,16 @@ class Processor(object):
 
 					elif self.input_list[0] == "jarvis-read":
 						try:
-							file = open(self.file, "r")
-							text = file.read()
-							self.Jarvis.Say(text)
+							file = self.input_list[1]
+							self.Jarvis.Read(file)
+						except IndexError:
+							if self.file is not None:
+								self.Jarvis.Read(self.file)
+							else:
+								file = "[+] Set file path:"
+								pass
                                                 except TypeError:
-                                                	print "[!] You probably forgot to set the wordlist file path."
+                                                	print "[!] You probably forgot to set a wordlist file path."
                                                         pass
 						except KeyboardInterrupt:
 							pass
@@ -70,44 +118,81 @@ class Processor(object):
 					elif self.input_list[0] == "set" or self.input_list[0] == "SET":
 						if self.input_list[1] == "interface":
 							try:
+								self.interface = self.input_list[2]
+							except IndexError:
 								self.interface = raw_input("[+] Enter the interface: ")
 							except KeyboardInterrupt:
 								pass
 						elif self.input_list[1] == "gateway":
 							try:
+								self.gateway = self.input_list[2]
+							except IndexError:
 								self.gateway = raw_input("[+] Enter the gateway: ")
 							except KeyboardInterrupt:
 								pass
 						elif self.input_list[1] == "target":
 							try:
+								self.targets = self.input_list[2]
+							except IndexError:
 								self.targets = raw_input("[+] Enter the target(s): ")
 							except KeyboardInterrupt:
 								pass
 						elif self.input_list[1] == "file":
 							try:
+								self.file = self.input_list[2]
+							except IndexError:
 								self.file = raw_input("[+] Enter the path to the file: ")
 							except KeyboardInterrupt:
 								pass
 						elif self.input_list[1] == "arpmode":
 							try:
+								self.arpmode = self.input_list[2]
+							except IndexError:
 								self.arpmode = raw_input("[+] Enter the arpmode:")
 							except KeyboardInterrupt:
 								pass
 
 
-					elif self.command == "scan":
-						print "[*] Select one scan mode, options = tcp/arp/manual"
-						mode = raw_input("[+] Scan mode: ")
-						if self.targets is not None and self.interface is not None:
-							try:
+					elif self.input_list[0] == "print":
+						if self.input_list[1] == "interface":
+							print "[+] Network Interface: {}".format(self.interface)
+						elif self.input_list[1] == "gateway":
+							print "[+] Gateway IP Address: {}".format(self.gateway)
+						elif self.input_list[1] == "target":
+							print "[+] Target(s): {}".format(self.targets)
+						elif self.input_list[1] == "file":
+							print "[+] File path: {}".format(self.file)
+						elif self.input_list[1] == "arpmode":
+							print "[+] ARP spoofing mode: {}".format(self.arpmode)
+						else:
+							print "[-] Select a valid variable name."
+
+					elif self.input_list[0] == "scan":
+						try:
+							mode = self.input_list[1]
+							if self.targets is not None and self.interface is not None:
 								from modules.scanner import Scanner
 								self.scan = Scanner(self.targets, self.interface, mode)
 								self.scan.start()
-							except KeyboardInterrupt:
-								pass
-						else:
-							print "[!] You probably forgot to set the interface or a valid IP address/range"
+							else:
+								print "[!] You probably forgot to set the interface or a valid IP address/range."
 
+
+						except IndexError:
+							print "[*] Select one scan mode, options = tcp/arp/manual"
+							mode = raw_input("[+] Scan mode: ")
+							if self.targets is not None and self.interface is not None:
+								from modules.scanner import Scanner
+								self.scan = Scanner(self.targets, self.interface, mode)
+								self.scan.start()
+							else:
+								print "[!] You probably forgot to set the interface or a valid IP address/range."
+								pass
+						except KeyboardInterrupt:
+							pass
+						except Exception as e:
+							print "[!] Exception caught: {}".format(e)
+							pass
 
 					elif self.input_list[0] == "arpspoof":
                                         	try:
@@ -125,7 +210,9 @@ class Processor(object):
 								print "[+] ARP spoofing finalized."
 
 							else:
-								print "[!] You probably forgot to type start or stop after arpspoof."
+								print "[!] Select a valid option, call help to check syntax."
+						except IndexError:
+							print "[!] You probably forgot to type start or stop after arpspoof."
 						except Exception as e:
 							print "[!] Exception caught: {}".format(e)
 
@@ -144,19 +231,24 @@ class Processor(object):
 								self.dnsspoof.stop()
 								print "[+] DNS spoofing finalized"
 							else:
-								print "[!] You probably forgot to type start or stop after dnsspoof."
+								print "[!] Select a valid option, call help to check syntax."
+						except IndexError:
+							print "[!] You probably forgot to type start or stop after dnsspoof."
 						except Exception as e:
 							print "[!] Exception caught: {}".format(e)
 
-					elif self.command == "sniff":
-						filter = raw_input("[+] Enter the filter: ")
+					elif self.input_list[0] == "sniff":
+						from modules.sniffer import Sniffer
 						try:
-							from modules.sniffer import Sniffer
-                                                        self.sniff = Sniffer(self.interface, filter)
-                                                        self.sniff.start()
+							filter = self.input_list[1]
+							self.sniff = Sniffer(self.interface, filter)
+							self.sniff.start()
+						except IndexError:
+							filter = raw_input("[+] Enter the filter: ")
+                                                	self.sniff = Sniffer(self.interface, filter)
+                                                	self.sniff.start()
 						except KeyboardInterrupt:
-                                                		pass
-
+                                                	pass
 
 					elif self.command == "pforensic":
 						try:
@@ -198,13 +290,22 @@ class Processor(object):
 							pass
 
 
-					elif self.command == "geoip":
-						if self.targets is not None:
-							try:
+					elif self.input_list[0] == "geoip":
+						try:
+							self.targets = self.input_list[1]
+							from modules.geoip import Geoip
+							path = "config/GeoLiteCity.dat"
+							iptracker = Geoip(self.targets,path)
+
+						except IndexError:
+							if self.targets is not None:
 								from modules.geoip import Geoip
 								path = "config/GeoLiteCity.dat"
 								iptracker = Geoip(self.targets,path)
-							except Exception as e:
+							else:
+								print "[!] You probably forgot to set a target"
+
+						except Exception as e:
 								print "[!] Exception caught: {}".format(e)
 								pass
 

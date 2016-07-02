@@ -1,11 +1,11 @@
 #!/usr/bin/env python2.7
-#cofing=UTF-8
+#coding=UTF-8
 
-# Copyright (c) 2016 m4n3dw0lf
+# Copyright (c) 2016 Angelo Moura
 #
-# This file is part of the program Jarvis
+# This file is part of the program PytheM
 #
-# Jarvis is free software; you can redistribute it and/or
+# PytheM is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation; either version 3 of the
 # License, or (at your option) any later version.
@@ -33,6 +33,7 @@ import subprocess
 class Jarvis(object):
 
 	def __init__(self):
+		self.status = 1
 		self.version = "0.0.6"
 		self.array = []
 		self.numbers = []
@@ -76,8 +77,12 @@ class Jarvis(object):
 			return self.result
 		except sr.UnknownValueError:
         	        print("Google Speech Recognition could not understand audio")
-        	except sr.RequestError as e:
-                	print("Could not request results from Google Speech Recognition service; {0}".format(e))
+        	except sr.RequestError:
+                	self.Say("Could not request results from Google Speech Recognition service master, check our internet connection.")
+	def Read(self, file):
+		words = open(file, "r")
+		text = words.read()
+		self.Say(text)
 
 	def get_ports(self):
 		self.ports = serial.tools.list_ports.comports()
@@ -114,10 +119,11 @@ class Jarvis(object):
 			#p = subprocess.Popen(["python", path], shell=False, stdout=subprocess.PIPE, stderr=devnull)
 			with open("log/jarvisout.txt", "a+") as stdout, open("log/jarviserr.txt", "a+") as stderr:
 				self.p = subprocess.Popen(["python", path], shell=False, stdout=stdout, stderr=stderr)
-
 		except Exception as e:
 			print "[!] Exception caught: {}".format(e)
 
+	def stop(self):
+		self.p.terminate()
 
 	def GetNews(self, limit=10):
 		self.r = praw.Reddit(user_agent="Jarvis by /u/m4n3dw0lf")

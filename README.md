@@ -40,7 +40,7 @@ $sudo ./pythem <br/>
 - exit/quit		(Leave the program.)<br />
 
 
-- set			(Set a parameter value.)<br />
+- set			(Set a variable value.)<br />
 
  parameters:<br />
 
@@ -51,7 +51,15 @@ $sudo ./pythem <br/>
  - arpmode ( rep or req )
 
   examples: <br />
-    pythem> set interface         | open input to set value<br />
+    pythem> set interface          | open input to set value<br />
+           or<br />
+    pythem> set gateway 192.168.1.1 | don't open input to set value<br />
+
+
+- print			(Print variable value.)<br />
+
+  example:<br />
+    pythem> print target
 
 
 - scan			(Make a tcp/manualport/arp scan.)<br />
@@ -60,6 +68,8 @@ $sudo ./pythem <br/>
 
   examples:<br />
     pythem> scan<br />
+           or<br />
+    pythem> scan arp<br />
 
 
 - arpspoof		(Start or stop a ARP spoofing attack.)<br />
@@ -98,8 +108,10 @@ $sudo ./pythem <br/>
  (Should be called after setting interface)<br />
 
   examples:<br />
+    pythem> sniff http<br />
+	   or<br/>
     pythem> sniff<br />
-    [+] Enter the filter: port 1337 and host 10.0.1.5  | tcpdump like format<br />
+    [+] Enter the filter: port 1337 and host 10.0.1.5  | tcpdump like format or dns, http specific filter<br />
 
 
 - pforensic		(Start a packet-analyzer)<br />
@@ -132,6 +144,8 @@ $sudo ./pythem <br/>
 
   examples:<br />
     pythem> geoip<br />
+	   or<br />
+    pythem> geoip 8.8.8.8<br />
 
 
 - decode and encode	(Decode or encode a string with choosen pattern.)<br />
@@ -158,11 +172,21 @@ link: https://github.com/m4n3dw0lf/Jarvis<br />
 type jarvis-help to see the jarvis help page.<br />
 
   examples:<br />
-    pythem> jarvis<br />
-    pythem> jarvis-help<br />
-    pythem> jarvis-log<br />
-    pythem> jarvis-say<br />
-    pythem> jarvis-read | Should be called after setting file <br />
+    pythem> jarvis | Call Jarvis in speech recognition mode<br />
+
+    pythem> jarvis-help | Print Jarvis help message<br />
+    
+    pythem> jarvis-log | Check Jarvis log<br />
+	   or <br/>
+    pythem> jarvis-log out<br />
+
+    pythem> jarvis-say | Ask Jarvis to say something<br />
+	   or <br/>
+    pythem> jarvis-say hello my name is Jarvis.<br />
+
+    pythem> jarvis-read | If no file specified, should be called after setting file <br />
+           or <br/>
+    pythem> jarvis-read file.txt <br />
 
 by: m4n3dw0lf<br />
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python2.7
 #coding=UTF-8
 
-# Copyright (c) 2016 m4n3dw0lf
+# Copyright (c) 2016 Angelo Moura
 #
 # This file is part of the program PytheM
 #
@@ -32,10 +32,9 @@ class Geoip(object):
 		try:
 			self.gip = pygeoip.GeoIP(path)
 			self.search()
-		
 		except:
-			print "[!] You need to be inside the main directory of pythem to run this module."
-		
+			print "[!] Probably you forgot to set the target or give a invalid target as argument."
+
 	def search(self):
 		addr = self.target
 		rec = self.gip.record_by_addr(addr)
