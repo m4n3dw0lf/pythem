@@ -33,160 +33,167 @@ Now you are ready to rock:<br />
 $sudo ./pythem <br/>
 
 #Features
+```
+[ PytheM - Penetration Testing Framework v0.3.2 ]
 
-- help		        (Print this help message.)<br />
+[*] help:		Print this help message.
 
 
-- exit/quit		(Leave the program.)<br />
+[*] exit/quit:		Leave the program.
 
 
-- set			(Set a variable value.)<br />
+[*] set			Set a variable value.
 
- parameters:<br />
+parameters:
 
- - interface ( network interface )
- - gateway (LAN gateway IP address )
- - target ( IP range/address )
- - file ( Path to file )
- - arpmode ( rep or req )
+ - interface
+ - gateway
+ - target
+ - file
+ - arpmode
 
-  examples: <br />
-    pythem> set interface          | open input to set value<br />
-           or<br />
-    pythem> set gateway 192.168.1.1 | don't open input to set value<br />
+  examples:
 
+   pythem> set interface         | open input to set
+	  or
+   pythem> set interface wlan0   | don't open input to set value
 
-- print			(Print variable value.)<br />
 
-  example:<br />
-    pythem> print target
+[*] print		Print variable value.
 
+  examples:
 
-- scan			(Make a tcp/manualport/arp scan.)<br />
+   pythem> print gateway
 
- (Should be called after setting interface and target)<br />
 
-  examples:<br />
-    pythem> scan<br />
-           or<br />
-    pythem> scan arp<br />
+[*] scan		Make a tcp/manualport/arp scan.
 
+(Should be called after setting interface and target)
 
-- arpspoof		(Start or stop a ARP spoofing attack.)<br />
+  examples:
 
- (Should be called after setting interface, target and gateway)
+   pythem> scan
+	  or
+   pythem> scan tcp
 
- (Optional setting arpmode to select arpspoofing mode should be filled with rep or req)<br />
- (rep to spoof responses, req to spoof requests) <br />
 
- arguments:<br />
+[*] arpspoof		Start or stop a arpspoofing attack.
 
- - start
- - stop
+(Optional setting arpmode to select arpspoofing mode should be filled with rep or req) 
+(rep to spoof responses, req to spoof requests)
 
-  examples:<br />
-    pythem> arpspoof start <br />
-    pythem> arpspoof stop <br />
+arguments:
 
+ start
+ stop
 
-- dnsspoof		(Start a DNS spoofing attack.)<br />
+  examples:
+   arpspoof start
+   arpspoof stop
 
- (Should be called after a arpspoofing attack have been started)<br />
 
- arguments:<br />
+[*] dnsspoof		Start a dnsspoofing attack.
 
- - start
- - stop
+(Should be called after a arpspoofing attack have been started)
 
-  examples:<br />
-    pythem> dnsspoof start<br />
-    pythem> dnsspoof stop<br />
+  examples:
 
+   pythem> dnsspoof start
+   pythem> dnsspoof stop
 
-- sniff			(Start sniffing packets.)<br />
 
- (Should be called after setting interface)<br />
+[*] sniff		Start sniffing packets.
 
-  examples:<br />
-    pythem> sniff http<br />
-	   or<br/>
-    pythem> sniff<br />
-    [+] Enter the filter: port 1337 and host 10.0.1.5  | tcpdump like format or dns, http specific filter<br />
+(Should be called after setting interface)
 
+  examples:
 
-- pforensic		(Start a packet-analyzer)<br />
+   pythem> sniff http
+	  or
+   pythem> sniff
+   [+] Enter the filter: port 1337 and host 10.0.1.5  | tcpdump like format or http,dns specific filter.
 
- (Should be called after setting interface and file with a .pcap file)
 
-  examples:<br />
-    pythem> pforensic<br />
-    pforensic> help<br />
+[*] pforensic		Start a packet-analyzer<br />
 
+(Should be called after setting interface and file with a .pcap file)
 
-- brute-force		(Start a brute-force attack.)<br />
+  examples:
 
- (Should be called after setting target and wordlist file path)<br />
+   pythem> pforensic
+   pforensic> help
 
- arguments:<br />
 
- - ssh		   | ip address as target<br />
- - url		   | url (with http:// or https://) as target<br />
- - webform	| url (with http:// or https://)as target<br />
+[*] brute-force		Start a brute-force attack.
 
-  examples:<br />
-    pythem> brute-force webform<br />
-    pythem> brute-force ssh<br />
+(Should be called after setting target and wordlist file path)
 
+arguments:
 
-- geoip			(Geolocalizate approximately the location of a IP address.)<br />
+ ssh		| ip address as target
+ url		| url (with http:// or https://) as target
+ webform	| url (with http:// or https://)as target
 
- (Should be called after setting target (Ip address))<br />
+  examples:
 
-  examples:<br />
-    pythem> geoip<br />
-	   or<br />
-    pythem> geoip 8.8.8.8<br />
+   pythem> brute-force webform
+   pythem> brute-force ssh
 
 
-- decode and encode	(Decode or encode a string with choosen pattern.)<br />
+[*] geoip		Geolocalizate approximately the location of a IP address.
 
-  examples:<br />
-    pythem> decode base64<br />
-    pythem> encode ascii<br />
 
+(Should be called after setting target (Ip address))
 
-- cookiedecode		(Decode a base64 url encoded cookie value.)<br />
+  examples:
 
-  example:<br />
-    pythem> cookiedecode<br />
+   pythem> geoip
+	  or
+   pythem> geoip 8.8.8.8
 
 
-* Anything else will be executed in the terminal like cd, ls, nano, cat, etc. *<br />
+[*] decode and encode	Decode or encode a string with choosen pattern
 
-(+) Call the voice-controlled assistant Jarvis<br />
+  examples:
 
-link: https://github.com/m4n3dw0lf/Jarvis<br />
+   pythem> decode base64
+   pythem> encode ascii
 
-- jarvis <br />
 
-type jarvis-help to see the jarvis help page.<br />
+[*] cookiedecode	Decode a base64 url encoded cookie value.
 
-  examples:<br />
-    pythem> jarvis | Call Jarvis in speech recognition mode<br />
+  example:
 
-    pythem> jarvis-help | Print Jarvis help message<br />
-    
-    pythem> jarvis-log | Check Jarvis log<br />
-	   or <br/>
-    pythem> jarvis-log out<br />
+   pythem> cookiedecode
 
-    pythem> jarvis-say | Ask Jarvis to say something<br />
-	   or <br/>
-    pythem> jarvis-say hello my name is Jarvis.<br />
 
-    pythem> jarvis-read | If no file specified, should be called after setting file <br />
-           or <br/>
-    pythem> jarvis-read file.txt <br />
+* Anything else will be executed in the terminal like cd, ls, nano, cat, etc. *
 
-by: m4n3dw0lf<br />
+(+) Call the voice-controlled assistant Jarvis
 
+link: https://github.com/m4n3dw0lf/Jarvis
+
+[*] jarvis
+
+type jarvis-help to see the jarvis help page.
+
+  examples:
+
+   pythem> jarvis	  (Call Jarvis in speech recognition mode)
+
+   pythem> jarvis-help    (Print Jarvis help message)
+
+   pythem> jarvis-log     (Check Jarvis log)
+	  or
+   pythem> jarvis-log err
+
+   pythem> jarvis-say     (Ask Jarvis to say something)
+	  or
+   pythem> jarvis-say hello my name is jarvis.
+
+   pythem> jarvis-read 	  (If no file specified, should be called after setting file)
+   	  or
+   pythem> jarvis-read file.txt
+
+by: m4n3dw0lf
+```
