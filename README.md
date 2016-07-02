@@ -4,6 +4,7 @@ PytheM is a python pentesting framework. Same has been developed in the hope tha
 
 #Installation
 
+```
 $sudo git clone https://github.com/m4n3dw0lf/PytheM/ <br />
 (OPTIONAL)<br />
 plug your Arduino Leonardo <br />
@@ -31,6 +32,7 @@ $sudo pip install -r requiremenst.txt <br />
 
 Now you are ready to rock:<br /> 
 $sudo ./pythem <br/>
+```
 
 #Features
 ```
