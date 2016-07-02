@@ -5,33 +5,33 @@ PytheM is a python pentesting framework. Same has been developed in the hope tha
 #Installation
 
 ```
-$sudo git clone https://github.com/m4n3dw0lf/PytheM/ <br />
-(OPTIONAL)<br />
-plug your Arduino Leonardo <br />
-open the arduino IDE > Tools > Board then select Arduino Leonardo <br />
-go to Tools> Serial port and check the serial port of the Arduino Leonardo <br />
-press CTRL+O <br />
-navigate to the directory: path/../PytheM/core/heart/jarvis/ <br />
-select the jarvis.ino file then upload to the Arduino Leonardo. <br />
-(CLOSE OPTIONAL) <br />
+$sudo git clone https://github.com/m4n3dw0lf/PytheM/
+(OPTIONAL)
+plug your Arduino Leonardo
+open the arduino IDE > Tools > Board then select Arduino Leonardo
+go to Tools> Serial port and check the serial port of the Arduino Leonardo
+press CTRL+O
+navigate to the directory: path/../PytheM/core/heart/jarvis/
+select the jarvis.ino file then upload to the Arduino Leonardo.
+(CLOSE OPTIONAL)
 
-$cd PytheM<br/>
+$cd PytheM
 
-$sudo pip install -r requirements.txt <br />
-(if NetfilterQueue error)<br />
-$sudo apt-get update<br />
-$sudo apt-get install build-essential python-dev libnetfilter-queue-dev<br />
-$sudo pip install -r requirements.txt <br />
-(Close NetfilterQueue error) <br />
+$sudo pip install -r requirements.txt 
+(if NetfilterQueue error)
+$sudo apt-get update
+$sudo apt-get install build-essential python-dev libnetfilter-queue-dev
+$sudo pip install -r requirements.txt
+(Close NetfilterQueue error)
 
-(if PyAudio gcc error)<br />
-$sudo apt-get update<br />
-$sudo apt-get install libasound-dev libjack-jackd2-dev portaudio19-dev python-pyaudio<br />
-$sudo pip install -r requiremenst.txt <br />
-(Close PyAudio error) <br />
+(if PyAudio gcc error)
+$sudo apt-get update
+$sudo apt-get install libasound-dev libjack-jackd2-dev portaudio19-dev python-pyaudio
+$sudo pip install -r requiremenst.txt
+(Close PyAudio error)
 
-Now you are ready to rock:<br /> 
-$sudo ./pythem <br/>
+Now you are ready to rock: 
+$sudo ./pythem
 ```
 
 #Features
