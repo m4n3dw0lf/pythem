@@ -168,11 +168,10 @@ arguments:
 
 
 * Anything else will be executed in the terminal like cd, ls, nano, cat, etc. *
-
-(+) Call the voice-controlled assistant Jarvis
-
+```
+### Jarvis - voice-controlled assistant
 link: https://github.com/m4n3dw0lf/Jarvis
-
+```
 [*] jarvis
 
 type jarvis-help to see the jarvis help page.
@@ -195,5 +194,5 @@ type jarvis-help to see the jarvis help page.
    	  or
    pythem> jarvis-read file.txt
 
-by: m4n3dw0lf
 ```
+by: m4n3dw0lf<br/>
