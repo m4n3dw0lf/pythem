@@ -87,8 +87,9 @@ class Processor(object):
 
 					elif self.input_list[0] == "jarvis-say":
 						try:
-							message = self.input_list[1:]
-							self.Jarvis.Say(message)
+							message = self.input_list[1]
+							all_msg = " ".join(self.input_list[1:])
+							self.Jarvis.Say(all_msg)
 						except IndexError:
 							message = raw_input("[+] Jarvis speaker: ")
 							self.Jarvis.Say(message)
