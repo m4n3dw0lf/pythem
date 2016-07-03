@@ -33,8 +33,8 @@ class ARPspoof(object):
 		try:
 			self.gateway = str(IPAddress(gateway))
 		except AddrFormatError as e:
-			sys.exit("[-] Select a valid IP address as gateway")
-
+			print "[-] Select a valid IP address as gateway"
+			pass
 		self.gateway_mac = getmacbyip(gateway)
 		if not self.gateway_mac: sys.exit("[-] Error: Couldn't retrieve MAC address from gateway.")
 
