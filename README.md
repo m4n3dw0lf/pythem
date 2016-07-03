@@ -4,6 +4,7 @@ PytheM is a python pentesting framework. Same has been developed in the hope tha
 
 #Installation
 
+- $sudo apt-get update
 
 - $sudo apt-get install libasound-dev libjack-jackd2-dev portaudio19-dev python-pyaudio build-essential python-dev libnetfilter-queue-dev libespeak1 libffi-dev libssl-dev
 
