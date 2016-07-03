@@ -211,6 +211,9 @@ class Processor(object):
 
 							else:
 								print "[!] Select a valid option, call help to check syntax."
+						
+						except TypeError:
+							print "[!] You probably forgot to set interface or gateway."
 						except IndexError:
 							print "[!] You probably forgot to type start or stop after arpspoof."
 						except Exception as e:
