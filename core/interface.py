@@ -121,37 +121,42 @@ class Processor(object):
 							try:
 								self.interface = self.input_list[2]
 							except IndexError:
-								self.interface = raw_input("[+] Enter the interface: ")
-							except KeyboardInterrupt:
-								pass
+								try:
+									self.interface = raw_input("[+] Enter the interface: ")
+								except KeyboardInterrupt:
+									pass
 						elif self.input_list[1] == "gateway":
 							try:
 								self.gateway = self.input_list[2]
 							except IndexError:
-								self.gateway = raw_input("[+] Enter the gateway: ")
-							except KeyboardInterrupt:
-								pass
+								try:
+									self.gateway = raw_input("[+] Enter the gateway: ")
+								except KeyboardInterrupt:
+									pass
 						elif self.input_list[1] == "target":
 							try:
 								self.targets = self.input_list[2]
 							except IndexError:
-								self.targets = raw_input("[+] Enter the target(s): ")
-							except KeyboardInterrupt:
-								pass
+								try:
+									self.targets = raw_input("[+] Enter the target(s): ")
+								except KeyboardInterrupt:
+									pass
 						elif self.input_list[1] == "file":
 							try:
 								self.file = self.input_list[2]
 							except IndexError:
-								self.file = raw_input("[+] Enter the path to the file: ")
-							except KeyboardInterrupt:
-								pass
+								try:
+									self.file = raw_input("[+] Enter the path to the file: ")
+								except KeyboardInterrupt:
+									pass
 						elif self.input_list[1] == "arpmode":
 							try:
 								self.arpmode = self.input_list[2]
 							except IndexError:
-								self.arpmode = raw_input("[+] Enter the arpmode:")
-							except KeyboardInterrupt:
-								pass
+								try:
+									self.arpmode = raw_input("[+] Enter the arpmode:")
+								except KeyboardInterrupt:
+									pass
 
 
 					elif self.input_list[0] == "print":
