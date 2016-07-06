@@ -44,8 +44,6 @@ class Processor(object):
 					self.command = self.Jarvis.Listen()
        		        		self.message = self.command.split()
         			        self.input_list = [str(a) for a in self.message]
-					print self.command
-					self.Jarvis.Say("i heard, {}".format(self.command))
 					if self.input_list[0] == "exit":
 						self.Jarvis.Say(self.Jarvis.random('salutes'))
 						exit()
@@ -126,6 +124,7 @@ class Processor(object):
 
 					else:
                        				print '[!] Input a valid option, enter "help" to see valid commands.'
+						self.Jarvis.Say("i heard, {}".format(self.command))
 						self.Jarvis.Say(self.Jarvis.random('dntunderstand'))
 
 
