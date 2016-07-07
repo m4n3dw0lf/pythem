@@ -34,25 +34,24 @@ class ARPspoof(object):
 			self.gateway = str(IPAddress(gateway))
 		except AddrFormatError as e:
 			print "[-] Select a valid IP address as gateway"
-			pass
 		self.gateway_mac = getmacbyip(gateway)
-		if not self.gateway_mac: sys.exit("[-] Error: Couldn't retrieve MAC address from gateway.")
-
-		self.targets	= self.get_range(targets)
-		self.arpmode	= arpmode
-		self.send	= True
-		self.interval	= 3
-		self.interface	= interface
-		self.myip	= myip
-		self.mymac	= mymac
-		self.arp_cache	= {}
-		self.socket = conf.L3socket(iface=self.interface)
-		self.socket2 = conf.L2socket(iface=self.interface)
+		if not self.gateway_mac: 
+			print "[-] Error: Couldn't retrieve MAC address from gateway."
+		else:
+			iptables()
+			set_ip_forwarding(1)
+			self.targets	= self.get_range(targets)
+			self.arpmode	= arpmode
+			self.send	= True
+			self.interval	= 3
+			self.interface	= interface
+			self.myip	= myip
+			self.mymac	= mymac
+			self.arp_cache	= {}
+			self.socket = conf.L3socket(iface=self.interface)
+			self.socket2 = conf.L2socket(iface=self.interface)
 
 	def start(self):
-		set_ip_forwarding(1)
-		iptables()
-
 		if self.arpmode == 'rep':
 			t = threading.Thread(name='ARPspoof-rep', target=self.spoof, args=('is-at',))
 
