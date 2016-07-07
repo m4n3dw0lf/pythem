@@ -222,6 +222,8 @@ class Processor(object):
 							print "[!] You probably forgot to set interface or gateway."
 						except IndexError:
 							print "[!] You probably forgot to type start or stop after arpspoof."
+						except AttributeError:
+							pass
 						except Exception as e:
 							print "[!] Exception caught: {}".format(e)
 
