@@ -84,7 +84,7 @@ def jarvis_help(version):
 	print """\n
 [ Jarvis - Personal Assistence - v{} ]
 
-[*] exit |or| quit :	 	 	Terminate the program.
+[*] exit |or| quit :	 	Terminate the program.
 
 
 [*] sleep |or| stop |or| wait:  Sleep untill you say "Jarvis"
@@ -101,42 +101,42 @@ def jarvis_help(version):
   speak my name is jarvis
 
 
-[*] run [script]:	 Run .sh script that you place on the scripts folder with chmod +x
+[*] run [script]:	 	Run .sh script that you place on the scripts folder with chmod +x
 
  example(say):
 
-  run firewall		 | Place a firewall.sh on the scripts folder and give execution privilege first
+  run firewall		 	| Place a firewall.sh on the scripts folder and give execution privilege first
 
 
-[*] browser:		 Ask Jarvis to start your default browser.
+[*] browser:		 	Ask Jarvis to start your default browser.
 
  example(say):
 
   browser
 
 
-[*] terminal:		 Ask Jarvis to open a gnome-terminal.
+[*] terminal:		 	Ask Jarvis to open a gnome-terminal.
 
  example(say):
 
   terminal
 
 
-[*] search [term]	 Ask Jarvis to search term on google.
+[*] search [term]	 	Ask Jarvis to search term on google.
 
  example(say):
 
   search python programming.
 
  
-[*] input [keystroke]:   Send a command to the Arduino Leonardo without entering editor mode
+[*] input [keystroke]:   	Send a command to the Arduino Leonardo without entering editor mode
 
         * ARDUINO LEONARDO REQUIRED *
 
 voice commands: (Same as EDITOR MODE )
 
 
-[*] editor: 		Start the editor mode.
+[*] editor: 			Start the editor mode.
 
 	* ARDUINO LEONARDO REQUIRED *
 
