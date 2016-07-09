@@ -49,6 +49,7 @@ class Processor(object):
 						exit()
 
 					elif self.input_list[0] == "sleep" or self.input_list[0] == "stop" or self.input_list[0] == "wait":
+						self.Jarvis.Say("Call me if you need me sir.")
 						while 1:
 							self.wait = self.Jarvis.Listen()
 							if self.wait == "Jarvis":
