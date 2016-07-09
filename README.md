@@ -99,7 +99,7 @@ arguments:
    [+] Enter the filter: port 1337 and host 10.0.1.5  | tcpdump like format or http,dns specific filter.
 
 
-[*] pforensic		Start a packet-analyzer<br />
+[*] pforensic		Start a packet-analyzer
 
 (Should be called after setting interface and file with a .pcap file)
 
