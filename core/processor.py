@@ -44,18 +44,18 @@ class Processor(object):
 					self.command = self.Jarvis.Listen()
        		        		self.message = self.command.split()
         			        self.input_list = [str(a) for a in self.message]
-					if self.input_list[0] == "exit":
+					if self.input_list[0] == "exit" or self.input_list[0] == "quit":
 						self.Jarvis.Say(self.Jarvis.random('salutes'))
 						exit()
 
-					elif self.input_list[0] == "sleep":
+					elif self.input_list[0] == "sleep" or self.input_list[0] == "stop" or self.input_list[0] == "wait":
 						while 1:
 							self.wait = self.Jarvis.Listen()
 							if self.wait == "Jarvis":
 								self.Jarvis.Say(self.Jarvis.random('affirmative'))
 								break
 
-					elif self.input_list[0] == "newspaper":
+					elif self.input_list[0] == "newspaper" or self.input_list[0] == "news":
 						self.Jarvis.Say("Here are the news sir.")
 						self.titles = self.Jarvis.GetNews()
 						self.Jarvis.SpeakNews(self.titles)
@@ -87,13 +87,13 @@ class Processor(object):
 							print "[!] Exception caught: {}".format(e)
 							pass
 
-					elif self.input_list[0] == "say":
+					elif self.input_list[0] == "say" or self.input_list[0] == "speak":
 						self.Jarvis.Say(self.input_list[1:])
 
 					elif self.input_list[0] == "run":
 						self.Jarvis.Say(self.Jarvis.random('affirmative'))
 						os.system("./scripts/{}.sh".format(self.input_list[1]))
-						
+
 					elif self.input_list[0] == "input":
                                                 try:
                                                         self.Jarvis.SerialWrite(self.input_list[1])
@@ -101,7 +101,7 @@ class Processor(object):
                                                 except:
                                                         self.Jarvis.Say("Feature not working master, plug your Arduino Leonardo then restart the program.")
                                                         pass
-                                                        
+
 					elif self.input_list[0] == "editor":
 						self.Jarvis.Say("Starting edition mode sir.")
                                 	        while 1:

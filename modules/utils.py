@@ -84,21 +84,21 @@ def jarvis_help(version):
 	print """\n
 [ Jarvis - Personal Assistence - v{} ]
 
-[*] exit:	 	 Terminate the program.
+[*] exit |or| quit :	 	 	Terminate the program.
 
 
-[*] sleep:		 Sleep untill you say "Jarvis"
+[*] sleep |or| stop |or| wait:  Sleep untill you say "Jarvis"
 
 
-[*] newspaper:		 Read the top trending news from reddit.
+[*] newspaper |or| news: 	Read the top trending news from reddit.
 
 
-[*] say [message]:       Ask Jarvis to say something.
+[*] say |or| speak [message]:   Ask Jarvis to say something.
 
  examples(say):
 
   say i like donnuts
-  say my name is jarvis
+  speak my name is jarvis
 
 
 [*] run [script]:	 Run .sh script that you place on the scripts folder with chmod +x
