@@ -80,7 +80,7 @@ class Scanner(object):
 			srcPort = random.randint(1025,65534)
 			resp = sr1(IP(dst=self.targetip)/TCP(sport=srcPort,dport=dstPort,flags="S"),timeout=1,verbose=0)
 			if (str(type(resp)) == "<type 'NoneType'>"):
-				print "[-]{}:{} is filtered.".format(self.targetip,str(dstPort))
+				pass
 			elif(resp.haslayer(TCP)):
 				if (resp.haslayer(TCP)):
 					if(resp.getlayer(TCP).flags == 0x12):
