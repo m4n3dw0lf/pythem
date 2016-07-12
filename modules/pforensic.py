@@ -37,15 +37,23 @@ class PcapReader(object):
 
 	ARQUIVO - [ {} ]
 
-help:   		Print this help message
-clear:			Clean the screen, same as GNU/Linux OS "clear"
-exit/quit:		Terminate the program
+[*] help:   			Print this help message
 
-show:			Display all the packets and their index numbers.
-conversations:		Display pictogram with conversations between hosts from the analyzed file.
+[*] clear:			Clean the screen, same as GNU/Linux OS "clear"
 
-packetdisplay [num]:	Display the full content of index selected packet.
-packetload [num]:	Display the payload of index selected packet.
+[*] exit/quit:			Return to pythem
+
+
+[*] show:			Display all the packets and their index numbers.
+
+[*] conversations:		Display pictogram with conversations between hosts from the analyzed file.
+
+
+[*] packetdisplay [num]:	Display the full content of index selected packet.
+
+[*] packetload [num]:		Display the payload of index selected packet.
+
+
 """.format(self.file)	
 
 
@@ -84,7 +92,7 @@ packetload [num]:	Display the payload of index selected packet.
 					elif self.input_list[0]  == 'exit':
 						break
 					elif self.input_list[0] == 'quit':
-						sys.exit(0)
+						break
 					elif self.input_list[0] == 'help':
 						self.printHelp()
 					elif self.input_list[0] == 'clear':

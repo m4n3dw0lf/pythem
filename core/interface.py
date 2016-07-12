@@ -275,16 +275,37 @@ class Processor(object):
 							print "[!] Exception caught: {}".format(e)
 							pass
 
+					elif self.input_list[0] == "xploit":
+						try:
+							from modules.exploit import Exploit
+							if self.targets is not None:
+								self.xploit = Exploit(self.targets, self.input_list[1])
+								self.xploit.start()
+							elif self.file is not None:
+								self.xploit = Exploit(self.file, self.input_list[1])
+								self.xploit.start()
+							else:
+								print "[!] You need to set or a file or a target to xploit"
+                                                except KeyboardInterrupt:
+                                                        pass
+                                                #except TypeError:
+                                                #        print "[!] You probably forgot to set the file"
+                                                #        pass
+                                                #except Exception as e:
+                                                #        print "[!] Exception caught: {}".format(e)
+                                                #        pass
+
+
 					elif self.input_list[0] == "fuzz":
 						try:
 							from modules.fuzzer import SimpleFuzz
-							if self.targets is not None and self.file is None:
+							if self.targets is not None:
 								self.fuzz = SimpleFuzz(self.targets,self.input_list[1])
-							elif self.file is not None and self.targets is None:
+							elif self.file is not None:
 								self.fuzz = SimpleFuzz(self.file,self.input_list[1])
 							else:
-								print "[!] You need to specify after fuzz with a argument:"
-								print "[.] tcp (remember to set target) or stdin (remember to set file path with ./)"
+								print "[!] You need to specify fuzz with one of the arguments:"
+								print "[.] or tcp (remember to set target) or stdin (remember to set file path with ./)"
 						except KeyboardInterrupt:
 							pass
 

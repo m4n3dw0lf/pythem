@@ -19,7 +19,7 @@ Now you are ready to rock:<br />
 
 #Features
 ```
-[ PytheM - Penetration Testing Framework v0.3.3 ]
+[ PytheM - Penetration Testing Framework v0.3.4 ]
 
 [*] help:		Print this help message.
 
@@ -49,6 +49,9 @@ parameters:
   examples:
 
    pythem> print gateway
+
+
+[SECTION - NETWORK AND MAN-IN-THE-MIDDLE]
 
 
 [*] scan		Make a tcp/manualport/arp scan.
@@ -109,6 +112,21 @@ arguments:
    pforensic> help
 
 
+[SECTION - EXPLOIT DEVELOPMENT AND REVERSE ENGINERING]
+
+
+[*] xploit		Interactive stdin or tcp exploit development shell
+
+(The stdin should be called after setting file)
+(The tcp should be called after setting target)
+
+  examples:
+
+   pythem> set file ./exec
+   pythem> xploit stdin
+   xploit> help
+
+
 [*] fuzz		Start a local file stdin fuzzer or a tcp fuzzer
 
 (The stdin should be called after setting file)
@@ -125,6 +143,9 @@ arguments:
    pythem> fuzz tcp
 
 
+[SECTION - BRUTE-FORCE]
+
+
 [*] brute-force		Start a brute-force attack.
 
 (Should be called after setting target and wordlist file path)
@@ -139,6 +160,9 @@ arguments:
 
    pythem> brute-force webform
    pythem> brute-force ssh
+
+
+[SECTION - UTILS]
 
 
 [*] geoip		Geolocalizate approximately the location of a IP address.
