@@ -251,7 +251,7 @@ class Processor(object):
 					elif self.input_list[0] == "sniff":
 						from modules.sniffer import Sniffer
 						try:
-							filter = self.input_list[1]
+							filter = self.input_list[1:]
 							self.sniff = Sniffer(self.interface, filter)
 							self.sniff.start()
 						except IndexError:
@@ -275,6 +275,18 @@ class Processor(object):
 							print "[!] Exception caught: {}".format(e)
 							pass
 
+					elif self.input_list[0] == "fuzz":
+						try:
+							from modules.fuzzer import SimpleFuzz
+							if self.targets is not None and self.file is None:
+								self.fuzz = SimpleFuzz(self.targets,self.input_list[1])
+							elif self.file is not None and self.targets is None:
+								self.fuzz = SimpleFuzz(self.file,self.input_list[1])
+							else:
+								print "[!] You need to specify after fuzz with a argument:"
+								print "[.] tcp (remember to set target) or stdin (remember to set file path with ./)"
+						except KeyboardInterrupt:
+							pass
 
 					elif self.command == "cookiedecode":
 						try:

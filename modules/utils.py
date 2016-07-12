@@ -271,6 +271,22 @@ arguments:
    pforensic> help
 
 
+[*] fuzz		Start a local file stdin fuzzer or a tcp fuzzer
+
+(The stdin should be called after setting file)
+(The tcp should be called after setting target)
+
+arguments:
+
+ stdin		| set file before
+ tcp		| set target before
+
+  examples:
+
+   pythem> fuzz stdin
+   pythem> fuzz tcp
+
+
 [*] brute-force		Start a brute-force attack.
 
 (Should be called after setting target and wordlist file path)

@@ -23,7 +23,7 @@ from core.interface import Processor
 import os
 import sys
 
-version = "0.3.2"
+version = "0.3.3"
 Processor = Processor(version)
 
 if os.geteuid() != 0:
