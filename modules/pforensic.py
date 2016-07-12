@@ -37,7 +37,7 @@ class PcapReader(object):
 
 	ARQUIVO - [ {} ]
 
-help:   		Print this help message
+help:   		Print the help message
 clear:			Clean the screen, same as GNU/Linux OS "clear"
 exit/quit:		Terminate the program
 

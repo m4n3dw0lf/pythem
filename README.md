@@ -1,6 +1,6 @@
 # PytheM
 
-PytheM is a python pentesting framework. Same has been developed in the hope that it will be useful and i don't take responsabillity of any misapplication of it. Only for GNU/Linux OS, check wiki to see examples:<br/> https://github.com/m4n3dw0lf/PytheM/wiki<br/> 
+PytheM is a python pentesting framework. It has been developed in the hope that it will be useful and I don't take responsibility for any misapplication of it. Only runs on GNU/Linux OS, check wiki to see examples:<br/> https://github.com/m4n3dw0lf/PytheM/wiki<br/> 
 
 #Installation
 
@@ -21,13 +21,13 @@ Now you are ready to rock:<br />
 ```
 [ PytheM - Penetration Testing Framework v0.3.3 ]
 
-[*] help:		Print this help message.
+[*] help:		Print the help message.
 
 
 [*] exit/quit:		Leave the program.
 
 
-[*] set			Set a variable value.
+[*] set			Set a variable's value.
 
 parameters:
 
@@ -44,7 +44,7 @@ parameters:
    pythem> set interface wlan0   | don't open input to set value
 
 
-[*] print		Print variable value.
+[*] print		Print a variable's value.
 
   examples:
 
@@ -62,7 +62,7 @@ parameters:
    pythem> scan tcp
 
 
-[*] arpspoof		Start or stop a arpspoofing attack.
+[*] arpspoof		Start or stop an arpspoofing attack.
 
 (Optional setting arpmode to select arpspoofing mode should be filled with rep or req) 
 (rep to spoof responses, req to spoof requests)
@@ -79,7 +79,7 @@ arguments:
 
 [*] dnsspoof		Start a dnsspoofing attack.
 
-(Should be called after a arpspoofing attack have been started)
+(Should be called after an arpspoofing attack has been started)
 
   examples:
 
@@ -89,19 +89,19 @@ arguments:
 
 [*] sniff		Start sniffing packets.
 
-(Should be called after setting interface)
+(Should be called after setting an interface)
 
   examples:
 
    pythem> sniff http
 	  or
    pythem> sniff
-   [+] Enter the filter: port 1337 and host 10.0.1.5  | tcpdump like format or http,dns specific filter.
+   [+] Enter the filter: port 1337 and host 10.0.1.5  | tcpdump-like format or http, dns specific filter.
 
 
 [*] pforensic		Start a packet-analyzer
 
-(Should be called after setting interface and file with a .pcap file)
+(Should be called after setting interface and  a file with a .pcap file)
 
   examples:
 
@@ -127,13 +127,13 @@ arguments:
 
 [*] brute-force		Start a brute-force attack.
 
-(Should be called after setting target and wordlist file path)
+(Should be called after setting a target and a wordlist file path)
 
 arguments:
 
  ssh		| ip address as target
  url		| url (with http:// or https://) as target
- webform	| url (with http:// or https://)as target
+ webform	| url (with http:// or https://) as target
 
   examples:
 
@@ -141,10 +141,10 @@ arguments:
    pythem> brute-force ssh
 
 
-[*] geoip		Geolocalizate approximately the location of a IP address.
+[*] geoip		Approximately geolocate the location of an IP address.
 
 
-(Should be called after setting target (Ip address))
+(Should be called after setting target(ip address))
 
   examples:
 
@@ -153,7 +153,7 @@ arguments:
    pythem> geoip 8.8.8.8
 
 
-[*] decode and encode	Decode or encode a string with choosen pattern
+[*] decode and encode	Decode or encode a string with a chosen pattern
 
   examples:
 
@@ -181,9 +181,9 @@ type jarvis-help to see the jarvis help page.
 
    pythem> jarvis	  (Call Jarvis in speech recognition mode)
 
-   pythem> jarvis-help    (Print Jarvis help message)
+   pythem> jarvis-help    (Print the Jarvis help message)
 
-   pythem> jarvis-log     (Check Jarvis log)
+   pythem> jarvis-log     (Check the Jarvis log)
 	  or
    pythem> jarvis-log err
 
@@ -191,7 +191,7 @@ type jarvis-help to see the jarvis help page.
 	  or
    pythem> jarvis-say hello my name is jarvis.
 
-   pythem> jarvis-read 	  (If no file specified, should be called after setting file)
+   pythem> jarvis-read 	  (If no file is specified, should be called after setting file.)
    	  or
    pythem> jarvis-read file.txt
 
