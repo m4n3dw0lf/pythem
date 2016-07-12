@@ -32,8 +32,10 @@ class Geoip(object):
 		try:
 			self.gip = pygeoip.GeoIP(path)
 			self.search()
-		except:
-			print "[!] Probably you forgot to set the target or give a invalid target as argument."
+		except pygeoip.GeoIPError:
+			print "[!] You probably forgot to set the target or give a invalid target as argument."
+        except Exception as e: 
+            print "[!] Exception caught: {}".format(e)
 
 	def search(self):
 		addr = self.target

@@ -70,8 +70,10 @@ packetload [num]:	Display the payload of index selected packet.
 
 				try:
                                 	if self.input_list[0]  == 'packetdisplay':
-                                	        try:self.packets[int(self.input_list[1])].show()
-						except Exception as e: print "[!] Exception caught: {}".format(e)
+                                	        try:
+                                                self.packets[int(self.input_list[1])].show()
+						except Exception as e: 
+                            print "[!] Exception caught: {}".format(e)
 		
 
 					elif self.input_list[0] == 'packetload':
@@ -79,7 +81,8 @@ packetload [num]:	Display the payload of index selected packet.
 							print "[+] Packet {} payload: ".format(self.input_list[1])
 							self.filter_lookup(self.packets[int(self.input_list[1])])
 						
-						except Exception as e: print "[!] Exception caught: {}".format(e)
+						except Exception as e: 
+                            print "[!] Exception caught: {}".format(e)
 	
 					elif self.input_list[0]  == 'exit':
 						break
@@ -92,14 +95,20 @@ packetload [num]:	Display the payload of index selected packet.
 					elif self.input_list[0] == 'ls':
 						os.system('ls')
 					elif self.input_list[0] == 'summary':
-						try:self.packets.summary()
-						except Exception as e: print "[!] Exception caught: {}".format(e)
+						try:
+                            self.packets.summary()
+						except Exception as e: 
+                            print "[!] Exception caught: {}".format(e)
 					elif self.input_list[0] == 'show':
-						try:self.packets.show()
-						except Exception as e: print "[!] Exception caught: {}".format(e)	
+						try:
+                            self.packets.show()
+						except Exception as e: 
+                            print "[!] Exception caught: {}".format(e)	
 					elif self.input_list[0] == 'conversations':
-						try:self.packets.conversations()
-						except Exception as e: print "[!] Exception caught: {}".format(e)
+						try:
+                            self.packets.conversations()
+						except Exception as e: 
+                            print "[!] Exception caught: {}".format(e)
 					else:
 						print "[-] Select a valid option."				
 
