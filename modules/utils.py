@@ -289,7 +289,11 @@ arguments:
   examples:
 
    pythem> set file ./exec
+
    pythem> xploit stdin
+          or
+   pythem> xploit
+
    xploit> help
 
 
