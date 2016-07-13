@@ -25,18 +25,18 @@ import sys
 
 class Geoip(object):
 
-	
-
-	def __init__(self, target,path):
+	def __init__(self, target, path):
 		self.target = target
 		try:
 			self.gip = pygeoip.GeoIP(path)
 			self.search()
-		except:
-			print "[!] Probably you forgot to set the target or give a invalid target as argument."
+		except pygeoip.GeoIPError:
+			print "[!] You probably forgot to set the target or give a invalid target as argument."
+        	except Exception as e: 
+        		print "[!] Exception caught: {}".format(e)
 
 	def search(self):
 		addr = self.target
 		rec = self.gip.record_by_addr(addr)
 		for key,val in rec.items():
-			print "[~] %s: %s" %(key,val)
+			print "[~] %s: %s" %(key, val)

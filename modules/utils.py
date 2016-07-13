@@ -87,7 +87,7 @@ def jarvis_help(version):
 [*] exit |or| quit :	 	Terminate the program.
 
 
-[*] sleep |or| stop |or| wait:  Sleep untill you say "Jarvis"
+[*] sleep |or| stop |or| wait:  Sleep until you say "Jarvis"
 
 
 [*] newspaper |or| news: 	Read the top trending news from reddit.
@@ -97,8 +97,8 @@ def jarvis_help(version):
 
  examples(say):
 
-  say i like donnuts
-  speak my name is jarvis
+  say I like donuts
+  speak my name is Jarvis
 
 
 [*] run [script]:	 	Run .sh script that you place on the scripts folder with chmod +x
@@ -122,7 +122,7 @@ def jarvis_help(version):
   terminal
 
 
-[*] search [term]	 	Ask Jarvis to search term on google.
+[*] search [query]	 	Ask Jarvis to search query via google.
 
  example(say):
 
@@ -183,13 +183,13 @@ def print_help(version):
 
 [ PytheM - Penetration Testing Framework v{} ]
 
-[*] help:		Print this help message.
+[*] help:		Print the help message.
 
 
 [*] exit/quit:		Leave the program.
 
 
-[*] set			Set a variable value.
+[*] set			Set a variable's value.
 
 parameters:
 
@@ -206,7 +206,7 @@ parameters:
    pythem> set interface wlan0   | don't open input to set value
 
 
-[*] print		Print variable value.
+[*] print		Print a variable's value.
 
   examples:
 
@@ -218,7 +218,7 @@ parameters:
 
 [*] scan		Make a tcp/manualport/arp scan.
 
-(Should be called after setting interface and target)
+(Should be called after setting an interface and a target)
 
   examples:
 
@@ -227,7 +227,7 @@ parameters:
    pythem> scan tcp
 
 
-[*] arpspoof		Start or stop a arpspoofing attack.
+[*] arpspoof		Start or stop an arpspoofing attack.
 
 (Optional setting arpmode to select arpspoofing mode should be filled with rep or req) 
 (rep to spoof responses, req to spoof requests)
@@ -244,7 +244,7 @@ arguments:
 
 [*] dnsspoof		Start a dnsspoofing attack.
 
-(Should be called after a arpspoofing attack have been started)
+(Should be called after an arpspoofing attack has been started)
 
   examples:
 
@@ -254,19 +254,19 @@ arguments:
 
 [*] sniff		Start sniffing packets.
 
-(Should be called after setting interface)
+(Should be called after setting an interface)
 
   examples:
 
    pythem> sniff http
 	  or
    pythem> sniff
-   [+] Enter the filter: port 1337 and host 10.0.1.5  | tcpdump like format or http,dns specific filter.
+   [+] Enter the filter: port 1337 and host 10.0.1.5  | tcpdump like format or http, dns specific filter.
 
 
 [*] pforensic		Start a packet-analyzer
 
-(Should be called after setting interface and file with a .pcap file)
+(Should be called after setting an interface and a file with a .pcap file)
 
   examples:
 
@@ -310,13 +310,13 @@ arguments:
 
 [*] brute-force		Start a brute-force attack.
 
-(Should be called after setting target and wordlist file path)
+(Should be called after setting a target and a wordlist file path)
 
 arguments:
 
  ssh		| ip address as target
  url		| url (with http:// or https://) as target
- webform	| url (with http:// or https://)as target
+ webform	| url (with http:// or https://) as target
 
   examples:
 
@@ -327,10 +327,9 @@ arguments:
 [SECTION - UTILS]
 
 
-[*] geoip		Geolocalizate approximately the location of a IP address.
+[*] geoip		Approximately geolocate the location of a IP address.
 
-
-(Should be called after setting target (Ip address))
+(Should be called after setting target(ip address))
 
   examples:
 
@@ -339,7 +338,7 @@ arguments:
    pythem> geoip 8.8.8.8
 
 
-[*] decode and encode	Decode or encode a string with choosen pattern
+[*] decode and encode	Decode or encode a string with a chosen pattern
 
   examples:
 
@@ -368,17 +367,17 @@ type jarvis-help to see the jarvis help page.
 
    pythem> jarvis	  (Call Jarvis in speech recognition mode)
 
-   pythem> jarvis-help    (Print Jarvis help message)
+   pythem> jarvis-help    (Print the Jarvis help message)
 
-   pythem> jarvis-log     (Check Jarvis log)
+   pythem> jarvis-log     (Check the Jarvis log)
 	  or
    pythem> jarvis-log err
 
    pythem> jarvis-say     (Ask Jarvis to say something)
 	  or
-   pythem> jarvis-say hello my name is jarvis.
+   pythem> jarvis-say hello my name is Jarvis.
 
-   pythem> jarvis-read 	  (If no file specified, should be called after setting file)
+   pythem> jarvis-read 	  (If no file is specified, should be called after setting file.)
    	  or
    pythem> jarvis-read file.txt
 

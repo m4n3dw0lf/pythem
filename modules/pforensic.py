@@ -25,7 +25,6 @@ import os
 
 class PcapReader(object):
 
-
 	def __init__(self, file):
 		self.file = file
 		self.packets = rdpcap(file)
@@ -37,7 +36,7 @@ class PcapReader(object):
 
 	ARQUIVO - [ {} ]
 
-[*] help:   			Print this help message
+[*] help:   			Print the help message
 
 [*] clear:			Clean the screen, same as GNU/Linux OS "clear"
 
@@ -53,8 +52,7 @@ class PcapReader(object):
 
 [*] packetload [num]:		Display the payload of index selected packet.
 
-
-""".format(self.file)	
+""".format(self.file)
 
 
 	def filter_lookup(self,p):
@@ -75,19 +73,20 @@ class PcapReader(object):
 				self.argv = self.command.split()
 				self.input_list = [str(a) for a in self.argv]
 
-
 				try:
                                 	if self.input_list[0]  == 'packetdisplay':
-                                	        try:self.packets[int(self.input_list[1])].show()
-						except Exception as e: print "[!] Exception caught: {}".format(e)
-		
+                                	        try:
+                                                	self.packets[int(self.input_list[1])].show()
+						except Exception as e: 
+                            				print "[!] Exception caught: {}".format(e)
 
 					elif self.input_list[0] == 'packetload':
 						try:
 							print "[+] Packet {} payload: ".format(self.input_list[1])
 							self.filter_lookup(self.packets[int(self.input_list[1])])
 						
-						except Exception as e: print "[!] Exception caught: {}".format(e)
+						except Exception as e: 
+                            				print "[!] Exception caught: {}".format(e)
 	
 					elif self.input_list[0]  == 'exit':
 						break
@@ -100,14 +99,20 @@ class PcapReader(object):
 					elif self.input_list[0] == 'ls':
 						os.system('ls')
 					elif self.input_list[0] == 'summary':
-						try:self.packets.summary()
-						except Exception as e: print "[!] Exception caught: {}".format(e)
+						try:
+                            				self.packets.summary()
+						except Exception as e: 
+                            				print "[!] Exception caught: {}".format(e)
 					elif self.input_list[0] == 'show':
-						try:self.packets.show()
-						except Exception as e: print "[!] Exception caught: {}".format(e)	
+						try:
+                            				self.packets.show()
+						except Exception as e: 
+                            				print "[!] Exception caught: {}".format(e)	
 					elif self.input_list[0] == 'conversations':
-						try:self.packets.conversations()
-						except Exception as e: print "[!] Exception caught: {}".format(e)
+						try:
+                            				self.packets.conversations()
+						except Exception as e: 
+                            				print "[!] Exception caught: {}".format(e)
 					else:
 						print "[-] Select a valid option."				
 
