@@ -282,6 +282,10 @@ arguments:
 (The stdin should be called after setting file)
 (The tcp should be called after setting target)
 
+arguments:
+ stdin		| set file before
+ tcp		| set target before
+ 
   examples:
 
    pythem> set file ./exec
