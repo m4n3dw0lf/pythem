@@ -326,7 +326,6 @@ arguments:
 
 [SECTION - UTILS]
 
-
 [*] geoip		Approximately geolocate the location of a IP address.
 
 (Should be called after setting target(ip address))

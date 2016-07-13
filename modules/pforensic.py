@@ -47,7 +47,6 @@ class PcapReader(object):
 
 [*] conversations:		Display pictogram with conversations between hosts from the analyzed file.
 
-
 [*] packetdisplay [num]:	Display the full content of index selected packet.
 
 [*] packetload [num]:		Display the payload of index selected packet.
