@@ -70,9 +70,11 @@ class Processor(object):
 							print "[+] Jarvis log system."
 							print "[.] Error log  - type: err"
 							print "[.] Output log - type: out"
-							jarvislog = raw_input("[+] Select: ")
 							try:
+								jarvislog = raw_input("[+] Select: ")
 								os.system("tail -f log/jarvis{}.txt".format(jarvislog))
+							except KeyboardInterrupt:
+								pass
 							except Exception as e:
 								print "[!] Exception caught: {}".format(e)
 								pass
@@ -91,10 +93,11 @@ class Processor(object):
 							all_msg = " ".join(self.input_list[1:])
 							self.Jarvis.Say(all_msg)
 						except IndexError:
-							message = raw_input("[+] Jarvis speaker: ")
-							self.Jarvis.Say(message)
-						except KeyboardInterrupt:
-							pass
+							try:
+								message = raw_input("[+] Jarvis speaker: ")
+								self.Jarvis.Say(message)
+							except KeyboardInterrupt:
+								pass
 						except Exception as e:
 							print "[!] Exception caught: {}".format(e)
 
@@ -185,8 +188,11 @@ class Processor(object):
 
 
 						except IndexError:
-							print "[*] Select one scan mode, options = tcp/arp/manual"
-							mode = raw_input("[+] Scan mode: ")
+							try:
+								print "[*] Select one scan mode, options = tcp/arp/manual"
+								mode = raw_input("[+] Scan mode: ")
+							except KeyboardInterrupt:
+								pass
 							if self.targets is not None and self.interface is not None:
 								from modules.scanner import Scanner
 								self.scan = Scanner(self.targets, self.interface, mode)
@@ -285,15 +291,30 @@ class Processor(object):
 								self.xploit = Exploit(self.file, self.input_list[1])
 								self.xploit.start()
 							else:
-								print "[!] You need to set or a file or a target to xploit"
+								print "[!] You need to set or a file or a target to xploit."
+						except IndexError:
+							try:
+								print "[*] Select one xploit mode, options = stdin/tcp"
+								mode = raw_input("[+] Exploit mode: ")
+								from modules.exploit import Exploit
+								if self.targets is not None:
+									self.xploit = Exploit(self.targets, mode)
+									self.xploit.start()
+								elif self.file is not None:
+									self.xploit = Exploit(self.file, mode)
+									self.xploit.start()
+								else:
+									print "[!] You need to set or a file or a target to xploit."
+							except KeyboardInterrupt:
+								pass
+                                                except TypeError:
+                                                        print "[!] You probably forgot to set the file"
+                                                        pass
                                                 except KeyboardInterrupt:
                                                         pass
-                                                #except TypeError:
-                                                #        print "[!] You probably forgot to set the file"
-                                                #        pass
-                                                #except Exception as e:
-                                                #        print "[!] Exception caught: {}".format(e)
-                                                #        pass
+                                                except Exception as e:
+                                                        print "[!] Exception caught: {}".format(e)
+                                                        pass
 
 
 					elif self.input_list[0] == "fuzz":
