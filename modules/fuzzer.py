@@ -62,7 +62,7 @@ class SimpleFuzz(object):
 						print "\n[*] Hit enter to continue.\n"
 						continue
 
-					elif ret < 0 and ret > -7:
+					elif ret < 0 and ret >= -7:
 						print "\n[+] Instruction Pointer may be at: {}\n".format(str(len(buf)))
 						break
 					else:
