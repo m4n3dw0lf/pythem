@@ -128,11 +128,16 @@ class SimpleFuzz(object):
 			except KeyboardInterrupt:
 				break
 			except Exception as e:
-				if 'Connection refused' in e:
+				if 'refused' in e:
 					print "[-] Connection refused."
 					time.sleep(4)
+
 				else:
 					try:
-						self.socket.recv(1024)
-					except:
-						print "[+] Crash occured with buffer length: {}".format(str(len(buf)))
+						response = self.socket.recv(1024)
+						print "[*] Response: {}".format(response)
+					except Exception as e:
+						if 'timed out' in e:
+							print "[-] Timed out."
+					print "[+] Crash occured with buffer length: {}".format(str(len(buf)))
+					print "[!] Exception caught: {}".format(e)
