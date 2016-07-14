@@ -61,8 +61,9 @@ class SimpleFuzz(object):
 						print "\n[*] Child program crashed with SIGSEGV\n"
 						print "\n[*] Hit enter to continue.\n"
 						continue
-					elif ret == -4:
-						print "\n[+] Instruction Pointer will be at: {}\n".format(str(len(buf)))
+
+					elif ret > -7:
+						print "\n[+] Instruction Pointer may be at: {}\n".format(str(len(buf)))
 						break
 					else:
 						print "\n[*] Child program exited with code %d\n" % ret

@@ -185,8 +185,6 @@ class Processor(object):
 								self.scan.start()
 							else:
 								print "[!] You probably forgot to set the interface or a valid IP address/range."
-
-
 						except IndexError:
 							try:
 								print "[*] Select one scan mode, options = tcp/arp/manual"
@@ -244,6 +242,7 @@ class Processor(object):
 								self.dnsspoof.start()
 								print "[+] DNS spoofing initialized"
 
+							mode = raw_input("[+] Exploit mode: ")
 							elif self.input_list[1] == "stop":
 								self.dnsspoof.stop()
 								print "[+] DNS spoofing finalized"
@@ -296,15 +295,18 @@ class Processor(object):
 							try:
 								print "[*] Select one xploit mode, options = stdin/tcp"
 								mode = raw_input("[+] Exploit mode: ")
-								from modules.exploit import Exploit
-								if self.targets is not None:
-									self.xploit = Exploit(self.targets, mode)
-									self.xploit.start()
-								elif self.file is not None:
-									self.xploit = Exploit(self.file, mode)
-									self.xploit.start()
+								if mode == "stdin" or mode == "tcp":
+									from modules.exploit import Exploit
+									if self.targets is not None:
+										self.xploit = Exploit(self.targets, mode)
+										self.xploit.start()
+									elif self.file is not None:
+										self.xploit = Exploit(self.file, mode)
+										self.xploit.start()
+									else:
+										print "[!] You need to set or a file or a target to xploit."
 								else:
-									print "[!] You need to set or a file or a target to xploit."
+									print "[!] Select a valid xploit mode, stdin or tcp"
 							except KeyboardInterrupt:
 								pass
                                                 except TypeError:
