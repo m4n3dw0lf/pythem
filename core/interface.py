@@ -318,20 +318,6 @@ class Processor(object):
                                                         print "[!] Exception caught: {}".format(e)
                                                         pass
 
-
-					elif self.input_list[0] == "fuzz":
-						try:
-							from modules.fuzzer import SimpleFuzz
-							if self.targets is not None:
-								self.fuzz = SimpleFuzz(self.targets,self.input_list[1])
-							elif self.file is not None:
-								self.fuzz = SimpleFuzz(self.file,self.input_list[1])
-							else:
-								print "[!] You need to specify fuzz with one of the arguments:"
-								print "[.] or tcp (remember to set target) or stdin (remember to set file path with ./)"
-						except KeyboardInterrupt:
-							pass
-
 					elif self.command == "cookiedecode":
 						try:
 							cookiedecode()
