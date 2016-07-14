@@ -86,15 +86,19 @@ class SimpleFuzz(object):
 		try:
 			self.target = str(IPAddress(self.target))
 		except AddrFormatError as e:
-			print "[-] Select a valid IP Address as target."
-			return
+			try:
+				self.target = socket.gethostbyname(self.target)
+			except Exception as e:
+				print "[-] Select a valid IP Address as target."
+				print "[!] Exception caught: {}".format(e)
+				return
 
 		buf = '\x41'*self.offset
 		print "[+] TCP fuzzing initialized, wait untill crash."
 		while True:
 			try:
 				self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-				self.socket.settimeout(1)
+				self.socket.settimeout(2)
 				self.socket.connect((self.target,self.port))
 				print "[+] Fuzzing with [{}] bytes.".format(len(buf))
 				try:
@@ -105,11 +109,9 @@ class SimpleFuzz(object):
 						response = self.socket.recv(1024)
 						print "[*] Response: {}".format(response)
 						self.socket.close()
-						time.sleep(1)
 						buf += '\x41'*self.offset
 					except:
 						self.socket.close()
-						time.sleep(1)
 						buf += '\x41'*self.offset
 				except:
 					self.socket.send(buf)
@@ -117,12 +119,10 @@ class SimpleFuzz(object):
 						response = self.socket.recv(1024)
 						print "[*] Response: {}".format(response)
 						self.socket.close()
-						time.sleep(1)
 						buf += '\x41'*self.offset
 
 					except:
 						self.socket.close()
-						time.sleep(1)
 						buf += '\x41'*self.offset
 
 			except KeyboardInterrupt:
@@ -130,7 +130,7 @@ class SimpleFuzz(object):
 			except Exception as e:
 				if 'Connection refused' in e:
 					print "[-] Connection refused."
-					time.sleep(5)
+					time.sleep(4)
 				else:
 					try:
 						self.socket.recv(1024)
