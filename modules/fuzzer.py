@@ -45,7 +45,7 @@ class SimpleFuzz(object):
 		buf = ''
 		while True:
 			try:
-				first = 0
+				first = True
 				buf += '\x41'
 				resource.setrlimit(resource.RLIMIT_STACK, (-1, -1))
 				resource.setrlimit(resource.RLIMIT_CORE, (-1, -1))
@@ -61,18 +61,12 @@ class SimpleFuzz(object):
 					if ret == -4:
 						print "\n[+] Instruction Pointer will be at: {}\n".format(str(len(buf)))
 						break
-					elif ret < 0 and ret >= -11:
-						if first == 0:
-							first += 1
-							print "\n[+] Instruction Pointer may be at: {}\n".format(str(len(buf)))
-						print "\n[*] Child program crashed with SIGSEGV\n"
+					elif ret == -11:
+						print "\n[*] Child program crashed with SIGSEGV code: %d\n" % ret
 						print "\n[*] Hit enter to continue.\n"
 						continue
-					elif ret  == -4:
-						print "\n[+] Instruction Pointer will be at: {}\n".format(str(len(buf)))
-						break
 					else:
-						print "\n[*] Child program exited with code %d\n" % ret
+						print "\n[*] Child program exited with code: %d\n" % ret
 						print "\n[*] Hit enter to continue.\n"
 						continue
 
