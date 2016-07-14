@@ -62,7 +62,7 @@ class SimpleFuzz(object):
 						print "\n[+] Instruction Pointer will be at: {}\n".format(str(len(buf)))
 						break
 					elif ret == -7:
-						print "\n[+] Instruction Pointer may be at: {}\n".format(str(len(buf)))
+						print "\n[+] Instruction Pointer may be near: {}\n".format(str(len(buf)))
 						print "[*] Child program crashed with code: %d\n" % ret
 						continue
 					elif ret == -11:
