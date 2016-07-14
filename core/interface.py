@@ -242,7 +242,6 @@ class Processor(object):
 								self.dnsspoof.start()
 								print "[+] DNS spoofing initialized"
 
-							mode = raw_input("[+] Exploit mode: ")
 							elif self.input_list[1] == "stop":
 								self.dnsspoof.stop()
 								print "[+] DNS spoofing finalized"
@@ -283,13 +282,14 @@ class Processor(object):
 					elif self.input_list[0] == "xploit":
 						try:
 							from modules.exploit import Exploit
-							if self.targets is not None:
+							if self.targets is not None and self.input_list[1] == "tcp":
 								self.xploit = Exploit(self.targets, self.input_list[1])
 								self.xploit.start()
-							elif self.file is not None:
+							elif self.file is not None and self.input_list[1] == "stdin":
 								self.xploit = Exploit(self.file, self.input_list[1])
 								self.xploit.start()
 							else:
+								print "[!] You need to set or stdin or tcp as argument."
 								print "[!] You need to set or a file or a target to xploit."
 						except IndexError:
 							try:
