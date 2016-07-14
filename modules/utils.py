@@ -256,6 +256,11 @@ arguments:
 
 (Should be called after setting an interface)
 
+  sniff custom filters:
+
+    - http
+    - dns
+
   examples:
 
    pythem> sniff http
@@ -271,6 +276,7 @@ arguments:
   examples:
 
    pythem> pforensic
+
    pforensic> help
 
 
@@ -288,11 +294,14 @@ arguments:
 
   examples:
 
+
    pythem> set file ./exec
 
    pythem> xploit stdin
           or
    pythem> xploit
+   [*] Select one xploit mode, options = stdin/tcp
+   [+] Exploit mode:
 
    xploit> help
 
