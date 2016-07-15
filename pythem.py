@@ -22,6 +22,8 @@
 from core.interface import Processor
 import os
 import sys
+import readline
+readline.parse_and_bind('tab:complete')
 
 version = "0.3.5"
 Processor = Processor(version)
