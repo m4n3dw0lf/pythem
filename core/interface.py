@@ -257,7 +257,7 @@ class Processor(object):
 					elif self.input_list[0] == "sniff":
 						from modules.sniffer import Sniffer
 						try:
-							filter = self.input_list[1:]
+							filter = " ".join(self.input_list[1:])
 							self.sniff = Sniffer(self.interface, filter)
 							self.sniff.start()
 						except IndexError:
