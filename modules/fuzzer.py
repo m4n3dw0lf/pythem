@@ -52,7 +52,7 @@ class SimpleFuzz(object):
 				resource.setrlimit(resource.RLIMIT_CORE, (-1, -1))
 				P = Popen(self.target, stdin=PIPE)
 				print "[*] Sending buffer with lenght: "+str(len(buf))
-				P.stdin.write(buf)
+				P.stdin.write(buf+'\n')
 				line = sys.stdin.readline()
 				P.poll()
 				ret = P.returncode
