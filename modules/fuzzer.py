@@ -139,5 +139,6 @@ class SimpleFuzz(object):
 					except Exception as e:
 						if 'timed out' in e:
 							print "[-] Timed out."
+							time.sleep(2)
 					print "[+] Crash occured with buffer length: {}".format(str(len(buf)))
 					print "[!] Exception caught: {}".format(e)
