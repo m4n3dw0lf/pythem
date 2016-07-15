@@ -17,6 +17,7 @@ PytheM is a python penetration testing framework. It has been developed in the h
 # Exploit Development with PytheM
 
 - [Exploit Development 1: Overwriting Instruction Pointer](https://github.com/m4n3dw0lf/PytheM/wiki/Exploit-development#exploit-development-1-overwriting-instruction-pointer)
+- [Exploit Development 2: Ret2libc](https://github.com/m4n3dw0lf/PytheM/wiki/Exploit-development#exploit-development-2-ret2libc)
 
 # Commands Reference
 
