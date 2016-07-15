@@ -22,6 +22,7 @@
 from scapy.all import *
 import sys
 import os
+import termcolor
 
 class PcapReader(object):
 
@@ -68,7 +69,8 @@ class PcapReader(object):
 	def start(self):
 		while True:
 			try:
-				self.command = raw_input("pforensic> ")
+				console = termcolor.colored("pforensic>","yellow", attrs=["bold"])
+				self.command = raw_input("{} ".format(console))
 				self.argv = self.command.split()
 				self.input_list = [str(a) for a in self.argv]
 

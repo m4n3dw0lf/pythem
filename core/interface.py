@@ -25,6 +25,7 @@ from scapy.all import *
 from modules.utils import *
 from jarvis import Jarvis
 import os
+import termcolor
 
 class Processor(object):
 
@@ -41,7 +42,8 @@ class Processor(object):
 	def start(self):
 		try:
 			while 1:
-				self.command = raw_input("pythem> ")
+				console = termcolor.colored("pythem>","red", attrs=["bold"])
+				self.command = raw_input("{} ".format(console))
 				self.argv = self.command.split()
 				self.input_list = [str(a) for a in self.argv]
 				try:
