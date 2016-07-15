@@ -128,7 +128,7 @@ class SimpleFuzz(object):
 			except KeyboardInterrupt:
 				break
 			except Exception as e:
-				if 'refused' in e:
+				if 'Connection refused' in e:
 					print "[-] Connection refused."
 					time.sleep(4)
 
