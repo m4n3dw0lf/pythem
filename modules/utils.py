@@ -26,7 +26,7 @@ import fcntl
 import struct
 import urllib
 import base64
-
+import termcolor
 
 
 def decode(base):
@@ -80,306 +80,333 @@ def module_check(module):
 		print "[-] Terminated"
 		sys.exit(1)
 
+def blue(message):
+	blue_message = termcolor.colored(str(message),"blue", attrs=["bold"])
+	return blue_message
+
+def red(message):
+	red_message = termcolor.colored(str(message), "red", attrs=["bold"])
+	return red_message
+
+def yellow(message):
+	yellow_message = termcolor.colored(str(message), "yellow", attrs=["bold"])
+	return yellow_message
+
+def green(message):
+	green_message = termcolor.colored(str(message), "green", attrs=["bold"])
+	return green_message
+
+def grey(message):
+	grey_message = termcolor.colored(str(message), "grey", attrs=["bold"])
+	return grey_message
+
 def jarvis_help(version):
-	print """\n
-[ Jarvis - Personal Assistence - v{} ]
+	print
+	print blue("[ Jarvis - Personal Assistence - v{} ]".format(version))
+	print
+	print
+	print blue("[*] exit |or| quit : 		Terminate the program.")
+	print
+	print
+	print blue("[*] sleep |or| stop |or| wait:  	Sleep until you say 'Jarvis'.")
+	print
+	print
+	print blue("[*] newspaper |or| news: 		Read the top trending news from reddit.")
+	print
+	print
+	print blue("[*] say |or| speak [message]:     Ask Jarvis to say something.")
+	print
+	print green(" examples(say):")
+	print
+  	print green("  say I like donuts")
+  	print green("  speak my name is Jarvis")
+	print
+	print
+	print blue("[*] run [script]:	 		Run .sh script that you place on the scripts folder with chmod +x")
+	print
+	print green(" example(say):")
+	print
+	print green("  run firewall		 	| Place a firewall.sh on the scripts folder and give execution privilege first.")
+	print
+	print
+	print blue("[*] browser:		 	Ask Jarvis to start your default browser.")
+	print
+ 	print green(" example(say):")
+	print
+  	print green("  browser")
+	print
+	print
+	print blue("[*] terminal:		 	Ask Jarvis to open a gnome-terminal.")
+	print
+ 	print green(" example(say):")
+	print
+  	print green("  terminal")
+	print
+	print
+	print blue("[*] search [query]	 	Ask Jarvis to search query via google.")
+	print
+	print green(" example(say):")
+	print
+	print green("  search python programming.")
+	print
+	print
+ 	print blue("[*] input [keystroke]:   		Send a command to the Arduino Leonardo without entering editor mode.")
+	print
+        print red("          * ARDUINO LEONARDO REQUIRED *")
+	print
+	print yellow("voice commands: (Same as EDITOR MODE )")
+	print
+	print
+	print blue("[*] editor: 			Start the editor mode.")
+	print
+	print red("          * ARDUINO LEONARDO REQUIRED *")
+	print
+	print red("               [EDITOR MODE]")
+	print
+	print yellow("voice commands: (anything else will be typed)")
+	print
+	print green(" forward   = tab")
+ 	print green(" back      = (shift+tab)")
+ 	print green(" up        = up arrow")
+	print green(" down      = down arrow")
+	print green(" right     = right arrow")
+	print green(" left      = left arrow")
+	print green(" super     = super/windows")
+	print green(" slash     = slash(/)")
+	print green(" backspace = backspace(erase character)")
+	print green(" erase	  = press backspace 10 times")
+	print green(" space     = space(spacebar)")
+	print green(" enter     = enter(return)")
+	print green(" close	  = close(alt+f4)")
+	print green(" escape    = escape(esc)")
+	print green(" exit	  = leaves editor mode")
+	print
+	print
+
+
+def banner(version):
+	banner = """\n
+
+              ---_ ...... _/_ -
+             /  .      ./ .'*  '
+             |''         /_|-'  '.
+            /                     )
+          _/                  >   '
+        /   .   .       _.-" /  .'
+        \           __/"     /.'
+          \ '--  .-" /     / /'
+           \|  \ | /     / /
+                \:     / /
+             `\/     / /
+              \__`\/ /
+                  \_|
+
+
 
-[*] exit |or| quit :	 	Terminate the program.
-
-
-[*] sleep |or| stop |or| wait:  Sleep until you say "Jarvis"
-
-
-[*] newspaper |or| news: 	Read the top trending news from reddit.
-
-
-[*] say |or| speak [message]:   Ask Jarvis to say something.
-
- examples(say):
-
-  say I like donuts
-  speak my name is Jarvis
-
-
-[*] run [script]:	 	Run .sh script that you place on the scripts folder with chmod +x
-
- example(say):
-
-  run firewall		 	| Place a firewall.sh on the scripts folder and give execution privilege first
-
-
-[*] browser:		 	Ask Jarvis to start your default browser.
-
- example(say):
-
-  browser
-
-
-[*] terminal:		 	Ask Jarvis to open a gnome-terminal.
-
- example(say):
-
-  terminal
-
-
-[*] search [query]	 	Ask Jarvis to search query via google.
-
- example(say):
-
-  search python programming.
-
- 
-[*] input [keystroke]:   	Send a command to the Arduino Leonardo without entering editor mode
-
-        * ARDUINO LEONARDO REQUIRED *
-
-voice commands: (Same as EDITOR MODE )
-
-
-[*] editor: 			Start the editor mode.
-
-	* ARDUINO LEONARDO REQUIRED *
-
-	[EDITOR MODE]
-
-voice commands: (anything else will be typed)
-
- forward   = tab
- back      = (shift+tab)
- up        = up arrow
- down      = down arrow
- right     = right arrow
- left      = left arrow
- super     = super/windows
- slash     = slash(/)
- backspace = backspace(erase character)
- erase	   = press backspace 10 times
- space     = space(spacebar)
- enter     = enter(return)
- close	   = close(alt+f4)
- escape    = escape(esc)
-
- exit	   = leaves editor mode\n""".format(version)
-
-
-def print_help(version):
-	print """\n
-
-           ---_ ...... _/_ -
-          /  .      ./ .'*  '
-          |''         /_|-'  '.
-         /                     )
-       _/                  >   '
-     /   .   .       _.-" /  .'
-     \           __/"     /.'
-       \ '--  .-" /     / /'
-        \|  \ | /     / /
-             \:     / /
-          `\/     / /
-           \__`\/ /
-               \_|
-
-
-
-[ PytheM - Penetration Testing Framework v{} ]
-
-[*] help:		Print the help message.
-
-
-[*] exit/quit:		Leave the program.
-
-
-[*] set			Set a variable's value.
-
-parameters:
-
- - interface
- - gateway
- - target
- - file
- - arpmode
-
-  examples:
-
-   pythem> set interface         | open input to set
-	  or
-   pythem> set interface wlan0   | don't open input to set value
-
-
-[*] print		Print a variable's value.
-
-  examples:
-
-   pythem> print gateway
-
-
-[SECTION - NETWORK AND MAN-IN-THE-MIDDLE]
-
-
-[*] scan		Make a tcp/manualport/arp scan.
-
-(Should be called after setting an interface and a target)
-
-  examples:
-
-   pythem> scan
-	  or
-   pythem> scan tcp
-
-
-[*] arpspoof		Start or stop an arpspoofing attack.
-
-(Optional setting arpmode to select arpspoofing mode should be filled with rep or req) 
-(rep to spoof responses, req to spoof requests)
-
-arguments:
-
- start
- stop
-
-  examples:
-   arpspoof start
-   arpspoof stop
-
-
-[*] dnsspoof		Start a dnsspoofing attack.
-
-(Should be called after an arpspoofing attack has been started)
-
-  examples:
-
-   pythem> dnsspoof start
-   pythem> dnsspoof stop
-
-
-[*] sniff		Start sniffing packets.
-
-(Should be called after setting an interface)
-
-  sniff custom filters:
-
-    - http
-    - dns
-
-  examples:
-
-   pythem> sniff http
-	  or
-   pythem> sniff
-   [+] Enter the filter: port 1337 and host 10.0.1.5  | tcpdump like format or http, dns specific filter.
-
-
-[*] pforensic		Start a packet-analyzer
-
-(Should be called after setting an interface and a file with a .pcap file)
-
-  examples:
-
-   pythem> pforensic
-
-   pforensic> help
-
-
-[SECTION - EXPLOIT DEVELOPMENT AND REVERSE ENGINERING]
-
-
-[*] xploit		Interactive stdin or tcp exploit development shell
-
-(The stdin should be called after setting file)
-(The tcp should be called after setting target)
-
-arguments:
- stdin		| set file before
- tcp		| set target before
-
-  examples:
-
-
-   pythem> set file ./exec
-
-   pythem> xploit stdin
-          or
-   pythem> xploit
-   [*] Select one xploit mode, options = stdin/tcp
-   [+] Exploit mode:
-
-   xploit> help
-
-
-[SECTION - BRUTE-FORCE]
-
-
-[*] brute-force		Start a brute-force attack.
-
-(Should be called after setting a target and a wordlist file path)
-
-arguments:
-
- ssh		| ip address as target
- url		| url (with http:// or https://) as target
- webform	| url (with http:// or https://) as target
-
-  examples:
-
-   pythem> brute-force webform
-   pythem> brute-force ssh
-
-
-[SECTION - UTILS]
-
-[*] geoip		Approximately geolocate the location of a IP address.
-
-(Should be called after setting target(ip address))
-
-  examples:
-
-   pythem> geoip
-	  or
-   pythem> geoip 8.8.8.8
-
-
-[*] decode and encode	Decode or encode a string with a chosen pattern
-
-  examples:
-
-   pythem> decode base64
-   pythem> encode ascii
-
-
-[*] cookiedecode	Decode a base64 url encoded cookie value.
-
-  example:
-
-   pythem> cookiedecode
-
-
-* Anything else will be executed in the terminal like cd, ls, nano, cat, etc. *
-
-(+) Call the voice-controlled assistant Jarvis
-
-link: https://github.com/m4n3dw0lf/Jarvis
-
-[*] jarvis
-
-type jarvis-help to see the jarvis help page.
-
-  examples:
-
-   pythem> jarvis	  (Call Jarvis in speech recognition mode)
-
-   pythem> jarvis-help    (Print the Jarvis help message)
-
-   pythem> jarvis-log     (Check the Jarvis log)
-	  or
-   pythem> jarvis-log err
-
-   pythem> jarvis-say     (Ask Jarvis to say something)
-	  or
-   pythem> jarvis-say hello my name is Jarvis.
-
-   pythem> jarvis-read 	  (If no file is specified, should be called after setting file.)
-   	  or
-   pythem> jarvis-read file.txt
-
-by: m4n3dw0lf
+[ PytheM - Penetration Testing Framework v{} ]\n
 """.format(version)
+	return blue(banner)
+
+
+def print_help():
+	print
+	print blue("[*] help:			Print the help message.")
+	print
+	print
+	print blue("[*] exit/quit:		Leave the program.")
+	print
+	print
+	print blue("[*] set			Set a variable's value.")
+	print
+	print red(" parameters:")
+	print
+ 	print yellow("  - interface")
+ 	print yellow("  - gateway")
+ 	print yellow("  - target")
+ 	print yellow("  - file")
+ 	print yellow("  - arpmode")
+	print
+	print green(" examples:")
+	print
+   	print red("  pythem> ") + "set interface         | open input to set"
+	print "     or"
+   	print red("  pythem> ") + "set interface wlan0   | don't open input to set value."
+	print
+	print
+	print blue("[*] print		Print a variable's value.")
+	print
+  	print green(" examples:")
+	print
+	print red("  pythem> ") + "print gateway"
+	print
+	print
+	print grey("[SECTION - NETWORK AND MAN-IN-THE-MIDDLE]")
+	print
+	print
+	print blue("[*] scan		Make a tcp/manualport/arp scan.")
+	print
+	print "Should be called after setting an interface and a target"
+	print
+	print green(" examples:")
+	print red("  pythem> ") + "scan"
+	print "     or"
+   	print red("  pythem> ") + "scan tcp"
+	print
+	print
+	print blue("[*] arpspoof		Start or stop an arpspoofing attack.")
+	print
+	print "Optional setting arpmode to select arpspoofing mode should be filled with rep or req"
+	print "rep to spoof responses, req to spoof requests"
+	print
+	print red(" arguments:")
+	print
+	print yellow("  start")
+ 	print yellow("  stop")
+	print
+  	print green(" examples:")
+	print
+   	print red("  pythem> ") + "arpspoof start"
+   	print red("  pythem> ") + "arspoof stop"
+	print
+	print
+	print blue("[*] dnsspoof		Start a dnsspoofing attack.")
+	print
+	print "Should be called after an arpspoofing attack has been started"
+	print
+	print green(" examples:")
+	print
+   	print red("  pythem> ")+ "dnsspoof start"
+   	print red("  pythem> ") + "dnsspoof stop"
+	print
+	print
+	print blue("[*] sniff		Start sniffing packets.")
+	print
+	print "Should be called after setting an interface"
+	print
+  	print red(" sniff custom filters:")
+	print
+    	print yellow("  - http")
+    	print yellow("  - dns")
+	print
+  	print green(" examples:")
+	print
+   	print red("  pythem> ")+ 'sniff http'
+	print "     or"
+   	print red("  pythem> ")+ 'sniff'
+   	print "  [+] Enter the filter: port 1337 and host 10.0.1.5  | tcpdump like format or http, dns specific filter."
+	print
+	print
+	print blue("[*] pforensic		Start a packet-analyzer")
+	print
+	print "Should be called after setting an interface and a file with a .pcap file"
+	print
+  	print green(" examples:")
+	print
+   	print red("  pythem> ") + 'pforensic'
+	print
+   	print yellow("  pforensic> ") + 'help'
+	print
+	print
+	print grey("[SECTION - EXPLOIT DEVELOPMENT AND REVERSE ENGINERING]")
+	print
+	print
+	print blue("[*] xploit		Interactive stdin or tcp exploit development shell.")
+	print
+	print "The stdin should be called after setting file"
+	print "The tcp should be called after setting target"
+	print
+	print red(" arguments:")
+	print yellow("  stdin		| set file before")
+ 	print yellow("  tcp		| set target before")
+	print
+  	print green(" examples:")
+	print
+   	print red("  pythem> ") + "set file ./exec"
+	print
+   	print red("  pythem> ") + "xploit stdin"
+        print "     or"
+   	print red("  pythem> ") + "xploit"
+   	print "  [*] Select one xploit mode, options = stdin/tcp"
+   	print "  [+] Exploit mode: stdin"
+	print blue("  xploit> ") + "help"
+	print
+	print
+	print grey("[SECTION - BRUTE-FORCE]")
+	print
+	print
+	print blue("[*] brute-force		Start a brute-force attack.")
+	print
+	print "Should be called after setting a target and a wordlist file path"
+	print
+	print red(" arguments:")
+	print
+	print yellow("  ssh		| ip address as target")
+	print yellow("  url		| url (with http:// or https://) as target")
+ 	print yellow("  webform		| url (with http:// or https://) as target")
+	print
+  	print green(" examples:")
+	print
+   	print red("  pythem> ") + "brute-force webform"
+   	print red("  pythem> ") + "brute-force ssh"
+	print
+	print
+	print grey("[SECTION - UTILS]")
+	print
+	print blue("[*] geoip		Approximately geolocate the location of a IP address.")
+	print
+	print "Should be called after setting target(ip address)"
+	print
+	print green(" examples:")
+	print
+   	print red("  pythem> ") + "geoip"
+	print "     or"
+   	print red("  pythem> ") + "geoip 8.8.8.8"
+	print
+	print
+	print blue("[*] decode and encode	Decode or encode a string with a chosen pattern.")
+	print
+	print green(" examples:")
+	print
+	print red("  pythem> ") + "decode base64"
+   	print red("  pythem> ") + "encode ascii"
+	print
+	print
+	print blue("[*] cookiedecode	Decode a base64 url encoded cookie value.")
+	print
+	print green(" example:")
+	print
+	print red("  pythem> ") + "cookiedecode"
+	print
+	print
+	print yellow("* Anything else will be executed in the terminal like cd, ls, nano, cat, etc. *")
+	print
+	print
+	print grey("(+) Call the voice-controlled assistant Jarvis")
+	print
+	print green("link:") + blue(" https://github.com/m4n3dw0lf/Jarvis")
+	print
+	print
+	print blue("[*] jarvis")
+	print
+	print red("type jarvis-help to see the jarvis help page.")
+	print
+	print green(" examples:")
+	print
+	print red("  pythem> ")+ "jarvis	 (Call Jarvis in speech recognition mode)"
+	print
+   	print red("  pythem> ")+ "jarvis-help    (Print the Jarvis help message)"
+	print
+   	print red("  pythem> ")+ "jarvis-log     (Check the Jarvis log)"
+	print "     or"
+   	print red("  pythem> ")+ "jarvis-log err"
+	print
+   	print red("  pythem> ") + "jarvis-say    (Ask Jarvis to say something)"
+	print "     or"
+   	print red("  pythem> ") + "jarvis-say hello my name is Jarvis."
+	print
+   	print red("  pythem> ") + "jarvis-read 	 (If no file is specified, should be called after setting file.)"
+   	print "     or"
+   	print red("  pythem> ") + "jarvis-read file.txt"
+	print
+	print red("by: ") + blue("m4n3dw0lf")
+

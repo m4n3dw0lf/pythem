@@ -23,16 +23,18 @@ from core.interface import Processor
 import os
 import sys
 import readline
+from modules.utils import banner
 readline.parse_and_bind('tab:complete')
 
 version = "0.3.5"
-Processor = Processor(version)
+Processor = Processor()
 
 if os.geteuid() != 0:
 	sys.exit("[-] Only for roots kid!")
 
 if __name__ == '__main__':
 	try:
+		print banner(version)
 		Processor.start()
 	except Exception as e:
 		print "Exception caught: {}".format(e)
