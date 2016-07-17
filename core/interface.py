@@ -29,8 +29,7 @@ import termcolor
 
 class Processor(object):
 
-	def __init__(self, version):
-		self.version = version
+	def __init__(self):
 		self.arpmode = "rep"
 		self.Jarvis = Jarvis()
 		self.targets = None
@@ -50,7 +49,7 @@ class Processor(object):
 
 
 					if self.command == "help":
-						print_help(self.version)
+						print_help()
 
 					elif self.command == "jarvis-help":
 						jarvis_help(self.Jarvis.version)

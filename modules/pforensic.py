@@ -23,36 +23,41 @@ from scapy.all import *
 import sys
 import os
 import termcolor
+from utils import color
 
 class PcapReader(object):
 
 	def __init__(self, file):
 		self.file = file
 		self.packets = rdpcap(file)
+
 	def printHelp(self):
-		print """\n
-
-
-		[ PytheM - Leitor Forense de arquivos pcap ]
-
-	ARQUIVO - [ {} ]
-
-[*] help:   			Print the help message
-
-[*] clear:			Clean the screen, same as GNU/Linux OS "clear"
-
-[*] exit/quit:			Return to pythem
-
-
-[*] show:			Display all the packets and their index numbers.
-
-[*] conversations:		Display pictogram with conversations between hosts from the analyzed file.
-
-[*] packetdisplay [num]:	Display the full content of index selected packet.
-
-[*] packetload [num]:		Display the payload of index selected packet.
-
-""".format(self.file)
+		print
+		print color("	[ PytheM - Leitor Forense de arquivos pcap ]","grey")
+		print
+		print color("	ARQUIVO - [ {} ]".format(self.file),"red")
+		print
+		print
+		print color("[*] help:   			Print the help message","blue")
+		print
+		print
+		print color("[*] clear:			Clean the screen, same as GNU/Linux OS 'clear'","blue")
+		print
+		print
+		print color("[*] exit/quit:			Return to pythem","blue")
+		print
+		print
+		print color("[*] show:			Display all the packets and their index numbers.","blue")
+		print
+		print
+		print color("[*] conversations:		Display pictogram with conversations between hosts from the analyzed file.","blue")
+		print
+		print
+		print color("[*] packetdisplay [num]:	Display the full content of index selected packet.","blue")
+		print
+		print
+		print color("[*] packetload [num]:		Display the payload of index selected packet.","blue")
+		print
 
 
 	def filter_lookup(self,p):

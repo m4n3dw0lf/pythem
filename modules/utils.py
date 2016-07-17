@@ -80,106 +80,90 @@ def module_check(module):
 		print "[-] Terminated"
 		sys.exit(1)
 
-def blue(message):
-	blue_message = termcolor.colored(str(message),"blue", attrs=["bold"])
-	return blue_message
-
-def red(message):
-	red_message = termcolor.colored(str(message), "red", attrs=["bold"])
-	return red_message
-
-def yellow(message):
-	yellow_message = termcolor.colored(str(message), "yellow", attrs=["bold"])
-	return yellow_message
-
-def green(message):
-	green_message = termcolor.colored(str(message), "green", attrs=["bold"])
-	return green_message
-
-def grey(message):
-	grey_message = termcolor.colored(str(message), "grey", attrs=["bold"])
-	return grey_message
+def color(message,color):
+	msg = termcolor.colored(str(message), str(color), attrs=["bold"])
+	return msg
 
 def jarvis_help(version):
 	print
-	print blue("[ Jarvis - Personal Assistence - v{} ]".format(version))
+	print color("[ Jarvis - Personal Assistence - v{} ]".format(version),"blue")
 	print
 	print
-	print blue("[*] exit |or| quit : 		Terminate the program.")
+	print color("[*] exit |or| quit : 		Terminate the program.","blue")
 	print
 	print
-	print blue("[*] sleep |or| stop |or| wait:  	Sleep until you say 'Jarvis'.")
+	print color("[*] sleep |or| stop |or| wait:  	Sleep until you say 'Jarvis'.","blue")
 	print
 	print
-	print blue("[*] newspaper |or| news: 		Read the top trending news from reddit.")
+	print color("[*] newspaper |or| news: 		Read the top trending news from reddit.","blue")
 	print
 	print
-	print blue("[*] say |or| speak [message]:     Ask Jarvis to say something.")
+	print color("[*] say |or| speak [message]:     Ask Jarvis to say something.","blue")
 	print
-	print green(" examples(say):")
+	print color(" examples(say):","green")
 	print
-  	print green("  say I like donuts")
-  	print green("  speak my name is Jarvis")
-	print
-	print
-	print blue("[*] run [script]:	 		Run .sh script that you place on the scripts folder with chmod +x")
-	print
-	print green(" example(say):")
-	print
-	print green("  run firewall		 	| Place a firewall.sh on the scripts folder and give execution privilege first.")
+  	print color("  say I like donuts","green")
+  	print color("  speak my name is Jarvis","green")
 	print
 	print
-	print blue("[*] browser:		 	Ask Jarvis to start your default browser.")
+	print color("[*] run [script]:	 		Run .sh script that you place on the scripts folder with chmod +x","blue")
 	print
- 	print green(" example(say):")
+	print color(" example(say):","green")
 	print
-  	print green("  browser")
-	print
-	print
-	print blue("[*] terminal:		 	Ask Jarvis to open a gnome-terminal.")
-	print
- 	print green(" example(say):")
-	print
-  	print green("  terminal")
+	print color("  run firewall		 	| Place a firewall.sh on the scripts folder and give execution privilege first.","green")
 	print
 	print
-	print blue("[*] search [query]	 	Ask Jarvis to search query via google.")
+	print color("[*] browser:		 	Ask Jarvis to start your default browser.","blue")
 	print
-	print green(" example(say):")
+ 	print color(" example(say):","green")
 	print
-	print green("  search python programming.")
-	print
-	print
- 	print blue("[*] input [keystroke]:   		Send a command to the Arduino Leonardo without entering editor mode.")
-	print
-        print red("          * ARDUINO LEONARDO REQUIRED *")
-	print
-	print yellow("voice commands: (Same as EDITOR MODE )")
+  	print color("  browser","green")
 	print
 	print
-	print blue("[*] editor: 			Start the editor mode.")
+	print color("[*] terminal:		 	Ask Jarvis to open a gnome-terminal.","blue")
 	print
-	print red("          * ARDUINO LEONARDO REQUIRED *")
+ 	print color(" example(say):","green")
 	print
-	print red("               [EDITOR MODE]")
+  	print color("  terminal","green")
 	print
-	print yellow("voice commands: (anything else will be typed)")
 	print
-	print green(" forward   = tab")
- 	print green(" back      = (shift+tab)")
- 	print green(" up        = up arrow")
-	print green(" down      = down arrow")
-	print green(" right     = right arrow")
-	print green(" left      = left arrow")
-	print green(" super     = super/windows")
-	print green(" slash     = slash(/)")
-	print green(" backspace = backspace(erase character)")
-	print green(" erase	  = press backspace 10 times")
-	print green(" space     = space(spacebar)")
-	print green(" enter     = enter(return)")
-	print green(" close	  = close(alt+f4)")
-	print green(" escape    = escape(esc)")
-	print green(" exit	  = leaves editor mode")
+	print color("[*] search [query]	 	Ask Jarvis to search query via google.","blue")
+	print
+	print color(" example(say):","green")
+	print
+	print color("  search python programming.","green")
+	print
+	print
+ 	print color("[*] input [keystroke]:   		Send a command to the Arduino Leonardo without entering editor mode.","blue")
+	print
+        print color("          * ARDUINO LEONARDO REQUIRED *","red")
+	print
+	print color("voice commands: (Same as EDITOR MODE )","yellow")
+	print
+	print
+	print color("[*] editor: 			Start the editor mode.","blue")
+	print
+	print color("          * ARDUINO LEONARDO REQUIRED *","red")
+	print
+	print color("               [EDITOR MODE]","red")
+	print
+	print color("voice commands: (anything else will be typed)","yellow")
+	print
+	print color(" forward   = tab","green")
+ 	print color(" back      = (shift+tab)","green")
+ 	print color(" up        = up arrow")
+	print color(" down      = down arrow")
+	print color(" right     = right arrow")
+	print color(" left      = left arrow")
+	print color(" super     = super/windows")
+	print color(" slash     = slash(/)")
+	print color(" backspace = backspace(erase character)")
+	print color(" erase	  = press backspace 10 times")
+	print color(" space     = space(spacebar)")
+	print color(" enter     = enter(return)")
+	print color(" close	  = close(alt+f4)")
+	print color(" escape    = escape(esc)")
+	print color(" exit	  = leaves editor mode")
 	print
 	print
 
@@ -205,208 +189,208 @@ def banner(version):
 
 [ PytheM - Penetration Testing Framework v{} ]\n
 """.format(version)
-	return blue(banner)
+	return color(banner,"blue")
 
 
 def print_help():
 	print
-	print blue("[*] help:			Print the help message.")
+	print color("[*] help:			Print the help message.","blue")
 	print
 	print
-	print blue("[*] exit/quit:		Leave the program.")
+	print color("[*] exit/quit:		Leave the program.","blue")
 	print
 	print
-	print blue("[*] set			Set a variable's value.")
+	print color("[*] set			Set a variable's value.","blue")
 	print
-	print red(" parameters:")
+	print color(" parameters:","red")
 	print
- 	print yellow("  - interface")
- 	print yellow("  - gateway")
- 	print yellow("  - target")
- 	print yellow("  - file")
- 	print yellow("  - arpmode")
+ 	print color("  - interface","yellow")
+ 	print color("  - gateway","yellow")
+ 	print color("  - target","yellow")
+ 	print color("  - file","yellow")
+ 	print color("  - arpmode","yellow")
 	print
-	print green(" examples:")
+	print color(" examples:","green")
 	print
-   	print red("  pythem> ") + "set interface         | open input to set"
+   	print color("  pythem> ","red") + "set interface         | open input to set"
 	print "     or"
-   	print red("  pythem> ") + "set interface wlan0   | don't open input to set value."
+   	print color("  pythem> ","red") + "set interface wlan0   | don't open input to set value."
 	print
 	print
-	print blue("[*] print		Print a variable's value.")
+	print color("[*] print		Print a variable's value.","blue")
 	print
-  	print green(" examples:")
+  	print color(" examples:","green")
 	print
-	print red("  pythem> ") + "print gateway"
-	print
-	print
-	print grey("[SECTION - NETWORK AND MAN-IN-THE-MIDDLE]")
+	print color("  pythem> ","red") + "print gateway"
 	print
 	print
-	print blue("[*] scan		Make a tcp/manualport/arp scan.")
+	print color("[SECTION - NETWORK AND MAN-IN-THE-MIDDLE]","grey")
+	print
+	print
+	print color("[*] scan		Make a tcp/manualport/arp scan.","blue")
 	print
 	print "Should be called after setting an interface and a target"
 	print
-	print green(" examples:")
-	print red("  pythem> ") + "scan"
+	print color(" examples:","green")
+	print color("  pythem> ","red") + "scan"
 	print "     or"
-   	print red("  pythem> ") + "scan tcp"
+   	print color("  pythem> ","red") + "scan tcp"
 	print
 	print
-	print blue("[*] arpspoof		Start or stop an arpspoofing attack.")
+	print color("[*] arpspoof		Start or stop an arpspoofing attack.","blue")
 	print
 	print "Optional setting arpmode to select arpspoofing mode should be filled with rep or req"
 	print "rep to spoof responses, req to spoof requests"
 	print
-	print red(" arguments:")
+	print color(" arguments:","red")
 	print
-	print yellow("  start")
- 	print yellow("  stop")
+	print color("  start","yellow")
+ 	print color("  stop","yellow")
 	print
-  	print green(" examples:")
+  	print color(" examples:","green")
 	print
-   	print red("  pythem> ") + "arpspoof start"
-   	print red("  pythem> ") + "arspoof stop"
+   	print color("  pythem> ","red") + "arpspoof start"
+   	print color("  pythem> ","red") + "arspoof stop"
 	print
 	print
-	print blue("[*] dnsspoof		Start a dnsspoofing attack.")
+	print color("[*] dnsspoof		Start a dnsspoofing attack.","blue")
 	print
 	print "Should be called after an arpspoofing attack has been started"
 	print
-	print green(" examples:")
+	print color(" examples:","green")
 	print
-   	print red("  pythem> ")+ "dnsspoof start"
-   	print red("  pythem> ") + "dnsspoof stop"
+   	print color("  pythem> ","red")+ "dnsspoof start"
+   	print color("  pythem> ","red") + "dnsspoof stop"
 	print
 	print
-	print blue("[*] sniff		Start sniffing packets.")
+	print color("[*] sniff		Start sniffing packets.","blue")
 	print
 	print "Should be called after setting an interface"
 	print
-  	print red(" sniff custom filters:")
+  	print color(" sniff custom filters:","red")
 	print
-    	print yellow("  - http")
-    	print yellow("  - dns")
+    	print color("  - http","yellow")
+    	print color("  - dns","yellow")
 	print
-  	print green(" examples:")
+  	print color(" examples:","green")
 	print
-   	print red("  pythem> ")+ 'sniff http'
+   	print color("  pythem> ","red")+ 'sniff http'
 	print "     or"
-   	print red("  pythem> ")+ 'sniff'
+   	print color("  pythem> ","red")+ 'sniff'
    	print "  [+] Enter the filter: port 1337 and host 10.0.1.5  | tcpdump like format or http, dns specific filter."
 	print
 	print
-	print blue("[*] pforensic		Start a packet-analyzer")
+	print color("[*] pforensic		Start a packet-analyzer","blue")
 	print
 	print "Should be called after setting an interface and a file with a .pcap file"
 	print
-  	print green(" examples:")
+  	print color(" examples:","green")
 	print
-   	print red("  pythem> ") + 'pforensic'
+   	print color("  pythem> ","red") + 'pforensic'
 	print
-   	print yellow("  pforensic> ") + 'help'
-	print
-	print
-	print grey("[SECTION - EXPLOIT DEVELOPMENT AND REVERSE ENGINERING]")
+   	print color("  pforensic> ","yellow") + 'help'
 	print
 	print
-	print blue("[*] xploit		Interactive stdin or tcp exploit development shell.")
+	print color("[SECTION - EXPLOIT DEVELOPMENT AND REVERSE ENGINERING]","grey")
+	print
+	print
+	print color("[*] xploit		Interactive stdin or tcp exploit development shell.","blue")
 	print
 	print "The stdin should be called after setting file"
 	print "The tcp should be called after setting target"
 	print
-	print red(" arguments:")
-	print yellow("  stdin		| set file before")
- 	print yellow("  tcp		| set target before")
+	print color(" arguments:","red")
+	print color("  stdin		| set file before","yellow")
+ 	print color("  tcp		| set target before","yellow")
 	print
-  	print green(" examples:")
+  	print color(" examples:","green")
 	print
-   	print red("  pythem> ") + "set file ./exec"
+   	print color("  pythem> ","red") + "set file ./exec"
 	print
-   	print red("  pythem> ") + "xploit stdin"
+   	print color("  pythem> ","red") + "xploit stdin"
         print "     or"
-   	print red("  pythem> ") + "xploit"
+   	print color("  pythem> ","red") + "xploit"
    	print "  [*] Select one xploit mode, options = stdin/tcp"
    	print "  [+] Exploit mode: stdin"
-	print blue("  xploit> ") + "help"
+	print color("  xploit> ","blue") + "help"
 	print
 	print
-	print grey("[SECTION - BRUTE-FORCE]")
+	print color("[SECTION - BRUTE-FORCE]","grey")
 	print
 	print
-	print blue("[*] brute-force		Start a brute-force attack.")
+	print color("[*] brute-force		Start a brute-force attack.","blue")
 	print
 	print "Should be called after setting a target and a wordlist file path"
 	print
-	print red(" arguments:")
+	print color(" arguments:","red")
 	print
-	print yellow("  ssh		| ip address as target")
-	print yellow("  url		| url (with http:// or https://) as target")
- 	print yellow("  webform		| url (with http:// or https://) as target")
+	print color("  ssh		| ip address as target","yellow")
+	print color("  url		| url (with http:// or https://) as target","yellow")
+ 	print color("  webform		| url (with http:// or https://) as target","yellow")
 	print
-  	print green(" examples:")
+  	print color(" examples:","green")
 	print
-   	print red("  pythem> ") + "brute-force webform"
-   	print red("  pythem> ") + "brute-force ssh"
+   	print color("  pythem> ","red") + "brute-force webform"
+   	print color("  pythem> ","red") + "brute-force ssh"
 	print
 	print
-	print grey("[SECTION - UTILS]")
+	print color("[SECTION - UTILS]","grey")
 	print
-	print blue("[*] geoip		Approximately geolocate the location of a IP address.")
+	print color("[*] geoip		Approximately geolocate the location of a IP address.","blue")
 	print
 	print "Should be called after setting target(ip address)"
 	print
-	print green(" examples:")
+	print color(" examples:","green")
 	print
-   	print red("  pythem> ") + "geoip"
+   	print color("  pythem> ","red") + "geoip"
 	print "     or"
-   	print red("  pythem> ") + "geoip 8.8.8.8"
+   	print color("  pythem> ","red") + "geoip 8.8.8.8"
 	print
 	print
-	print blue("[*] decode and encode	Decode or encode a string with a chosen pattern.")
+	print color("[*] decode and encode	Decode or encode a string with a chosen pattern.","blue")
 	print
-	print green(" examples:")
+	print color(" examples:","green")
 	print
-	print red("  pythem> ") + "decode base64"
-   	print red("  pythem> ") + "encode ascii"
-	print
-	print
-	print blue("[*] cookiedecode	Decode a base64 url encoded cookie value.")
-	print
-	print green(" example:")
-	print
-	print red("  pythem> ") + "cookiedecode"
+	print color("  pythem> ","red") + "decode base64"
+   	print color("  pythem> ","red") + "encode ascii"
 	print
 	print
-	print yellow("* Anything else will be executed in the terminal like cd, ls, nano, cat, etc. *")
+	print color("[*] cookiedecode	Decode a base64 url encoded cookie value.","blue")
+	print
+	print color(" example:","green")
+	print
+	print color("  pythem> ","red") + "cookiedecode"
 	print
 	print
-	print grey("(+) Call the voice-controlled assistant Jarvis")
-	print
-	print green("link:") + blue(" https://github.com/m4n3dw0lf/Jarvis")
+	print color("* Anything else will be executed in the terminal like cd, ls, nano, cat, etc. *","yellow")
 	print
 	print
-	print blue("[*] jarvis")
+	print color("(+) Call the voice-controlled assistant Jarvis","grey")
 	print
-	print red("type jarvis-help to see the jarvis help page.")
+	print color("link:","green") + color(" https://github.com/m4n3dw0lf/Jarvis","blue")
 	print
-	print green(" examples:")
 	print
-	print red("  pythem> ")+ "jarvis	 (Call Jarvis in speech recognition mode)"
+	print color("[*] jarvis","blue")
 	print
-   	print red("  pythem> ")+ "jarvis-help    (Print the Jarvis help message)"
+	print color("type jarvis-help to see the jarvis help page.","red")
 	print
-   	print red("  pythem> ")+ "jarvis-log     (Check the Jarvis log)"
+	print color(" examples:","green")
+	print
+	print color("  pythem> ","red")+ "jarvis	  "+color("(Call Jarvis in speech recognition mode)","yellow")
+	print
+   	print color("  pythem> ","red")+ "jarvis-help     "+color("(Print the Jarvis help message)","yellow")
+	print
+   	print color("  pythem> ","red")+ "jarvis-log      "+color("(Check the Jarvis log)","yellow")
 	print "     or"
-   	print red("  pythem> ")+ "jarvis-log err"
+   	print color("  pythem> ","red")+ "jarvis-log err"
 	print
-   	print red("  pythem> ") + "jarvis-say    (Ask Jarvis to say something)"
+   	print color("  pythem> ","red") + "jarvis-say     "+color(" (Ask Jarvis to say something)","yellow")
 	print "     or"
-   	print red("  pythem> ") + "jarvis-say hello my name is Jarvis."
+   	print color("  pythem> ","red") + "jarvis-say hello my name is Jarvis."
 	print
-   	print red("  pythem> ") + "jarvis-read 	 (If no file is specified, should be called after setting file.)"
+   	print color("  pythem> ","red") + "jarvis-read 	  "+color("(If no file is specified, should be called after setting file.)","yellow")
    	print "     or"
-   	print red("  pythem> ") + "jarvis-read file.txt"
+   	print color("  pythem> ","red") + "jarvis-read file.txt"
 	print
-	print red("by: ") + blue("m4n3dw0lf")
+	print color("by: ","red") + color("m4n3dw0lf","blue")
 
