@@ -162,6 +162,9 @@ class Processor(object):
 								except KeyboardInterrupt:
 									pass
 
+						else:
+							print "[!] Select a valid variable to set."
+
 
 					elif self.input_list[0] == "print":
 						if self.input_list[1] == "interface":
