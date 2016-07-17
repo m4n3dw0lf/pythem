@@ -165,7 +165,7 @@ def jarvis_help(version):
 	print color(" escape    = escape(esc)")
 	print color(" exit	  = leaves editor mode")
 	print
-	print
+
 
 
 def banner(version):
@@ -393,4 +393,4 @@ def print_help():
    	print color("  pythem> ","red") + "jarvis-read file.txt"
 	print
 	print color("by: ","red") + color("m4n3dw0lf","blue")
-
+	print
