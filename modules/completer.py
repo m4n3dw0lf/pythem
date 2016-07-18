@@ -9,31 +9,12 @@ class Completer:
 		tab = readline.parse_and_bind("tab: complete")
 		if console == "pythem":
 			completer = readline.set_completer(self.pythem)
-		elif console == "xploit":
-			completer = readline.set_completer(self.xploit)
 
 	def suboption(self, text, state):
 		#print text
 		#print state
 		results = [x for x in self.suboptions if x.startswith(text)] + [None]
 		return results[state]
-
-
-	def xploit(self, text, state):
-		#print text
-		#print state
-		if "set" in text and state == 1:
-			self.suboptions = ['addr1','addr2','arch','lenght','shellcode','nops','offset']
-			completer = readline.set_completer(self.suboption)
-		elif "print" in text and state == 1:
-			self.suboptions = ['addr1','addr2','arch','lenght','shellcode','nops','offset']
-			completer = readline.set_completer(self.suboption)
-		elif "search" in text and state == 1:
-			self.suboptions = ['opcode','instructions']
-			completer = readline.set_completer(self.suboption)
-		else:
-			self.words = ['clear','help','exit','quit','search','fuzz','xploit','decode','encode','print','set']
-
 
         def pythem(self, text, state):
 		#print text
