@@ -24,8 +24,10 @@ logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 from scapy.all import *
 from modules.utils import *
 from jarvis import Jarvis
+from modules.completer import Completer
 import os
 import termcolor
+import readline
 
 class Processor(object):
 
@@ -38,9 +40,12 @@ class Processor(object):
 		self.gateway = None
 		self.status = 0
 
+
+
 	def start(self):
 		try:
 			while 1:
+				completer = Completer("pythem")
 				console = termcolor.colored("pythem>","red", attrs=["bold"])
 				self.command = raw_input("{} ".format(console))
 				self.argv = self.command.split()
@@ -48,37 +53,70 @@ class Processor(object):
 				try:
 
 
-					if self.command == "help":
+					if self.input_list[0] == "help":
 						print_help()
 
-					elif self.command == "jarvis-help":
-						jarvis_help(self.Jarvis.version)
-
-					elif self.command == "jarvis":
-						self.Jarvis.start('core/processor.py')
-						self.status = 1
-
-					elif self.input_list[0] == "jarvis-log":
-						try:
-							jarvislog = self.input_list[1]
+					elif self.input_list[0] == "jarvis":
+						if self.input_list[1] == "log":
 							try:
-								os.system("tail -f log/jarvis{}.txt".format(jarvislog))
+								jarvislog = self.input_list[2]
+								try:
+									os.system("tail -f log/jarvis{}.txt".format(jarvislog))
+								except Exception as e:
+									print "[!] Exception caught: {}".format(e)
+									pass
+
+							except IndexError:
+								print "[+] Jarvis log system."
+								print "[.] Error log  - type: err"
+								print "[.] Output log - type: out"
+								try:
+									jarvislog = raw_input("[+] Select: ")
+									os.system("tail -f log/jarvis{}.txt".format(jarvislog))
+								except KeyboardInterrupt:
+									pass
+								except Exception as e:
+									print "[!] Exception caught: {}".format(e)
+									pass
+
+						elif self.input_list[1] == "help":
+							jarvis_help(self.Jarvis.version)
+
+						elif self.input_list[1] == "say":
+							try:
+								message = self.input_list[2]
+								all_msg = " ".join(self.input_list[2:])
+								self.Jarvis.Say(all_msg)
+							except IndexError:
+								try:
+									message = raw_input("[+] Jarvis speaker: ")
+									self.Jarvis.Say(message)
+								except KeyboardInterrupt:
+									pass
 							except Exception as e:
 								print "[!] Exception caught: {}".format(e)
-								pass
 
-						except IndexError:
-							print "[+] Jarvis log system."
-							print "[.] Error log  - type: err"
-							print "[.] Output log - type: out"
+						elif self.input_list[1] == "read":
 							try:
-								jarvislog = raw_input("[+] Select: ")
-								os.system("tail -f log/jarvis{}.txt".format(jarvislog))
+								file = self.input_list[2]
+								self.Jarvis.Read(file)
+							except IndexError:
+								if self.file is not None:
+									self.Jarvis.Read(self.file)
+								else:
+									file = "[+] Set file path:"
+									pass
+                                                	except TypeError:
+                                                		print "[!] You probably forgot to set a wordlist file path."
+                                                	        pass
 							except KeyboardInterrupt:
 								pass
 							except Exception as e:
 								print "[!] Exception caught: {}".format(e)
-								pass
+	
+						else:
+							self.Jarvis.start('core/processor.py')
+	                                                self.status = 1
 
 					elif self.command == "exit" or self.command == "quit":
 						if self.status == 1:
@@ -88,38 +126,7 @@ class Processor(object):
 						else:
 							exit()
 
-					elif self.input_list[0] == "jarvis-say":
-						try:
-							message = self.input_list[1]
-							all_msg = " ".join(self.input_list[1:])
-							self.Jarvis.Say(all_msg)
-						except IndexError:
-							try:
-								message = raw_input("[+] Jarvis speaker: ")
-								self.Jarvis.Say(message)
-							except KeyboardInterrupt:
-								pass
-						except Exception as e:
-							print "[!] Exception caught: {}".format(e)
-
-					elif self.input_list[0] == "jarvis-read":
-						try:
-							file = self.input_list[1]
-							self.Jarvis.Read(file)
-						except IndexError:
-							if self.file is not None:
-								self.Jarvis.Read(self.file)
-							else:
-								file = "[+] Set file path:"
-								pass
-                                                except TypeError:
-                                                	print "[!] You probably forgot to set a wordlist file path."
-                                                        pass
-						except KeyboardInterrupt:
-							pass
-						except Exception as e:
-							print "[!] Exception caught: {}".format(e)
-
+					
 					elif self.input_list[0] == "set" or self.input_list[0] == "SET":
 						if self.input_list[1] == "interface":
 							try:
@@ -271,6 +278,8 @@ class Processor(object):
 
 					elif self.command == "pforensic":
 						try:
+							completer = None
+							completer = Completer("pforensic")
 							from modules.pforensic import PcapReader
 							self.pcapread = PcapReader(self.file)
 							self.pcapread.start()
@@ -285,6 +294,8 @@ class Processor(object):
 
 					elif self.input_list[0] == "xploit":
 						try:
+							completer = None
+							completer = Completer("xploit")
 							from modules.exploit import Exploit
 							if self.targets is not None and self.input_list[1] == "tcp":
 								self.xploit = Exploit(self.targets, self.input_list[1])
@@ -366,7 +377,7 @@ class Processor(object):
 								print "[!] Exception caught: {}".format(e)
 								pass
 
-					elif self.input_list[0] == "brute-force":
+					elif self.input_list[0] == "brute":
 							if self.input_list[1] == "ssh":
 								try:
 									username = raw_input("[+] Enter the username to bruteforce: ")
@@ -391,7 +402,7 @@ class Processor(object):
 								except TypeError:
 			                                      		print "[!] You probably forgot to set the wordlist file path."
 									pass
-							elif self.input_list[1] == "webform":
+							elif self.input_list[1] == "form":
 								try:
 									form = 'form'
 									from modules.web_bruter import WEBbrutus

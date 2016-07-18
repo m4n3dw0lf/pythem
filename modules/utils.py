@@ -151,19 +151,19 @@ def jarvis_help(version):
 	print
 	print color(" forward   = tab","green")
  	print color(" back      = (shift+tab)","green")
- 	print color(" up        = up arrow")
-	print color(" down      = down arrow")
-	print color(" right     = right arrow")
-	print color(" left      = left arrow")
-	print color(" super     = super/windows")
-	print color(" slash     = slash(/)")
-	print color(" backspace = backspace(erase character)")
-	print color(" erase	  = press backspace 10 times")
-	print color(" space     = space(spacebar)")
-	print color(" enter     = enter(return)")
-	print color(" close	  = close(alt+f4)")
-	print color(" escape    = escape(esc)")
-	print color(" exit	  = leaves editor mode")
+ 	print color(" up        = up arrow","green")
+	print color(" down      = down arrow","green")
+	print color(" right     = right arrow","green")
+	print color(" left      = left arrow","green")
+	print color(" super     = super/windows","green")
+	print color(" slash     = slash(/)","green")
+	print color(" backspace = backspace(erase character)","green")
+	print color(" erase	  = press backspace 10 times","green")
+	print color(" space     = space(spacebar)","green")
+	print color(" enter     = enter(return)","green")
+	print color(" close	  = close(alt+f4)","green")
+	print color(" escape    = escape(esc)","green")
+	print color(" exit	  = leaves editor mode","green")
 	print
 
 
@@ -318,7 +318,7 @@ def print_help():
 	print color("[SECTION - BRUTE-FORCE]","grey")
 	print
 	print
-	print color("[*] brute-force		Start a brute-force attack.","blue")
+	print color("[*] brute		Start a brute-force attack.","blue")
 	print
 	print "Should be called after setting a target and a wordlist file path"
 	print
@@ -326,12 +326,12 @@ def print_help():
 	print
 	print color("  ssh		| ip address as target","yellow")
 	print color("  url		| url (with http:// or https://) as target","yellow")
- 	print color("  webform		| url (with http:// or https://) as target","yellow")
+ 	print color("  form		| url (with http:// or https://) as target","yellow")
 	print
   	print color(" examples:","green")
 	print
-   	print color("  pythem> ","red") + "brute-force webform"
-   	print color("  pythem> ","red") + "brute-force ssh"
+   	print color("  pythem> ","red") + "brute webform"
+   	print color("  pythem> ","red") + "brute ssh"
 	print
 	print
 	print color("[SECTION - UTILS]","grey")
@@ -372,25 +372,25 @@ def print_help():
 	print
 	print color("[*] jarvis","blue")
 	print
-	print color("type jarvis-help to see the jarvis help page.","red")
+	print color("type 'jarvis help' to see the jarvis help page.","red")
 	print
 	print color(" examples:","green")
 	print
 	print color("  pythem> ","red")+ "jarvis	  "+color("(Call Jarvis in speech recognition mode)","yellow")
 	print
-   	print color("  pythem> ","red")+ "jarvis-help     "+color("(Print the Jarvis help message)","yellow")
+   	print color("  pythem> ","red")+ "jarvis help     "+color("(Print the Jarvis help message)","yellow")
 	print
-   	print color("  pythem> ","red")+ "jarvis-log      "+color("(Check the Jarvis log)","yellow")
+   	print color("  pythem> ","red")+ "jarvis log      "+color("(Check the Jarvis log)","yellow")
 	print "     or"
-   	print color("  pythem> ","red")+ "jarvis-log err"
+   	print color("  pythem> ","red")+ "jarvis log err"
 	print
-   	print color("  pythem> ","red") + "jarvis-say     "+color(" (Ask Jarvis to say something)","yellow")
+   	print color("  pythem> ","red") + "jarvis say     "+color(" (Ask Jarvis to say something)","yellow")
 	print "     or"
-   	print color("  pythem> ","red") + "jarvis-say hello my name is Jarvis."
+   	print color("  pythem> ","red") + "jarvis say hello my name is Jarvis."
 	print
-   	print color("  pythem> ","red") + "jarvis-read 	  "+color("(If no file is specified, should be called after setting file.)","yellow")
+   	print color("  pythem> ","red") + "jarvis read 	  "+color("(If no file is specified, should be called after setting file.)","yellow")
    	print "     or"
-   	print color("  pythem> ","red") + "jarvis-read file.txt"
+   	print color("  pythem> ","red") + "jarvis read file.txt"
 	print
 	print color("by: ","red") + color("m4n3dw0lf","blue")
 	print

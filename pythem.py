@@ -22,11 +22,9 @@
 from core.interface import Processor
 import os
 import sys
-import readline
 from modules.utils import banner
-readline.parse_and_bind('tab:complete')
 
-version = "0.3.5"
+version = "0.3.6"
 Processor = Processor()
 
 if os.geteuid() != 0:
