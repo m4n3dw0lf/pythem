@@ -372,7 +372,7 @@ def print_help():
 	print
 	print color("[*] jarvis","blue")
 	print
-	print color("type 'jarvis help' to see the jarvis help page.","red")
+	print "Type 'jarvis help' to see the jarvis help page."
 	print
 	print color(" examples:","green")
 	print
