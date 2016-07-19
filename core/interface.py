@@ -52,9 +52,12 @@ class Processor(object):
 				self.input_list = [str(a) for a in self.argv]
 				try:
 
-
 					if self.input_list[0] == "help":
 						print_help()
+		
+					elif self.command = "jarvis":
+						self.Jarvis.start('core/processor.py')
+	                                        self.status = 1						
 
 					elif self.input_list[0] == "jarvis":
 						if self.input_list[1] == "log":
