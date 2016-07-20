@@ -38,7 +38,6 @@ Content-Type: text/html
 		self.port = port
 
 	def start(self):
-		print "[+] Script Injection initialized on domain: {}".format(self.url)
 		self.t = threading.Thread(name='Injection', target=self.server)
 		self.t.setDaemon(True)
 		self.t.start
@@ -51,6 +50,7 @@ Content-Type: text/html
 			print "[!] Exception caught: {}".format(e)
 
 	def server(self):
+		print "[+] Script Injection initialized."
 		from dnspoisoner import DNSspoof
                 self.dnsspoof = DNSspoof(self.host)
                 self.dnsspoof.start(None,"Inject")
