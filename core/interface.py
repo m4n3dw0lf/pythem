@@ -338,7 +338,7 @@ class Processor(object):
 						if self.input_list[1] == "start":
 							try:
 								from modules.inject import Inject
-								self.inject = Inject(myip,self.port,self.script,self.domain)
+								self.inject = Inject(myip,self.port,self.script)
 								self.inject.server()
 							except Exception as e:
 								print "[!] Exception caught: {}".format(e)
