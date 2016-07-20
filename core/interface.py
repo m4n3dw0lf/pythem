@@ -319,8 +319,8 @@ class Processor(object):
 										redirect = myip
 
 								from modules.dnspoisoner import DNSspoof
-								self.dnsspoof = DNSspoof(domain, redirect)
-								self.dnsspoof.start()
+								self.dnsspoof = DNSspoof(redirect)
+								self.dnsspoof.start(domain,None)
 								print "[+] DNS spoofing initialized"
 
 							elif self.input_list[1] == "stop":
