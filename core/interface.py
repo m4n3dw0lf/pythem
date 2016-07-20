@@ -39,7 +39,12 @@ class Processor(object):
 		self.interface = None
 		self.gateway = None
 		self.status = 0
-
+		self.dnsstat = 0
+		#will need to add a set and print, utils and wiki commands reference too
+		self.port = 80
+		self.domain = None
+		self.redirect = None
+		self.script = None
 
 
 	def start(self):
@@ -139,6 +144,43 @@ class Processor(object):
 									self.interface = raw_input("[+] Enter the interface: ")
 								except KeyboardInterrupt:
 									pass
+						elif self.input_list[1] == "port":
+							try:
+								self.port = int(self.input_list[2])
+							except IndexError:
+								try:
+									self.port = input("[+] Enter the default port: ")
+								except KeyboardInterrupt:
+									pass
+
+						elif self.input_list[1] == "domain":
+							try:
+								self.domain = self.input_list[2]
+							except IndexError:
+								try:
+									self.domain = raw_input("[+] Domain to be spoofed: ")
+								except KeyboardInterrupt:
+									pass
+
+						elif self.input_list[1] == "redirect":
+							try:
+								self.redirect = self.input_list[2]
+							except IndexError:
+								try:
+									self.redirect = raw_input("[+] IP address to redirect DNS queries: ")
+								except KeyboardInterrupt:
+									pass
+
+						elif self.input_list[1] == "script":
+							try:
+								self.script = self.input_list[2]
+							except IndexError:
+								try:
+									self.script = raw_input("[+]Script url/path: ")
+								except KeyboardInterrupt:
+									pass
+
+
 						elif self.input_list[1] == "gateway":
 							try:
 								self.gateway = self.input_list[2]
@@ -179,6 +221,14 @@ class Processor(object):
 					elif self.input_list[0] == "print":
 						if self.input_list[1] == "interface":
 							print "[+] Network Interface: {}".format(self.interface)
+						elif self.input_list[1] == "port":
+							print "[+] Default port: {}".format(self.port)
+						elif self.input_list[1] == "domain":
+							print "[+] Domain: {}".format(self.domain)
+						elif self.input_list[1] == "redirect":
+							print "[+] Redirecting to: {}".format(self.redirect)
+						elif self.input_list[1] == "script":
+							print "[+] Script url/path: {}".format(self.script)
 						elif self.input_list[1] == "gateway":
 							print "[+] Gateway IP Address: {}".format(self.gateway)
 						elif self.input_list[1] == "target":
@@ -220,8 +270,8 @@ class Processor(object):
 
 					elif self.input_list[0] == "arpspoof":
                                         	try:
-							myip = get_myip(self.interface)
-                                                	mymac = get_mymac(self.interface)
+					                myip = get_myip(self.interface)
+                					mymac = get_mymac(self.interface)
                                                 	from modules.arpoisoner import ARPspoof
 							self.spoof = ARPspoof(self.gateway, self.targets, self.interface,self.arpmode ,myip, mymac)
 
@@ -249,8 +299,25 @@ class Processor(object):
 						try:
 
 							if self.input_list[1] == "start":
-								domain = raw_input("[+] Domain to be spoofed: ")
-								redirect = raw_input("[+] IP address to be redirected: ")
+								if self.domain != None :
+									domain = self.domain
+								else:
+									try: 
+										domain = raw_input("[+] Domain to be spoofed: ")
+										self.domain = domain
+									except KeyboardInterrupt: pass
+
+								if self.redirect != None:
+									redirect = self.redirect
+								else:
+									myip = get_myip(self.interface)
+									opt = raw_input("[+] Default address to redirect is:{} do you want to change?[y/n]".format(myip))
+									if opt == "y" or opt == "Y" or opt == "yes" or opt == "YES": 
+										try:redirect = raw_input("[+] IP address to be redirected: ")
+										except KeyboardInterrupt: pass
+									else:
+										redirect = myip
+
 								from modules.dnspoisoner import DNSspoof
 								self.dnsspoof = DNSspoof(domain, redirect)
 								self.dnsspoof.start()
@@ -265,6 +332,25 @@ class Processor(object):
 							print "[!] You probably forgot to type start or stop after dnsspoof."
 						except Exception as e:
 							print "[!] Exception caught: {}".format(e)
+
+					elif self.input_list[0] == "inject":
+						myip = get_myip(self.interface)
+						if self.input_list[1] == "start":
+							try:
+								from modules.inject import Inject
+								self.inject = Inject(myip,self.port,self.script,self.domain)
+								self.inject.server()
+							except Exception as e:
+								print "[!] Exception caught: {}".format(e)
+
+						elif self.input_list[1] == "stop":
+							try:
+								self.inject.stop()
+							except Exception as e:
+								print "[!] Exception caught: {}".format(e)
+						else:
+							print "[!] You need to start or stop the inject module."
+							
 
 					elif self.input_list[0] == "sniff":
 						from modules.sniffer import Sniffer

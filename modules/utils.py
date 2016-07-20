@@ -209,6 +209,9 @@ def print_help():
  	print color("  - target","yellow")
  	print color("  - file","yellow")
  	print color("  - arpmode","yellow")
+	print color("  - domain","yellow")
+	print color("  - redirect","yellow")
+	print color("  - script","yellow")
 	print
 	print color(" examples:","green")
 	print
@@ -257,13 +260,33 @@ def print_help():
 	print
 	print "Should be called after an arpspoofing attack has been started"
 	print
+	print color(" arguments:","red")
+	print
+	print color(" start","yellow")
+	print color(" stop","yellow")
+	print
 	print color(" examples:","green")
 	print
    	print color("  pythem> ","red")+ "dnsspoof start"
    	print color("  pythem> ","red") + "dnsspoof stop"
 	print
 	print
-	print color("[*] sniff		Start sniffing packets.","blue")
+	print color("[*] inject			Start a web server with a script to inject in header field","blue")
+	print
+	print "Should be used after a arpspoof has been started"
+	print
+	print color(" arguments:", "red")
+	print
+	print color(" start","yellow")
+	print color(" stop","yellow")
+	print
+	print color(" examples:","green")
+	print
+	print color("  pythem> ","red") + "inject start"
+	print color("  pythem> ","red") + "inject stop"
+	print
+	print
+	print color("[*] sniff			Start sniffing packets.","blue")
 	print
 	print "Should be called after setting an interface"
 	print
