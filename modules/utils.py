@@ -271,7 +271,7 @@ def print_help():
    	print color("  pythem> ","red") + "dnsspoof stop"
 	print
 	print
-	print color("[*] inject			Start a web server with a script to inject in header field","blue")
+	print color("[*] inject			Start and redirect clients to web server with a script to inject in header field","blue")
 	print
 	print "Should be used after a arpspoof has been started"
 	print

