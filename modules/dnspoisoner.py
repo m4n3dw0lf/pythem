@@ -56,6 +56,7 @@ class DNSspoof(object):
 				packet.accept()
 			else:
 				packet.accept()
+			self.currentdomain = str(pkt[DNS].qd.qname)
 
 	def spoof(self):
 		try:
@@ -68,6 +69,10 @@ class DNSspoof(object):
 	def stop(self):
 		self.q.unbind()
 		os.system('iptables -t nat -D PREROUTING -p udp --dport 53 -j NFQUEUE --queue-num 1')
+
+	def getdomain(self):
+		return self.currentdomain
+
 
 	def start(self,domain,inject):
 		self.domain = domain

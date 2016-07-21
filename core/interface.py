@@ -273,9 +273,9 @@ class Processor(object):
 					                myip = get_myip(self.interface)
                 					mymac = get_mymac(self.interface)
                                                 	from modules.arpoisoner import ARPspoof
-							self.spoof = ARPspoof(self.gateway, self.targets, self.interface,self.arpmode ,myip, mymac)
 
 							if self.input_list[1] == "start":
+								self.spoof = ARPspoof(self.gateway, self.targets, self.interface,self.arpmode ,myip, mymac)
 								self.spoof.start()
 								print "[+] ARP spoofing initialized."
 
@@ -334,23 +334,27 @@ class Processor(object):
 							print "[!] Exception caught: {}".format(e)
 
 					elif self.input_list[0] == "inject":
-						myip = get_myip(self.interface)
-						if self.input_list[1] == "start":
-							try:
-								from modules.inject import Inject
-								self.inject = Inject(myip,self.port,self.script)
-								self.inject.server()
-							except Exception as e:
-								print "[!] Exception caught: {}".format(e)
+						try:
+							myip = get_myip(self.interface)
+							if self.input_list[1] == "start":
+								try:
+									from modules.inject import Inject
+									self.inject = Inject(myip,self.port,self.script)
+									self.inject.server()
+								except Exception as e:
+									print "[!] Exception caught: {}".format(e)
 
-						elif self.input_list[1] == "stop":
-							try:
-								self.inject.stop()
-							except Exception as e:
-								print "[!] Exception caught: {}".format(e)
-						else:
-							print "[!] You need to start or stop the inject module."
-							
+							elif self.input_list[1] == "stop":
+								try:
+									self.inject.stop()
+								except Exception as e:
+									print "[!] Exception caught: {}".format(e)
+							else:
+								print "[!] You need to start or stop the inject module."
+						except TypeError:
+							print "[!] You probably forgot to type start or stop after inject."
+						except Exception as e:
+							print "[!] Exception caught: {}".format(e)
 
 					elif self.input_list[0] == "sniff":
 						from modules.sniffer import Sniffer
