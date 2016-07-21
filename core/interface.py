@@ -341,6 +341,8 @@ class Processor(object):
 									from modules.inject import Inject
 									self.inject = Inject(myip,self.port,self.script)
 									self.inject.server()
+								except AttributeError:
+									print "\n[!] Select a valid script source path or url."
 								except Exception as e:
 									print "[!] Exception caught: {}".format(e)
 
@@ -351,8 +353,10 @@ class Processor(object):
 									print "[!] Exception caught: {}".format(e)
 							else:
 								print "[!] You need to start or stop the inject module."
+						except IndexError:
+							print "[!] You probably forgot to start or stop the inject module."
 						except TypeError:
-							print "[!] You probably forgot to type start or stop after inject."
+							print "[!] You probably forgot to start an arpspoof attack ."
 						except Exception as e:
 							print "[!] Exception caught: {}".format(e)
 
