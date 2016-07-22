@@ -29,7 +29,6 @@ class DNSspoof(object):
 
 	def __init__(self,fake):
 		self.fake = fake
-		os.system('iptables -t nat -A PREROUTING -p udp --dport 53 -j NFQUEUE --queue-num 1')
 
 
 	def callback(self, packet):
@@ -75,6 +74,7 @@ class DNSspoof(object):
 
 
 	def start(self,domain,inject):
+		os.system('iptables -t nat -A PREROUTING -p udp --dport 53 -j NFQUEUE --queue-num 1')
 		self.domain = domain
 		self.inject = inject
 		t = threading.Thread(name='DNSspoof', target=self.spoof)

