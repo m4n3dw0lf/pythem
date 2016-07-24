@@ -89,7 +89,7 @@ def jarvis_help(version):
 	print color("[ Jarvis - Personal Assistence - v{} ]".format(version),"blue")
 	print
 	print
-	print color("[*] exit |or| quit : 		Terminate the program.","blue")
+	print color("[*] exit |or| quit : 			Terminate the program.","blue")
 	print
 	print
 	print color("[*] sleep |or| stop |or| wait:  	Sleep until you say 'Jarvis'.","blue")
@@ -98,7 +98,7 @@ def jarvis_help(version):
 	print color("[*] newspaper |or| news: 		Read the top trending news from reddit.","blue")
 	print
 	print
-	print color("[*] say |or| speak [message]:     Ask Jarvis to say something.","blue")
+	print color("[*] say |or| speak [message]:      	Ask Jarvis to say something.","blue")
 	print
 	print color(" examples(say):","green")
 	print
@@ -110,24 +110,24 @@ def jarvis_help(version):
 	print
 	print color(" example(say):","green")
 	print
-	print color("  run firewall		 	| Place a firewall.sh on the scripts folder and give execution privilege first.","green")
+	print color("  run firewall		 		| Place a firewall.sh on the scripts folder and give execution privilege first.","green")
 	print
 	print
-	print color("[*] browser:		 	Ask Jarvis to start your default browser.","blue")
+	print color("[*] browser:		 		Ask Jarvis to start your default browser.","blue")
 	print
  	print color(" example(say):","green")
 	print
   	print color("  browser","green")
 	print
 	print
-	print color("[*] terminal:		 	Ask Jarvis to open a gnome-terminal.","blue")
+	print color("[*] terminal:		 		Ask Jarvis to open a gnome-terminal.","blue")
 	print
  	print color(" example(say):","green")
 	print
   	print color("  terminal","green")
 	print
 	print
-	print color("[*] search [query]	 	Ask Jarvis to search query via google.","blue")
+	print color("[*] search [query]	 		Ask Jarvis to search query via google.","blue")
 	print
 	print color(" example(say):","green")
 	print
@@ -141,7 +141,7 @@ def jarvis_help(version):
 	print color("voice commands: (Same as EDITOR MODE )","yellow")
 	print
 	print
-	print color("[*] editor: 			Start the editor mode.","blue")
+	print color("[*] editor: 				Start the editor mode.","blue")
 	print
 	print color("          * ARDUINO LEONARDO REQUIRED *","red")
 	print
@@ -197,10 +197,10 @@ def print_help():
 	print color("[*] help:			Print the help message.","blue")
 	print
 	print
-	print color("[*] exit/quit:		Leave the program.","blue")
+	print color("[*] exit/quit:			Leave the program.","blue")
 	print
 	print
-	print color("[*] set			Set a variable's value.","blue")
+	print color("[*] set				Set a variable's value.","blue")
 	print
 	print color(" parameters:","red")
 	print
@@ -220,7 +220,7 @@ def print_help():
    	print color("  pythem> ","red") + "set interface wlan0   | don't open input to set value."
 	print
 	print
-	print color("[*] print		Print a variable's value.","blue")
+	print color("[*] print			Print a variable's value.","blue")
 	print
   	print color(" examples:","green")
 	print
@@ -230,7 +230,7 @@ def print_help():
 	print color("[SECTION - NETWORK AND MAN-IN-THE-MIDDLE]","grey")
 	print
 	print
-	print color("[*] scan		Make a tcp/manualport/arp scan.","blue")
+	print color("[*] scan			Make a tcp/manualport/arp scan.","blue")
 	print
 	print "Should be called after setting an interface and a target"
 	print
@@ -240,7 +240,7 @@ def print_help():
    	print color("  pythem> ","red") + "scan tcp"
 	print
 	print
-	print color("[*] arpspoof		Start or stop an arpspoofing attack.","blue")
+	print color("[*] arpspoof			Start or stop an arpspoofing attack.","blue")
 	print
 	print "Optional setting arpmode to select arpspoofing mode should be filled with rep or req"
 	print "rep to spoof responses, req to spoof requests"
@@ -256,7 +256,7 @@ def print_help():
    	print color("  pythem> ","red") + "arspoof stop"
 	print
 	print
-	print color("[*] dnsspoof		Start a dnsspoofing attack.","blue")
+	print color("[*] dnsspoof			Start a dnsspoofing attack.","blue")
 	print
 	print "Should be called after an arpspoofing attack has been started"
 	print
@@ -303,7 +303,7 @@ def print_help():
    	print "  [+] Enter the filter: port 1337 and host 10.0.1.5  | tcpdump like format or http, dns specific filter."
 	print
 	print
-	print color("[*] pforensic		Start a packet-analyzer","blue")
+	print color("[*] pforensic			Start a packet-analyzer","blue")
 	print
 	print "Should be called after setting an interface and a file with a .pcap file"
 	print
@@ -317,7 +317,7 @@ def print_help():
 	print color("[SECTION - EXPLOIT DEVELOPMENT AND REVERSE ENGINERING]","grey")
 	print
 	print
-	print color("[*] xploit		Interactive stdin or tcp exploit development shell.","blue")
+	print color("[*] xploit			Interactive stdin or tcp exploit development shell.","blue")
 	print
 	print "The stdin should be called after setting file"
 	print "The tcp should be called after setting target"
@@ -341,7 +341,7 @@ def print_help():
 	print color("[SECTION - BRUTE-FORCE]","grey")
 	print
 	print
-	print color("[*] brute		Start a brute-force attack.","blue")
+	print color("[*] brute			Start a brute-force attack.","blue")
 	print
 	print "Should be called after setting a target and a wordlist file path"
 	print
@@ -359,7 +359,7 @@ def print_help():
 	print
 	print color("[SECTION - UTILS]","grey")
 	print
-	print color("[*] geoip		Approximately geolocate the location of a IP address.","blue")
+	print color("[*] geoip			Approximately geolocate the location of a IP address.","blue")
 	print
 	print "Should be called after setting target(ip address)"
 	print
@@ -370,7 +370,7 @@ def print_help():
    	print color("  pythem> ","red") + "geoip 8.8.8.8"
 	print
 	print
-	print color("[*] decode and encode	Decode or encode a string with a chosen pattern.","blue")
+	print color("[*] decode and encode		Decode or encode a string with a chosen pattern.","blue")
 	print
 	print color(" examples:","green")
 	print
@@ -378,7 +378,7 @@ def print_help():
    	print color("  pythem> ","red") + "encode ascii"
 	print
 	print
-	print color("[*] cookiedecode	Decode a base64 url encoded cookie value.","blue")
+	print color("[*] cookiedecode		Decode a base64 url encoded cookie value.","blue")
 	print
 	print color(" example:","green")
 	print

@@ -518,7 +518,7 @@ class Processor(object):
 							os.system("{}".format(self.command))
 							pass
 						except Exception as e:
-							print "[!] Select a valid option, type help to check sintax."
+							print "[!] Select a valid option, type help to check syntax."
 							pass
 				except IndexError:
 					pass
