@@ -318,7 +318,7 @@ def print_help():
 	print
 	print color(" arguments:","red")
 	print
-	print color("  mitmdrop		| start to filter and drop man-in-the-middle traffic.","yellow")
+	print color("  mitmdrop		| Start to filter and drop man-in-the-middle traffic.","yellow")
 	print
 	print color(" examples:","green")
 	print

