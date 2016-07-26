@@ -52,7 +52,7 @@ class Jam(object):
 		os.system('iptables -t nat -D PREROUTING -p tcp --dport 8080 -j NFQUEUE --queue-num 1')
 		try:
 			self.t.stop()
-			print "[-] Man-in-the-middle packet droping finalized."
+			print "[-] Man-in-the-middle packet dropping finalized."
 		except Exception as e:
 			print "[!] Exception caught: {}".format(e)
 
