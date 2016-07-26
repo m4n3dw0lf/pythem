@@ -14,6 +14,7 @@ PytheM is a python penetration testing framework. It has been developed in the h
 - [SSH Brute-Force attack](https://github.com/m4n3dw0lf/PytheM/wiki/Examples#ssh-brute-force-attack).
 - [Web page formulary brute-force](https://github.com/m4n3dw0lf/PytheM/wiki/Examples#web-page-formulary-brute-force).
 - [URL content buster](https://github.com/m4n3dw0lf/PytheM/wiki/Examples#url-content-buster).
+- [DoS LAN without deauthentication](https://github.com/m4n3dw0lf/PytheM/wiki/Examples#dos-lan-without-deauthentication)
 
 # Exploit Development with PytheM
 
