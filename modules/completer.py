@@ -54,8 +54,12 @@ class Completer:
 		elif "brute-force" in text and state == 1:
 			self.suboptions = ['ssh','url','form']
 			completer = readline.set_completer(self.suboption)
+
+		elif "dos" in text and state == 1:
+			self.suboptions = ['mitmdrop']
+			completer = readline.set_completer(self.suboption)
 		else:
-	        	self.words = ['clear','help','exit','quit','set','print','scan','arpspoof','dnsspoof','inject','sniff','pforensic','xploit','brute','geoip','decode','encode','cookiedecode','jarvis']
+	        	self.words = ['clear','help','exit','quit','set','print','scan','arpspoof','dnsspoof','inject','sniff','pforensic','dos','xploit','brute','geoip','decode','encode','cookiedecode','jarvis']
 			results = [x for x in self.words if x.startswith(text)] + [None]
 			return results[state]
 

@@ -39,8 +39,8 @@ class Processor(object):
 		self.interface = None
 		self.gateway = None
 		self.status = 0
+		self.spoofstatus = False
 		self.dnsstat = 0
-		#will need to add a set and print, utils and wiki commands reference too
 		self.port = 80
 		self.domain = None
 		self.redirect = None
@@ -277,10 +277,12 @@ class Processor(object):
 							if self.input_list[1] == "start":
 								self.spoof = ARPspoof(self.gateway, self.targets, self.interface,self.arpmode ,myip, mymac)
 								self.spoof.start()
+								self.spoofstatus = True
 								print "[+] ARP spoofing initialized."
 
 							elif self.input_list[1] == "stop":
 								self.spoof.stop()
+								self.spoofstatus = False
 								print "[+] ARP spoofing finalized."
 
 							else:
@@ -359,6 +361,24 @@ class Processor(object):
 							print "[!] You probably forgot to start an arpspoof attack ."
 						except Exception as e:
 							print "[!] Exception caught: {}".format(e)
+
+					elif self.input_list[0] == "dos":
+						from modules.jammer import Jam
+						dos = Jam()
+						try:
+							if self.input_list[1] == "mitmdrop":
+								if self.spoofstatus:
+									try:
+										myip = get_myip(self.interface)
+										dos.mitmdropstart(myip)
+									except Exception as e:
+										print "[!] Exception caught: {}".format(e)
+								else:
+									print "[!] You need to start a arpspoof on a target (IP/Range) to start mitmdrop."
+
+						except IndexError:
+							print "[!] You probably forgot to specify the type of DoS to use."
+
 
 					elif self.input_list[0] == "sniff":
 						from modules.sniffer import Sniffer

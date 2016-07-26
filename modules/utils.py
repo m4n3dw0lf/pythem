@@ -227,7 +227,7 @@ def print_help():
 	print color("  pythem> ","red") + "print gateway"
 	print
 	print
-	print color("[SECTION - NETWORK AND MAN-IN-THE-MIDDLE]","grey")
+	print color("[SECTION - NETWORK, MAN-IN-THE-MIDDLE AND DENIAL OF SERVICE (DOS)]","grey")
 	print
 	print
 	print color("[*] scan			Make a tcp/manualport/arp scan.","blue")
@@ -314,6 +314,17 @@ def print_help():
    	print color("  pforensic> ","yellow") + 'help'
 	print
 	print
+	print color("[*] dos				Start a Denial of Service attack (DOS).","blue")
+	print
+	print color(" arguments:","red")
+	print
+	print color("  mitmdrop		| start to filter and drop man-in-the-middle traffic.","yellow")
+	print
+	print color(" examples:","green")
+	print
+	print color("  pythem> ","red") + "dos mitmdrop"
+	print
+	print
 	print color("[SECTION - EXPLOIT DEVELOPMENT AND REVERSE ENGINERING]","grey")
 	print
 	print
@@ -323,6 +334,7 @@ def print_help():
 	print "The tcp should be called after setting target"
 	print
 	print color(" arguments:","red")
+	print
 	print color("  stdin		| set file before","yellow")
  	print color("  tcp		| set target before","yellow")
 	print
@@ -331,6 +343,7 @@ def print_help():
    	print color("  pythem> ","red") + "set file ./exec"
 	print
    	print color("  pythem> ","red") + "xploit stdin"
+	print color("  xploit> ","blue") + "help"
         print "     or"
    	print color("  pythem> ","red") + "xploit"
    	print "  [*] Select one xploit mode, options = stdin/tcp"
