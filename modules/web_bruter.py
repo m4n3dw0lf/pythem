@@ -29,6 +29,10 @@ import mechanize
 
 class WEBbrutus(object):
 
+	name = "WEB brute forcer"
+	desc = "Perform web password and directory brute-force"
+	version = "0.2"
+
 	def __init__ (self, target,file):
 		self.threads = 5
 		self.target_url = target

@@ -27,6 +27,10 @@ import threading
 
 class DNSspoof(object):
 
+	name = "DNS spoofing"
+	desc = "Filter DNS packets while in man-in-the-middle and modify packet."
+	version = "0.3"
+
 	def __init__(self,fake):
 		self.fake = fake
 

@@ -27,6 +27,11 @@ import os
 
 class Scanner(object):
 
+	name = "Multi purpose scanner"
+	desc = "Scan hosts"
+	version = "0.6"
+	ps = "Need to improve results"
+
 	def __init__(self,target,interface,mode):
 		self.interface = interface
 		self.targets = target

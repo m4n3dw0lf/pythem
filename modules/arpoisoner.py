@@ -28,6 +28,10 @@ from utils import *
 
 class ARPspoof(object):
 
+	name = "ARP poisoner spoofer"
+	desc = "Use arp spoofing in order to realize a man-in-the-middle attack"
+	version = "0.2"
+
 	def __init__(self, gateway, targets, interface, arpmode, myip, mymac):
 
 		try:

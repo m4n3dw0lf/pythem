@@ -27,6 +27,10 @@ import threading
 
 class Jam(object):
 
+	name = "Denial of Service Module."
+	desc = "Denial of service attacks here."
+	version = "0.1"
+	ps = "Need to add more DoS attacks."
 
 	def __init__(self):
 		self.blocks = []

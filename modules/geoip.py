@@ -25,6 +25,10 @@ import sys
 
 class Geoip(object):
 
+	name = "Geo localizator"
+	desc = "Geo localizate IP addresses"
+	version = "0.1"
+
 	def __init__(self, target, path):
 		self.target = target
 		try:

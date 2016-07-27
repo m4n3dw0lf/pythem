@@ -19,20 +19,20 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-from core.interface import Processor
 import os
 import sys
+from core.interface import Processor
 from modules.utils import banner
 
-version = "0.3.8"
+version = "0.3.9"
 Processor = Processor()
 
 if os.geteuid() != 0:
-	sys.exit("[-] Only for roots kid!")
+	sys.exit("[-] Only for roots kido! ")
 
 if __name__ == '__main__':
 	try:
 		print banner(version)
 		Processor.start()
 	except Exception as e:
-		print "Exception caught: {}".format(e)
+		print "[!] Exception caught: {}".format(e)

@@ -3,7 +3,11 @@ from subprocess import *
 import time
 import readline
 
-class Completer:
+class Completer(object):
+	name = "TAB completer"
+	desc = "Auto complete PytheM commands with tab"
+	version = "0.3"
+
 
         def __init__(self,console):
 		tab = readline.parse_and_bind("tab: complete")
@@ -36,15 +40,15 @@ class Completer:
 			completer = readline.set_completer(self.suboption)
 
 		elif "arpspoof" in text and state == 1:
-			self.suboptions = ['start', 'stop']
+			self.suboptions = ['start', 'stop','status']
 			completer = readline.set_completer(self.suboption)
 
 		elif "dnsspoof" in text and state == 1:
-			self.suboptions = ['start','stop']
+			self.suboptions = ['start','stop','status']
 			completer = readline.set_completer(self.suboption)
 
 		elif "inject" in text and state == 1:
-			self.suboptions = ['start','stop']
+			self.suboptions = ['start','stop','status']
 			completer = readline.set_completer(self.suboption)
 
 		elif "xploit" in text and state == 1:

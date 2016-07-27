@@ -26,7 +26,10 @@ import socket
 
 
 class SSHbrutus(object):
-	
+
+	name = "SSH Brute-forcer"
+	desc = "Perform password brute-force on SSH"
+	version = "0.1"
 
 	def __init__ (self, target, username ,file):
 

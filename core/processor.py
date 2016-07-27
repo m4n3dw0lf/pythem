@@ -27,6 +27,10 @@ import webbrowser
 
 class Processor(object):
 
+	name = "Jarvis-Processor"
+	desc = "Console to process voice commands"
+	version = "0.2"
+
 	def __init__(self):
 		self.Jarvis = Jarvis()
 

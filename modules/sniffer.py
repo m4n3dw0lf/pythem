@@ -27,7 +27,9 @@ from datetime import datetime
 
 class Sniffer(object):
 
-
+	name = "Sniffer"
+	desc = "Simple scapy sniffer with some pre-defined filters."
+	version = "0.3"
 
 	def __init__(self, interface, filter):
 		self.interface = interface

@@ -30,6 +30,10 @@ import socket
 
 class SimpleFuzz(object):
 
+	name = "Fuzzer"
+	desc = "Used in the xploit module. simple 'A' generation through tcp or stdin"
+	version = "0.3"
+
 	def __init__(self, target, type, offset):
 		self.offset = offset
 		self.target = target

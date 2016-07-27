@@ -25,6 +25,12 @@ import threading
 
 class Inject(object):
 
+	name = "Injection"
+	desc = "Redirect to page with script then let client go"
+	version = "0.2"
+	ps = "Will need to change the way of injection to netfilter packet injection."
+
+
 	def __init__(self, host, port, js):
                 self.host = host
                 self.port = port

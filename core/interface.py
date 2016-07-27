@@ -30,22 +30,33 @@ import termcolor
 import readline
 
 class Processor(object):
+	name = "Interface-Processor"
+	desc = "Console to process commands"
+	version = "0.4"
+
 
 	def __init__(self):
-		self.arpmode = "rep"
+		#Jarvis
 		self.Jarvis = Jarvis()
+
+		#Variables
 		self.targets = None
 		self.file = None
 		self.interface = None
 		self.gateway = None
-		self.status = 0
-		self.spoofstatus = False
-		self.dnsstat = 0
 		self.port = 80
 		self.domain = None
 		self.redirect = None
 		self.script = None
-		self.mitmdropstatus = 0
+		self.arpmode = "rep"
+
+		#Status manager
+		self.jarvis_status = 0
+		self.arpspoof_status = False
+		self.inject_status = False
+		self.dnsspoof_status = False
+		self.mitmdrop_status = 0
+
 
 
 	def start(self):
@@ -63,7 +74,7 @@ class Processor(object):
 
 					elif self.command == "jarvis":
 						self.Jarvis.start('core/processor.py')
-	                                        self.status = 1
+	                                        self.jarvis_status = 1
 
 					elif self.input_list[0] == "jarvis":
 						if self.input_list[1] == "log":
@@ -125,10 +136,10 @@ class Processor(object):
 	
 						else:
 							self.Jarvis.start('core/processor.py')
-	                                                self.status = 1
+	                                                self.jarvis_status = 1
 
 					elif self.command == "exit" or self.command == "quit":
-						if self.status == 1:
+						if self.jarvis_status == 1:
 							self.Jarvis.Say(self.Jarvis.random('salutes'))
 							self.Jarvis.stop()
 							exit()
@@ -263,6 +274,7 @@ class Processor(object):
 							else:
 								print "[!] You probably forgot to set the interface or a valid IP address/range."
 								pass
+
 						except KeyboardInterrupt:
 							pass
 						except Exception as e:
@@ -271,20 +283,28 @@ class Processor(object):
 
 					elif self.input_list[0] == "arpspoof":
                                         	try:
-					                myip = get_myip(self.interface)
-                					mymac = get_mymac(self.interface)
-                                                	from modules.arpoisoner import ARPspoof
-
 							if self.input_list[1] == "start":
+	                                                	from modules.arpoisoner import ARPspoof
+						                myip = get_myip(self.interface)
+	                					mymac = get_mymac(self.interface)
+								self.arpspoof_status = True
 								self.spoof = ARPspoof(self.gateway, self.targets, self.interface,self.arpmode ,myip, mymac)
 								self.spoof.start()
-								self.spoofstatus = True
 								print "[+] ARP spoofing initialized."
 
 							elif self.input_list[1] == "stop":
 								self.spoof.stop()
-								self.spoofstatus = False
+								self.arpspoof_status = False
 								print "[+] ARP spoofing finalized."
+
+                                                        elif self.input_list[1] == "status":
+                                                                if self.arpspoof_status:
+                                                                        stat = "running"
+                                                                else:
+                                                                        stat = "down"
+                                                                print "[*] ARP spoofing status: {}".format(stat)
+
+
 
 							else:
 								print "[!] Select a valid option, call help to check syntax."
@@ -325,10 +345,20 @@ class Processor(object):
 								self.dnsspoof = DNSspoof(redirect)
 								self.dnsspoof.start(domain,None)
 								print "[+] DNS spoofing initialized"
+								self.dnsspoof_status = True
 
 							elif self.input_list[1] == "stop":
 								self.dnsspoof.stop()
 								print "[+] DNS spoofing finalized"
+
+                                                        elif self.input_list[1] == "status":
+                                                                if self.dnsspoof_status:
+                                                                        stat = "running"
+                                                                else:
+                                                                        stat = "down"
+                                                                print "[*] DNS spoofing status: {}".format(stat)
+
+
 							else:
 								print "[!] Select a valid option, call help to check syntax."
 						except IndexError:
@@ -338,11 +368,12 @@ class Processor(object):
 
 					elif self.input_list[0] == "inject":
 						try:
-							myip = get_myip(self.interface)
 							if self.input_list[1] == "start":
+								myip = get_myip(self.interface)
 								try:
 									from modules.inject import Inject
 									self.inject = Inject(myip,self.port,self.script)
+									self.inject_status = True
 									self.inject.server()
 								except AttributeError:
 									print "\n[!] Select a valid script source path or url."
@@ -352,10 +383,19 @@ class Processor(object):
 							elif self.input_list[1] == "stop":
 								try:
 									self.inject.stop()
+									self.inject_status = False
 								except Exception as e:
 									print "[!] Exception caught: {}".format(e)
+
+							elif self.input_list[1] == "status":
+								if self.inject_status:
+									stat = "running"
+								else:
+									stat = "down"
+								print "[*] Script injection status: {}".format(stat)
+
 							else:
-								print "[!] You need to start or stop the inject module."
+								print "[!] You need to specify  start, stop or status after the inject module call."
 						except IndexError:
 							print "[!] You probably forgot to start or stop the inject module."
 						except TypeError:
@@ -368,18 +408,18 @@ class Processor(object):
 						self.dos = Jam()
 						try:
 							if self.input_list[1] == "mitmdrop":
-								if self.spoofstatus:
+								if self.arpspoof_status:
 									try:
 										myip = get_myip(self.interface)
 										self.dos.mitmdropstart(myip)
-										self.mitmdropstatus = 1
+										self.mitmdrop_status = 1
 									except Exception as e:
 										print "[!] Exception caught: {}".format(e)
 								else:
 									print "[!] You need to start a arpspoof on a target (IP/Range) to start mitmdrop."
 
 							elif self.input_list[1] == "stop":
-								if self.mitmdropstatus == 1:
+								if self.mitmdrop_status == 1:
 									self.dos.mitmdropstop()
 								else:
 									print "[!] You need to start a DoS attack before call stop."

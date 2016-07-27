@@ -27,6 +27,10 @@ from utils import color
 
 class PcapReader(object):
 
+	name = "Simple pcap analyzer"
+	desc = "Use some functions to analyze a pcap file"
+	version = "0.3"
+
 	def __init__(self, file):
 		self.file = file
 		self.packets = rdpcap(file)
