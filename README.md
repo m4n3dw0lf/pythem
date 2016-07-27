@@ -14,7 +14,7 @@ PytheM is a python penetration testing framework. It has been developed in the h
 - [SSH Brute-Force attack](https://github.com/m4n3dw0lf/PytheM/wiki/Examples#ssh-brute-force-attack).
 - [Web page formulary brute-force](https://github.com/m4n3dw0lf/PytheM/wiki/Examples#web-page-formulary-brute-force).
 - [URL content buster](https://github.com/m4n3dw0lf/PytheM/wiki/Examples#url-content-buster).
-- [DoS LAN without deauthentication](https://github.com/m4n3dw0lf/PytheM/wiki/Examples#dos-lan-without-deauthentication)
+- [Jam DNS of LAN range/IP address](https://github.com/m4n3dw0lf/PytheM/wiki/Examples#dos-lan-without-deauthentication)
 
 # Exploit Development with PytheM
 
@@ -26,7 +26,7 @@ PytheM is a python penetration testing framework. It has been developed in the h
 - [JARVIS](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#jarvis---voice-controlled-assistant)
  - [JARVIS COMMANDS REFERENCE](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#jarvis-commands-reference)
 - [SECTION - CORE](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#section---core)
-- [SECTION - NETWORK, MAN-IN-THE-MIDDLE AND DENIAL OF SERVICE (DOS)](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#section---network-and-man-in-the-middle)
+- [SECTION - NETWORK AND MAN-IN-THE-MIDDLE](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#section---network-and-man-in-the-middle)
  - [PFORENSIC COMMANDS REFERENCE](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#pforensic-commands-reference)
 - [SECTION - EXPLOIT DEVELOPMENT AND REVERSE ENGINEERING](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#section---exploit-development-and-reverse-engineering)
  - [XPLOIT COMMANDS REFERENCE](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#xploit-commands-reference)

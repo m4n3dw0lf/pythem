@@ -45,6 +45,7 @@ class Processor(object):
 		self.domain = None
 		self.redirect = None
 		self.script = None
+		self.mitmdropstatus = 0
 
 
 	def start(self):
@@ -59,10 +60,10 @@ class Processor(object):
 
 					if self.input_list[0] == "help":
 						print_help()
-		
+
 					elif self.command == "jarvis":
 						self.Jarvis.start('core/processor.py')
-	                                        self.status = 1						
+	                                        self.status = 1
 
 					elif self.input_list[0] == "jarvis":
 						if self.input_list[1] == "log":
@@ -364,17 +365,27 @@ class Processor(object):
 
 					elif self.input_list[0] == "dos":
 						from modules.jammer import Jam
-						dos = Jam()
+						self.dos = Jam()
 						try:
 							if self.input_list[1] == "mitmdrop":
 								if self.spoofstatus:
 									try:
 										myip = get_myip(self.interface)
-										dos.mitmdropstart(myip)
+										self.dos.mitmdropstart(myip)
+										self.mitmdropstatus = 1
 									except Exception as e:
 										print "[!] Exception caught: {}".format(e)
 								else:
 									print "[!] You need to start a arpspoof on a target (IP/Range) to start mitmdrop."
+
+							elif self.input_list[1] == "stop":
+								if self.mitmdropstatus == 1:
+									self.dos.mitmdropstop()
+								else:
+									print "[!] You need to start a DoS attack before call stop."
+							else:
+								print "[!] Select a valid option, type help to check syntax."
+
 
 						except IndexError:
 							print "[!] You probably forgot to specify the type of DoS to use."

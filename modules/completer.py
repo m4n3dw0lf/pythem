@@ -56,7 +56,7 @@ class Completer:
 			completer = readline.set_completer(self.suboption)
 
 		elif "dos" in text and state == 1:
-			self.suboptions = ['mitmdrop']
+			self.suboptions = ['mitmdrop','stop']
 			completer = readline.set_completer(self.suboption)
 		else:
 	        	self.words = ['clear','help','exit','quit','set','print','scan','arpspoof','dnsspoof','inject','sniff','pforensic','dos','xploit','brute','geoip','decode','encode','cookiedecode','jarvis']

@@ -32,13 +32,10 @@ class Jam(object):
 		self.blocks = []
 
 	def mitmdropstart(self,host):
-                os.system('iptables -t nat -A PREROUTING -p tcp --dport 80 -j NFQUEUE --queue-num 1')
-                os.system('iptables -t nat -A PREROUTING -p tcp --dport 443 -j NFQUEUE --queue-num 1')
-                os.system('iptables -t nat -A PREROUTING -p tcp --dport 3128 -j NFQUEUE --queue-num 1')
-		os.system('iptables -t nat -A PREROUTING -p tcp --dport 8080 -j NFQUEUE --queue-num 1')
+		os.system('iptables -t nat -A PREROUTING -p udp --dport 53 -j NFQUEUE --queue-num 1')
                 self.host = host
 		try:
-			print "[+] Man-in-the-middle packet droping initialized."
+			print "[+] Man-in-the-middle DNS jammer initialized."
 			self.t = threading.Thread(name='mitmdrop', target=self.filter)
 			self.t.setDaemon(True)
 			self.t.start()
@@ -46,19 +43,12 @@ class Jam(object):
 			print "[!] Exception caught: {}".format(e)
 
 	def mitmdropstop(self):
-		os.system('iptables -t nat -D PREROUTING -p tcp --dport 80 -j NFQUEUE --queue-num 1')
-		os.system('iptables -t nat -D PREROUTING -p tcp --dport 443 -j NFQUEUE --queue-num 1')
-		os.system('iptables -t nat -D PREROUTING -p tcp --dport 3128 -j NFQUEUE --queue-num 1')
-		os.system('iptables -t nat -D PREROUTING -p tcp --dport 8080 -j NFQUEUE --queue-num 1')
-		try:
-			self.t.stop()
-			print "[-] Man-in-the-middle packet dropping finalized."
-		except Exception as e:
-			print "[!] Exception caught: {}".format(e)
+		os.system('iptables -t nat -D PREROUTING -p udp --dport 53 -j NFQUEUE --queue-num 1')
+		print "[-] Man-in-the-middle DNS jammer finalized."
 
 
 	def callback(self, packet):
-		packet.drop()
+                packet.drop()
 
 	def filter(self):
 		try:
