@@ -318,7 +318,7 @@ def print_help():
 	print
 	print color(" arguments:","red")
 	print
-	print color("  mitmdrop        | Start to jam DNS queries that pass through man-in-the-middle traffic.","yellow")
+	print color("  mitmdrop        | Start to drop DNS queries that pass through man-in-the-middle traffic.","yellow")
 	print
 	print color(" examples:","green")
 	print
