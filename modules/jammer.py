@@ -35,7 +35,7 @@ class Jam(object):
 		os.system('iptables -t nat -A PREROUTING -p udp --dport 53 -j NFQUEUE --queue-num 1')
                 self.host = host
 		try:
-			print "[+] Man-in-the-middle DNS jammer initialized."
+			print "[+] Man-in-the-middle DNS drop initialized."
 			self.t = threading.Thread(name='mitmdrop', target=self.filter)
 			self.t.setDaemon(True)
 			self.t.start()
@@ -44,7 +44,7 @@ class Jam(object):
 
 	def mitmdropstop(self):
 		os.system('iptables -t nat -D PREROUTING -p udp --dport 53 -j NFQUEUE --queue-num 1')
-		print "[-] Man-in-the-middle DNS jammer finalized."
+		print "[-] Man-in-the-middle DNS drop finalized."
 
 
 	def callback(self, packet):
