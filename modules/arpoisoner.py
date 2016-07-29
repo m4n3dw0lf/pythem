@@ -180,8 +180,8 @@ class ARPspoof(object):
 
 						if targetmac is not None:
 							try:
-								self.socket2.send(Ether(src=self.mymac, dst=targetmac)/ARP(pdst=targetip, psrc=self.gateway, hwdst=targetmac, op=arpmode))
-								self.socket2.send(Ether(src=targetmac, dst=self.gateway_mac)/ARP(pdst=self.gateway, psrc=targetip, hwdst=self.gateway_mac, op=arpmode))
+								self.socket.send(ARP(pdst=targetip, psrc=self.gateway, hwdst=targetmac, op=arpmode))
+								self.socket.send(ARP(pdst=self.gateway, psrc=targetip, hwdst=self.gateway_mac, op=arpmode))
 
 							except Exception as e:
 								if "Interrupted system call" not in e:
