@@ -29,7 +29,7 @@ class Sniffer(object):
 
 	name = "Sniffer"
 	desc = "Custom scapy sniffer."
-	version = "0.5"
+	version = "0.6"
 
 	def __init__(self, interface, filter):
 		self.interface = interface
@@ -39,7 +39,11 @@ class Sniffer(object):
 
 	def customsniff(self, p):
 
+                if p.haslayer(TCP) and not p.haslayer(Raw):
+                	return
+
 		print "\r\n\n\n--------------------------[Packet]--------------------------\r\n"
+
 		if p.haslayer(Ether):
 			mac_dst = p[Ether].dst
 			mac_src = p[Ether].src
@@ -150,6 +154,7 @@ class Sniffer(object):
 				print
 				print "[I] Type: {}".format(type)
 				print "[I] Code: {}".format(type)
+
 
 		else:
 			print "[Could not parse packet]"
