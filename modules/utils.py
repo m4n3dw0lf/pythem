@@ -212,6 +212,7 @@ def print_help():
 	print color("  - domain","yellow")
 	print color("  - redirect","yellow")
 	print color("  - script","yellow")
+	print color("  - filter","yellow")
 	print
 	print color(" examples:","green")
 	print

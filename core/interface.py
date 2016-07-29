@@ -48,6 +48,7 @@ class Processor(object):
 		self.domain = None
 		self.redirect = None
 		self.script = None
+		self.filter = None
 		self.arpmode = "rep"
 
 		#Status manager
@@ -222,10 +223,18 @@ class Processor(object):
 								self.arpmode = self.input_list[2]
 							except IndexError:
 								try:
-									self.arpmode = raw_input("[+] Enter the arpmode:")
+									self.arpmode = raw_input("[+] Enter the arpmode: ")
 								except KeyboardInterrupt:
 									pass
 
+						elif self.input_list[1] == "filter":
+							try:
+								self.filter = self.input_list[2]
+							except IndexError:
+								try:
+									self.filter = raw_input("[+] Enter the sniffer filter: ")
+								except KeyboardInterrupt:
+									pass
 						else:
 							print "[!] Select a valid variable to set."
 
@@ -434,15 +443,28 @@ class Processor(object):
 					elif self.input_list[0] == "sniff":
 						from modules.sniffer import Sniffer
 						try:
-							filter = " ".join(self.input_list[1:])
-							self.sniff = Sniffer(self.interface, filter)
+							hasfilter = self.input_list[1]
+							self.filter = " ".join(self.input_list[1:])
+							if self.filter == "http":
+								self.filter = "port 80"
+							elif self.filter == "dns":
+								self.filter = "port 53"
+							self.sniff = Sniffer(self.interface, self.filter)
 							self.sniff.start()
+
 						except IndexError:
-							filter = raw_input("[+] Enter the filter: ")
-                                                	self.sniff = Sniffer(self.interface, filter)
-                                                	self.sniff.start()
-						except KeyboardInterrupt:
-                                                	pass
+							try:
+								self.filter = raw_input("[+] Enter the filter: ")
+								if self.filter == "http":
+									self.filter = "port 80"
+								elif self.filter == "dns":
+									self.filter = "port 53"
+								if not self.filter:
+									self.filter = None
+	                                                        self.sniff = Sniffer(self.interface, self.filter)
+        	                                                self.sniff.start()
+							except KeyboardInterrupt:
+                                                		pass
 
 					elif self.command == "pforensic":
 						try:
@@ -462,8 +484,6 @@ class Processor(object):
 
 					elif self.input_list[0] == "xploit":
 						try:
-							completer = None
-							completer = Completer("xploit")
 							from modules.exploit import Exploit
 							if self.targets is not None and self.input_list[1] == "tcp":
 								self.xploit = Exploit(self.targets, self.input_list[1])
