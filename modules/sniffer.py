@@ -29,7 +29,7 @@ class Sniffer(object):
 
 	name = "Sniffer"
 	desc = "Custom scapy sniffer."
-	version = "0.6"
+	version = "0.7"
 
 	def __init__(self, interface, filter):
 		self.interface = interface
@@ -39,73 +39,67 @@ class Sniffer(object):
 
 	def customsniff(self, p):
 
-                if p.haslayer(TCP) and not p.haslayer(Raw):
-                	return
-
-		print "\r\n\n\n--------------------------[Packet]--------------------------\r\n"
-
 		if p.haslayer(Ether):
+			pkt = "\r\n\n\n--------------------------[Packet]--------------------------\r\n"
+			end = "\r\n------------------------------------------------------------\r\n"
 			mac_dst = p[Ether].dst
 			mac_src = p[Ether].src
 			#type = p[Ether].type
-			print
-			print "[Ethernet Layer]"
-			print
-			print "[E] MAC destination: {}".format(mac_dst)
-			print "[E] MAC source: {}".format(mac_src)
+			pkt += "\n[Ethernet Layer]\n\n"
+			pkt += "[E] MAC destination: {}\n".format(mac_dst)
+			pkt += "[E] MAC source: {}\n\n".format(mac_src)
 			#print "[E] Type: {}".format(type)
-			print
 
 		if p.haslayer(ARP):
 
 			if p[ARP].op == 1:
+				print pkt
 				print "[ARP Layer]"
 				print
 				print "[A] Request: " + p[ARP].psrc + " who has " + p[ARP].pdst + "?"
+				print end
 			if p[ARP].op == 2:
+				print pkt
 				print "[ARP Layer]"
 				print
-				print "[A] Response: " + p[ARP].hwsrc + " is at " + p[ARP].psrc
+				print "[A] Response: " + p[ARP].psrc + " is at " + p[ARP].hwsrc
+				print end
 
 		elif p.haslayer(IP):
 			ip_src = p[IP].src
 			ip_dst = p[IP].dst
 			len = p[IP].len
 			ttl = p[IP].ttl
-			print "[IPv4 Layer]"
-        	        print
-        	        print "[I] IPv4 destination: {}".format(ip_dst)
-        	        print "[I] IPv4 source: {}".format(ip_src)
-        	        print "[I] Packet lenght: {}".format(len)
-        	        print "[I] Time to Live: {}".format(ttl)
-        	        print
+			pkt += "[IPv4 Layer]\n\n"
+        	        pkt += "[I] IPv4 destination: {}\n".format(ip_dst)
+        	        pkt += "[I] IPv4 source: {}\n".format(ip_src)
+        	        pkt += "[I] Packet lenght: {}\n".format(len)
+        	        pkt += "[I] Time to Live: {}\n\n".format(ttl)
 
 			if p.haslayer(UDP):
 				sport = p[UDP].sport
 				dport = p[UDP].dport
-				print "[UDP Layer]"
-				print
-				print "[U] Source port: {}".format(sport)
-				print "[U] Destination port: {}".format(dport)
-				print
+				pkt += "[UDP Layer]\n\n"
+				pkt += "[U] Source port: {}\n".format(sport)
+				pkt += "[U] Destination port: {}\n\n".format(dport)
 				if p.haslayer(DNS) and p.getlayer(DNS).qr == 0:
+					print pkt
 					print "[DNS Layer]"
 					print
-					print "REQUEST"
+					print "[DNS Query]"
 					print
-					print "[D] Domain name: {}".format(p.getlayer(DNS).qd.qname)
-					print
+					print "[D] qname: {}".format(p.getlayer(DNS).qd.qname)
+					print end
+
 				elif p.haslayer(DNSRR):
+					print pkt
 					print "[DNS Layer]"
 					print
-					print "RESPONSE"
+					print "[DNS Response]"
 					print
-					print "[D] Host: {}".format(p[DNSRR].rdata)
-					print
-	                        else:
- 	                                print "[Could not parse packet]"
-        	                        print
-                	                p.show()
+					print "[D] rrname: {}".format(p[DNSRR].rrname)
+					print "[D] rdata: {}".format(p[DNSRR].rdata)
+					print end
 
 
 
@@ -120,6 +114,7 @@ class Sniffer(object):
 				chksum = p[TCP].chksum
 				load = p[Raw].load
 				if load.startswith('GET') or load.startswith('POST') or load.startswith('HTTP'):
+					print pkt
 					print "[TCP Layer]"
 					print
                         	     	print "[T] Source port: {}".format(sport)
@@ -132,37 +127,17 @@ class Sniffer(object):
 					print "[LOAD]"
 					print
 					print "[R] Load:\n\n{}".format(load)
-					print
-					print
-
-				else:
-					print "[TCP Layer]"
-					print
-					print "[T] Source port: {}".format(sport)
-					print "[T] Destination port: {}".format(dport)
-					print "[T] Seq: {}".format(seq)
-					print "[T] Ack: {}".format(ack)
-					print "[T] Flags: {}".format(flag)
-					print "[T] Checksum: {}".format(chksum)
-					print
-					print "[Packet don't have GET, POST or HTTP on load.]"
+					print end
 
 			elif p.haslayer(ICMP):
 				type = p[ICMP].type
 				code = p[ICMP].code
+				print pkt
 				print "[ICMP Layer]"
 				print
 				print "[I] Type: {}".format(type)
 				print "[I] Code: {}".format(type)
-
-
-		else:
-			print "[Could not parse packet]"
-			print
-			p.show()
-
-		print "------------------------------------------------------------"
-
+				print end
 
 
 	def start(self):
