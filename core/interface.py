@@ -609,6 +609,7 @@ class Processor(object):
 							else:
 								print "[!] Select a valid type of brute-force type help to check."
 					else:
+					# 如果不是前面那些if，表示前面给出的可能都不满足，则直接用操作系统执行这条命令
 						try:
 							os.system("{}".format(self.command))
 							pass
