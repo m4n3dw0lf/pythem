@@ -1,0 +1,3 @@
+*.pyc
+modules/passwd.txt
+modules/passwd_demo.py
