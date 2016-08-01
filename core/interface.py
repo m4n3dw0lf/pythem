@@ -65,11 +65,13 @@ class Processor(object):
 			while 1:
 				completer = Completer("pythem")
 				console = termcolor.colored("pythem>","red", attrs=["bold"])
+				# 得到输入在pythem的命令
 				self.command = raw_input("{} ".format(console))
+				# split()用指定的分隔符来切分字符串成一个列表，这里是将命令通过『空格』拆分成若干参数
 				self.argv = self.command.split()
 				self.input_list = [str(a) for a in self.argv]
 				try:
-
+					# 如果第一个命令是`help`
 					if self.input_list[0] == "help":
 						print_help()
 
@@ -147,7 +149,7 @@ class Processor(object):
 						else:
 							exit()
 
-					
+					# 这里因为set命令很常用，于是让set可以大小写通用
 					elif self.input_list[0] == "set" or self.input_list[0] == "SET":
 						if self.input_list[1] == "interface":
 							try:
@@ -203,6 +205,8 @@ class Processor(object):
 								except KeyboardInterrupt:
 									pass
 						elif self.input_list[1] == "target":
+							# 这里先用try一下来得到第三个参数(`set target xxx`)
+							# 如果没有则进入异常处理中，提示输入target，然后将得到的值给targets。
 							try:
 								self.targets = self.input_list[2]
 							except IndexError:

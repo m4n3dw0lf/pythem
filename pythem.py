@@ -27,6 +27,14 @@ from modules.utils import banner
 version = "0.4.0"
 Processor = Processor()
 
+'''
+Function os.getuid() returns ID of a user who runs your program. 
+Function os.geteuid() of a user your program use permissions of. 
+
+ Normally `os.geteuid()` & `os.getuid()` returns the same uid.
+ There are a few other cases where the UID and EUID won't match, but they're not too common. 
+'''
+# 用这个可以判断是否是root用户
 if os.geteuid() != 0:
 	sys.exit("[-] Only for roots kido! ")
 
