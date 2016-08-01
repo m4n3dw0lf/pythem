@@ -206,9 +206,10 @@ class Processor(object):
 									pass
 						elif self.input_list[1] == "target":
 							# 这里先用try一下来得到第三个参数(`set target xxx`)
-							# 如果没有则进入异常处理中，提示输入target，然后将得到的值给targets。
+							
 							try:
 								self.targets = self.input_list[2]
+							# 如果没有则进入异常处理中，提示输入target，然后将得到的值给targets。
 							except IndexError:
 								try:
 									self.targets = raw_input("[+] Enter the target(s): ")
@@ -553,10 +554,11 @@ class Processor(object):
 
 					elif self.input_list[0] == "geoip":
 						try:
-							self.targets = self.input_list[1]
 							from modules.geoip import Geoip
 							path = "config/GeoLiteCity.dat"
 							iptracker = Geoip(self.targets,path)
+							# 这句话应该放在try的最下面。如果放在前面则其后的语句无法执行。
+							self.targets = self.input_list[1]
 
 						except IndexError:
 							if self.targets is not None:
