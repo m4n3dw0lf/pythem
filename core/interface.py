@@ -212,6 +212,7 @@ class Processor(object):
 							except IndexError:
 								try:
 									self.targets = raw_input("[+] Enter the target(s): ")
+									# 这里是直接把输入了字符串给self.targets了。
 								except KeyboardInterrupt:
 									pass
 						elif self.input_list[1] == "file":
@@ -573,7 +574,9 @@ class Processor(object):
 							if self.input_list[1] == "ssh":
 								try:
 									username = raw_input("[+] Enter the username to bruteforce: ")
+									# 到了点才import，不要开始就import，不然没有用到岂不是浪费了
 									from modules.ssh_bruter import SSHbrutus
+									# 向`SSHbrutus`的构造器传入目标IP，用户名(从刚才的输入得到)，还有爆破了字典文件
 									brutus = SSHbrutus(self.targets, username, self.file)
 									brutus.start()
                                                 		except KeyboardInterrupt:
