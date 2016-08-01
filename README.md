@@ -26,7 +26,7 @@ PytheM is a python penetration testing framework. It has been developed in the h
 - [JARVIS](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#jarvis---voice-controlled-assistant)
  - [JARVIS COMMANDS REFERENCE](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#jarvis-commands-reference)
 - [SECTION - CORE](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#section---core)
-- [SECTION - NETWORK AND MAN-IN-THE-MIDDLE](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#section---network-and-man-in-the-middle)
+- [SECTION - NETWORK, MAN-IN-THE-MIDDLE AND DENIAL OF SERVICE (DOS)](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#section---network-man-in-the-middle-and-denial-of-service-dos)
  - [PFORENSIC COMMANDS REFERENCE](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#pforensic-commands-reference)
 - [SECTION - EXPLOIT DEVELOPMENT AND REVERSE ENGINEERING](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#section---exploit-development-and-reverse-engineering)
  - [XPLOIT COMMANDS REFERENCE](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#xploit-commands-reference)
