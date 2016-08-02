@@ -29,7 +29,7 @@ class Sniffer(object):
 
 	name = "Sniffer"
 	desc = "Custom scapy sniffer."
-	version = "0.7"
+	version = "0.8"
 
 	def __init__(self, interface, filter):
 		self.interface = interface
@@ -68,12 +68,14 @@ class Sniffer(object):
 		elif p.haslayer(IP):
 			ip_src = p[IP].src
 			ip_dst = p[IP].dst
+			ip_chk = p[IP].chksum
 			len = p[IP].len
 			ttl = p[IP].ttl
 			pkt += "[IPv4 Layer]\n\n"
         	        pkt += "[I] IPv4 destination: {}\n".format(ip_dst)
         	        pkt += "[I] IPv4 source: {}\n".format(ip_src)
         	        pkt += "[I] Packet lenght: {}\n".format(len)
+        	        pkt += "[I] IP Checksum: {}\n".format(ip_chk)
         	        pkt += "[I] Time to Live: {}\n\n".format(ttl)
 
 			if p.haslayer(UDP):
@@ -122,7 +124,7 @@ class Sniffer(object):
 					print "[T] Seq: {}".format(seq)
 					print "[T] Ack: {}".format(ack) 
 					print "[T] Flags: {}".format(flag)
-					print "[T] Checksum: {}".format(chksum)
+					print "[T] TCP Checksum: {}".format(chksum)
 					print
 					print "[LOAD]"
 					print
