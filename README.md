@@ -17,6 +17,7 @@ PytheM is a python penetration testing framework. It has been developed in the h
 - [Web page formulary brute-force](https://github.com/m4n3dw0lf/PytheM/wiki/Examples#web-page-formulary-brute-force).
 - [URL content buster](https://github.com/m4n3dw0lf/PytheM/wiki/Examples#url-content-buster).
 - [Overthrow the DNS of LAN range/IP address](https://github.com/m4n3dw0lf/PytheM/wiki/Examples#overthrow-the-dns-of-lan-rangeip-address)
+- [Redirect all possible DNS queries to host](https://github.com/m4n3dw0lf/PytheM/wiki/Examples#redirect-all-possible-dns-queries-to-host)
 
 # Exploit Development with PytheM
 
