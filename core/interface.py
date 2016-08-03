@@ -32,7 +32,7 @@ import readline
 class Processor(object):
 	name = "Interface-Processor"
 	desc = "Console to process commands"
-	version = "0.4"
+	version = "0.5"
 
 
 	def __init__(self):
@@ -331,11 +331,14 @@ class Processor(object):
 						try:
 
 							if self.input_list[1] == "start":
+								if not self.arpspoof_status:
+									print "[!] You probably forgot to start an ARP spoofing."
+									continue
 								if self.domain != None :
 									domain = self.domain
 								else:
-									try: 
-										domain = raw_input("[+] Domain to be spoofed: ")
+									try:
+										domain = raw_input("[!] Type all to spoof all domains\n[+] Domain to be spoofed: ")
 										self.domain = domain
 									except KeyboardInterrupt: pass
 
