@@ -23,7 +23,8 @@ import urllib2
 import threading
 import Queue
 import urllib
-import sys
+# unused import of sys
+#   import sys
 import os
 import mechanize
 
