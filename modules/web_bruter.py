@@ -46,6 +46,7 @@ class WEBbrutus(object):
         self.line = "\n------------------------------------------------------------------------\n"
 
 
+    # If 'wordlist' is 'self.wordlist', why do we need the 'wordlist' arg?
     def build_wordlist(self, wordlist):
         # Le a lista de palavras
         wordlist = self.wordlist
@@ -61,8 +62,10 @@ class WEBbrutus(object):
                 if found_resume:
                     words.put(word)
                 else:
+                    # Should be 'self.resume'?
                     if word == resume:
                         found_resume = True
+                        # Should be 'self.resume'?
                         print "Resuming wordlist from: %s" % resume
             else:
                 words.put(word)
@@ -83,18 +86,22 @@ class WEBbrutus(object):
 
     def form_bruter(self):
         print
+
         try:
             self.login = raw_input("[+] Enter the input name of the username box: ")
             self.psswd = raw_input("[+] Enter the input name of the password box: ")
             self.user = raw_input("[+] Enter the username to brute-force the formulary: ")
             input_file = open(self.wordlist)
+
             for i in input_file.readlines():
                 password = i.strip("\n")
                 self.form_attempt(password)
+        # Very broad exception catch, what are we trying to catch here?
         except Exception as e:
             print "[!] Exception caught, check the fields according to the HTML page, Error: {}".format(e)
 
 
+    # If 'word_queue' is 'self.word_queue', why do we need the 'word_queue' arg?
     def dir_bruter(self, word_queue, extensions=None):
         while not self.word_queue.empty():
             attempt = self.word_queue.get()
@@ -127,7 +134,7 @@ class WEBbrutus(object):
         if mode == 'url':
             print "[+] Content URL bruter initialized."
             try:
-                for i in range(self.threads):
+                for _ in range(self.threads):
                     self.t = threading.Thread(target=self.dir_bruter, args=(self.word_queue, self.extensions,))
                     self.t.start()
             except KeyboardInterrupt:
@@ -147,6 +154,7 @@ class WEBbrutus(object):
             try:
                 self.t.stop()
                 print "[-] Content URL bruter finalized."
+            # Very broad exception catch, what are we trying to catch here?
             except Exception as e:
                 print "[!] Exception caught: {}".format(e)
 
@@ -154,5 +162,6 @@ class WEBbrutus(object):
             try:
                 os.system('kill %d' % os.getpid())
                 print "[-] Brute-Form authentication finalized."
+            # Very broad exception catch, what are we trying to catch here?
             except Exception as e:
                 print "[!] Exception caught: {}".format(e)
