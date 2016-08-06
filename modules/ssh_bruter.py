@@ -34,6 +34,13 @@
 #   - Removed try-except in start(). Not sure what exceptions this will be
 #     catching, except a possible KeyboardInterrupt?
 #
+#
+# === Future development suggestions:
+#
+# 2016, Aug 06, Bifrozt
+#   - Use 'threading' to improve brute force attack speed
+#
+#
 import os
 import paramiko
 import sys
