@@ -48,7 +48,6 @@ import socket
 from os import R_OK
 
 
-
 class SSHbrutus(object):
     """SSH brute force class. """
     name = "SSH Brute-forcer"
