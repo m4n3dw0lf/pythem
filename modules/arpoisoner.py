@@ -161,6 +161,7 @@ class ARPspoof(object):
 			pkt = Ether(src=self.gateway_mac, dst="ff:ff:ff:ff:ff:ff")/ARP(hwsrc=self.gateway_mac, psrc=self.gateway, op="is-at")
 			for i in range(0, count):
 				self.socket2.send(pkt)
+			return
 
 		elif self.targets:
 			for target in self.targets:
@@ -178,7 +179,8 @@ class ARPspoof(object):
 							if "Interrupted system call" not in e:
 								pass
 
-
+			return
+		
 		set_ip_forwarding(0)
 		self.socket.close()
 		self.socket2.close()
