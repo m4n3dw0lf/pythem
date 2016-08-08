@@ -32,7 +32,7 @@ import readline
 class Processor(object):
 	name = "Interface-Processor"
 	desc = "Console to process commands"
-	version = "0.5"
+	version = "0.6"
 
 
 	def __init__(self):
@@ -442,9 +442,12 @@ class Processor(object):
 									except TypeError:
 										print "[!] You probably forgot to set interface."
 							elif self.input_list[1] == "stop":
-								if self.dnsdrop_status == 1:
+								if self.dnsdrop_status == 1 and self.synflood_status == 1:
 									self.dos.dnsdropstop()
-								if self.synflood_status == 1:
+									self.dos.synfloodstop()
+								elif self.dnsdrop_status == 1:
+									self.dos.dnsdropstop()
+								elif self.synflood_status == 1:
 									self.dos.synfloodstop()
 								else:
 									print "[!] You need to start a DoS attack before call stop."
