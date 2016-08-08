@@ -64,11 +64,11 @@ class SSHbrutus(object):
         """Tests if the file exists and if the executing user has read access
         to the file. Returns file if both tests are passed. """
         if not os.path.isfile(self.fobj):
-            print 'FileNotFound: {0}'.format(self.fobj)
+            print '[-] File not found: {0}'.format(self.fobj)
             sys.exit(1)
 
         if not os.access(self.fobj, R_OK):
-            print 'DeniedReadAccess: {0}'.format(self.fobj)
+            print '[-] Denied read access: {0}'.format(self.fobj)
             sys.exit(1)
 
         if os.path.isfile(self.fobj) and os.access(self.fobj, R_OK):
@@ -107,13 +107,13 @@ class SSHbrutus(object):
                 if resp == 0:
                     print "[+] User: {0}".format(self.usr)
                     print "[+] Password found!: {0}".format(passwd)
-                    sys.exit(0)
+                    break
 
                 if resp == 1:
                     print "[-] User: {0} Password: {1}".format(self.usr, passwd)
 
             elif resp[0] == 2:
                 print "[!] {0}: {1}".format(resp[1], self.trgt)
-                sys.exit(1)
+                break
 
         wlist.close()
