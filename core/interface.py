@@ -56,7 +56,8 @@ class Processor(object):
 		self.arpspoof_status = False
 		self.inject_status = False
 		self.dnsspoof_status = False
-		self.mitmdrop_status = 0
+		self.dnsdrop_status = 0
+		self.synflood_status = 0
 
 
 
@@ -419,20 +420,32 @@ class Processor(object):
 						from modules.jammer import Jam
 						self.dos = Jam()
 						try:
-							if self.input_list[1] == "mitmdrop":
+							if self.input_list[1] == "dnsdrop":
 								if self.arpspoof_status:
 									try:
 										myip = get_myip(self.interface)
-										self.dos.mitmdropstart(myip)
-										self.mitmdrop_status = 1
+										self.dos.dnsdropstart(myip)
+										self.dnsdrop_status = 1
 									except Exception as e:
 										print "[!] Exception caught: {}".format(e)
 								else:
-									print "[!] You need to start a arpspoof on a target (IP/Range) to start mitmdrop."
+									print "[!] You need to start a arpspoof on a target (IP/Range) to start dnsdrop."
 
+							elif self.input_list[1] == "synflood":
+								if self.targets == None:
+									print "[!] You probably forgot to set a IP address as target"
+								else:
+									try:
+										myip = get_myip(self.interface)
+										self.dos.synfloodstart(myip,self.targets,self.port)
+										self.synflood_status = 1
+									except TypeError:
+										print "[!] You probably forgot to set interface."
 							elif self.input_list[1] == "stop":
-								if self.mitmdrop_status == 1:
-									self.dos.mitmdropstop()
+								if self.dnsdrop_status == 1:
+									self.dos.dnsdropstop()
+								if self.synflood_status == 1:
+									self.dos.synfloodstop()
 								else:
 									print "[!] You need to start a DoS attack before call stop."
 							else:

