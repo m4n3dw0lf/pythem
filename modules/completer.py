@@ -55,7 +55,7 @@ class Completer(object):
 			self.suboptions = ['stdin', 'tcp']
 			completer = readline.set_completer(self.suboption)
 
-		elif "brute-force" in text and state == 1:
+		elif "brute" in text and state == 1:
 			self.suboptions = ['ssh','url','form']
 			completer = readline.set_completer(self.suboption)
 
