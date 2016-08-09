@@ -102,6 +102,14 @@ class Scanner(object):
 						try:
 							if dstPort == 80 or dstPort == 8080:
 								msg = "GET / HTTP/1.1\r\n\r\n"
+
+							elif dstPort == 21:
+								from ftplib import FTP
+								ftp = FTP('{}'.format(self.targetip))
+								ftpm = ftp.getwelcome()
+								for l in ftpm.split("\n"):
+									print "       |{}".format(l)
+
 							else:
 								msg = "\n"
 							s.connect((self.targetip,dstPort))
