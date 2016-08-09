@@ -239,6 +239,9 @@ def print_help():
 	print color("  pythem> ","red") + "scan"
 	print "     or"
    	print color("  pythem> ","red") + "scan tcp"
+   	print
+   	print color("  pythem> ","red") + "scan manual"
+   	print "  [+] Enter the port, ports (separated by commas): 21,22,25,80"
 	print
 	print
 	print color("[*] arpspoof			Start or stop an arpspoofing attack.","blue")
