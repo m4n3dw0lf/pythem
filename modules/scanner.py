@@ -30,8 +30,7 @@ class Scanner(object):
 
 	name = "Multi purpose scanner"
 	desc = "Scan hosts"
-	version = "0.7"
-	ps = "Add service TCP payload scanner ftp, ssh, mysql, etcs."
+	version = "0.8"
 
 	def __init__(self,target,interface,mode):
 		self.interface = interface
@@ -102,6 +101,14 @@ class Scanner(object):
 						try:
 							if dstPort == 80 or dstPort == 8080:
 								msg = "GET / HTTP/1.1\r\n\r\n"
+								s.connect((self.targetip,dstPort))
+								s.send(msg)
+								resp = s.recv(1024)
+								if resp:
+									resp,garbage = resp.split("\r\n\r\n")
+									for l in resp.split("\n"):
+										print "       |{}".format(l)
+								s.close()
 
 							elif dstPort == 21:
 								from ftplib import FTP
@@ -109,17 +116,22 @@ class Scanner(object):
 								ftpm = ftp.getwelcome()
 								for l in ftpm.split("\n"):
 									print "       |{}".format(l)
+								s.close()
 
-							else:
-								msg = "\n"
-							s.connect((self.targetip,dstPort))
-							s.send(msg)
-							resp = s.recv(1024)
-							if resp:
-								resp,garbage = resp.split("\r\n\r\n")
+							elif dstPort == 22:
+								s.connect((self.targetip,dstPort))
+								resp = s.recv(1024)
 								for l in resp.split("\n"):
 									print "       |{}".format(l)
-							s.close()
+								s.close()
+
+							else:
+								s.connect((self.targetip,dstPort))
+								resp = s.recv(1024)
+								for l in resp.split("\n"):
+									print "       |{}".format(l)
+								s.close()
+
 						except: pass
 
 			elif(resp.haslayer(ICMP)):
