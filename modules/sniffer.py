@@ -115,7 +115,7 @@ class Sniffer(object):
 				flag = "/".join(preflag)
 				chksum = p[TCP].chksum
 				load = p[Raw].load
-				if load.startswith('GET') or load.startswith('POST') or load.startswith('HTTP'):
+				if load.startswith('GET') or load.startswith('POST') or load.startswith('HTTP') or "230" in load:
 					print pkt
 					print "[TCP Layer]"
 					print
