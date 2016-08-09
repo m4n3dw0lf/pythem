@@ -172,7 +172,7 @@ class Scanner(object):
                         ans, unans = srp(Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=self.arprange), timeout = 2, iface=self.interface, inter=0.1)
                         for snd,rcv in ans:
                                 print rcv.sprintf(r"[+] IP: %ARP.psrc% has the MAC: %Ether.src%")
-			print
+			print "\n[*] ARP Scan completed !\n"
 
                 except KeyboardInterrupt:
                         print "\n[*] User requested shutdown."
