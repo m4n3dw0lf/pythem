@@ -24,13 +24,14 @@ from netaddr import IPNetwork, IPRange, IPAddress, AddrFormatError
 import random
 import sys
 import os
+import socket
 
 class Scanner(object):
 
 	name = "Multi purpose scanner"
 	desc = "Scan hosts"
-	version = "0.6"
-	ps = "Need to improve results"
+	version = "0.7"
+	ps = "Add service TCP payload scanner ftp, ssh, mysql, etcs."
 
 	def __init__(self,target,interface,mode):
 		self.interface = interface
@@ -75,7 +76,12 @@ class Scanner(object):
                         	return target_list
 
 			except Exception as e:
-     				sys.exit("[!] Exception caught: {}").format(e)
+     				try:
+					target = socket.gethostbyname(self.targets)
+					target_list.append(target)
+					return target_list
+				except:
+					print "[!] Exception caught: {}".format(e)
 
 
 
@@ -90,10 +96,27 @@ class Scanner(object):
 				if (resp.haslayer(TCP)):
 					if(resp.getlayer(TCP).flags == 0x12):
 						send_rst = sr(IP(dst=self.targetip)/TCP(sport=srcPort, dport=dstPort, flags="R"), timeout=1,verbose=0)
-						print "[+]{}:{} is open.".format(self.targetip,str(dstPort))
+						print "\n   [+] {}:{} is open.".format(self.targetip,str(dstPort))
+						s = socket.socket()
+						s.settimeout(1)
+						try:
+							if dstPort == 80 or dstPort == 8080:
+								msg = "GET / HTTP/1.1\r\n\r\n"
+							else:
+								msg = "\n"
+							s.connect((self.targetip,dstPort))
+							s.send(msg)
+							resp = s.recv(1024)
+							if resp:
+								resp,garbage = resp.split("\r\n\r\n")
+								for l in resp.split("\n"):
+									print "       |{}".format(l)
+							s.close()
+						except: pass
+
 			elif(resp.haslayer(ICMP)):
 				if(int(resp.getlayer(ICMP).type)==3 and int(resp.getlayer(ICMP).code) in [1,2,3,9,10,13]):
-					print "[-]{}:{} is filtered.".format(self.targetip,str(dstPort))
+					print "   [*]\n   {}:{} is filtered.".format(self.targetip,str(dstPort))
 
 	def MANUALscanner(self):
 		liveCounter = 0
@@ -102,7 +125,7 @@ class Scanner(object):
 		print "\n[+] Manual TCP Scan initialized..."
 		for target in self.range:
 			self.targetip = str(target)
-			resp = sr1(IP(dst=str(self.targetip))/ICMP(),timeout=2,verbose=0)
+			resp = sr1(IP(dst=str(self.targetip))/ICMP(),timeout=3,verbose=0)
                         if (str(type(resp)) == "<type 'NoneType'>"):
                                 print "\n[*]" + str(self.targetip) + " is down or not responding.\n"
                         elif (int(resp.getlayer(ICMP).type)==3 and int(resp.getlayer(ICMP).code) in [1,2,3,9,10,13]):
@@ -111,36 +134,45 @@ class Scanner(object):
                                 print "\n[*]" + str(self.targetip) + " is online: "
                                 self.portScan(str(self.targetip),self.portManual)
                                 liveCounter += 1
-          	print "Of "+ str(len(self.range)) + " scanned hosts, " + str(liveCounter) + " are online."
+          	print "\n[*] Of "+ str(len(self.range)) + " scanned hosts, " + str(liveCounter) + " are online.\n"
 
 
         def TCPscanner(self):
-
 		liveCounter = 0
                 self.ports = self.portRange
 		print "\n[+] TCP Scan initialized..."
 		for target in self.range:
 			self.targetip = str(target)
-                        resp = sr1(IP(dst=str(self.targetip))/ICMP(),timeout=2,verbose=0)
+                        resp = sr1(IP(dst=str(self.targetip))/ICMP(),timeout=3,verbose=0)
                         if (str(type(resp)) == "<type 'NoneType'>"):
                                  print "\n[*]" + str(self.targetip) + " is down or not responding.\n"
                         elif (int(resp.getlayer(ICMP).type)==3 and int(resp.getlayer(ICMP).code) in [1,2,3,9,10,13]):
                                  print "\n[*]" + str(self.targetip) + " is blocking ICMP.\n"
 			else:
                                  print "\n[*]" + str(self.targetip) + " is online: "
+				 if (int(resp.getlayer(IP).ttl)) <= 64 and (int(resp.getlayer(IP).ttl)) > 32:
+					os_guess = "Linux/Unix"
+				 elif (int(resp.getlayer(IP).ttl)) <= 128 and (int(resp.getlayer(IP).ttl)) > 64:
+					os_guess = "Windows"
+				 elif (int(resp.getlayer(IP).ttl)) <= 255 and (int(resp.getlayer(IP).ttl)) > 64:
+					os_guess = "iOS 12.4/Cisco Routers"
+				 else:
+					os_guess = "N/A"
+				 print "   TTL / OS Guess : {} ({})".format(str(resp[IP].ttl),os_guess)
 	      			 self.portScan(str(self.targetip),self.portRange)
                                  liveCounter += 1
-		print "Of "+ str(len(self.range)) + " scanned hosts, " + str(liveCounter) + " are online."
+		print "\n[*] Of "+ str(len(self.range)) + " scanned hosts, " + str(liveCounter) + " are online.\n"
 
 
 	def ARPscanner(self):
                 try:
 	                print "\n[+] ARP Scan initialized...\n"
-			print "[!] Wait a moment then press [Ctrl+C] to see result"
+			print "\n[!] Wait untill complete.\n"
          	        conf.verb = 0
                         ans, unans = srp(Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=self.arprange), timeout = 2, iface=self.interface, inter=0.1)
                         for snd,rcv in ans:
                                 print rcv.sprintf(r"[+] IP: %ARP.psrc% has the MAC: %Ether.src%")
+			print
 
                 except KeyboardInterrupt:
                         print "\n[*] User requested shutdown."
