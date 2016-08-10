@@ -1,11 +1,6 @@
-#!/usr/bin/env python2.7
-#coding=UTF-8
-
-# Copyright (c) 2016 Angelo Moura
+# Copyright (c) 2004-2009 Moxie Marlinspike
 #
-# This file is part of the program PytheM
-#
-# PytheM is free software; you can redistribute it and/or
+# This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation; either version 3 of the
 # License, or (at your option) any later version.
@@ -14,25 +9,21 @@
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
+#
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
+#
 
-import os
-import sys
-from core.interface import Processor
-from modules.utils import banner
+from twisted.web.http import HTTPChannel
+from ClientRequest import ClientRequest
 
-version = "0.4.2"
-Processor = Processor()
+class StrippingProxy(HTTPChannel):
+    '''sslstrip is, at heart, a transparent proxy server that does some unusual things.
+    This is the basic proxy server class, where we get callbacks for GET and POST methods.
+    We then proxy these out using HTTP or HTTPS depending on what information we have about
+    the (connection, client_address) tuple in our cache.      
+    '''
 
-if os.geteuid() != 0:
-	sys.exit("[-] Only for roots kido! ")
-
-if __name__ == '__main__':
-	try:
-		print banner(version)
-		Processor.start()
-	except Exception as e:
-		print "[!] Exception caught: {}".format(e)
+    requestFactory = ClientRequest

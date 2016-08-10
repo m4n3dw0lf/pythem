@@ -63,7 +63,7 @@ class Completer(object):
 			self.suboptions = ['dnsdrop','synflood','stop']
 			completer = readline.set_completer(self.suboption)
 		else:
-	        	self.words = ['clear','help','exit','quit','set','print','scan','arpspoof','dnsspoof','inject','sniff','pforensic','dos','xploit','brute','geoip','decode','encode','cookiedecode','jarvis']
+	        	self.words = ['clear','help','exit','quit','set','print','scan','arpspoof','dnsspoof','inject','sniff','pforensic','dos','xploit','brute','geoip','decode','encode','cookiedecode','jarvis','hstsbypass']
 			results = [x for x in self.words if x.startswith(text)] + [None]
 			return results[state]
 

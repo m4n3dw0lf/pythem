@@ -263,7 +263,7 @@ def print_help():
 	print
 	print color("[*] dnsspoof			Start a dnsspoofing attack.","blue")
 	print
-	print "Should be called after an arpspoofing attack has been started"
+	print "Should be called after an ARP spoofing attack has been started"
 	print
 	print color(" arguments:","red")
 	print
@@ -277,9 +277,19 @@ def print_help():
 	print color("  pythem> ","red") + "dnsspoof status"
 	print
 	print
+	print color("[*] hstsbypass			Start sslstrip+ and dns2proxy","blue")
+	print color("	by:LeonardoNve && M.Marlinspike	_|	     |_by:LeonardNve","red")
+	print
+	print "Should be called after an ARP spoofing attack has been started"
+	print
+	print color(" example:","green")
+	print
+	print color("  pythem> ","red") + "hstsbypass"
+	print
+	print
 	print color("[*] inject			Start and redirect clients to web server with a script to inject in header field","blue")
 	print
-	print "Should be used after a arpspoof has been started"
+	print "Should be used after a ARP spoof has been started"
 	print
 	print color(" arguments:", "red")
 	print
