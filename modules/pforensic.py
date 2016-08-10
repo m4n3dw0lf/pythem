@@ -89,11 +89,11 @@ class PcapReader(object):
 
 				if p[ARP].op == 1:
 					print pkt
-					print "[ARP] Request: " + p[ARP].psrc + " who has " + p[ARP].pdst + "?"
+					print "[ARP] " + p[ARP].psrc + " : who has " + p[ARP].pdst + "?"
 					print end
 				if p[ARP].op == 2:
 					print pkt
-					print "[ARP] Response: " + p[ARP].psrc + " is at " + p[ARP].hwsrc
+					print "[ARP] " + p[ARP].psrc + " : is at " + p[ARP].hwsrc
 					print end
 
 			elif p.haslayer(IP):
