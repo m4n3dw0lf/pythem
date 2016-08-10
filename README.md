@@ -11,6 +11,7 @@ PytheM is a python multi-purpose pentest framework. It has been developed in the
 # Examples
 
 - [ARP spoofing - Man-in-the-middle HTTP](https://github.com/m4n3dw0lf/PytheM/wiki/Examples#arp-spoofing---man-in-the-middle-http).
+- [Bypass HSTS - Strip SSL](https://github.com/m4n3dw0lf/PytheM/wiki/Examples#bypass-hsts---strip-ssl)
 - [ARP+DNS spoof - fake page redirect to credential harvester](https://github.com/m4n3dw0lf/PytheM/wiki/Examples#arpdns-spoof---fake-page-redirect-to-credential-harvester).
 - [Man-in-the-middle inject BeEF hook](https://github.com/m4n3dw0lf/PytheM/wiki/Examples#inject-beef-hook)
 - [SSH Brute-Force attack](https://github.com/m4n3dw0lf/PytheM/wiki/Examples#ssh-brute-force-attack).
