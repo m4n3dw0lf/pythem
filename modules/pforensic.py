@@ -57,6 +57,9 @@ class PcapReader(object):
 		print color("[*] conversations:		Display pictogram with conversations between hosts from the analyzed file.","blue")
 		print
 		print
+		print color("[*] filter			Run the PytheM custom filter in the packets.","blue")
+		print
+		print
 		print color("[*] packetdisplay [num]:	Display the full content of index selected packet.","blue")
 		print
 		print
@@ -70,11 +73,79 @@ class PcapReader(object):
 			ip_dst = p[IP].dst
 			if p.haslayer(Raw):
 				print
-				print "----------------------------------------------[PACKET]-------------------------------------------------------\n"
+				print "----------------------------------------------[PAYLOAD]-------------------------------------------------------\n"
 				print str(ip_src) + "---->" + str(ip_dst) + "\n" 
 				print "\n".join(p.sprintf("{Raw:%Raw.load%}\n").split(r"\r\n")) 		
 				print "-------------------------------------------------------------------------------------------------------------"
 				print
+
+	def custom_filter(self,packets):
+		for p in packets:
+			if p.haslayer(Ether):
+				pkt = "\r\n\n\n--------------------------[Packet]--------------------------\r\n"
+				end = "\r\n------------------------------------------------------------\r\n"
+
+			if p.haslayer(ARP):
+
+				if p[ARP].op == 1:
+					print pkt
+					print "[ARP] Request: " + p[ARP].psrc + " who has " + p[ARP].pdst + "?"
+					print end
+				if p[ARP].op == 2:
+					print pkt
+					print "[ARP] Response: " + p[ARP].psrc + " is at " + p[ARP].hwsrc
+					print end
+
+			elif p.haslayer(IP):
+				ip_src = p[IP].src
+				ip_dst = p[IP].dst
+
+				if p.haslayer(UDP):
+					sport = p[UDP].sport
+					dport = p[UDP].dport
+					if p.haslayer(DNS) and p.getlayer(DNS).qr == 0:
+		        		        pkt += "[IPv4] {}:{} ----> {}:{} \n".format(ip_src,sport,ip_dst,dport)
+						print pkt
+						print "[DNS Query]"
+						print "[DNS] qname: {}".format(p.getlayer(DNS).qd.qname)
+						print end
+
+					elif p.haslayer(DNSRR):
+		        		        pkt += "[IPv4] {}:{} <---- {}:{} \n".format(ip_dst,dport,ip_src,sport)
+						print pkt
+						print "[DNS Layer]"
+						print
+						print "[DNS Response]"
+						print "[DNS] rrname: {} = rdata: {}".format(p[DNSRR].rrname,p[DNSRR].rdata)
+						print end
+
+
+
+				elif p.haslayer(TCP) and p.haslayer(Raw):
+					flags = {'F':'FIN','S':'SYN','R':'RST','P':'PSH','A':'ACK','U':'URG','E':'ECE','C':'CWR'}
+					dport = p[TCP].dport
+					sport = p[TCP].sport
+					ack = p[TCP].ack
+					seq = p[TCP].seq
+					preflag = [flags[x] for x in p.sprintf('%TCP.flags%')]
+					flag = "/".join(preflag)
+					chksum = p[TCP].chksum
+					load = p[Raw].load
+					if load.startswith('GET') or load.startswith('POST') or load.startswith('HTTP') or "230" in load:
+		        		        pkt += "[IPv4] {}:{} ----> {}:{} | {} \n".format(ip_src,sport,ip_dst,dport,flag)
+						print pkt
+						print "[TCP - LOAD]"
+						print "[Raw] Load:\n\n{}".format(load)
+						print end
+
+				elif p.haslayer(ICMP):
+					type = p[ICMP].type
+					code = p[ICMP].code
+		        		pkt += "[IPv4] {}:{} ----> {}:{} \n".format(ip_src,sport,ip_dst,dport)
+					print pkt
+					print "[ICMP] Type: {}".format(type)
+					print end
+
 	def start(self):
 		while True:
 			try:
@@ -87,17 +158,23 @@ class PcapReader(object):
                                 	if self.input_list[0]  == 'packetdisplay':
                                 	        try:
                                                 	self.packets[int(self.input_list[1])].show()
-						except Exception as e: 
+						except Exception as e:
                             				print "[!] Exception caught: {}".format(e)
+
+					elif self.input_list[0] == "filter":
+						try:
+							self.custom_filter(self.packets)
+						except Exception as e:
+							print "[!] Exception caught: {}".format(e)
 
 					elif self.input_list[0] == 'packetload':
 						try:
 							print "[+] Packet {} payload: ".format(self.input_list[1])
 							self.filter_lookup(self.packets[int(self.input_list[1])])
-						
+
 						except Exception as e: 
                             				print "[!] Exception caught: {}".format(e)
-	
+
 					elif self.input_list[0]  == 'exit':
 						break
 					elif self.input_list[0] == 'quit':
