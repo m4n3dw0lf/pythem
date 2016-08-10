@@ -362,6 +362,7 @@ class Processor(object):
 
 							elif self.input_list[1] == "stop":
 								self.dnsspoof.stop()
+								self.dnsspoof_status = False
 								print "[+] DNS spoofing finalized"
 
                                                         elif self.input_list[1] == "status":
