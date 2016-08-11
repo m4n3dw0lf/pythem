@@ -25,5 +25,6 @@ paramiko==2.0.1
 capstone==3.0.4
 ropper==1.10.7
 termcolor==1.1.0
+psutil==4.3.0
 
 
