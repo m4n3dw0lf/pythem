@@ -28,7 +28,6 @@ import urllib
 import base64
 import termcolor
 
-
 def decode(base):
         text = raw_input("[*] String to be decoded: ")
         decode = text.decode('{}'.format(base))
@@ -83,6 +82,7 @@ def module_check(module):
 def color(message,color):
 	msg = termcolor.colored(str(message), str(color), attrs=["bold"])
 	return msg
+
 
 def jarvis_help(version):
 	print

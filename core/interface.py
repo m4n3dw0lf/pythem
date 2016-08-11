@@ -28,11 +28,12 @@ from modules.completer import Completer
 import os
 import termcolor
 import readline
+import psutil
 
 class Processor(object):
 	name = "Interface-Processor"
 	desc = "Console to process commands"
-	version = "0.6"
+	version = "0.7"
 
 
 	def __init__(self):
@@ -58,6 +59,15 @@ class Processor(object):
 		self.dnsspoof_status = False
 		self.dnsdrop_status = 0
 		self.synflood_status = 0
+		self.sslstrip_status = False
+		self.dns2proxy_status = False
+
+
+	def pskill(self, proc_pid):
+        	process = psutil.Process(proc_pid)
+        	for proc in process.children(recursive=True):
+        	        proc.kill()
+        	process.kill()
 
 
 
@@ -84,9 +94,11 @@ class Processor(object):
 							os.system("iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-port 53")
 							os.system("iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8000")
 			                        	with open("log/sslstrip.log", "a+") as stdout:
-                                				self.p = subprocess.Popen(["python sslstrip2/sslstrip.py -l 8000"], shell=True, stdout=stdout, stderr=stdout)
+                                				self.p1 = subprocess.Popen(["python sslstrip2/sslstrip.py -l 8000","sslstrip"], shell=True, stdout=stdout, stderr=stdout)
+								self.sslstrip_status = True
 							with open("log/dns2proxy.log","a+") as stdout:
-								self.p = subprocess.Popen(["python dns2proxy/dns2proxy.py"], shell=True, stdout=stdout, stderr=stdout)
+								self.p2 = subprocess.Popen(["python dns2proxy/dns2proxy.py","dns2proxy"], shell=True, stdout=stdout, stderr=stdout)
+								self.dns2proxy_status = True
 						else:
 							print "[!] You need to start an ARP spoof attack first."
 
@@ -151,7 +163,7 @@ class Processor(object):
 								pass
 							except Exception as e:
 								print "[!] Exception caught: {}".format(e)
-	
+
 						else:
 							self.Jarvis.start('core/processor.py')
 	                                                self.jarvis_status = 1
@@ -160,9 +172,13 @@ class Processor(object):
 						if self.jarvis_status == 1:
 							self.Jarvis.Say(self.Jarvis.random('salutes'))
 							self.Jarvis.stop()
-							exit()
-						else:
-							exit()
+						if self.sslstrip_status == True:
+							self.pskill(self.p1.pid)
+							print "[*] SSLstrip finalized."
+						if self.dns2proxy_status == True:
+							self.pskill(self.p2.pid)
+							print "[*] DNS2Proxy finalized."
+						exit()
 
 					
 					elif self.input_list[0] == "set" or self.input_list[0] == "SET":
