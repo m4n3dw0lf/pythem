@@ -4,11 +4,11 @@ PytheM is a python multi-purpose pentest framework. It has been developed in the
 
 ![alt text] (config/pythemintro.png)
 
-#Installation
+## Installation
 
 - [Installation guide](https://github.com/m4n3dw0lf/PytheM/wiki/Installation#installation)
 
-# Examples
+## Examples
 
 - [ARP spoofing - Man-in-the-middle HTTP](https://github.com/m4n3dw0lf/PytheM/wiki/Examples#arp-spoofing---man-in-the-middle-http).
 - [Bypass HSTS - Strip SSL](https://github.com/m4n3dw0lf/PytheM/wiki/Examples#bypass-hsts---strip-ssl)
@@ -20,12 +20,12 @@ PytheM is a python multi-purpose pentest framework. It has been developed in the
 - [Overthrow the DNS of LAN range/IP address](https://github.com/m4n3dw0lf/PytheM/wiki/Examples#overthrow-the-dns-of-lan-rangeip-address)
 - [Redirect all possible DNS queries to host](https://github.com/m4n3dw0lf/PytheM/wiki/Examples#redirect-all-possible-dns-queries-to-host)
 
-# Exploit Development with PytheM
+## Exploit Development with PytheM
 
 - [Exploit Development 1: Overwriting Instruction Pointer](https://github.com/m4n3dw0lf/PytheM/wiki/Exploit-development#exploit-development-1-overwriting-instruction-pointer)
 - [Exploit Development 2: Ret2libc](https://github.com/m4n3dw0lf/PytheM/wiki/Exploit-development#exploit-development-2-ret2libc)
 
-# Commands Reference
+## Commands Reference
 
 - [JARVIS](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#jarvis---voice-controlled-assistant)
  - [JARVIS COMMANDS REFERENCE](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#jarvis-commands-reference)
