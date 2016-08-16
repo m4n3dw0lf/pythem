@@ -251,8 +251,8 @@ def print_help():
 	print
 	print color(" arguments:","red")
 	print
-	print color("  start","yellow")
- 	print color("  stop","yellow")
+	print color("  - start","yellow")
+ 	print color("  - stop","yellow")
 	print
   	print color(" examples:","green")
 	print
@@ -267,8 +267,8 @@ def print_help():
 	print
 	print color(" arguments:","red")
 	print
-	print color(" start","yellow")
-	print color(" stop","yellow")
+	print color(" - start","yellow")
+	print color(" - stop","yellow")
 	print
 	print color(" examples:","green")
 	print
@@ -293,8 +293,8 @@ def print_help():
 	print
 	print color(" arguments:", "red")
 	print
-	print color(" start","yellow")
-	print color(" stop","yellow")
+	print color("  - start","yellow")
+	print color("  - stop","yellow")
 	print
 	print color(" examples:","green")
 	print
@@ -334,11 +334,11 @@ def print_help():
 	print
 	print color(" arguments:","red")
 	print
-	print color("  dnsdrop             | Start to drop DNS queries that pass through man-in-the-middle traffic.","yellow")
+	print color("  - dnsdrop             | Start to drop DNS queries that pass through man-in-the-middle traffic.","yellow")
 	print
-	print color("  synflood	      | Start a SYN flood attack on target host, default port = 80, set port to change.","yellow")
+	print color("  - synflood	      | Start a SYN flood attack on target host, default port = 80, set port to change.","yellow")
 	print
-	print color("  udpflood	      | Start a UDP flood attack on target host, default port = 80, set port to change.","yellow")
+	print color("  - udpflood	      | Start a UDP flood attack on target host, default port = 80, set port to change.","yellow")
 	print
 	print color(" examples:","green")
 	print
@@ -357,8 +357,8 @@ def print_help():
 	print
 	print color(" arguments:","red")
 	print
-	print color("  stdin		| set file before","yellow")
- 	print color("  tcp		| set target before","yellow")
+	print color("  - stdin		| set file before","yellow")
+ 	print color("  - tcp		| set target before","yellow")
 	print
   	print color(" examples:","green")
 	print
@@ -382,9 +382,9 @@ def print_help():
 	print
 	print color(" arguments:","red")
 	print
-	print color("  ssh		| ip address as target","yellow")
-	print color("  url		| url (with http:// or https://) as target","yellow")
- 	print color("  form		| url (with http:// or https://) as target","yellow")
+	print color("  - ssh		| ip address as target","yellow")
+	print color("  - url		| url (with http:// or https://) as target","yellow")
+ 	print color("  - form		| url (with http:// or https://) as target","yellow")
 	print
   	print color(" examples:","green")
 	print
