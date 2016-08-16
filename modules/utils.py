@@ -335,14 +335,15 @@ def print_help():
 	print color(" arguments:","red")
 	print
 	print color("  dnsdrop             | Start to drop DNS queries that pass through man-in-the-middle traffic.","yellow")
+	print
 	print color("  synflood	      | Start a SYN flood attack on target host, default port = 80, set port to change.","yellow")
+	print
+	print color("  udpflood	      | Start a UDP flood attack on target host, default port = 80, set port to change.","yellow")
 	print
 	print color(" examples:","green")
 	print
 	print color("  pythem> ","red") + "dos dnsdrop"
-	print
 	print color("  pythem> ","red") + "dos synflood"
-	print
 	print color("  pythem> ","red") + "dos stop" + color("          (Stop any kind of Denial of Service attack already initialized.)","yellow")
 	print
 	print

