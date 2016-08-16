@@ -6,7 +6,7 @@ PytheM is a python multi-purpose pentest framework. It has been developed in the
 
 ## Installation
 
-- [Installation guide](https://github.com/m4n3dw0lf/PytheM/wiki/Installation#installation)
+- [Installation guide](https://github.com/m4n3dw0lf/PytheM/wiki/Installation#installation-guide)
 
 ## Examples
 
