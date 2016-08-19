@@ -59,6 +59,7 @@ class Processor(object):
 		self.dnsspoof_status = False
 		self.dnsdrop_status = 0
 		self.synflood_status = 0
+		self.udpflood_status = 0
 		self.dnsflood_status = 0
 		self.sslstrip_status = False
 		self.dns2proxy_status = False
@@ -485,6 +486,8 @@ class Processor(object):
 									try:
 										myip = get_myip(self.interface)
 										self.dos.udpfloodstart(myip,self.targets,self.port)
+										self.dos.udpfloodstart(myip,self.targets,self.port)
+										self.dos.udpfloodstart(myip,self.targets,self.port)
 										self.udpflood_status = 1
 									except TypeError:
 										print "[!] You probably forgot to set a network interface."
@@ -496,9 +499,22 @@ class Processor(object):
 									try:
 										myip = get_myip(self.interface)
 										self.dos.synfloodstart(myip,self.targets,self.port)
+										self.dos.synfloodstart(myip,self.targets,self.port)
+										self.dos.synfloodstart(myip,self.targets,self.port)
 										self.synflood_status = 1
 									except TypeError:
 										print "[!] You probably forgot to set interface."
+
+							elif self.input_list[1] == "icmpsmurf":
+								if self.targets == None:
+									print "[!] You probably forgot to set a IP address as target."
+								else:
+									try:
+										self.dos.icmpsmurfstart(self.targets)
+										self.icmpsmurf_status = 1
+									except Exception as e:
+										print "[!] Exception caught: {}".format(e)
+
 							elif self.input_list[1] == "stop":
 								if self.udpflood_status == 1:
 									self.dos.udpfloodstop()
@@ -606,7 +622,14 @@ class Processor(object):
 							print "[!] Exception caught: {}".format(e)
 							pass
 
-
+					elif self.command == "harvest":
+						try:
+							sslstripharvest()
+						except KeyboardInterrupt:
+							pass
+						except Exception as e:
+							print "[!] Exception caught: {}".format(e)
+							pass
 
 					elif self.input_list[0] == "decode":
 						try:

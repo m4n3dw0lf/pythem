@@ -60,10 +60,10 @@ class Completer(object):
 			completer = readline.set_completer(self.suboption)
 
 		elif "dos" in text and state == 1:
-			self.suboptions = ['dnsdrop','synflood','udpflood','stop']
+			self.suboptions = ['dnsdrop','synflood','udpflood','icmpsmurf','stop']
 			completer = readline.set_completer(self.suboption)
 		else:
-	        	self.words = ['clear','help','exit','quit','set','print','scan','arpspoof','dnsspoof','inject','sniff','pforensic','dos','xploit','brute','geoip','decode','encode','cookiedecode','jarvis','hstsbypass']
+	        	self.words = ['clear','help','exit','quit','set','print','scan','arpspoof','dnsspoof','inject','sniff','pforensic','dos','xploit','brute','geoip','decode','encode','cookiedecode','jarvis','hstsbypass','harvest']
 			results = [x for x in self.words if x.startswith(text)] + [None]
 			return results[state]
 

