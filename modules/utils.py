@@ -64,9 +64,8 @@ def pass_r(l):
 	pwd = str(fpwd[1]).split("&")
 	return pwd[0]
 
-
 def sslstripharvest():
-	print "[$] SSL Strip Harvester - Only harvest gmail accounts (by now)."
+	print "[$] SSL Strip Harvester - Only harvest one gmail account (by now)."
 	try:
 		f = open("sslstrip.log","r+")
 		content = f.read().replace('\n','')
@@ -260,12 +259,14 @@ def print_help():
 	print color("[SECTION - NETWORK, MAN-IN-THE-MIDDLE AND DENIAL OF SERVICE (DOS)]","grey")
 	print
 	print
-	print color("[*] scan			Make a tcp/manualport/arp scan.","blue")
+	print color("[*] scan			Make a tcp/manual/arp scan.","blue")
 	print
 	print "Should be called after setting an interface and a target"
 	print
 	print color(" examples:","green")
 	print color("  pythem> ","red") + "scan"
+	print "  [*] Select one scan mode, options = tcp/arp/manual"
+	print "  [+] Scan mode: arp"
 	print "     or"
    	print color("  pythem> ","red") + "scan tcp"
    	print
@@ -338,7 +339,7 @@ def print_help():
 	print color("  pythem> ","red") + "inject stop"
 	print
 	print
-	print color("[*] sniff			Start sniffing packets.","blue")
+	print color("[*] sniff			Start to sniff network traffic.","blue")
 	print
 	print "Should be called after setting an interface"
 	print
@@ -357,7 +358,7 @@ def print_help():
 	print
 	print color("[*] pforensic			Start a packet-analyzer","blue")
 	print
-	print "Should be called after setting an interface and a file with a .pcap file"
+	print "Should be called after setting file with a .pcap file"
 	print
   	print color(" examples:","green")
 	print

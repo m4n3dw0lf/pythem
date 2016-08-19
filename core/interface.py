@@ -33,7 +33,7 @@ import psutil
 class Processor(object):
 	name = "Interface-Processor"
 	desc = "Console to process commands"
-	version = "0.8"
+	version = "0.9"
 
 
 	def __init__(self):
@@ -95,6 +95,17 @@ class Processor(object):
 
 						# HSTSBYPASS
 					elif self.command == "hstsbypass":
+						if self.input_list[1] == "help":
+							print "\n[Help] Start to perform a HSTS Bypass with dns2proxy and SSL strip with sslstrip+"
+							print "[Required] ARP spoofing started."
+							print "example:" 
+							print "{} set interface wlan0".format(console)
+							print "{} set gateway 10.0.0.1".format(console)
+							print "{} set target 10.0.0.5".format(console)
+							print "{} arpspoof start".format(console)
+							print "{} hstsbypass\n".format(console)
+							continue
+
 						if self.arpspoof_status:
 							print "[*] SSLstrip+ initialized"
 							print "      |_by: LeonardoNve && M.Marlinspike"
@@ -283,6 +294,12 @@ class Processor(object):
 									self.filter = raw_input("[+] Enter the sniffer filter: ")
 								except KeyboardInterrupt:
 									pass
+
+						elif self.input_list[1] == "help":
+							print "\n[Help] Select a variable to set."
+							print "example:"
+							print "{} set interface\n".format(console)
+
 						else:
 							print "[!] Select a valid variable to set."
 
@@ -306,10 +323,22 @@ class Processor(object):
 							print "[+] File path: {}".format(self.file)
 						elif self.input_list[1] == "arpmode":
 							print "[+] ARP spoofing mode: {}".format(self.arpmode)
+						elif self.input_list[1] == "help":
+							print "\n[Help] Print a variable value."
+							print "example:"
+							print "{} print interface\n".format(console)
 						else:
 							print "[-] Select a valid variable name."
 
 					elif self.input_list[0] == "scan":
+						if self.input_list[1] == "help":
+							print "\n[Help] Start a scanner in target host."
+							print "[Required] interface and target"
+							print "example:"
+							print "{} set target www.google.com".format(console)
+							print "{} set interface eth0".format(console)
+							print "{} scan tcp\n".format(console)
+							continue
 						try:
 							mode = self.input_list[1]
 							if self.targets is not None and self.interface is not None:
@@ -361,11 +390,17 @@ class Processor(object):
                                                                         stat = "down"
                                                                 print "[*] ARP spoofing status: {}".format(stat)
 
-
+							elif self.input_list[1] == "help":
+								print "\n[Help] Start a ARP spoofing attack."
+								print "[Optional] set arpmode with rep to spoof with responses and req to spoof with requests"
+								print "example:"
+								print "{} set interface eth0".format(console)
+								print "{} set gateway 192.168.0.1".format(console)
+								print "{} arpspoof start\n".format(console)
+								continue
 
 							else:
 								print "[!] Select a valid option, call help to check syntax."
-						
 						except TypeError:
 							print "[!] You probably forgot to set interface or gateway."
 						except IndexError:
@@ -419,6 +454,15 @@ class Processor(object):
                                                                         stat = "down"
                                                                 print "[*] DNS spoofing status: {}".format(stat)
 
+							elif self.input_list[1] == "help":
+								print "\n[Help] Start to DNS spoof."
+								print "[Required] ARP spoof started."
+								print "example:"
+								print "{} dnsspoof start".format(console)
+								print "[!] Type all to spoof all domains"
+								print "[+] Domain to be spoofed: www.google.com\n"
+								continue
+
 
 							else:
 								print "[!] Select a valid option, call help to check syntax."
@@ -455,6 +499,14 @@ class Processor(object):
 									stat = "down"
 								print "[*] Script injection status: {}".format(stat)
 
+							elif self.input_list[1] == "help":
+								print "\n[Help] Start to inject a source script into target browser."
+								print "[Required] ARP spoof started."
+								print "example:"
+								print "{} inject start".format(console)
+  								print "[+] Enter the script source: http://192.168.1.6:3000/hook.js\n"
+								continue
+
 							else:
 								print "[!] You need to specify  start, stop or status after the inject module call."
 						except IndexError:
@@ -469,6 +521,12 @@ class Processor(object):
 						self.dos = Jam()
 						try:
 							if self.input_list[1] == "dnsdrop":
+								if self.input_list[2] == "help":
+									print "\n[Help] Start to drop DNS queries that pass through man-in-the-middle traffic."
+									print "[Required] ARP spoof started"
+									print "example:"
+									print "{} dos dnsdrop\n".format(console) 
+
 								if self.arpspoof_status:
 									try:
 										myip = get_myip(self.interface)
@@ -480,6 +538,15 @@ class Processor(object):
 									print "[!] You need to start a arpspoof on a target (IP/Range) to start dnsdrop."
 
 							elif self.input_list[1] == "udpflood":
+								if self.input_list[2] == "help":
+									print "\n[Help] Start a UDP flood attack on target host, default port = 80, set port to change."
+									print "[Required] Target and interface"
+									print "[Optional] port"
+									print "example:"
+									print "{} set target 192.168.1.4".format(console)
+									print "{} set interface wlan0".format(console)
+									print "{} dos synflood\n".format(console) 
+
 								if self.targets == None:
 									print "[!] You probably forgot to set a IP address as target."
 								else:
@@ -493,6 +560,15 @@ class Processor(object):
 										print "[!] You probably forgot to set a network interface."
 
 							elif self.input_list[1] == "synflood":
+								if self.input_list[2] == "help":
+									print "\n[Help] Start a SYN flood attack on target host, default port = 80, set port to change."
+									print "[Required] Target and interface"
+									print "[Optional] port"
+									print "example:"
+									print "{} set target 192.168.1.4".format(console)
+									print "{} set interface wlan0".format(console)
+									print "{} dos synflood\n".format(console) 
+
 								if self.targets == None:
 									print "[!] You probably forgot to set a IP address as target."
 								else:
@@ -506,6 +582,15 @@ class Processor(object):
 										print "[!] You probably forgot to set interface."
 
 							elif self.input_list[1] == "icmpsmurf":
+								if self.input_list[2] == "help":
+									print "\n[Help] Start a ICMP smurf attack on target host. send echo-requests to broadcast with target address."
+									print "[Required] Target and interface"
+									print "example:"
+									print "{} set target 192.168.1.4".format(console)
+									print "{} set interface wlan0".format(console)
+									print "{} dos icmpsmurf\n".format(console) 
+									continue
+
 								if self.targets == None:
 									print "[!] You probably forgot to set a IP address as target."
 								else:
@@ -524,6 +609,13 @@ class Processor(object):
 									self.dos.synfloodstop()
 								if self.udpflood_status == 0 and self.dnsdrop_status == 0 and self.synflood_status == 0:
 									print "[!] You need to start a DoS attack before call stop."
+
+							elif self.input_list[1] == "help":
+								print "\n[Help] Start to perform a choosen denial of service in target."
+								print "[Required] Depends"
+								print "example:"
+								print "{} dos icmpsmurf help\n".format(console)
+
 							else:
 								print "[!] Select a valid option, type help to check syntax."
 
@@ -533,6 +625,15 @@ class Processor(object):
 
 
 					elif self.input_list[0] == "sniff":
+						if self.input_list[1] == "help":
+							print "\n[Help] Start to sniff network traffic."
+							print "[Required] Interface"
+							print "[Optional] Filter in tcpdump format"
+							print "examples:"
+							print "{} set interface wlan0".format(console)
+							print "{} sniff port 1337 and host 192.168.1.1\n".format(console)
+							continue
+
 						from modules.sniffer import Sniffer
 						try:
 							hasfilter = self.input_list[1]
@@ -558,7 +659,15 @@ class Processor(object):
 							except KeyboardInterrupt:
                                                 		pass
 
-					elif self.command == "pforensic":
+					elif self.input_list[0] == "pforensic":
+						if self.input_list[1] == "help":
+							print "\n[Help] Start a packet-analyzer."
+							print "[Required] Set a file with a .pcap file"
+							print "example:"
+							print "{} set file capture.pcap".format(console)
+							print "{} pforensic\n".format(console)
+							continue
+
 						try:
 							completer = None
 							completer = Completer("pforensic")
@@ -575,43 +684,50 @@ class Processor(object):
 							pass
 
 					elif self.input_list[0] == "xploit":
-						try:
-							from modules.exploit import Exploit
-							if self.targets is not None and self.input_list[1] == "tcp":
-								self.xploit = Exploit(self.targets, self.input_list[1])
-								self.xploit.start()
-							elif self.file is not None and self.input_list[1] == "stdin":
-								self.xploit = Exploit(self.file, self.input_list[1])
-								self.xploit.start()
-							else:
-								print "[!] You need to set or stdin or tcp as argument."
-								print "[!] You need to set or a file or a target to xploit."
-						except IndexError:
+						if self.input_list[1] == "help":
+							print "\n[Help] Interactive stdin or tcp exploit development shell."
+							print "[Required] File as target to stdin and IP address as target to tcp"
+							print "example:"
+							print "{} set target 192.168.1.1".format(console)
+							print "{} xploit tcp\n".format(console)
+						else:
 							try:
-								print "[*] Select one xploit mode, options = stdin/tcp"
-								mode = raw_input("[+] Exploit mode: ")
-								if mode == "stdin" or mode == "tcp":
-									from modules.exploit import Exploit
-									if self.targets is not None:
-										self.xploit = Exploit(self.targets, mode)
-										self.xploit.start()
-									elif self.file is not None:
-										self.xploit = Exploit(self.file, mode)
-										self.xploit.start()
-									else:
-										print "[!] You need to set or a file or a target to xploit."
+								from modules.exploit import Exploit
+								if self.targets is not None and self.input_list[1] == "tcp":
+									self.xploit = Exploit(self.targets, self.input_list[1])
+									self.xploit.start()
+								elif self.file is not None and self.input_list[1] == "stdin":
+									self.xploit = Exploit(self.file, self.input_list[1])
+									self.xploit.start()
 								else:
-									print "[!] Select a valid xploit mode, stdin or tcp"
-							except KeyboardInterrupt:
-								pass
-                                                except TypeError:
-                                                        print "[!] You probably forgot to set the file"
-                                                        pass
-                                                except KeyboardInterrupt:
-                                                        pass
-                                                except Exception as e:
-                                                        print "[!] Exception caught: {}".format(e)
-                                                        pass
+									print "[!] You need to set or stdin or tcp as argument."
+									print "[!] You need to set or a file or a target to xploit."
+							except IndexError:
+								try:
+									print "[*] Select one xploit mode, options = stdin/tcp"
+									mode = raw_input("[+] Exploit mode: ")
+									if mode == "stdin" or mode == "tcp":
+										from modules.exploit import Exploit
+										if self.targets is not None:
+											self.xploit = Exploit(self.targets, mode)
+											self.xploit.start()
+										elif self.file is not None:
+											self.xploit = Exploit(self.file, mode)
+											self.xploit.start()
+										else:
+											print "[!] You need to set or a file or a target to xploit."
+									else:
+										print "[!] Select a valid xploit mode, stdin or tcp"
+								except KeyboardInterrupt:
+									pass
+                                                	except TypeError:
+                                                	        print "[!] You probably forgot to set the file"
+                                                	        pass
+                                               		except KeyboardInterrupt:
+                                                	        pass
+                                                	except Exception as e:
+                                                	        print "[!] Exception caught: {}".format(e)
+                                                	        pass
 
 					elif self.command == "cookiedecode":
 						try:
@@ -665,7 +781,22 @@ class Processor(object):
 								pass
 
 					elif self.input_list[0] == "brute":
+							if self.input_list[1] == "help":
+								print "\n[Help] Interactive stdin or tcp exploit development shell."
+								print "[Required] File as password wordlist and target as URL or IP."
+								print "example:"
+								print "{} brute ssh help\n".format(console)
+
 							if self.input_list[1] == "ssh":
+
+								if self.input_list[2] == "help":
+									print "\n[Help] SSH Brute-Force"
+									print "[Required] IP address as target."
+									print "example:"
+									print "{} set file wordlist.txt".format(console)
+									print "{} set target 192.168.1.5".format(console)
+									print "{} brute ssh\n".format(console)
+									continue
 								try:
 									username = raw_input("[+] Enter the username to bruteforce: ")
 									from modules.ssh_bruter import SSHbrutus
@@ -678,6 +809,15 @@ class Processor(object):
                                                         		print "[!] You probably forgot to set the wordlist file path."
                                                        			pass
 							elif self.input_list[1] == "url":
+								if self.input_list[2] == "help":
+									print "\n[Help] URL Brute-Force"
+									print "[Required] URL (with http:// or https://) as target"
+									print "example:"
+									print "{} set file wordlist.txt".format(console)
+									print "{} set target http://testphp.vulnweb.com/products.php?id=".format(console)
+									print "{} brute url\n".format(console)
+									continue
+
 								try:
 									url = 'url'
 									from modules.web_bruter import WEBbrutus
@@ -689,7 +829,17 @@ class Processor(object):
 								except TypeError:
 			                                      		print "[!] You probably forgot to set the wordlist file path."
 									pass
+
 							elif self.input_list[1] == "form":
+								if self.input_list[2] == "help":
+									print "\n[Help] Formulary Brute-Force"
+									print "[Required] URL (with http:// or https://) as target"
+									print "example:"
+									print "{} set file wordlist.txt".format(console)
+									print "{} set target http://testphp.vulnweb.com/login.php".format(console)
+									print "{} brute form\n".format(console)
+									continue
+
 								try:
 									form = 'form'
 									from modules.web_bruter import WEBbrutus

