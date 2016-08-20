@@ -94,7 +94,7 @@ class Processor(object):
 						print_help()
 
 						# HSTSBYPASS
-					elif self.command == "hstsbypass":
+					elif self.input_list[0] == "hstsbypass":
 						if self.input_list[1] == "help":
 							print "\n[Help] Start to perform a HSTS Bypass with dns2proxy and SSL strip with sslstrip+"
 							print "[Required] ARP spoofing started."
