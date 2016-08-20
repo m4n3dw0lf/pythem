@@ -778,7 +778,7 @@ class Processor(object):
 
 					elif self.command == "harvest":
 						try:
-							sslstripharvest()
+							credentials_harvest(self.file)
 						except KeyboardInterrupt:
 							pass
 						except Exception as e:

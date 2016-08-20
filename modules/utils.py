@@ -20,6 +20,7 @@
 # USA
 
 import os
+import re
 import sys
 import socket
 import fcntl
@@ -54,34 +55,35 @@ def get_myip(interface):
 		struct.pack('256s', interface[:15])
 	)[20:24])
 
-def login_r(l):
-	flogin = l.split("Email=")
-	login = str(flogin[1]).split("&")
-	return login[0]
 
-def pass_r(l):
-	fpwd = l.split("Passwd=")
-	pwd = str(fpwd[1]).split("&")
-	return pwd[0]
+def credentials(users,passwords):
+	if users:
+		for u in users:
+			print "[$] Login found: {}".format(str(u[1]))
+	if passwords:
+		for p in passwords:
+			print "[$] Password found: {}".format(str(p[1]))
 
-def sslstripharvest():
-	print "[$] SSL Strip Harvester - Only harvest one gmail account (by now)."
+	if not users and not passwords:
+		print "[#] No gmail accounts on the pot try again later."
+
+
+user_regex = '([Ee]mail|[Uu]ser|[Uu]sr|[Uu]sername|[Nn]ame|[Ll]ogin|[Ll]og|[Ll]ogin[Ii][Dd])=([^&|;]*)'
+pw_regex = '([Pp]assword|[Pp]ass|[Pp]wd|[Pp]asswd|[Pp]wd|[Pp][Ss][Ww]|[Pp]asswrd|[Pp]assw)=([^&|;]*)'
+
+
+def credentials_harvest(file):
+	if file is None:
+		file = "sslstrip.log"
+	print "[$] Credential Harvester - Only harvest one gmail."
 	try:
-		f = open("sslstrip.log","r+")
+		f = open(file,"r+")
 		content = f.read().replace('\n','')
 	except:
 		print "[!] Problem reading the sslstrip log"
-	status = 0
-	if "Email=" in content:
-		login = login_r(str(content))
-		print "[$] Login Found: {}".format(login)
-		status = 1
-	if "Passwd=" in content:
-		pwd = pass_r(str(content))
-		print "[$] Password Found: {}".format(pwd)
-		status = 1
-	if status == 0:
-		print "[#] No gmail accounts on the pot try again later."
+	users = re.findall(user_regex, content)
+	passwords = re.findall(pw_regex, content)
+	credentials(users,passwords)
 
 def get_mymac(interface):
     	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -317,7 +319,7 @@ def print_help():
 	print color("  pythem> ","red") + "hstsbypass"
 	print
 	print
-	print color("[*] harvest			Harvest credentials in sslstrip log.","blue")
+	print color("[*] harvest			Harvest credentials inside file, default file: sslstrip.log","blue")
 	print
 	print color(" example:","green")
 	print
