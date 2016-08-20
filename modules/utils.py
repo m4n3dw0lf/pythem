@@ -65,7 +65,7 @@ def credentials(users,passwords):
 			print "[$] Password found: {}".format(str(p[1]))
 
 	if not users and not passwords:
-		print "[#] No gmail accounts on the pot try again later."
+		print "[#] No accounts on the pot try again later."
 
 
 user_regex = '([Ee]mail|[Uu]ser|[Uu]sr|[Uu]sername|[Nn]ame|[Ll]ogin|[Ll]og|[Ll]ogin[Ii][Dd])=([^&|;]*)'
@@ -75,7 +75,7 @@ pw_regex = '([Pp]assword|[Pp]ass|[Pp]wd|[Pp]asswd|[Pp]wd|[Pp][Ss][Ww]|[Pp]asswrd
 def credentials_harvest(file):
 	if file is None:
 		file = "sslstrip.log"
-	print "[$] Credential Harvester - Only harvest one gmail."
+	print "[$] Credential Harvester:"
 	try:
 		f = open(file,"r+")
 		content = f.read().replace('\n','')
