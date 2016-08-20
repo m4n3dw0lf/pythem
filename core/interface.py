@@ -659,16 +659,22 @@ class Processor(object):
 							print "[!] You probably forgot to specify the type of DoS to use."
 
 
-					elif self.input_list[0] == "sniff":
+
+					elif self.command == "sniff help":
 						if self.input_list[1] == "help":
-							print "\n[Help] Start to sniff network traffic."
+							print "\n[Help] Start to sniff network traffic with custom scapy filter."
 							print "[Required] Interface"
 							print "[Optional] Filter in tcpdump format"
+							print "[Custom filters]:"
+							print " - http (Quick 'port 80')"
+							print " - dns  (Quick 'port 53')"
+							print " - core (Core network events)"
 							print "examples:"
 							print "{} set interface wlan0".format(console)
 							print "{} sniff port 1337 and host 192.168.1.1\n".format(console)
 							continue
 
+					elif self.input_list[0] == "sniff":
 						from modules.sniffer import Sniffer
 						try:
 							hasfilter = self.input_list[1]

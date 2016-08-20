@@ -341,7 +341,7 @@ def print_help():
 	print color("  pythem> ","red") + "inject stop"
 	print
 	print
-	print color("[*] sniff			Start to sniff network traffic.","blue")
+	print color("[*] sniff			Start to sniff network traffic with custom scapy filter.","blue")
 	print
 	print "Should be called after setting an interface"
 	print
@@ -349,13 +349,14 @@ def print_help():
 	print
     	print color("  - http","yellow")
     	print color("  - dns","yellow")
+	print color("  - core","yellow")
 	print
   	print color(" examples:","green")
 	print
    	print color("  pythem> ","red")+ 'sniff http'
 	print "     or"
    	print color("  pythem> ","red")+ 'sniff'
-   	print "  [+] Enter the filter: port 1337 and host 10.0.1.5  | tcpdump like format or http, dns specific filter."
+   	print "  [+] Enter the filter: port 1337 and host 10.0.1.5  | tcpdump like format or http,dns,core specific filter."
 	print
 	print
 	print color("[*] pforensic			Start a packet-analyzer","blue")

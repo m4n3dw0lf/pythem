@@ -24,12 +24,13 @@ from scapy.all import *
 from scapy.error import Scapy_Exception
 from modules.utils import *
 from datetime import datetime
-
+import re
+from utils import *
 class Sniffer(object):
 
 	name = "Sniffer"
 	desc = "Custom scapy sniffer."
-	version = "0.8"
+	version = "0.9"
 
 	def __init__(self, interface, filter):
 		self.interface = interface
@@ -137,26 +138,142 @@ class Sniffer(object):
 				print pkt
 				print "[ICMP Layer]"
 				print
+				if type == 0:
+					print "[I] Echo-reply."
+				elif type == 3:
+					print "[I] Destination Unreachable."
+				elif type == 5:
+					print "[I] Redirect."
+				elif type == 8:
+					print "[I] Echo-request."
+				elif type == 32:
+					print "[I] Mobile Host Redirect."
+				elif type == 33:
+					print "[I] IPv6 Where-Are-You."
+				elif type == 34:
+					print "[I] IPv6 I-Am-Here."
+				elif type == 37:
+					print "[I] Domain Name Request."
+				elif type == 38:
+					print "[I] Domain Name Reply."
 				print "[I] Type: {}".format(type)
 				print "[I] Code: {}".format(type)
 				print end
 
 
+
+	def coresniff(self, p):
+			# ARP Core events
+		if p.haslayer(ARP):
+				# who-has
+			if p[ARP].op == 1:
+				print color("[ARP] ","grey") + p[ARP].hwsrc + " Request: " + p[ARP].psrc + " who has " + p[ARP].pdst + "?"
+				# is-at
+			if p[ARP].op == 2:
+				print color("[ARP] ","grey") + p[ARP].hwsrc + " Response: " + p[ARP].psrc + " is at " + p[ARP].hwsrc
+
+			# ICMP Core events
+		elif p.haslayer(ICMP):
+			type = p[ICMP].type
+			if p[ICMP].type == 0:
+                        	print "echo-reply."
+                        elif type == 3:
+                        	type = "destination unreachable."
+                        elif type == 5:
+                                type = "redirect."
+                        elif type == 8:
+                                type = "echo-request."
+                        elif type == 32:
+                        	type = "mobile host redirect."
+                        elif type == 33:
+                                type = "IPv6 where-are-you."
+                        elif type == 34:
+                                type = "IPv6 i-am-here."
+                        elif type == 37:
+                                type = "domain name request."
+                        elif type == 38:
+                                type = "domain name reply."
+
+			print color("[ICMP] ","red") + p[IP].src + " {} ".format(type) + p[IP].dst
+
+			# UDP Core events
+		elif p.haslayer(UDP):
+			if p.haslayer(DNS) and p.getlayer(DNS).qr == 0:
+				print color("[DNS] ","blue") + p[IP].src + " domain name query: " + "{}".format(p.getlayer(DNS).qd.qname)
+
+			elif p.haslayer(DNSRR):
+				print color("[DNS] ","blue") + p[IP].src + " domain name response: " + "{}".format(p[DNSRR].rdata)
+
+			# TCP Core events
+		elif p.haslayer(TCP) and p.haslayer(Raw):
+			user_regex = '([Ee]mail|[Uu]ser|[Uu]sr|[Uu]sername|[Nn]ame|[Ll]ogin|[Ll]og|[Ll]ogin[Ii][Dd])=([^&|;]*)'
+			pw_regex = '([Pp]assword|[Pp]ass|[Pp]wd|[Pp]asswd|[Pp]wd|[Pp][Ss][Ww]|[Pp]asswrd|[Pp]assw)=([^&|;]*)'
+
+			load = str(p[Raw].load).replace("\n"," ")
+			if load.startswith('GET'):
+				method = load.split("GET")
+				get = str(method[1]).split("HTTP")
+				try:
+					ghost = gethostbyaddr(str(p[IP].dst))
+					host = ghost[0]
+				except:
+					host = str(p[IP].dst)
+
+				print color("[TCP] ","white") + p[IP].src + " HTTP GET: " + get[0] + " destination: " + host
+			else:
+				users = re.findall(user_regex, load)
+				passwords = re.findall(pw_regex, load)
+				self.creds(users,passwords)
+
+	def creds(self,users,passwords):
+	        if users:
+        	        for u in users:
+                        	print "\n" + color("[$$$] Login found: {}\n".format(str(u[1])),"yellow")
+       		if passwords:
+                	for p in passwords:
+                        	print "\n" + color("[$$$] Password found: {}\n".format(str(p[1])),"yellow")
+
+
+
 	def start(self):
 		if self.filter == None:
 			self.filter = ''
-		if self.wrpcap == 'y':
-			print "[+] Custom sniffer initialized"
-			try:
+		if self.filter == "core":
+			if self.wrpcap == 'y':
+				print "[+] H4x0r sniffer initialized."
+				try:
+					p = sniff(iface=self.interface, prn = self.coresniff)
+					time = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
+					wrpcap("pythem{}.pcap".format(time),p)
+				except Exception as e:
+					if "Interrupted system call" in e:
+						pass
+			else:
+				try:
+					print "[+] H4x0r sniffer initialized"
+					p = sniff(iface=self.interface,prn =self.coresniff)
+					print "\n[!] User requested shutdown."
+				except Exception as e:
+					if "Interrupted system call" in e:
+						pass
 
-				p = sniff(iface=self.interface,filter = "{}".format(self.filter), prn = self.customsniff)
-			        time = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
-                               	wrpcap("pythem{}.pcap".format(time),p)
-			except Exception as e:
-				if "Interrupted system call" in e:
-					pass
 
 		else:
-			print "[+] Custom sniffer initialized"
-			p = sniff(iface=self.interface,filter ="{}".format(self.filter), prn = self.customsniff, store = 0)
-			print "\n[!] User requested shutdown."
+			if self.wrpcap == 'y':
+				try:
+					print "[+] Custom sniffer initialized"
+					p = sniff(iface=self.interface,filter = "{}".format(self.filter), prn = self.customsniff)
+				        time = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
+                        	       	wrpcap("pythem{}.pcap".format(time),p)
+				except Exception as e:
+					if "Interrupted system call" in e:
+						pass
+
+			else:
+				try:
+					print "[+] Custom sniffer initialized"
+					p = sniff(iface=self.interface,filter ="{}".format(self.filter), prn = self.customsniff, store = 0)
+					print "\n[!] User requested shutdown."
+				except Exception as e:
+					if "KeyboardInterrupt" not in e:
+						pass
