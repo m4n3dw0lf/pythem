@@ -24,6 +24,7 @@ from scapy.all import *
 from scapy.error import Scapy_Exception
 from modules.utils import *
 from datetime import datetime
+import socket
 import re
 from utils import *
 class Sniffer(object):
@@ -176,7 +177,7 @@ class Sniffer(object):
 		elif p.haslayer(ICMP):
 			type = p[ICMP].type
 			if p[ICMP].type == 0:
-                        	print "echo-reply."
+                        	type = "echo-reply."
                         elif type == 3:
                         	type = "destination unreachable."
                         elif type == 5:
@@ -194,7 +195,7 @@ class Sniffer(object):
                         elif type == 38:
                                 type = "domain name reply."
 
-			print color("[ICMP] ","red") + p[IP].src + " {} ".format(type) + p[IP].dst
+			print color("[ICMP] ","red") + p[IP].src + " ---> " + p[IP].dst + type
 
 			# UDP Core events
 		elif p.haslayer(UDP):
@@ -214,12 +215,12 @@ class Sniffer(object):
 				method = load.split("GET")
 				get = str(method[1]).split("HTTP")
 				try:
-					ghost = gethostbyaddr(str(p[IP].dst))
-					host = ghost[0]
+					ghost = socket.gethostbyaddr(str(p[IP].dst))
+					host = "{}/{}".format(ghost[0],str(p[IP].dst))
 				except:
 					host = str(p[IP].dst)
 
-				print color("[TCP] ","white") + p[IP].src + " HTTP GET: " + get[0] + " destination: " + host
+				print color("[TCP] ","white") + p[IP].src + " ---> "+ host +" - GET: " + get[0]
 			else:
 				users = re.findall(user_regex, load)
 				passwords = re.findall(pw_regex, load)
