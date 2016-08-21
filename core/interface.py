@@ -683,7 +683,8 @@ class Processor(object):
 										print "[Required] Target and interface"
 										print "example:"
 										print "{} set interface wlan0".format(console)
-										print "{} set target 192.168.0.6\n".format(console)
+										print "{} set target 192.168.0.6".format(console)
+										print "{} dos teardrop\n".format(console)
 										continue
 								except IndexError:
 									if self.targets == None:
