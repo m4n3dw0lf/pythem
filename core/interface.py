@@ -33,7 +33,7 @@ import psutil
 class Processor(object):
 	name = "Interface-Processor"
 	desc = "Console to process commands"
-	version = "0.9"
+	version = "1.0"
 
 
 	def __init__(self):
@@ -64,6 +64,7 @@ class Processor(object):
 		self.icmpflood_status = 0
 		self.icmpsmurf_status = 0
 		self.dhcpstarvation_status = 0
+		self.teardrop_status = 0
 		self.sslstrip_status = False
 		self.dns2proxy_status = False
 
@@ -674,6 +675,26 @@ class Processor(object):
 											self.icmpsmurf_status = 1
 										except Exception as e:
 											print "[!] Exception caught: {}".format(e)
+
+							elif self.input_list[1] == "teardrop":
+								try:
+									if self.input_list[2] == "help":
+										print "\n[Help] Start a UDP teardrop fragmentation attack."
+										print "[Required] Target and interface"
+										print "example:"
+										print "{} set interface wlan0".format(console)
+										print "{} set target 192.168.0.6\n".format(console)
+										continue
+								except IndexError:
+									if self.targets == None:
+										print "[!] You probably forgot to set a IP address as target."
+									else:
+										try:
+											self.dos.teardrop(self.targets)
+											self.teardrop_status = 1
+										except Exception as e:
+											print "[!] Exception caught: {}".format(e)
+
 
 
 							elif self.input_list[1] == "help":

@@ -380,6 +380,8 @@ def print_help():
 	print
 	print color("  - udpflood	      | Start a UDP flood attack on target host, default port = 80, set port to change.","yellow")
 	print
+	print color("  - teardrop          | Start a UDP teardrop fragmentation attack.","yellow")
+	print
 	print color("  - icmpflood	      | Start a ICMP flood attack on target host","yellow")
 	print
 	print color("  - icmpsmurf	      | Start a ICMP smurf attack on target host. Send echo-requests to host with spoofed target address.","yellow")

