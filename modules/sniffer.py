@@ -195,7 +195,7 @@ class Sniffer(object):
                         elif type == 38:
                                 type = "domain name reply."
 
-			print color("[ICMP] ","red") + p[IP].src + " ---> " + p[IP].dst + type
+			print color("[ICMP] ","red") + p[IP].src + " ---> " + p[IP].dst + " {} ".format(type)
 
 			# UDP Core events
 		elif p.haslayer(UDP):
