@@ -380,13 +380,16 @@ def print_help():
 	print
 	print color("  - udpflood	      | Start a UDP flood attack on target host, default port = 80, set port to change.","yellow")
 	print
-	print color("  - icmpsmurf	      | Start a ICMP smurf attack on target host. send echo-requests to broadcast with target address.","yellow")
+	print color("  - icmpflood	      | Start a ICMP flood attack on target host","yellow")
+	print
+	print color("  - icmpsmurf	      | Start a ICMP smurf attack on target host. Send echo-requests to broadcast with target address.","yellow")
+	print
+	print color("  - dhcpstarvation    | Start a DHCP starvation attack on network DHCP server. Multiple spoofed mac dhcp discovers.","yellow")
 	print
 	print color(" examples:","green")
 	print
 	print color("  pythem> ","red") + "dos dnsdrop"
 	print color("  pythem> ","red") + "dos synflood"
-	print color("  pythem> ","red") + "dos stop" + color("          (Stop any kind of Denial of Service attack already initialized.)","yellow")
 	print
 	print
 	print color("[SECTION - EXPLOIT DEVELOPMENT AND REVERSE ENGINERING]","grey")

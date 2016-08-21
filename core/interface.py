@@ -61,6 +61,9 @@ class Processor(object):
 		self.synflood_status = 0
 		self.udpflood_status = 0
 		self.dnsflood_status = 0
+		self.icmpflood_status = 0
+		self.icmpsmurf_status = 0
+		self.dhcpstarvation_status = 0
 		self.sslstrip_status = False
 		self.dns2proxy_status = False
 
@@ -199,6 +202,8 @@ class Processor(object):
 						if self.jarvis_status == 1:
 							self.Jarvis.Say(self.Jarvis.random('salutes'))
 							self.Jarvis.stop()
+						if self.dnsdrop_status == 1:
+							self.dos.dnsdropstop()
 						if self.sslstrip_status == True:
 							self.pskill(self.p1.pid)
 							print "[*] SSLstrip finalized."
@@ -548,97 +553,129 @@ class Processor(object):
 						self.dos = Jam()
 						try:
 							if self.input_list[1] == "dnsdrop":
-								if self.input_list[2] == "help":
-									print "\n[Help] Start to drop DNS queries that pass through man-in-the-middle traffic."
-									print "[Required] ARP spoof started"
-									print "example:"
-									print "{} dos dnsdrop\n".format(console) 
-									continue
+								try:
+									if self.input_list[2] == "help":
+										print "\n[Help] Start to drop DNS queries that pass through man-in-the-middle traffic."
+										print "[Required] ARP spoof started"
+										print "example:"
+										print "{} dos dnsdrop\n".format(console) 
+										continue
+								except IndexError:
+									if self.arpspoof_status:
+										try:
+											myip = get_myip(self.interface)
+											self.dos.dnsdropstart(myip)
+											self.dnsdrop_status = 1
+										except Exception as e:
+											print "[!] Exception caught: {}".format(e)
+									else:
+										print "[!] You need to start a arpspoof on a target (IP/Range) to start dnsdrop."
 
-								if self.arpspoof_status:
+
+							elif self.input_list[1] == "dhcpstarvation":
+								try:
+									if self.input_list[2] == "help":
+										print "\n[Help] Start a DHCP starvation attack on network DHCP server. Multiple spoofed mac dhcp discovers."
+										print "[Required] Interface"
+										print "example:"
+										print "{} dos dhcpstarvation\n".format(console)
+										continue
+								except IndexError:
 									try:
-										myip = get_myip(self.interface)
-										self.dos.dnsdropstart(myip)
-										self.dnsdrop_status = 1
-									except Exception as e:
-										print "[!] Exception caught: {}".format(e)
-								else:
-									print "[!] You need to start a arpspoof on a target (IP/Range) to start dnsdrop."
-
-							elif self.input_list[1] == "udpflood":
-								if self.input_list[2] == "help":
-									print "\n[Help] Start a UDP flood attack on target host, default port = 80, set port to change."
-									print "[Required] Target and interface"
-									print "[Optional] port"
-									print "example:"
-									print "{} set target 192.168.1.4".format(console)
-									print "{} set interface wlan0".format(console)
-									print "{} dos synflood\n".format(console) 
-									continue
-
-								if self.targets == None:
-									print "[!] You probably forgot to set a IP address as target."
-								else:
-									try:
-										myip = get_myip(self.interface)
-										self.dos.udpfloodstart(myip,self.targets,self.port)
-										self.dos.udpfloodstart(myip,self.targets,self.port)
-										self.dos.udpfloodstart(myip,self.targets,self.port)
-										self.udpflood_status = 1
+										self.dos.dhcpstarvationstart()
+										self.dhcpstarvation_status = 1
 									except TypeError:
 										print "[!] You probably forgot to set a network interface."
 
-							elif self.input_list[1] == "synflood":
-								if self.input_list[2] == "help":
-									print "\n[Help] Start a SYN flood attack on target host, default port = 80, set port to change."
-									print "[Required] Target and interface"
-									print "[Optional] port"
-									print "example:"
-									print "{} set target 192.168.1.4".format(console)
-									print "{} set interface wlan0".format(console)
-									print "{} dos synflood\n".format(console) 
-									continue
 
-								if self.targets == None:
-									print "[!] You probably forgot to set a IP address as target."
-								else:
-									try:
-										myip = get_myip(self.interface)
-										self.dos.synfloodstart(myip,self.targets,self.port)
-										self.dos.synfloodstart(myip,self.targets,self.port)
-										self.dos.synfloodstart(myip,self.targets,self.port)
-										self.synflood_status = 1
-									except TypeError:
-										print "[!] You probably forgot to set interface."
+							elif self.input_list[1] == "udpflood":
+								try:
+									if self.input_list[2] == "help":
+										print "\n[Help] Start a UDP flood attack on target host, default port = 80, set port to change."
+										print "[Required] Target and interface"
+										print "[Optional] port"
+										print "example:"
+										print "{} set target 192.168.1.4".format(console)
+										print "{} set interface wlan0".format(console)
+										print "{} dos synflood\n".format(console) 
+										continue
+								except IndexError:
+
+									if self.targets == None:
+										print "[!] You probably forgot to set a IP address as target."
+									else:
+										try:
+											myip = get_myip(self.interface)
+											self.dos.udpfloodstart(myip,self.targets,self.port)
+											self.udpflood_status = 1
+										except TypeError:
+											print "[!] You probably forgot to set a network interface."
+
+
+
+							elif self.input_list[1] == "icmpflood":
+								try:
+									if self.input_list[2] == "help":
+										print "\n[Help] Start a ICMP flood attack on target host."
+										print "[Required] Target and interface"
+										print "example:"
+										print "{} set target 10.0.0.1".format(console)
+										print "{} set interface wlan0".format(console)
+										print "{} dos icmpflood\n".format(console)
+										continue
+								except IndexError:
+									if self.targets == None:
+										print "[!] You probably forgot to set a IP address as target."
+									else:
+										try:
+											myip = get_myip(self.interface)
+											self.dos.icmpfloodstart(myip,self.targets)
+											self.icmpflood_status = 1
+										except TypeError:
+											print "[!] You probably forgot to set a network interface."
+
+							elif self.input_list[1] == "synflood":
+								try:
+									if self.input_list[2] == "help":
+										print "\n[Help] Start a SYN flood attack on target host, default port = 80, set port to change."
+										print "[Required] Target and interface"
+										print "[Optional] port"
+										print "example:"
+										print "{} set target 192.168.1.4".format(console)
+										print "{} set interface wlan0".format(console)
+										print "{} dos synflood\n".format(console) 
+										continue
+								except IndexError:
+									if self.targets == None:
+										print "[!] You probably forgot to set a IP address as target."
+									else:
+										try:
+											myip = get_myip(self.interface)
+											self.dos.synfloodstart(myip,self.targets,self.port)
+											self.synflood_status = 1
+										except TypeError:
+											print "[!] You probably forgot to set a network interface."
 
 							elif self.input_list[1] == "icmpsmurf":
-								if self.input_list[2] == "help":
-									print "\n[Help] Start a ICMP smurf attack on target host. send echo-requests to broadcast with target address."
-									print "[Required] Target and interface"
-									print "example:"
-									print "{} set target 192.168.1.4".format(console)
-									print "{} set interface wlan0".format(console)
-									print "{} dos icmpsmurf\n".format(console) 
-									continue
+								try:
+									if self.input_list[2] == "help":
+										print "\n[Help] Start a ICMP smurf attack on target host. send echo-requests to broadcast with target address."
+										print "[Required] Target and interface"
+										print "example:"
+										print "{} set target 192.168.1.4".format(console)
+										print "{} set interface wlan0".format(console)
+										print "{} dos icmpsmurf\n".format(console) 
+										continue
+								except IndexError:
+									if self.targets == None:
+										print "[!] You probably forgot to set a IP address as target."
+									else:
+										try:
+											self.dos.icmpsmurfstart(self.targets)
+											self.icmpsmurf_status = 1
+										except Exception as e:
+											print "[!] Exception caught: {}".format(e)
 
-								if self.targets == None:
-									print "[!] You probably forgot to set a IP address as target."
-								else:
-									try:
-										self.dos.icmpsmurfstart(self.targets)
-										self.icmpsmurf_status = 1
-									except Exception as e:
-										print "[!] Exception caught: {}".format(e)
-
-							elif self.input_list[1] == "stop":
-								if self.udpflood_status == 1:
-									self.dos.udpfloodstop()
-								if self.dnsdrop_status == 1:
-									self.dos.dnsdropstop()
-								if self.synflood_status == 1:
-									self.dos.synfloodstop()
-								if self.udpflood_status == 0 and self.dnsdrop_status == 0 and self.synflood_status == 0:
-									print "[!] You need to start a DoS attack before call stop."
 
 							elif self.input_list[1] == "help":
 								print "\n[Help] Start to perform a choosen denial of service in target."
@@ -647,7 +684,9 @@ class Processor(object):
 								print " - dnsdrop"
 								print " - synflood"
 								print " - udpflood"
+								print " - icmpflood"
 								print " - icmpsmurf"
+								print " - dhcpstarvation"
 								print "example:"
 								print "{} dos icmpsmurf help\n".format(console)
 

