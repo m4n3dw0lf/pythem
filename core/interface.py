@@ -705,6 +705,7 @@ class Processor(object):
 								print " - dnsdrop"
 								print " - synflood"
 								print " - udpflood"
+								print " - teardrop"
 								print " - icmpflood"
 								print " - icmpsmurf"
 								print " - dhcpstarvation"
