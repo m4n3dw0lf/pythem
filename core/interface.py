@@ -576,7 +576,6 @@ class Processor(object):
 								try:
 									if self.input_list[2] == "help":
 										print "\n[Help] Start a DHCP starvation attack on network DHCP server. Multiple spoofed mac dhcp discovers."
-										print "[Required] Interface"
 										print "example:"
 										print "{} dos dhcpstarvation\n".format(console)
 										continue
@@ -659,7 +658,7 @@ class Processor(object):
 							elif self.input_list[1] == "icmpsmurf":
 								try:
 									if self.input_list[2] == "help":
-										print "\n[Help] Start a ICMP smurf attack on target host. send echo-requests to broadcast with target address."
+										print "\n[Help] Start a ICMP smurf attack on target host. send echo-requests with spoofed target address."
 										print "[Required] Target and interface"
 										print "example:"
 										print "{} set target 192.168.1.4".format(console)

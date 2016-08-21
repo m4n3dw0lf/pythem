@@ -382,9 +382,9 @@ def print_help():
 	print
 	print color("  - icmpflood	      | Start a ICMP flood attack on target host","yellow")
 	print
-	print color("  - icmpsmurf	      | Start a ICMP smurf attack on target host. Send echo-requests to broadcast with target address.","yellow")
+	print color("  - icmpsmurf	      | Start a ICMP smurf attack on target host. Send echo-requests to host with spoofed target address.","yellow")
 	print
-	print color("  - dhcpstarvation    | Start a DHCP starvation attack on network DHCP server. Multiple spoofed mac dhcp discovers.","yellow")
+	print color("  - dhcpstarvation    | Start a DHCP starvation attack on network DHCP server. Multiple spoofed MAC dhcp discovers.","yellow")
 	print
 	print color(" examples:","green")
 	print
