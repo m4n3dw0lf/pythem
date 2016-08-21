@@ -167,10 +167,10 @@ class Sniffer(object):
 		if p.haslayer(ARP):
 				# who-has
 			if p[ARP].op == 1:
-				print color("[ARP] ","grey") + p[ARP].hwsrc + " Request: " + p[ARP].psrc + " who has " + p[ARP].pdst + "?"
+				print color("[ARP] ","grey") + p[ARP].hwsrc + " ---> " + p[ARP].hwdst + " Request: " + p[ARP].psrc + " who has " + p[ARP].pdst + "?"
 				# is-at
 			if p[ARP].op == 2:
-				print color("[ARP] ","grey") + p[ARP].hwsrc + " Response: " + p[ARP].psrc + " is at " + p[ARP].hwsrc
+				print color("[ARP] ","grey") + p[ARP].hwsrc + " ---> " + p[ARP].hwdst + " Response: " + p[ARP].psrc + " is at " + p[ARP].hwsrc
 
 			# ICMP Core events
 		elif p.haslayer(ICMP):
@@ -199,15 +199,15 @@ class Sniffer(object):
 			# UDP Core events
 		elif p.haslayer(UDP):
 			if p.haslayer(DNS) and p.getlayer(DNS).qr == 0:
-				print color("[DNS] ","blue") + p[IP].src + " domain name query: " + "{}".format(p.getlayer(DNS).qd.qname)
+				print color("[DNS] ","blue") + p[IP].src + " ---> " + p[IP].dst + " domain name query: " + "{}".format(p.getlayer(DNS).qd.qname)
 
 			elif p.haslayer(DNSRR):
-				print color("[DNS] ","blue") + p[IP].src + " domain name response: " + "{}".format(p[DNSRR].rdata)
+				print color("[DNS] ","blue") + p[IP].src + " ---> " + p[IP].dst + " domain name response: " + "{}".format(p[DNSRR].rdata)
 
 			# TCP Core events
 		elif p.haslayer(TCP) and p.haslayer(Raw):
-			user_regex = '([Ee]mail|[Uu]ser|[Uu]sr|[Uu]sername|[Nn]ame|[Ll]ogin|[Ll]og|[Ll]ogin[Ii][Dd])=([^&|;]*)'
-			pw_regex = '([Pp]assword|[Pp]ass|[Pp]wd|[Pp]asswd|[Pp]wd|[Pp][Ss][Ww]|[Pp]asswrd|[Pp]assw)=([^&|;]*)'
+	    		user_regex = '([Ee]mail|[Uu]ser|[Uu]sername|[Nn]ame|[Ll]ogin|[Ll]og|[Ll]ogin[Ii][Dd])=([^&|;]*)'
+            		pw_regex = '([Pp]assword|[Pp]ass|[Pp]asswd|[Pp]wd|[Pp][Ss][Ww]|[Pp]asswrd|[Pp]assw)=([^&|;]*)'
 
 			load = str(p[Raw].load).replace("\n"," ")
 			if load.startswith('GET'):
@@ -228,11 +228,10 @@ class Sniffer(object):
 	def creds(self,users,passwords):
 	        if users:
         	        for u in users:
-                        	print "\n" + color("[$$$] Login found: {}\n".format(str(u[1])),"yellow")
+                        	print "\n" + color("[$$$] Login found: ","yellow") + str(u[1]) + "\n"
        		if passwords:
                 	for p in passwords:
-                        	print "\n" + color("[$$$] Password found: {}\n".format(str(p[1])),"yellow")
-
+	                        print "\n" + color("[$$$] Password found: ","yellow") + str(p[1]) + "\n"
 
 
 	def start(self):
