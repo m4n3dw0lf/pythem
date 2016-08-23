@@ -306,7 +306,7 @@ class Processor(object):
 								self.filter = self.input_list[2]
 							except IndexError:
 								try:
-									self.filter = raw_input("[+] Enter the sniffer filter (empty for core sniffer): ")
+									self.filter = raw_input("[+] Enter the sniffer filter: ")
 								except KeyboardInterrupt:
 									pass
 
@@ -757,7 +757,7 @@ class Processor(object):
 
 						except IndexError:
 							try:
-								self.filter = raw_input("[+] Enter the filter: ")
+								self.filter = raw_input("[+] Enter the filter(empty for core sniffer): ")
 								if self.filter == "http":
 									self.filter = "port 80"
 								elif self.filter == "dns":
