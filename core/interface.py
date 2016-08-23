@@ -186,7 +186,7 @@ class Processor(object):
 								self.Jarvis.Read(file)
 							except IndexError:
 								try:
-									self.Jarvis.Read(self.path + "/" + self.file)
+									self.Jarvis.Read(self.file)
 								except:
 									try:
 										file = raw_input("[+] Set file path:")
@@ -782,7 +782,7 @@ class Processor(object):
 							completer = None
 							completer = Completer("pforensic")
 							from modules.pforensic import PcapReader
-							self.pcapread = PcapReader(self.path + "/" + self.file)
+							self.pcapread = PcapReader(self.file)
 							self.pcapread.start()
 						except KeyboardInterrupt:
 							pass
@@ -810,7 +810,7 @@ class Processor(object):
 									self.xploit = Exploit(self.targets, self.input_list[1])
 									self.xploit.start()
 								elif self.file is not None and self.input_list[1] == "stdin":
-									self.xploit = Exploit(self.path + "/" + self.file, self.input_list[1])
+									self.xploit = Exploit(self.file, self.input_list[1])
 									self.xploit.start()
 								else:
 									print "[!] You need to set or stdin or tcp as argument."
@@ -825,7 +825,7 @@ class Processor(object):
 											self.xploit = Exploit(self.targets, mode)
 											self.xploit.start()
 										elif self.file is not None:
-											self.xploit = Exploit(self.path + "/" + self.file, mode)
+											self.xploit = Exploit(self.file, mode)
 											self.xploit.start()
 										else:
 											print "[!] You need to set or a file or a target to xploit."
@@ -921,7 +921,7 @@ class Processor(object):
 									try:
 										username = raw_input("[+] Enter the username to bruteforce: ")
 										from modules.ssh_bruter import SSHbrutus
-										brutus = SSHbrutus(self.targets, username, self.path + "/" + self.file)
+										brutus = SSHbrutus(self.targets, username, self.file)
 										brutus.start()
                                                 			except KeyboardInterrupt:
 										pass
@@ -946,7 +946,7 @@ class Processor(object):
 									try:
 										url = 'url'
 										from modules.web_bruter import WEBbrutus
-										brutus = WEBbrutus(self.targets, self.path + "/" + self.file)
+										brutus = WEBbrutus(self.targets, self.file)
 										brutus.start(url)
 									except KeyboardInterrupt:
 										brutus.stop(url)
@@ -972,7 +972,7 @@ class Processor(object):
 									try:
 										form = 'form'
 										from modules.web_bruter import WEBbrutus
-										brutus = WEBbrutus(self.targets, self.path + "/" + self.file)
+										brutus = WEBbrutus(self.targets, self.file)
 										brutus.start(form)
 									except KeyboardInterrupt:
 										brutus.stop(form)
