@@ -20,7 +20,6 @@
 # USA
 
 import urllib2
-import threading
 import Queue
 import urllib
 import sys
@@ -31,7 +30,7 @@ class WEBbrutus(object):
 
 	name = "WEB brute forcer"
 	desc = "Perform web password and directory brute-force"
-	version = "0.2"
+	version = "0.3"
 
 	def __init__ (self, target,file):
 		self.threads = 5
@@ -86,9 +85,12 @@ class WEBbrutus(object):
 			self.psswd = raw_input("[+] Enter the input name of the password box: ")
 			self.user = raw_input("[+] Enter the username to brute-force the formulary: ")
 			input_file = open(self.wordlist)
-			for i in input_file.readlines():
-				password = i.strip("\n")
-				self.form_attempt(password)
+			try:
+				for i in input_file.readlines():
+					password = i.strip("\n")
+					self.form_attempt(password)
+			except KeyboardInterrupt:
+				break
 		except Exception as e:
 			print "[!] Exception caught, check the fields according to the HTML page, Error: {}".format(e)
 
@@ -107,32 +109,30 @@ class WEBbrutus(object):
 					attempt_list.append("%s%s" % (attempt,extension))
 
 
-
-			for brute in attempt_list:
-				url = "%s%s" % (self.target_url,urllib.quote(brute))
-				try:
-					headers = {}
-					headers["User-Agent"] = self.user_agent
-					r = urllib2.Request(url,headers=headers)
-					response = urllib2.urlopen(r)
-					if len(response.read()):
-						print "[%d] ==> %s" % (response.code,url)
-				except urllib2.URLError,e:
-					if e.code != 404:
-						print "!!! %d => %s" % (e.code,url)
-					pass
-
+			try:
+				for brute in attempt_list:
+					url = "%s%s" % (self.target_url,urllib.quote(brute))
+					try:
+						headers = {}
+						headers["User-Agent"] = self.user_agent
+						r = urllib2.Request(url,headers=headers)
+						response = urllib2.urlopen(r)
+						if len(response.read()):
+							print "[%d] ==> %s" % (response.code,url)
+					except urllib2.URLError,e:
+						if e.code != 404:
+							print "!!! %d => %s" % (e.code,url)
+						pass
+			except KeyboardInterrupt:
+				break
 
 	def start(self,mode):
                 if mode == 'url':
                         print "[+] Content URL bruter initialized."
                         try:
-                                for i in range(self.threads):
-                                        self.t = threading.Thread(target=self.dir_bruter,args=(self.word_queue,self.extensions,))
-                                        self.t.start()
+                        	self.dir_bruter(self.word_queue,self.extensions,)
                         except KeyboardInterrupt:
                                 print "[*] User requested shutdown."
-                                os.system('kill %d' % os.getpid())
 
 		elif mode == 'form':
 			print "[+] Brute-Form authentication initialized."
@@ -140,18 +140,16 @@ class WEBbrutus(object):
 				self.form_bruter()
 			except KeyboardInterrupt:
 				print "[*] User requested shutdown."
-				os.system('kill %d' % os.getpid())
+
 	def stop(self,mode):
 		if mode == 'url':
 			try:
-				self.t.stop()
 				print "[-] Content URL bruter finalized."
 			except Exception as e:
 				print "[!] Exception caught: {}".format(e)
 
 		elif mode == 'form':
 			try:
-				os.system('kill %d' % os.getpid())
 				print "[-] Brute-Form authentication finalized."
 			except Exception as e:
 				print "[!] Exception caught: {}".format(e)

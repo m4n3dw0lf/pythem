@@ -898,71 +898,81 @@ class Processor(object):
 								continue
 
 							if self.input_list[1] == "ssh":
-
-								if self.input_list[2] == "help":
-									print "\n[Help] SSH Brute-Force"
-									print "[Required] IP address as target."
-									print "example:"
-									print "{} set file wordlist.txt".format(console)
-									print "{} set target 192.168.1.5".format(console)
-									print "{} brute ssh\n".format(console)
-									continue
 								try:
-									username = raw_input("[+] Enter the username to bruteforce: ")
-									from modules.ssh_bruter import SSHbrutus
-									brutus = SSHbrutus(self.targets, username, self.file)
-									brutus.start()
-                                                		except KeyboardInterrupt:
-                                                        		brutus.stop()
-									pass
-                                                		except TypeError:
-                                                        		print "[!] You probably forgot to set the wordlist file path."
-                                                       			pass
+									if self.input_list[2] == "help":
+										print "\n[Help] SSH Brute-Force"
+										print "[Required] IP address as target."
+										print "example:"
+										print "{} set file wordlist.txt".format(console)
+										print "{} set target 192.168.1.5".format(console)
+										print "{} brute ssh\n".format(console)
+										continue
+									else:
+										print "[!] Invalid option."
+								except IndexError:
+									try:
+										username = raw_input("[+] Enter the username to bruteforce: ")
+										from modules.ssh_bruter import SSHbrutus
+										brutus = SSHbrutus(self.targets, username, self.file)
+										brutus.start()
+                                                			except KeyboardInterrupt:
+										pass
+                                                			except TypeError:
+                                                        			print "[!] You probably forgot to set the wordlist file path."
+                                                       				pass
+
 							elif self.input_list[1] == "url":
-								if self.input_list[2] == "help":
-									print "\n[Help] URL Brute-Force"
-									print "[Required] URL (with http:// or https://) as target"
-									print "example:"
-									print "{} set file wordlist.txt".format(console)
-									print "{} set target http://testphp.vulnweb.com/products.php?id=".format(console)
-									print "{} brute url\n".format(console)
-									continue
-
 								try:
-									url = 'url'
-									from modules.web_bruter import WEBbrutus
-									brutus = WEBbrutus(self.targets, self.file)
-									brutus.start(url)
-								except KeyboardInterrupt:
-									brutus.stop(url)
-									pass
-								except TypeError:
-			                                      		print "[!] You probably forgot to set the wordlist file path."
-									pass
+									if self.input_list[2] == "help":
+										print "\n[Help] URL Brute-Force"
+										print "[Required] URL (with http:// or https://) as target"
+										print "example:"
+										print "{} set file wordlist.txt".format(console)
+										print "{} set target http://testphp.vulnweb.com/products.php?id=".format(console)
+										print "{} brute url\n".format(console)
+										continue
+									else:
+										print "[!] Invalid option."
+
+								except IndexError:
+									try:
+										url = 'url'
+										from modules.web_bruter import WEBbrutus
+										brutus = WEBbrutus(self.targets, self.file)
+										brutus.start(url)
+									except KeyboardInterrupt:
+										brutus.stop(url)
+										pass
+									except TypeError:
+			                                      			print "[!] You probably forgot to set the wordlist file path."
+										pass
 
 							elif self.input_list[1] == "form":
-								if self.input_list[2] == "help":
-									print "\n[Help] Formulary Brute-Force"
-									print "[Required] URL (with http:// or https://) as target"
-									print "example:"
-									print "{} set file wordlist.txt".format(console)
-									print "{} set target http://testphp.vulnweb.com/login.php".format(console)
-									print "{} brute form\n".format(console)
-									continue
-
 								try:
-									form = 'form'
-									from modules.web_bruter import WEBbrutus
-									brutus = WEBbrutus(self.targets, self.file)
-									brutus.start(form)
-								except KeyboardInterrupt:
-									brutus.stop(form)
-									pass
-								except TypeError:
-		                                            		print "[!] You probably forgot to set the wordlist file path."
-									pass
-							else:
-								print "[!] Select a valid type of brute-force type help to check."
+									if self.input_list[2] == "help":
+										print "\n[Help] Formulary Brute-Force"
+										print "[Required] URL (with http:// or https://) as target"
+										print "example:"
+										print "{} set file wordlist.txt".format(console)
+										print "{} set target http://testphp.vulnweb.com/login.php".format(console)
+										print "{} brute form\n".format(console)
+										continue
+									else:
+										print "[!] Invalid option."
+
+								except IndexError:
+									try:
+										form = 'form'
+										from modules.web_bruter import WEBbrutus
+										brutus = WEBbrutus(self.targets, self.file)
+										brutus.start(form)
+									except KeyboardInterrupt:
+										brutus.stop(form)
+										pass
+									except TypeError:
+		                                            			print "[!] You probably forgot to set the wordlist file path."
+										pass
+
 					else:
 						try:
 							os.system("{}".format(self.command))
