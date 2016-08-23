@@ -27,17 +27,23 @@ import serial.tools.list_ports
 import praw
 import sqlite3
 import random
-import os
+import os,sys
 import subprocess
 
 class Jarvis(object):
 
 	def __init__(self):
 		self.status = 1
-		self.version = "0.0.6"
+		self.version = "0.0.7"
 		self.array = []
 		self.numbers = []
-		self.con = sqlite3.connect('config/Jarbas.db');
+		self.path = os.path.abspath(os.path.dirname(sys.argv[0]))
+		try:
+			self.con = sqlite3.connect(self.path + "config/Jarbas.db")
+		except:
+			g = self.path.split("core")
+			dbpath = g[0] + "/config/Jarbas.db"
+			self.con = sqlite3.connect(dbpath)
 		self.serialport = self.arduino_check()
 		self.rec = sr.Recognizer()
 		self.engine = pyttsx.init()
@@ -113,11 +119,14 @@ class Jarvis(object):
 		self.ser.write(self.command)
 
 
-	def start(self,path):
+	def start(self):
 		try:
 			#devnull = open(os.devnull, 'wb')
 			#p = subprocess.Popen(["python", path], shell=False, stdout=subprocess.PIPE, stderr=devnull)
-			with open("log/jarvisout.txt", "a+") as stdout, open("log/jarviserr.txt", "a+") as stderr:
+			out = self.path + "/log/jarvisout.txt"
+			err = self.path + "/log/jarviserr.txt"
+			path = self.path + "/core/processor.py"
+			with open(out, "a+") as stdout, open(err, "a+") as stderr:
 				self.p = subprocess.Popen(["python", path], shell=False, stdout=stdout, stderr=stderr)
 		except Exception as e:
 			print "[!] Exception caught: {}".format(e)

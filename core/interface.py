@@ -25,7 +25,7 @@ from scapy.all import *
 from modules.utils import *
 from jarvis import Jarvis
 from modules.completer import Completer
-import os
+import os,sys
 import termcolor
 import readline
 import psutil
@@ -39,6 +39,9 @@ class Processor(object):
 	def __init__(self):
 		#Jarvis
 		self.Jarvis = Jarvis()
+
+		#Script path
+		self.path = os.path.abspath(os.path.dirname(sys.argv[0]))
 
 		#Variables
 		self.targets = None
@@ -113,10 +116,10 @@ class Processor(object):
 							os.system("iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-port 53")
 
 							#Start subprocess with shell=True with sslstrip2 and dns2proxy
-				               	       	with open("log/sslstrip.log", "a+") as stdout:
+				               	       	with open("{}/log/sslstrip.log".format(self.path), "a+") as stdout:
         	                       				self.p1 = subprocess.Popen(["python sslstrip2/sslstrip.py -l 8000","sslstrip"], shell=True, stdout=stdout, stderr=stdout)
 								self.sslstrip_status = True
-							with open("log/dns2proxy.log","a+") as stdout:
+							with open("{}/log/dns2proxy.log".format(self.path),"a+") as stdout:
 								self.p2 = subprocess.Popen(["python dns2proxy/dns2proxy.py","dns2proxy"], shell=True, stdout=stdout, stderr=stdout)
 								self.dns2proxy_status = True
 						else:
@@ -134,7 +137,7 @@ class Processor(object):
 
 
 					elif self.command == "jarvis":
-						self.Jarvis.start('core/processor.py')
+						self.Jarvis.start()
 	                                        self.jarvis_status = 1
 
 					elif self.input_list[0] == "jarvis":
@@ -142,7 +145,7 @@ class Processor(object):
 							try:
 								jarvislog = self.input_list[2]
 								try:
-									os.system("tail -f log/jarvis{}.txt".format(jarvislog))
+									os.system("tail -f {}/log/jarvis{}.txt".format(self.path,jarvislog))
 								except Exception as e:
 									print "[!] Exception caught: {}".format(e)
 									pass
@@ -153,7 +156,7 @@ class Processor(object):
 								print "[.] Output log - type: out"
 								try:
 									jarvislog = raw_input("[+] Select: ")
-									os.system("tail -f log/jarvis{}.txt".format(jarvislog))
+									os.system("tail -f {}/log/jarvis{}.txt".format(self.path,jarvislog))
 								except KeyboardInterrupt:
 									pass
 								except Exception as e:
@@ -182,11 +185,16 @@ class Processor(object):
 								file = self.input_list[2]
 								self.Jarvis.Read(file)
 							except IndexError:
-								if self.file is not None:
-									self.Jarvis.Read(self.file)
-								else:
-									file = "[+] Set file path:"
-									pass
+								try:
+									self.Jarvis.Read(self.path + "/" + self.file)
+								except:
+									try:
+										file = raw_input("[+] Set file path:")
+										self.Jarvis.Read(file)
+									except KeyboardInterrupt:
+										pass
+									except Exception as e:
+										print "[!] Error: {}".format(e)
                                                 	except TypeError:
                                                 		print "[!] You probably forgot to set a wordlist file path."
                                                 	        pass
@@ -196,7 +204,7 @@ class Processor(object):
 								print "[!] Exception caught: {}".format(e)
 
 						else:
-							self.Jarvis.start('core/processor.py')
+							self.Jarvis.start()
 	                                                self.jarvis_status = 1
 
 					elif self.command == "exit" or self.command == "quit":
@@ -774,7 +782,7 @@ class Processor(object):
 							completer = None
 							completer = Completer("pforensic")
 							from modules.pforensic import PcapReader
-							self.pcapread = PcapReader(self.file)
+							self.pcapread = PcapReader(self.path + "/" + self.file)
 							self.pcapread.start()
 						except KeyboardInterrupt:
 							pass
@@ -802,7 +810,7 @@ class Processor(object):
 									self.xploit = Exploit(self.targets, self.input_list[1])
 									self.xploit.start()
 								elif self.file is not None and self.input_list[1] == "stdin":
-									self.xploit = Exploit(self.file, self.input_list[1])
+									self.xploit = Exploit(self.path + "/" + self.file, self.input_list[1])
 									self.xploit.start()
 								else:
 									print "[!] You need to set or stdin or tcp as argument."
@@ -817,7 +825,7 @@ class Processor(object):
 											self.xploit = Exploit(self.targets, mode)
 											self.xploit.start()
 										elif self.file is not None:
-											self.xploit = Exploit(self.file, mode)
+											self.xploit = Exploit(self.path + "/" + self.file, mode)
 											self.xploit.start()
 										else:
 											print "[!] You need to set or a file or a target to xploit."
@@ -870,13 +878,13 @@ class Processor(object):
 						try:
 							self.targets = self.input_list[1]
 							from modules.geoip import Geoip
-							path = "config/GeoLiteCity.dat"
+							path = self.path + "/config/GeoLiteCity.dat"
 							iptracker = Geoip(self.targets,path)
 
 						except IndexError:
 							if self.targets is not None:
 								from modules.geoip import Geoip
-								path = "config/GeoLiteCity.dat"
+								path = self.path + "/config/GeoLiteCity.dat"
 								iptracker = Geoip(self.targets,path)
 							else:
 								print "[!] You probably forgot to set a target"
@@ -913,7 +921,7 @@ class Processor(object):
 									try:
 										username = raw_input("[+] Enter the username to bruteforce: ")
 										from modules.ssh_bruter import SSHbrutus
-										brutus = SSHbrutus(self.targets, username, self.file)
+										brutus = SSHbrutus(self.targets, username, self.path + "/" + self.file)
 										brutus.start()
                                                 			except KeyboardInterrupt:
 										pass
@@ -938,7 +946,7 @@ class Processor(object):
 									try:
 										url = 'url'
 										from modules.web_bruter import WEBbrutus
-										brutus = WEBbrutus(self.targets, self.file)
+										brutus = WEBbrutus(self.targets, self.path + "/" + self.file)
 										brutus.start(url)
 									except KeyboardInterrupt:
 										brutus.stop(url)
@@ -964,7 +972,7 @@ class Processor(object):
 									try:
 										form = 'form'
 										from modules.web_bruter import WEBbrutus
-										brutus = WEBbrutus(self.targets, self.file)
+										brutus = WEBbrutus(self.targets, self.path + "/" + self.file)
 										brutus.start(form)
 									except KeyboardInterrupt:
 										brutus.stop(form)
