@@ -24,7 +24,7 @@ import sys
 from core.interface import Processor
 from modules.utils import banner
 
-version = "0.4.8"
+version = "0.4.9"
 Processor = Processor()
 
 if os.geteuid() != 0:

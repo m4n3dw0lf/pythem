@@ -31,7 +31,7 @@ class Sniffer(object):
 
 	name = "Sniffer"
 	desc = "Custom scapy sniffer."
-	version = "0.9"
+	version = "1.0"
 
 	def __init__(self, interface, filter):
 		self.interface = interface
@@ -103,6 +103,32 @@ class Sniffer(object):
 					print
 					print "[D] rrname: {}".format(p[DNSRR].rrname)
 					print "[D] rdata: {}".format(p[DNSRR].rdata)
+					print end
+				elif p.haslayer(DHCP):
+					mtype = p[DHCP].options
+					if mtype[0][1] == 1:
+						msg_type = "[D] DHCP Discover message"
+					elif mtype[0][1] == 2:
+						msg_type = "[D] DHCP Offer message."
+					elif mtype[0][1] == 3:
+						msg_type = "[D] DHCP Request message."
+					elif mtype[0][1] == 4:
+						msg_type = "[D] DHCP Decline message."
+					elif mtype[0][1] == 5:
+						msg_type = "[D] DHCP Acknowledgment message."
+					elif mtype[0][1] == 6:
+						msg_type = "[D] DHCP Negative Acknowledgment message."
+					elif mtype[0][1] == 7:
+						msg_type = "[D] DHCP Release message."
+					elif mtype[0][1] == 8:
+						msg_type = "[D] DHCP Informational message."
+					else:
+						msg_type = "[!] INVALID MESSAGE TYPE"
+
+					print pkt
+					print "[DHCP Layer]"
+					print
+					print msg_type
 					print end
 
 
@@ -205,6 +231,29 @@ class Sniffer(object):
 			elif p.haslayer(DNSRR):
 				print color("[DNS] ","blue") + p[IP].src + " ---> " + p[IP].dst + " domain name response: " + "{}".format(p[DNSRR].rdata)
 
+				# DHCP Message types
+			elif p.haslayer(DHCP):
+				mtype = p[DHCP].options
+				if mtype[0][1] == 1:
+					msg_type = "DHCP discover message"
+				elif mtype[0][1] == 2:
+					msg_type = "DHCP offer message."
+				elif mtype[0][1] == 3:
+					msg_type = "DHCP request message."
+				elif mtype[0][1] == 4:
+					msg_type = "DHCP decline message."
+				elif mtype[0][1] == 5:
+					msg_type = "DHCP acknowledgment message."
+				elif mtype[0][1] == 6:
+					msg_type = "DHCP negative Acknowledgment message."
+				elif mtype[0][1] == 7:
+					msg_type = "DHCP release message."
+				elif mtype[0][1] == 8:
+					msg_type = "DHCP informational message."
+				else:
+					msg_type = "[!] INVALID MESSAGE TYPE"
+				print color("[DHCP] ","magenta") + p[Ether].src + " ---> " + p[Ether].dst + " : " + msg_type
+
 			# TCP Core events
 		elif p.haslayer(TCP) and p.haslayer(Raw):
 	    		user_regex = '([Ee]mail|[Uu]ser|[Uu]sername|[Nn]ame|[Ll]ogin|[Ll]og|[Ll]ogin[Ii][Dd])=([^&|;]*)'
@@ -237,10 +286,10 @@ class Sniffer(object):
 
 	def start(self):
 		if self.filter == None:
-			self.filter = ''
+			self.filter = 'core'
 		if self.filter == "core":
 			if self.wrpcap == 'y':
-				print "[+] H4x0r sniffer initialized."
+				print "[+] PytheM sniffer initialized."
 				try:
 					p = sniff(iface=self.interface, prn = self.coresniff)
 					time = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
@@ -250,7 +299,7 @@ class Sniffer(object):
 						pass
 			else:
 				try:
-					print "[+] H4x0r sniffer initialized"
+					print "[+] PytheM sniffer initialized"
 					p = sniff(iface=self.interface,prn =self.coresniff)
 					print "\n[!] User requested shutdown."
 				except Exception as e:
@@ -275,5 +324,5 @@ class Sniffer(object):
 					p = sniff(iface=self.interface,filter ="{}".format(self.filter), prn = self.customsniff, store = 0)
 					print "\n[!] User requested shutdown."
 				except Exception as e:
-					if "KeyboardInterrupt" not in e:
+					if "Interrupted system call" in e:
 						pass

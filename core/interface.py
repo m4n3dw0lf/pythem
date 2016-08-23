@@ -306,7 +306,7 @@ class Processor(object):
 								self.filter = self.input_list[2]
 							except IndexError:
 								try:
-									self.filter = raw_input("[+] Enter the sniffer filter: ")
+									self.filter = raw_input("[+] Enter the sniffer filter (empty for core sniffer): ")
 								except KeyboardInterrupt:
 									pass
 
