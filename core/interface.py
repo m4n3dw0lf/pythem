@@ -895,7 +895,7 @@ class Processor(object):
 
 					elif self.input_list[0] == "brute":
 							if self.input_list[1] == "help":
-								print "\n[Help] Interactive stdin or tcp exploit development shell."
+								print "\n[Help] Brute-Force attacks, good luck padawan."
 								print "[Required] File as password wordlist and target as URL or IP."
 								print "parameters:"
 								print " - ssh"
