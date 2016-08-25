@@ -115,91 +115,6 @@ def color(message,color):
 	msg = termcolor.colored(str(message), str(color), attrs=["bold"])
 	return msg
 
-
-def jarvis_help(version):
-	print
-	print color("[ Jarvis - Personal Assistence - v{} ]".format(version),"blue")
-	print
-	print
-	print color("[*] exit |or| quit : 			Terminate the program.","blue")
-	print
-	print
-	print color("[*] sleep |or| stop |or| wait:  	Sleep until you say 'Jarvis'.","blue")
-	print
-	print
-	print color("[*] newspaper |or| news: 		Read the top trending news from reddit.","blue")
-	print
-	print
-	print color("[*] say |or| speak [message]:      	Ask Jarvis to say something.","blue")
-	print
-	print color(" examples(say):","green")
-	print
-  	print color("  say I like donuts","green")
-  	print color("  speak my name is Jarvis","green")
-	print
-	print
-	print color("[*] run [script]:	 		Run .sh script that you place on the scripts folder with chmod +x","blue")
-	print
-	print color(" example(say):","green")
-	print
-	print color("  run firewall		 		| Place a firewall.sh on the scripts folder and give execution privilege first.","green")
-	print
-	print
-	print color("[*] browser:		 		Ask Jarvis to start your default browser.","blue")
-	print
- 	print color(" example(say):","green")
-	print
-  	print color("  browser","green")
-	print
-	print
-	print color("[*] terminal:		 		Ask Jarvis to open a gnome-terminal.","blue")
-	print
- 	print color(" example(say):","green")
-	print
-  	print color("  terminal","green")
-	print
-	print
-	print color("[*] search [query]	 		Ask Jarvis to search query via google.","blue")
-	print
-	print color(" example(say):","green")
-	print
-	print color("  search python programming.","green")
-	print
-	print
- 	print color("[*] input [keystroke]:   		Send a command to the Arduino Leonardo without entering editor mode.","blue")
-	print
-        print color("          * ARDUINO LEONARDO REQUIRED *","red")
-	print
-	print color("voice commands: (Same as EDITOR MODE )","yellow")
-	print
-	print
-	print color("[*] editor: 				Start the editor mode.","blue")
-	print
-	print color("          * ARDUINO LEONARDO REQUIRED *","red")
-	print
-	print color("               [EDITOR MODE]","red")
-	print
-	print color("voice commands: (anything else will be typed)","yellow")
-	print
-	print color(" forward   = tab","green")
- 	print color(" back      = (shift+tab)","green")
- 	print color(" up        = up arrow","green")
-	print color(" down      = down arrow","green")
-	print color(" right     = right arrow","green")
-	print color(" left      = left arrow","green")
-	print color(" super     = super/windows","green")
-	print color(" slash     = slash(/)","green")
-	print color(" backspace = backspace(erase character)","green")
-	print color(" erase	  = press backspace 10 times","green")
-	print color(" space     = space(spacebar)","green")
-	print color(" enter     = enter(return)","green")
-	print color(" close	  = close(alt+f4)","green")
-	print color(" escape    = escape(esc)","green")
-	print color(" exit	  = leaves editor mode","green")
-	print
-
-
-
 def banner(version):
 	banner = """\n
 
@@ -469,35 +384,7 @@ def print_help():
 	print color("  pythem> ","red") + "cookiedecode"
 	print
 	print
-	print color("* Anything else will be executed in the terminal like cd, ls, nano, cat, etc. *","yellow")
-	print
-	print
-	print color("(+) Call the voice-controlled assistant Jarvis","grey")
-	print
-	print color("link:","green") + color(" https://github.com/m4n3dw0lf/Jarvis","blue")
-	print
-	print
-	print color("[*] jarvis","blue")
-	print
-	print "Type 'jarvis help' to see the jarvis help page."
-	print
-	print color(" examples:","green")
-	print
-	print color("  pythem> ","red")+ "jarvis	  "+color("(Call Jarvis in speech recognition mode)","yellow")
-	print
-   	print color("  pythem> ","red")+ "jarvis help     "+color("(Print the Jarvis help message)","yellow")
-	print
-   	print color("  pythem> ","red")+ "jarvis log      "+color("(Check the Jarvis log)","yellow")
-	print "     or"
-   	print color("  pythem> ","red")+ "jarvis log err"
-	print
-   	print color("  pythem> ","red") + "jarvis say     "+color(" (Ask Jarvis to say something)","yellow")
-	print "     or"
-   	print color("  pythem> ","red") + "jarvis say hello my name is Jarvis."
-	print
-   	print color("  pythem> ","red") + "jarvis read 	  "+color("(If no file is specified, should be called after setting file.)","yellow")
-   	print "     or"
-   	print color("  pythem> ","red") + "jarvis read file.txt"
+	print color("* Anything else will be executed in the terminal like ls, nano, cat, etc. *","yellow")
 	print
 	print color("by: ","red") + color("m4n3dw0lf","blue")
 	print

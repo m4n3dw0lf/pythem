@@ -23,7 +23,6 @@ import logging
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 from scapy.all import *
 from modules.utils import *
-from jarvis import Jarvis
 from modules.completer import Completer
 import os,sys
 import termcolor
@@ -37,9 +36,6 @@ class Processor(object):
 
 
 	def __init__(self):
-		#Jarvis
-		self.Jarvis = Jarvis()
-
 		#Script path
 		self.path = os.path.abspath(os.path.dirname(sys.argv[0]))
 
@@ -56,7 +52,6 @@ class Processor(object):
 		self.arpmode = "rep"
 
 		#Status
-		self.jarvis_status = 0
 		self.arpspoof_status = False
 		self.inject_status = False
 		self.dnsspoof_status = False
@@ -97,8 +92,21 @@ class Processor(object):
 				try:
 
 						# HELP
-					if self.input_list[0] == "help":
+					if self.command == "help":
 						print_help()
+
+						# EXIT
+					elif self.command == "exit" or self.command == "quit":
+						if self.dnsdrop_status == 1:
+							self.dos.dnsdropstop()
+						if self.sslstrip_status == True:
+							self.pskill(self.p1.pid)
+							print "[*] SSLstrip finalized."
+						if self.dns2proxy_status == True:
+							self.pskill(self.p2.pid)
+							print "[*] DNS2Proxy finalized."
+						exit()
+
 
 						# HSTSBYPASS
 					elif self.command == "hstsbypass":
@@ -126,7 +134,6 @@ class Processor(object):
 							print "[!] You need to start an ARP spoof attack first."
 
 
-
 					elif self.command == "hstsbypass help":
 						print "\n[Help] Start to perform a HSTS Bypass with dns2proxy and SSL strip with sslstrip+"
 						print "[Required] ARP spoofing started."
@@ -134,226 +141,140 @@ class Processor(object):
 						print "{} hstsbypass\n".format(console)
 
 
-
-
-					elif self.command == "jarvis":
-						self.Jarvis.start()
-	                                        self.jarvis_status = 1
-
-					elif self.input_list[0] == "jarvis":
-						if self.input_list[1] == "log":
-							try:
-								jarvislog = self.input_list[2]
+					elif self.input_list[0] == "set" or self.input_list[0] == "SET":
+						try:
+							if self.input_list[1] == "interface":
 								try:
-									os.system("tail -f {}/log/jarvis{}.txt".format(self.path,jarvislog))
-								except Exception as e:
-									print "[!] Exception caught: {}".format(e)
-									pass
-
-							except IndexError:
-								print "[+] Jarvis log system."
-								print "[.] Error log  - type: err"
-								print "[.] Output log - type: out"
-								try:
-									jarvislog = raw_input("[+] Select: ")
-									os.system("tail -f {}/log/jarvis{}.txt".format(self.path,jarvislog))
-								except KeyboardInterrupt:
-									pass
-								except Exception as e:
-									print "[!] Exception caught: {}".format(e)
-									pass
-
-						elif self.input_list[1] == "help":
-							jarvis_help(self.Jarvis.version)
-
-						elif self.input_list[1] == "say":
-							try:
-								message = self.input_list[2]
-								all_msg = " ".join(self.input_list[2:])
-								self.Jarvis.Say(all_msg)
-							except IndexError:
-								try:
-									message = raw_input("[+] Jarvis speaker: ")
-									self.Jarvis.Say(message)
-								except KeyboardInterrupt:
-									pass
-							except Exception as e:
-								print "[!] Exception caught: {}".format(e)
-
-						elif self.input_list[1] == "read":
-							try:
-								file = self.input_list[2]
-								self.Jarvis.Read(file)
-							except IndexError:
-								try:
-									self.Jarvis.Read(self.file)
-								except:
+									self.interface = self.input_list[2]
+								except IndexError:
 									try:
-										file = raw_input("[+] Set file path:")
-										self.Jarvis.Read(file)
+										self.interface = raw_input("[+] Enter the interface: ")
 									except KeyboardInterrupt:
 										pass
-									except Exception as e:
-										print "[!] Error: {}".format(e)
-                                                	except TypeError:
-                                                		print "[!] You probably forgot to set a wordlist file path."
-                                                	        pass
-							except KeyboardInterrupt:
-								pass
-							except Exception as e:
-								print "[!] Exception caught: {}".format(e)
-
-						else:
-							self.Jarvis.start()
-	                                                self.jarvis_status = 1
-
-					elif self.command == "exit" or self.command == "quit":
-						if self.jarvis_status == 1:
-							self.Jarvis.Say(self.Jarvis.random('salutes'))
-							self.Jarvis.stop()
-						if self.dnsdrop_status == 1:
-							self.dos.dnsdropstop()
-						if self.sslstrip_status == True:
-							self.pskill(self.p1.pid)
-							print "[*] SSLstrip finalized."
-						if self.dns2proxy_status == True:
-							self.pskill(self.p2.pid)
-							print "[*] DNS2Proxy finalized."
-						exit()
-
-
-					elif self.input_list[0] == "set" or self.input_list[0] == "SET":
-						if self.input_list[1] == "interface":
-							try:
-								self.interface = self.input_list[2]
-							except IndexError:
+							elif self.input_list[1] == "port":
 								try:
-									self.interface = raw_input("[+] Enter the interface: ")
-								except KeyboardInterrupt:
-									pass
-						elif self.input_list[1] == "port":
-							try:
-								self.port = int(self.input_list[2])
-							except IndexError:
-								try:
-									self.port = input("[+] Enter the default port: ")
-								except KeyboardInterrupt:
-									pass
+									self.port = int(self.input_list[2])
+								except IndexError:
+									try:
+										self.port = input("[+] Enter the default port: ")
+									except KeyboardInterrupt:
+										pass
 
-						elif self.input_list[1] == "domain":
-							try:
-								self.domain = self.input_list[2]
-							except IndexError:
+							elif self.input_list[1] == "domain":
 								try:
-									self.domain = raw_input("[+] Domain to be spoofed: ")
-								except KeyboardInterrupt:
-									pass
+									self.domain = self.input_list[2]
+								except IndexError:
+									try:
+										self.domain = raw_input("[+] Domain to be spoofed: ")
+									except KeyboardInterrupt:
+										pass
 
-						elif self.input_list[1] == "redirect":
-							try:
-								self.redirect = self.input_list[2]
-							except IndexError:
+							elif self.input_list[1] == "redirect":
 								try:
-									self.redirect = raw_input("[+] IP address to redirect DNS queries: ")
-								except KeyboardInterrupt:
-									pass
+									self.redirect = self.input_list[2]
+								except IndexError:
+									try:
+										self.redirect = raw_input("[+] IP address to redirect DNS queries: ")
+									except KeyboardInterrupt:
+										pass
 
-						elif self.input_list[1] == "script":
-							try:
-								self.script = self.input_list[2]
-							except IndexError:
+							elif self.input_list[1] == "script":
 								try:
-									self.script = raw_input("[+]Script url/path: ")
-								except KeyboardInterrupt:
-									pass
+									self.script = self.input_list[2]
+								except IndexError:
+									try:
+										self.script = raw_input("[+]Script url/path: ")
+									except KeyboardInterrupt:
+										pass
 
 
-						elif self.input_list[1] == "gateway":
-							try:
-								self.gateway = self.input_list[2]
-							except IndexError:
+							elif self.input_list[1] == "gateway":
 								try:
-									self.gateway = raw_input("[+] Enter the gateway: ")
-								except KeyboardInterrupt:
-									pass
-						elif self.input_list[1] == "target":
-							try:
-								self.targets = self.input_list[2]
-							except IndexError:
+									self.gateway = self.input_list[2]
+								except IndexError:
+									try:
+										self.gateway = raw_input("[+] Enter the gateway: ")
+									except KeyboardInterrupt:
+										pass
+							elif self.input_list[1] == "target":
 								try:
-									self.targets = raw_input("[+] Enter the target(s): ")
-								except KeyboardInterrupt:
-									pass
-						elif self.input_list[1] == "file":
-							try:
-								self.file = self.input_list[2]
-							except IndexError:
+									self.targets = self.input_list[2]
+								except IndexError:
+									try:
+										self.targets = raw_input("[+] Enter the target(s): ")
+									except KeyboardInterrupt:
+										pass
+							elif self.input_list[1] == "file":
 								try:
-									self.file = raw_input("[+] Enter the path to the file: ")
-								except KeyboardInterrupt:
-									pass
-						elif self.input_list[1] == "arpmode":
-							try:
-								self.arpmode = self.input_list[2]
-							except IndexError:
+									self.file = self.input_list[2]
+								except IndexError:
+									try:
+										self.file = raw_input("[+] Enter the path to the file: ")
+									except KeyboardInterrupt:
+										pass
+							elif self.input_list[1] == "arpmode":
 								try:
-									self.arpmode = raw_input("[+] Enter the arpmode: ")
-								except KeyboardInterrupt:
-									pass
+									self.arpmode = self.input_list[2]
+								except IndexError:
+									try:
+										self.arpmode = raw_input("[+] Enter the arpmode: ")
+									except KeyboardInterrupt:
+										pass
 
-						elif self.input_list[1] == "filter":
-							try:
-								self.filter = self.input_list[2]
-							except IndexError:
+							elif self.input_list[1] == "filter":
 								try:
-									self.filter = raw_input("[+] Enter the sniffer filter: ")
-								except KeyboardInterrupt:
-									pass
+									self.filter = self.input_list[2]
+								except IndexError:
+									try:
+										self.filter = raw_input("[+] Enter the sniffer filter: ")
+									except KeyboardInterrupt:
+										pass
 
-						elif self.input_list[1] == "help":
-							print "\n[Help] Select a variable to set."
-							print "parameters:"
-							print " - interface"
-							print " - gateway"
-							print " - target"
-							print " - file"
-							print " - arpmode"
-							print " - domain"
-							print " - redirect"
-							print " - script"
-							print " - filter"
-							print "example:"
-							print "{} set interface\n".format(console)
+							elif self.input_list[1] == "help":
+								print "\n[Help] Select a variable to set."
+								print "parameters:"
+								print " - interface"
+								print " - gateway"
+								print " - target"
+								print " - file"
+								print " - arpmode"
+								print " - domain"
+								print " - redirect"
+								print " - script"
+								print " - filter"
+								print "example:"
+								print "{} set interface\n".format(console)
 
-						else:
+						except IndexError:
 							print "[!] Select a valid variable to set."
 
 
 					elif self.input_list[0] == "print":
-						if self.input_list[1] == "interface":
-							print "[+] Network Interface: {}".format(self.interface)
-						elif self.input_list[1] == "port":
-							print "[+] Default port: {}".format(self.port)
-						elif self.input_list[1] == "domain":
-							print "[+] Domain: {}".format(self.domain)
-						elif self.input_list[1] == "redirect":
-							print "[+] Redirecting to: {}".format(self.redirect)
-						elif self.input_list[1] == "script":
-							print "[+] Script url/path: {}".format(self.script)
-						elif self.input_list[1] == "gateway":
-							print "[+] Gateway IP Address: {}".format(self.gateway)
-						elif self.input_list[1] == "target":
-							print "[+] Target(s): {}".format(self.targets)
-						elif self.input_list[1] == "file":
-							print "[+] File path: {}".format(self.file)
-						elif self.input_list[1] == "arpmode":
-							print "[+] ARP spoofing mode: {}".format(self.arpmode)
-						elif self.input_list[1] == "help":
-							print "\n[Help] Print a variable value."
-							print "example:"
-							print "{} print interface\n".format(console)
-						else:
-							print "[-] Select a valid variable name."
+						try:
+							if self.input_list[1] == "interface":
+								print "[+] Network Interface: {}".format(self.interface)
+							elif self.input_list[1] == "port":
+								print "[+] Default port: {}".format(self.port)
+							elif self.input_list[1] == "domain":
+								print "[+] Domain: {}".format(self.domain)
+							elif self.input_list[1] == "redirect":
+								print "[+] Redirecting to: {}".format(self.redirect)
+							elif self.input_list[1] == "script":
+								print "[+] Script url/path: {}".format(self.script)
+							elif self.input_list[1] == "gateway":
+								print "[+] Gateway IP Address: {}".format(self.gateway)
+							elif self.input_list[1] == "target":
+								print "[+] Target(s): {}".format(self.targets)
+							elif self.input_list[1] == "file":
+								print "[+] File path: {}".format(self.file)
+							elif self.input_list[1] == "arpmode":
+								print "[+] ARP spoofing mode: {}".format(self.arpmode)
+							elif self.input_list[1] == "help":
+								print "\n[Help] Print a variable value."
+								print "example:"
+								print "{} print interface\n".format(console)
+						except IndexError:
+							print "[!] Select a valid variable name."
 
 					elif self.input_list[0] == "scan":
 						if self.input_list[1] == "help":
@@ -770,77 +691,78 @@ class Processor(object):
                                                 		pass
 
 					elif self.input_list[0] == "pforensic":
-						if self.input_list[1] == "help":
-							print "\n[Help] Start a packet-analyzer."
-							print "[Required] Set a file with a .pcap file"
-							print "example:"
-							print "{} set file capture.pcap".format(console)
-							print "{} pforensic\n".format(console)
-							continue
-
 						try:
-							completer = None
-							completer = Completer("pforensic")
-							from modules.pforensic import PcapReader
-							self.pcapread = PcapReader(self.file)
-							self.pcapread.start()
-						except KeyboardInterrupt:
-							pass
-						except TypeError:
-							print "[!] You probably forgot to set the .pcap file"
-							pass
-						except Exception as e:
-							print "[!] Exception caught: {}".format(e)
-							pass
+							if self.input_list[1] == "help":
+								print "\n[Help] Start a packet-analyzer."
+								print "[Required] Set a file with a .pcap file"
+								print "example:"
+								print "{} set file capture.pcap".format(console)
+								print "{} pforensic\n".format(console)
+								continue
+
+							else:
+								print "[!] Invalid option."
+						except IndexError:
+							try:
+								from modules.pforensic import PcapReader
+								self.pcapread = PcapReader(self.file)
+								self.pcapread.start()
+							except KeyboardInterrupt:
+								pass
+							except TypeError:
+								print "[!] You probably forgot to set the .pcap file"
+								pass
+							except Exception as e:
+								print "[!] Exception caught: {}".format(e)
+								pass
 
 					elif self.input_list[0] == "xploit":
-						if self.input_list[1] == "help":
-							print "\n[Help] Interactive stdin or tcp exploit development shell."
-							print "[Required] File as target to stdin and IP address as target to tcp"
-							print "parameters:"
-							print " - tcp"
-							print " - stdin"
-							print "example:"
-							print "{} set target 192.168.1.1".format(console)
-							print "{} xploit tcp\n".format(console)
-						else:
+						try:
+							from modules.exploit import Exploit
+							if self.targets is not None and self.input_list[1] == "tcp":
+								self.xploit = Exploit(self.targets, self.input_list[1])
+								self.xploit.start()
+							elif self.file is not None and self.input_list[1] == "stdin":
+								self.xploit = Exploit(self.file, self.input_list[1])
+								self.xploit.start()
+							elif self.input_list[1] == "help":
+								print "\n[Help] Interactive stdin or tcp exploit development shell."
+								print "[Required] File as target to stdin and IP address as target to tcp"
+								print "parameters:"
+								print " - tcp"
+								print " - stdin"
+								print "example:"
+								print "{} set target 192.168.1.1".format(console)
+								print "{} xploit tcp\n".format(console)
+							else:
+								print "[!] You need to set or stdin  or  tcp as argument."
+								print "[!] You need to set or a |-file or |-target to xploit."
+						except IndexError:
 							try:
-								from modules.exploit import Exploit
-								if self.targets is not None and self.input_list[1] == "tcp":
-									self.xploit = Exploit(self.targets, self.input_list[1])
-									self.xploit.start()
-								elif self.file is not None and self.input_list[1] == "stdin":
-									self.xploit = Exploit(self.file, self.input_list[1])
-									self.xploit.start()
-								else:
-									print "[!] You need to set or stdin or tcp as argument."
-									print "[!] You need to set or a file or a target to xploit."
-							except IndexError:
-								try:
-									print "[*] Select one xploit mode, options = stdin/tcp"
-									mode = raw_input("[+] Exploit mode: ")
-									if mode == "stdin" or mode == "tcp":
-										from modules.exploit import Exploit
-										if self.targets is not None:
-											self.xploit = Exploit(self.targets, mode)
-											self.xploit.start()
-										elif self.file is not None:
-											self.xploit = Exploit(self.file, mode)
-											self.xploit.start()
-										else:
-											print "[!] You need to set or a file or a target to xploit."
+								print "[*] Select one xploit mode, options = stdin/tcp"
+								mode = raw_input("[+] Exploit mode: ")
+								if mode == "stdin" or mode == "tcp":
+									from modules.exploit import Exploit
+									if self.targets is not None:
+										self.xploit = Exploit(self.targets, mode)
+										self.xploit.start()
+									elif self.file is not None:
+										self.xploit = Exploit(self.file, mode)
+										self.xploit.start()
 									else:
-										print "[!] Select a valid xploit mode, stdin or tcp"
-								except KeyboardInterrupt:
-									pass
-                                                	except TypeError:
-                                                	        print "[!] You probably forgot to set the file"
-                                                	        pass
-                                               		except KeyboardInterrupt:
-                                                	        pass
-                                                	except Exception as e:
-                                                	        print "[!] Exception caught: {}".format(e)
-                                                	        pass
+										print "[!] You need to set or a file or a target to xploit."
+								else:
+									print "[!] Select a valid xploit mode, stdin or tcp"
+							except KeyboardInterrupt:
+								pass
+                                                except TypeError:
+                                                        print "[!] You probably forgot to set the file"
+                                                        pass
+                                               	except KeyboardInterrupt:
+                                                        pass
+                                                except Exception as e:
+                                                        print "[!] Exception caught: {}".format(e)
+                                                        pass
 
 					elif self.command == "cookiedecode":
 						try:
@@ -863,16 +785,26 @@ class Processor(object):
 					elif self.input_list[0] == "decode":
 						try:
 							print decode(self.input_list[1])
-						except KeyboardInterrupt:
-							pass
-
+						except IndexError:
+							try:
+								msg = raw_input("Decode: ")
+								print decode(msg)
+							except KeyboardInterrupt:
+								pass
+						except Exception as e:
+							print "[!] Exception caught: {}".format(e)
 
 					elif self.input_list[0] == "encode":
 						try:
 							print encode(self.input_list[1])
-						except KeyboardInterrupt:
-							pass
-
+						except IndexError:
+							try:
+								msg = raw_input("Encode:")
+								print decode(msg)
+							except KeyboardInterrupt:
+								pass
+						except Exception as e:
+							print "[!] Exception caught: {}".format(e)
 
 					elif self.input_list[0] == "geoip":
 						try:
@@ -894,6 +826,7 @@ class Processor(object):
 								pass
 
 					elif self.input_list[0] == "brute":
+						try:
 							if self.input_list[1] == "help":
 								print "\n[Help] Brute-Force attacks, good luck padawan."
 								print "[Required] File as password wordlist and target as URL or IP."
@@ -980,7 +913,8 @@ class Processor(object):
 									except TypeError:
 		                                            			print "[!] You probably forgot to set the wordlist file path."
 										pass
-
+						except IndexError:
+							print "[!] Select a valid brute force type."
 					else:
 						try:
 							os.system("{}".format(self.command))

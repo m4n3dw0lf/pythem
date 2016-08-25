@@ -2,7 +2,7 @@
 
 PytheM is a python multi-purpose pentest framework. It has been developed in the hope that it will be useful and I don't take responsibility for any misapplication of it. Only runs on GNU/Linux OS.
 
-![alt text] (config/pythembg.png)
+![alt text] (config/pythembKg.png)
 
 ## Installation
 
@@ -27,8 +27,6 @@ PytheM is a python multi-purpose pentest framework. It has been developed in the
 
 ## Commands Reference
 
-- [JARVIS](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#jarvis---voice-controlled-assistant)
- - [JARVIS COMMANDS REFERENCE](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#jarvis-commands-reference)
 - [SECTION - CORE](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#section---core)
 - [SECTION - NETWORK, MAN-IN-THE-MIDDLE AND DENIAL OF SERVICE (DOS)](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#section---network-man-in-the-middle-and-denial-of-service-dos)
  - [PFORENSIC COMMANDS REFERENCE](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#pforensic-commands-reference)

@@ -27,10 +27,6 @@ class Completer(object):
 			self.suboptions = ['interface','arpmode','target','gateway','file','domain','port','script','redirect','help']
 			completer = readline.set_completer(self.suboption)
 
-		elif "jarvis" in text and state == 1:
-			self.suboptions = ['help','log','say','read']
-			completer = readline.set_completer(self.suboption)
-
 		elif "print" in text and state == 1:
 			self.suboptions = ['interface', 'arpmode', 'target', 'gateway','file','domain','port','script','redirect','help']
 			completer = readline.set_completer(self.suboption)
@@ -72,7 +68,7 @@ class Completer(object):
 			completer = readline.set_completer(self.suboption)
 
 		else:
-	        	self.words = ['clear','help','exit','quit','set','print','scan','arpspoof','dnsspoof','inject','sniff','pforensic','dos','xploit','brute','geoip','decode','encode','cookiedecode','jarvis','hstsbypass','harvest']
+	        	self.words = ['clear','help','exit','quit','set','print','scan','arpspoof','dnsspoof','inject','sniff','pforensic','dos','xploit','brute','geoip','decode','encode','cookiedecode','hstsbypass','harvest']
 			results = [x for x in self.words if x.startswith(text)] + [None]
 			return results[state]
 
