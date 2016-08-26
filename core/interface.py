@@ -938,7 +938,7 @@ class Processor(object):
 
 
 		except KeyboardInterrupt:
-			print "[*] User requested shutdown."
+			print "\n[*] User requested shutdown."
 			if self.dnsdrop_status == 1:
 				self.dos.dnsdropstop()
 			if self.sslstrip_status == True:
