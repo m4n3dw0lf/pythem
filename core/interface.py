@@ -103,9 +103,11 @@ class Processor(object):
 						if self.sslstrip_status == True:
 							self.pskill(self.p1.pid)
 							print "[*] SSLstrip finalized."
+							iptables()
 						if self.dns2proxy_status == True:
 							self.pskill(self.p2.pid)
 							print "[*] DNS2Proxy finalized."
+							iptables()
 						exit()
 
 
@@ -936,13 +938,15 @@ class Processor(object):
 		except KeyboardInterrupt:
                        	if self.sslstrip_status == True:
                         	self.pskill(self.p1.pid)
-                                print "[*] SSLstrip finalized."
+                                print "\n[*] SSLstrip finalized."
+				iptables()
                         if self.dns2proxy_status == True:
                                 self.pskill(self.p2.pid)
                                 print "[*] DNS2Proxy finalized."
+				iptables()
 			if self.dnsdrop_status == 1:
 				self.dos.dnsdropstop()
-			print "\n[*] User requested shutdown."
+			print "[*] User requested shutdown."
 			exit()
 
 
