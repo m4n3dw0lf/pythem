@@ -281,19 +281,19 @@ class Processor(object):
 							print "[!] Select a valid variable name."
 
 					elif self.input_list[0] == "scan":
-						if self.input_list[1] == "help":
-							print "\n[Help] Start a scanner in target host."
-							print "[Required] interface and target"
-							print "parameters:"
-							print " - tcp"
-							print " - arp"
-							print " - manual"
-							print "example:"
-							print "{} set target www.google.com".format(console)
-							print "{} set interface eth0".format(console)
-							print "{} scan tcp\n".format(console)
-							continue
 						try:
+							if self.input_list[1] == "help":
+								print "\n[Help] Start a scanner in target host."
+								print "[Required] interface and target"
+								print "parameters:"
+								print " - tcp"
+								print " - arp"
+								print " - manual"
+								print "example:"
+								print "{} set target www.google.com".format(console)
+								print "{} set interface eth0".format(console)
+								print "{} scan tcp\n".format(console)
+								continue
 							mode = self.input_list[1]
 							if self.targets is not None and self.interface is not None:
 								from modules.scanner import Scanner
