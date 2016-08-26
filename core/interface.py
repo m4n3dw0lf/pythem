@@ -32,7 +32,7 @@ import psutil
 class Processor(object):
 	name = "Interface-Processor"
 	desc = "Console to process commands"
-	version = "1.1"
+	version = "1.2"
 
 
 	def __init__(self):
@@ -692,6 +692,7 @@ class Processor(object):
 								if not self.filter:
 									self.filter = None
 	                                                        self.sniff = Sniffer(self.interface, self.filter)
+								print "\n[+] PytheM sniffer initialized.\n"
         	                                                self.sniff.start()
 							except KeyboardInterrupt:
                                                 		pass

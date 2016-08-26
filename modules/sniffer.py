@@ -289,40 +289,46 @@ class Sniffer(object):
 			self.filter = 'core'
 		if self.filter == "core":
 			if self.wrpcap == 'y':
-				print "[+] PytheM sniffer initialized."
 				try:
 					p = sniff(iface=self.interface, prn = self.coresniff)
 					time = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
 					wrpcap("pythem{}.pcap".format(time),p)
+					print "\n[!] User requested shutdown."
 				except Exception as e:
 					if "Interrupted system call" in e:
-						pass
+						self.start()
+					else:
+						print "[!] Exception caught: {}".format(e)
 			else:
 				try:
-					print "[+] PytheM sniffer initialized"
 					p = sniff(iface=self.interface,prn =self.coresniff)
 					print "\n[!] User requested shutdown."
 				except Exception as e:
 					if "Interrupted system call" in e:
-						pass
+						self.start()
+					else:
+						print "[!] Exception caught: {}".format(e)
 
 
 		else:
 			if self.wrpcap == 'y':
 				try:
-					print "[+] Custom sniffer initialized"
 					p = sniff(iface=self.interface,filter = "{}".format(self.filter), prn = self.customsniff)
 				        time = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
                         	       	wrpcap("pythem{}.pcap".format(time),p)
+					print "\n[!] User requested shutdown."
 				except Exception as e:
 					if "Interrupted system call" in e:
-						pass
+						self.start()
+					else:
+						print "[!] Exception caught: {}".format(e)
 
 			else:
 				try:
-					print "[+] Custom sniffer initialized"
 					p = sniff(iface=self.interface,filter ="{}".format(self.filter), prn = self.customsniff, store = 0)
 					print "\n[!] User requested shutdown."
 				except Exception as e:
 					if "Interrupted system call" in e:
-						pass
+						self.start()
+					else:
+						print "[!] Exception caught: {}".format(e)
