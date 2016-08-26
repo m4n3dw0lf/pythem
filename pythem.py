@@ -22,7 +22,7 @@
 import os
 import sys
 from core.interface import Processor
-from modules.utils import banner
+from modules.utils import banner,color
 
 version = "0.5.0"
 Processor = Processor()
@@ -33,6 +33,8 @@ if os.geteuid() != 0:
 if __name__ == '__main__':
 	try:
 		print banner(version)
+		print color("by: ","blue") + color("m4n3dw0lf","red")
+		print
 		Processor.start()
 	except Exception as e:
 		print "[!] Exception caught: {}".format(e)
