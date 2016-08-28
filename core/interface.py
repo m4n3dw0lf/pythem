@@ -59,6 +59,7 @@ class Processor(object):
 		self.synflood_status = 0
 		self.udpflood_status = 0
 		self.dnsflood_status = 0
+		self.pingofdeath_status = 0
 		self.icmpflood_status = 0
 		self.icmpsmurf_status = 0
 		self.dhcpstarvation_status = 0
@@ -522,16 +523,53 @@ class Processor(object):
 									except TypeError:
 										print "[!] You probably forgot to set a network interface."
 
+							elif self.input_list[1] == "land":
+								try:
+									if self.input_list[2] == "help":
+										print "\n[Help] Start a LAND attack on a target."
+										print "[Required] Target"
+										print "[Optional] Port, default = 80"
+										print "example:"
+										print "{} set target 10.0.0.101".format(console)
+										print "{} dos land\n".format(console)
+										continue
+								except IndexError:
+									if self.targets == None:
+										print "[!] You probably forgot to set a IP address as target."
+									else:
+										try:
+											self.dos.landstart(self.targets,self.port)
+											self.land_status = 1
+										except Exception as e:
+											print "[!] Exception caught: {}".format(e)
+
+							elif self.input_list[1] == "pingofdeath":
+								try:
+									if self.input_list[2] == "help":
+										print "\n[Help] Start a Ping of Death attack on a target."
+										print "[Required] Target"
+										print "example:"
+										print "{} set target 192.168.1.101".format(console)
+										print "{} dos pingofdeath\n".format(console)
+										continue
+								except IndexError:
+									if self.targets == None:
+										print "[!] You probably forgot to set a IP address as target."
+									else:
+										try:
+											self.dos.pingofdeathstart(self.targets)
+											self.pingofdeath_status = 1
+										except Exception as e:
+											print "[!] Exception caught: {}".format(e)
 
 							elif self.input_list[1] == "udpflood":
 								try:
 									if self.input_list[2] == "help":
 										print "\n[Help] Start a UDP flood attack on target host, default port = 80, set port to change."
-										print "[Required] Target and interface"
+										print "[Required] Target"
 										print "[Optional] port"
 										print "example:"
 										print "{} set target 192.168.1.4".format(console)
-										print "{} set interface wlan0".format(console)
 										print "{} dos synflood\n".format(console) 
 										continue
 								except IndexError:

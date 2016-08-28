@@ -293,13 +293,17 @@ def print_help():
 	print
 	print color("  - dnsdrop           | Start to drop DNS queries that pass through man-in-the-middle traffic.","yellow")
 	print
-	print color("  - synflood	      | Start a SYN flood attack on target host, default port = 80, set port to change.","yellow")
+	print color("  - synflood	      | Start a SYN flood attack on target address, default port = 80, set port to change.","yellow")
 	print
-	print color("  - udpflood	      | Start a UDP flood attack on target host, default port = 80, set port to change.","yellow")
+	print color("  - udpflood	      | Start a UDP flood attack on target address, default port = 80, set port to change.","yellow")
 	print
 	print color("  - teardrop          | Start a UDP teardrop fragmentation attack.","yellow")
 	print
-	print color("  - icmpflood	      | Start a ICMP flood attack on target host","yellow")
+	print color("  - land	      | Start a LAND attack on target address, default port = 80, set port to change.","yellow")
+	print
+	print color("  - icmpflood	      | Start a ICMP flood attack on target address.","yellow")
+	print
+	print color("  - pingofdeath	      | Start a ping of death (P.O.D) attack on target address.","yellow")
 	print
 	print color("  - icmpsmurf	      | Start a ICMP smurf attack on target host. Send echo-requests to host with spoofed target address.","yellow")
 	print
@@ -308,7 +312,7 @@ def print_help():
 	print color(" examples:","green")
 	print
 	print color("  pythem> ","red") + "dos dnsdrop"
-	print color("  pythem> ","red") + "dos synflood"
+	print color("  pythem> ","red") + "dos synflood help"
 	print
 	print
 	print color("[SECTION - EXPLOIT DEVELOPMENT AND REVERSE ENGINERING]","grey")
@@ -353,7 +357,7 @@ def print_help():
   	print color(" examples:","green")
 	print
    	print color("  pythem> ","red") + "brute webform"
-   	print color("  pythem> ","red") + "brute ssh"
+   	print color("  pythem> ","red") + "brute ssh help"
 	print
 	print
 	print color("[SECTION - UTILS]","grey")

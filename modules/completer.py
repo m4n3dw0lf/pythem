@@ -56,7 +56,7 @@ class Completer(object):
 			completer = readline.set_completer(self.suboption)
 
 		elif "dos" in text and state == 1:
-			self.suboptions = ['dnsdrop','synflood','udpflood','icmpsmurf','icmpflood','dhcpstarvation','teardrop','help']
+			self.suboptions = ['dnsdrop','synflood','udpflood','icmpsmurf','icmpflood','dhcpstarvation','teardrop','pingofdeath','land','help']
 			completer = readline.set_completer(self.suboption)
 
 		elif "sniff" in text and state == 1:
