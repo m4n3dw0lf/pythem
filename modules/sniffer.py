@@ -113,7 +113,7 @@ class Sniffer(object):
 								if x == "client_id":
 									msg_type += " |_Client-id: {}\n".format(y)
 								if x == "vendor_class_id":
-									msg_type += " |_Vendor_id: {}\n".format(y)
+									msg_type += " |_Vendor-id: {}\n".format(y)
 								if x == "hostname":
 									msg_type += " |_Hostname: {}\n".format(y)
 						except:
@@ -274,7 +274,7 @@ class Sniffer(object):
 							if x == "client_id":
 								msg_type += "client-id is {}, ".format(y)
 							if x == "vendor_class_id":
-								msg_type += "vendor_id is {}, ".format(y)
+								msg_type += "vendor-id is {}, ".format(y)
 							if x == "hostname":
 								msg_type += "hostname is {}".format(y)
 					except:
@@ -369,7 +369,7 @@ class Sniffer(object):
 					wrpcap("pythem{}.pcap".format(time),p)
 					print "\n[!] PytheM sniffer finalized."
 				except Exception as e:
-					if "Interrupted system call" in e:
+					if "Interrupted system call" in e or "not found" in e:
 						self.start()
 					else:
 						print "[!] Exception caught: {}".format(e)
@@ -378,7 +378,7 @@ class Sniffer(object):
 					p = sniff(iface=self.interface,prn =self.coresniff)
 					print "\n[!] PytheM sniffer finalized."
 				except Exception as e:
-					if "Interrupted system call" in e:
+					if "Interrupted system call" in e or "not found" in e:
 						self.start()
 					else:
 						print "[!] Exception caught: {}".format(e)
@@ -392,7 +392,7 @@ class Sniffer(object):
                         	       	wrpcap("pythem{}.pcap".format(time),p)
 					print "\n[!] PytheM sniffer finalized."
 				except Exception as e:
-					if "Interrupted system call" in e:
+					if "Interrupted system call" in e or "not found" in e:
 						self.start()
 					else:
 						print "[!] Exception caught: {}".format(e)
@@ -402,7 +402,7 @@ class Sniffer(object):
 					p = sniff(iface=self.interface,filter ="{}".format(self.filter), prn = self.customsniff, store = 0)
 					print "\n[!] PytheM sniffer finalized."
 				except Exception as e:
-					if "Interrupted system call" in e:
+					if "Interrupted system call" in e or "not found" in e:
 						self.start()
 					else:
 						print "[!] Exception caught: {}".format(e)
