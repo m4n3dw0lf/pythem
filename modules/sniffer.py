@@ -31,7 +31,7 @@ class Sniffer(object):
 
 	name = "Sniffer"
 	desc = "Custom scapy sniffer."
-	version = "1.1"
+	version = "1.2"
 
 	def __init__(self, interface, filter):
 		self.interface = interface
@@ -107,7 +107,7 @@ class Sniffer(object):
 				elif p.haslayer(DHCP):
 					mtype = p[DHCP].options
 					if mtype[0][1] == 1:
-						msg_type = "[D] DHCP Discover message\n"
+						msg_type = "[D] DHCP Discover message.\n"
 						try:
 							for x,y in mtype:
 								if x == "client_id":
@@ -119,7 +119,22 @@ class Sniffer(object):
 						except:
 							pass
 					elif mtype[0][1] == 2:
-						msg_type = "[D] DHCP Offer message."
+						msg_type = "[D] DHCP Offer message.\n"
+						try:
+							for x,y in mtype:
+								if x == "server_id":
+									msg_type += " |_DHCP Server: {}\n".format(y)
+								if x == "broadcast_address":
+									msg_type += " |_Broadcast: {}\n".format(y)
+								if x == "router":
+									msg_type += " |_Router: {}\n".format(y)
+								if x == "domain":
+									msg_type += " |_Domain: {}\n".format(y)
+								if x == "name_server":
+									msg_type += " |_DNS Server: {}\n".format(y)
+						except:
+							pass
+
 					elif mtype[0][1] == 3:
 						msg_type = "[D] DHCP Request message.\n"
 						try:
@@ -280,7 +295,22 @@ class Sniffer(object):
 					except:
 						pass
 				elif mtype[0][1] == 2:
-					msg_type = "DHCP offer message."
+					msg_type = "DHCP offer message: "
+                                        try:
+                                        	for x,y in mtype:
+                                                	if x == "server_id":
+                                                       		msg_type += "DHCP server at {}, ".format(y)
+                                                        if x == "broadcast_address":
+                                                        	msg_type += "broadcast is {}, ".format(y)
+                                                        if x == "router":
+                                                        	msg_type += "router at {}, ".format(y)
+                                                        if x == "domain":
+                                                                msg_type += "domain is {}, ".format(y)
+                                                       	if x == "name_server":
+                                                        	msg_type += "DNS server at {}".format(y)
+                                        except:
+                                        	pass
+
 				elif mtype[0][1] == 3:
 					msg_type = "DHCP request message: "
 					try:
