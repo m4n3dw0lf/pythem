@@ -31,7 +31,7 @@ class Sniffer(object):
 
 	name = "Sniffer"
 	desc = "Custom scapy sniffer."
-	version = "1.0"
+	version = "1.1"
 
 	def __init__(self, interface, filter):
 		self.interface = interface
@@ -107,15 +107,48 @@ class Sniffer(object):
 				elif p.haslayer(DHCP):
 					mtype = p[DHCP].options
 					if mtype[0][1] == 1:
-						msg_type = "[D] DHCP Discover message"
+						msg_type = "[D] DHCP Discover message\n"
+						try:
+							for x,y in mtype:
+								if x == "client_id":
+									msg_type += " |_Client-id: {}\n".format(y)
+								if x == "vendor_class_id":
+									msg_type += " |_Vendor_id: {}\n".format(y)
+								if x == "hostname":
+									msg_type += " |_Hostname: {}\n".format(y)
+						except:
+							pass
 					elif mtype[0][1] == 2:
 						msg_type = "[D] DHCP Offer message."
 					elif mtype[0][1] == 3:
-						msg_type = "[D] DHCP Request message."
+						msg_type = "[D] DHCP Request message.\n"
+						try:
+							for x,y in mtype:
+								if x == "requested_addr":
+									msg_type += " |_Request address: {}\n".format(y)
+								if x == "hostname":
+									msg_type += " |_Hostname: {}\n".format(y)
+						except:
+							pass
 					elif mtype[0][1] == 4:
 						msg_type = "[D] DHCP Decline message."
+
 					elif mtype[0][1] == 5:
-						msg_type = "[D] DHCP Acknowledgment message."
+						msg_type = "[D] DHCP Acknowledgment message.\n"
+						try:
+							for x,y in mtype:
+								if x == "server_id":
+									msg_type += " |_DHCP Server: {}\n".format(y)
+								if x == "broadcast_address":
+									msg_type += " |_Broadcast: {}\n".format(y)
+								if x == "router":
+									msg_type += " |_Router: {}\n".format(y)
+								if x == "domain":
+									msg_type += " |_Domain: {}\n".format(y)
+								if x == "name_server":
+									msg_type += " |_DNS Server: {}\n".format(y)
+						except:
+							pass
 					elif mtype[0][1] == 6:
 						msg_type = "[D] DHCP Negative Acknowledgment message."
 					elif mtype[0][1] == 7:
@@ -235,15 +268,48 @@ class Sniffer(object):
 			elif p.haslayer(DHCP):
 				mtype = p[DHCP].options
 				if mtype[0][1] == 1:
-					msg_type = "DHCP discover message"
+					msg_type = "DHCP Discover message: "
+					try:
+						for x,y in mtype:
+							if x == "client_id":
+								msg_type += "client-id is {}, ".format(y)
+							if x == "vendor_class_id":
+								msg_type += "vendor_id is {}, ".format(y)
+							if x == "hostname":
+								msg_type += "hostname is {}".format(y)
+					except:
+						pass
 				elif mtype[0][1] == 2:
 					msg_type = "DHCP offer message."
 				elif mtype[0][1] == 3:
-					msg_type = "DHCP request message."
+					msg_type = "DHCP request message: "
+					try:
+						for x,y in mtype:
+							if x == "requested_addr":
+								msg_type += "request address {}, ".format(y)
+							if x == "vendor_class_id":
+								msg_type += "hostname is {}".format(y)
+					except:
+						pass
 				elif mtype[0][1] == 4:
 					msg_type = "DHCP decline message."
 				elif mtype[0][1] == 5:
-					msg_type = "DHCP acknowledgment message."
+					msg_type = "DHCP acknowledgment message: "
+                                        try:
+                                        	for x,y in mtype:
+                                                	if x == "server_id":
+                                                       		msg_type += "DHCP server at {}, ".format(y)
+                                                        if x == "broadcast_address":
+                                                        	msg_type += "broadcast is {}, ".format(y)
+                                                        if x == "router":
+                                                        	msg_type += "router at {}, ".format(y)
+                                                        if x == "domain":
+                                                                msg_type += "domain is {}, ".format(y)
+                                                       	if x == "name_server":
+                                                        	msg_type += "DNS server at {}".format(y)
+                                        except:
+                                        	pass
+
 				elif mtype[0][1] == 6:
 					msg_type = "DHCP negative Acknowledgment message."
 				elif mtype[0][1] == 7:
@@ -301,7 +367,7 @@ class Sniffer(object):
 					p = sniff(iface=self.interface, prn = self.coresniff)
 					time = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
 					wrpcap("pythem{}.pcap".format(time),p)
-					print "\n[!] User requested shutdown."
+					print "\n[!] PytheM sniffer finalized."
 				except Exception as e:
 					if "Interrupted system call" in e:
 						self.start()
@@ -310,7 +376,7 @@ class Sniffer(object):
 			else:
 				try:
 					p = sniff(iface=self.interface,prn =self.coresniff)
-					print "\n[!] User requested shutdown."
+					print "\n[!] PytheM sniffer finalized."
 				except Exception as e:
 					if "Interrupted system call" in e:
 						self.start()
@@ -324,7 +390,7 @@ class Sniffer(object):
 					p = sniff(iface=self.interface,filter = "{}".format(self.filter), prn = self.customsniff)
 				        time = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
                         	       	wrpcap("pythem{}.pcap".format(time),p)
-					print "\n[!] User requested shutdown."
+					print "\n[!] PytheM sniffer finalized."
 				except Exception as e:
 					if "Interrupted system call" in e:
 						self.start()
@@ -334,7 +400,7 @@ class Sniffer(object):
 			else:
 				try:
 					p = sniff(iface=self.interface,filter ="{}".format(self.filter), prn = self.customsniff, store = 0)
-					print "\n[!] User requested shutdown."
+					print "\n[!] PytheM sniffer finalized."
 				except Exception as e:
 					if "Interrupted system call" in e:
 						self.start()

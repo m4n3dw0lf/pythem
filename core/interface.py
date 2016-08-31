@@ -718,6 +718,7 @@ class Processor(object):
 							elif self.filter == "dns":
 								self.filter = "port 53"
 							self.sniff = Sniffer(self.interface, self.filter)
+							print "\n[+] PytheM sniffer initialized.\n"
 							self.sniff.start()
 
 						except IndexError:
