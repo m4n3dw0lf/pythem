@@ -287,11 +287,11 @@ class Sniffer(object):
 					try:
 						for x,y in mtype:
 							if x == "client_id":
-								msg_type += "client-id is {}, ".format(y)
+								msg_type += "client-id is {} | ".format(y)
 							if x == "vendor_class_id":
-								msg_type += "vendor-id is {}, ".format(y)
+								msg_type += "vendor-id is {} | ".format(y)
 							if x == "hostname":
-								msg_type += "hostname is {}".format(y)
+								msg_type += "hostname is {} | ".format(y)
 					except:
 						pass
 				elif mtype[0][1] == 2:
@@ -299,15 +299,15 @@ class Sniffer(object):
                                         try:
                                         	for x,y in mtype:
                                                 	if x == "server_id":
-                                                       		msg_type += "DHCP server at {}, ".format(y)
+                                                       		msg_type += "DHCP server at {} | ".format(y)
                                                         if x == "broadcast_address":
-                                                        	msg_type += "broadcast is {}, ".format(y)
+                                                        	msg_type += "broadcast is {} | ".format(y)
                                                         if x == "router":
-                                                        	msg_type += "router at {}, ".format(y)
+                                                        	msg_type += "router at {} | ".format(y)
                                                         if x == "domain":
-                                                                msg_type += "domain is {}, ".format(y)
+                                                                msg_type += "domain is {} | ".format(y)
                                                        	if x == "name_server":
-                                                        	msg_type += "DNS server at {}".format(y)
+                                                        	msg_type += "DNS server at {} | ".format(y)
                                         except:
                                         	pass
 
@@ -316,9 +316,9 @@ class Sniffer(object):
 					try:
 						for x,y in mtype:
 							if x == "requested_addr":
-								msg_type += "request address {}, ".format(y)
+								msg_type += "request address {} | ".format(y)
 							if x == "vendor_class_id":
-								msg_type += "hostname is {}".format(y)
+								msg_type += "hostname is {} | ".format(y)
 					except:
 						pass
 				elif mtype[0][1] == 4:
@@ -328,15 +328,15 @@ class Sniffer(object):
                                         try:
                                         	for x,y in mtype:
                                                 	if x == "server_id":
-                                                       		msg_type += "DHCP server at {}, ".format(y)
+                                                       		msg_type += "DHCP server at {} | ".format(y)
                                                         if x == "broadcast_address":
-                                                        	msg_type += "broadcast is {}, ".format(y)
+                                                        	msg_type += "broadcast is {} | ".format(y)
                                                         if x == "router":
-                                                        	msg_type += "router at {}, ".format(y)
+                                                        	msg_type += "router at {} | ".format(y)
                                                         if x == "domain":
-                                                                msg_type += "domain is {}, ".format(y)
+                                                                msg_type += "domain is {} | ".format(y)
                                                        	if x == "name_server":
-                                                        	msg_type += "DNS server at {}".format(y)
+                                                        	msg_type += "DNS server at {} | ".format(y)
                                         except:
                                         	pass
 
