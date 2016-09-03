@@ -22,11 +22,13 @@
 
 from scapy.all import *
 from scapy.error import Scapy_Exception
-from modules.utils import *
+#from modules.utils import *
 from datetime import datetime
 import socket
 import re
 from utils import *
+import sys
+
 class Sniffer(object):
 
 	name = "Sniffer"
@@ -37,7 +39,6 @@ class Sniffer(object):
 		self.interface = interface
 		self.filter = filter
 		self.wrpcap = raw_input("[*] Wish to write a .pcap file with the results in the actual directory?[y/n]: ")
-
 
 	def customsniff(self, p):
 
@@ -87,23 +88,28 @@ class Sniffer(object):
 				pkt += "[U] Source port: {}\n".format(sport)
 				pkt += "[U] Destination port: {}\n\n".format(dport)
 				if p.haslayer(DNS) and p.getlayer(DNS).qr == 0:
-					print pkt
-					print "[DNS Layer]"
-					print
-					print "[DNS Query]"
-					print
-					print "[D] qname: {}".format(p.getlayer(DNS).qd.qname)
-					print end
-
+					try:
+						print pkt
+						print "[DNS Layer]"
+						print
+						print "[DNS Query]"
+						print
+						print "[D] qname: {}".format(p.getlayer(DNS).qd.qname)
+						print end
+					except:
+						pass
 				elif p.haslayer(DNSRR):
-					print pkt
-					print "[DNS Layer]"
-					print
-					print "[DNS Response]"
-					print
-					print "[D] rrname: {}".format(p[DNSRR].rrname)
-					print "[D] rdata: {}".format(p[DNSRR].rdata)
-					print end
+					try:
+						print pkt
+						print "[DNS Layer]"
+						print
+						print "[DNS Response]"
+						print
+						print "[D] rrname: {}".format(p[DNSRR].rrname)
+						print "[D] rdata: {}".format(p[DNSRR].rdata)
+						print end
+					except:
+						pass
 				elif p.haslayer(DHCP):
 					mtype = p[DHCP].options
 					if mtype[0][1] == 1:
@@ -274,11 +280,17 @@ class Sniffer(object):
 			# UDP Core events
 		elif p.haslayer(UDP):
 			if p.haslayer(DNS) and p.getlayer(DNS).qr == 0:
-				print color("[DNS] ","blue") + p[IP].src + " ---> " + p[IP].dst + " domain name query: " + "{}".format(p.getlayer(DNS).qd.qname)
+				try:
+
+					print color("[DNS] ","blue") + p[IP].src + " ---> " + p[IP].dst + " domain name query: " + "{}".format(p.getlayer(DNS).qd.qname)
+				except:
+					pass
 
 			elif p.haslayer(DNSRR):
-				print color("[DNS] ","blue") + p[IP].src + " ---> " + p[IP].dst + " domain name response: " + "{}".format(p[DNSRR].rdata)
-
+				try:
+					print color("[DNS] ","blue") + p[IP].src + " ---> " + p[IP].dst + " domain name response: " + "{}".format(p[DNSRR].rdata)
+				except:
+					pass
 				# DHCP Message types
 			elif p.haslayer(DHCP):
 				mtype = p[DHCP].options
@@ -287,11 +299,11 @@ class Sniffer(object):
 					try:
 						for x,y in mtype:
 							if x == "client_id":
-								msg_type += "client-id is {} | ".format(y)
+								msg_type += "client-id is {} , ".format(y)
 							if x == "vendor_class_id":
-								msg_type += "vendor-id is {} | ".format(y)
+								msg_type += "vendor-id is {} , ".format(y)
 							if x == "hostname":
-								msg_type += "hostname is {} | ".format(y)
+								msg_type += "hostname is {} , ".format(y)
 					except:
 						pass
 				elif mtype[0][1] == 2:
@@ -299,15 +311,15 @@ class Sniffer(object):
                                         try:
                                         	for x,y in mtype:
                                                 	if x == "server_id":
-                                                       		msg_type += "DHCP server at {} | ".format(y)
+                                                       		msg_type += "DHCP server at {} , ".format(y)
                                                         if x == "broadcast_address":
-                                                        	msg_type += "broadcast is {} | ".format(y)
+                                                        	msg_type += "broadcast is {} , ".format(y)
                                                         if x == "router":
-                                                        	msg_type += "router at {} | ".format(y)
+                                                        	msg_type += "router at {} , ".format(y)
                                                         if x == "domain":
-                                                                msg_type += "domain is {} | ".format(y)
+                                                                msg_type += "domain is {} , ".format(y)
                                                        	if x == "name_server":
-                                                        	msg_type += "DNS server at {} | ".format(y)
+                                                        	msg_type += "DNS server at {} , ".format(y)
                                         except:
                                         	pass
 
@@ -316,9 +328,9 @@ class Sniffer(object):
 					try:
 						for x,y in mtype:
 							if x == "requested_addr":
-								msg_type += "request address {} | ".format(y)
+								msg_type += "request address {} , ".format(y)
 							if x == "vendor_class_id":
-								msg_type += "hostname is {} | ".format(y)
+								msg_type += "hostname is {} , ".format(y)
 					except:
 						pass
 				elif mtype[0][1] == 4:
@@ -328,15 +340,15 @@ class Sniffer(object):
                                         try:
                                         	for x,y in mtype:
                                                 	if x == "server_id":
-                                                       		msg_type += "DHCP server at {} | ".format(y)
+                                                       		msg_type += "DHCP server at {} , ".format(y)
                                                         if x == "broadcast_address":
-                                                        	msg_type += "broadcast is {} | ".format(y)
+                                                        	msg_type += "broadcast is {} , ".format(y)
                                                         if x == "router":
-                                                        	msg_type += "router at {} | ".format(y)
+                                                        	msg_type += "router at {} , ".format(y)
                                                         if x == "domain":
-                                                                msg_type += "domain is {} | ".format(y)
+                                                                msg_type += "domain is {} , ".format(y)
                                                        	if x == "name_server":
-                                                        	msg_type += "DNS server at {} | ".format(y)
+                                                        	msg_type += "DNS server at {} , ".format(y)
                                         except:
                                         	pass
 
@@ -346,6 +358,20 @@ class Sniffer(object):
 					msg_type = "DHCP release message."
 				elif mtype[0][1] == 8:
 					msg_type = "DHCP informational message."
+					try:
+						for x,y in mtype:
+							if x == "server_id":
+								msg_type += "DHCP server at {} , ".format(y)
+							if x == "broadcast_address":
+								msg_type += "broadcast is {} , ".format(y)
+							if x == "router":
+								msg_type += "router at {} , ".format(y)
+							if x == "domain":
+								msg_type += "domain is {} , ".format(y)
+							if x == "name_server":
+								msg_type += "DNS server at {} , ".format(y)
+					except:
+						pass
 				else:
 					msg_type = "[!] INVALID MESSAGE TYPE"
 				print color("[DHCP] ","magenta") + p[Ether].src + " ---> " + p[Ether].dst + " : " + msg_type
@@ -436,3 +462,29 @@ class Sniffer(object):
 						self.start()
 					else:
 						print "[!] Exception caught: {}".format(e)
+
+
+if __name__ == "__main__":
+
+		# Change the import for utils to run sniffer alone.
+	try:
+		if sys.argv[1] == "-h" or sys.argv[1] == "--help":
+			print "[PytheM Sniffer]"
+			print
+			print "usage:"
+			print "  python sniffer.py interface filter"
+			print
+			print "run default:"
+			print "  python sniffer.py"
+		else:
+			Sniffer = Sniffer(sys.argv[2],sys.argv[3])
+			Sniffer.start()
+	except IndexError:
+		print "[+] Starting Default Sniffer"
+		print "[PytheM Sniffer initialized]"
+		Sniffer = Sniffer(None,None)
+		Sniffer.start()
+
+	except Exception as e:
+		print "[!] Exception caught: {}".format(e)
+
