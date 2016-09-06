@@ -175,7 +175,21 @@ class Sniffer(object):
 					elif mtype[0][1] == 7:
 						msg_type = "[D] DHCP Release message."
 					elif mtype[0][1] == 8:
-						msg_type = "[D] DHCP Informational message."
+						msg_type = "DHCP informational message.\n"
+						try:
+							for x,y in mtype:
+								if x == "server_id":
+									msg_type += " |_DHCP Server: {}\n".format(y)
+								if x == "broadcast_address":
+									msg_type += " |_Broadcast: {}\n".format(y)
+								if x == "router":
+									msg_type += " |_Router: {}\n".format(y)
+								if x == "domain":
+									msg_type += " |_Domain: {}\n".format(y)
+								if x == "name_server":
+									msg_type += " |_DNS Server: {}\n".format(y)
+						except:
+							pass
 					else:
 						msg_type = "[!] INVALID MESSAGE TYPE"
 
@@ -380,6 +394,7 @@ class Sniffer(object):
 		elif p.haslayer(TCP) and p.haslayer(Raw):
 	    		user_regex = '([Ee]mail|[Uu]ser|[Uu]sername|[Nn]ame|[Ll]ogin|[Ll]og|[Ll]ogin[Ii][Dd])=([^&|;]*)'
             		pw_regex = '([Pp]assword|[Pp]ass|[Pp]asswd|[Pp]wd|[Pp][Ss][Ww]|[Pp]asswrd|[Pp]assw)=([^&|;]*)'
+			pxy_regex = '([Ww]ww-[Aa]uthorization:|[Ww]ww-[Aa]uthentication:|[Pp]roxy-[Aa]uthorization:|[Pp]roxy-[Aa]uthentication:) (.*?) '
 
 			load = str(p[Raw].load).replace("\n"," ")
 			if load.startswith('GET'):
@@ -403,16 +418,22 @@ class Sniffer(object):
 			else:
 				users = re.findall(user_regex, load)
 				passwords = re.findall(pw_regex, load)
-				self.creds(users,passwords)
+			        proxy = re.findall(pxy_regex, load)
+				self.creds(users,passwords,proxy)
 
-	def creds(self,users,passwords):
+	def creds(self,users,passwords,proxy):
 	        if users:
         	        for u in users:
                         	print "\n" + color("[$$$] Login found: ","yellow") + str(u[1]) + "\n"
        		if passwords:
                 	for p in passwords:
 	                        print "\n" + color("[$$$] Password found: ","yellow") + str(p[1]) + "\n"
-
+		if proxy:
+			for l in proxy:
+				try:
+					print "\n" + color("[$$$] Proxy credentials: ","yellow") + str(l[1]).decode('base64') + "\n"
+				except:
+					print "\n" + color("[$$$] Proxy credentials: ","yellow") + str(l[1]) + "\n"
 
 	def start(self):
 		if self.filter == None:
