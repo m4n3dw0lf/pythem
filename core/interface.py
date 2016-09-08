@@ -56,6 +56,7 @@ class Processor(object):
 		self.inject_status = False
 		self.dnsspoof_status = False
 		self.dnsdrop_status = 0
+		self.dnsamplification_status = 0
 		self.synflood_status = 0
 		self.udpflood_status = 0
 		self.dnsflood_status = 0
@@ -507,6 +508,25 @@ class Processor(object):
 											print "[!] Exception caught: {}".format(e)
 									else:
 										print "[!] You need to start a arpspoof on a target (IP/Range) to start dnsdrop."
+
+
+							elif self.input_list[1] == "dnsamplification":
+								try:
+									if self.input_list[2] == "help":
+										print "\n[Help] Start a DNS amplification attack on target address with given DNS servers to amplificate."
+										print "example:"
+										print "{} set target 1.2.3.4".format(console)
+										print "{} dos dnsamplification".format(console)
+										print "[+] DNS Server to use in amplification attack(separated by commas): 8.8.8.8,8.8.4.4\n"
+								except IndexError:
+                                                                        if self.targets == None:
+                                                                                print "[!] You probably forgot to set a IP address as target."
+                                                                        else:
+                                                                                try:
+                                                                                        self.dos.dnsamplificationstart(self.targets)
+                                                                                        self.dnsamplification_status = 1
+                                                                                except Exception as e:
+                                                                                        print "[!] Exception caught: {}".format(e)
 
 
 							elif self.input_list[1] == "dhcpstarvation":

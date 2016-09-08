@@ -293,6 +293,8 @@ def print_help():
 	print
 	print color("  - dnsdrop           | Start to drop DNS queries that pass through man-in-the-middle traffic.","yellow")
 	print
+	print color("  - dnsamplification  | Start a DNS amplification attack on target address with given DNS servers to amplificate.","yellow")
+	print
 	print color("  - synflood	      | Start a SYN flood attack on target address, default port = 80, set port to change.","yellow")
 	print
 	print color("  - udpflood	      | Start a UDP flood attack on target address, default port = 80, set port to change.","yellow")
@@ -305,7 +307,7 @@ def print_help():
 	print
 	print color("  - pingofdeath	      | Start a ping of death (P.O.D) attack on target address.","yellow")
 	print
-	print color("  - icmpsmurf	      | Start a ICMP smurf attack on target host. Send echo-requests to host with spoofed target address.","yellow")
+	print color("  - icmpsmurf	      | Start a ICMP smurf attack on target host. Send echo-requests to hosts with spoofed target address.","yellow")
 	print
 	print color("  - dhcpstarvation    | Start a DHCP starvation attack on network DHCP server. Multiple spoofed MAC dhcp discovers.","yellow")
 	print
