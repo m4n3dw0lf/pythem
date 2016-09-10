@@ -702,6 +702,7 @@ class Processor(object):
 								print " - icmpflood"
 								print " - icmpsmurf"
 								print " - dhcpstarvation"
+								print " - dnsamplification"
 								print "example:"
 								print "{} dos icmpsmurf help\n".format(console)
 
