@@ -176,8 +176,8 @@ class Scanner(object):
 					os_guess = "Linux/Unix"
 				 elif (int(resp.getlayer(IP).ttl)) <= 128 and (int(resp.getlayer(IP).ttl)) > 64:
 					os_guess = "Windows"
-				 elif (int(resp.getlayer(IP).ttl)) <= 255 and (int(resp.getlayer(IP).ttl)) > 64:
-					os_guess = "iOS 12.4/Cisco Routers"
+				 elif (int(resp.getlayer(IP).ttl)) <= 255 and (int(resp.getlayer(IP).ttl)) > 128:
+					os_guess = "IOS Cisco Routers"
 				 else:
 					os_guess = "N/A"
 				 print "   TTL / OS Guess : {} ({})".format(str(resp[IP].ttl),os_guess)
