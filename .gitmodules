@@ -1,6 +1,3 @@
-[submodule "third-party/BDFProxy"]
-	path = third-party/BDFProxy
-	url = git://github.com/secretsquirrel/BDFProxy
 [submodule "third-party/BDFProxy/bdf"]
         path = third-party/BDFProxy/bdf
         url = https://github.com/secretsquirrel/the-backdoor-factory
