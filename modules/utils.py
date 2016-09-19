@@ -226,10 +226,20 @@ def print_help():
 	print color("  pythem> ","red") + "dnsspoof status"
 	print
 	print
+	print color("[+] bdfproxy			Start BDFProxy and Metasploit combo.","blue")
+	print color("			by:Joshua Pitts_|		|_by: rapid7","red")
+	print
+	print "Should be called after an ARP spoofing attack has been started."
+	print
+	print color(" exmample:","green")
+	print
+	print color("  pythem> ","red") + "bdfproxy"
+	print
+	print
 	print color("[*] hstsbypass			Start sslstrip+ and dns2proxy","blue")
 	print color("	by:LeonardoNve && M.Marlinspike	_|	     |_by:LeonardNve","red")
 	print
-	print "Should be called after an ARP spoofing attack has been started"
+	print "Should be called after an ARP spoofing attack has been started."
 	print
 	print color(" example:","green")
 	print

