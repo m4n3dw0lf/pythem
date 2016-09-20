@@ -392,7 +392,7 @@ class Sniffer(object):
 
 			# TCP Core events
 		elif p.haslayer(TCP) and p.haslayer(Raw):
-	    		user_regex = '([Ee]mail|[Uu]ser|[Uu]sername|[Nn]ame|[Ll]ogin|[Ll]og|[Ll]ogin[Ii][Dd])=([^&|;]*)'
+	    		user_regex = '([Ee]mail|[Uu]ser|[Uu]sername|[Ll]ogin|[Ll]ogin[Ii][Dd])=([^&|;]*)'
             		pw_regex = '([Pp]assword|[Pp]ass|[Pp]asswd|[Pp]wd|[Pp][Ss][Ww]|[Pp]asswrd|[Pp]assw)=([^&|;]*)'
 			pxy_regex = '([Ww]ww-[Aa]uthorization:|[Ww]ww-[Aa]uthentication:|[Pp]roxy-[Aa]uthorization:|[Pp]roxy-[Aa]uthentication:) Basic (.*?) '
 
@@ -423,17 +423,14 @@ class Sniffer(object):
 
 	def creds(self,users,passwords,proxy):
 	        if users:
-        	        for u in users:
-                        	print "\n" + color("[$$$] Login found: ","yellow") + str(u[1]) + "\n"
+			print "\n" + color("[$$$] Login found: ","yellow") + str(users[0][1]) + "\n"
        		if passwords:
-                	for p in passwords:
-	                        print "\n" + color("[$$$] Password found: ","yellow") + str(p[1]) + "\n"
+	                print "\n" + color("[$$$] Password found: ","yellow") + str(passwords[0][1]) + "\n"
 		if proxy:
-			for l in proxy:
-				try:
-					print "\n" + color("[$$$] Proxy credentials: ","yellow") + str(l[1]).decode('base64') + "\n"
-				except:
-					print "\n" + color("[$$$] Proxy credentials: ","yellow") + str(l[1]) + "\n"
+			try:
+				print "\n" + color("[$$$] Proxy credentials: ","yellow") + str(l[1]).decode('base64') + "\n"
+			except:
+				print "\n" + color("[$$$] Proxy credentials: ","yellow") + str(l[1]) + "\n"
 
 	def start(self):
 		if self.filter == None:
