@@ -572,11 +572,13 @@ def std_A_qry(msg, prov_ip):
             punto = host.find(".")
             dominio = host[punto:]
             host2 = ''
-            if host[:5] == 'wwww.' or host[:7] == 'social.':
+            if host[:4] == 'wwww' or host[:6] == 'social':
                 host2 = 'www%s' % dominio
+	    elif host[:6] == "mobile":
+		host2 = "m%s" % dominio
             elif host[:3] == 'web':
                 host2 = host[3:]
-            elif host[:7] == 'cuentas':
+            elif host[:6] == 'contas':
                 host2 = 'accounts%s' % dominio
             elif host[:5] == 'gmail':
                 host2 = 'mail%s' % dominio
