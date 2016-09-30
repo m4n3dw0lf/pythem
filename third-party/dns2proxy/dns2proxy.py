@@ -578,7 +578,7 @@ def std_A_qry(msg, prov_ip):
 		host2 = "m%s" % dominio
             elif host[:3] == 'web':
                 host2 = host[3:]
-            elif host[:6] == 'contas':
+            elif host[:7] == 'acounts':
                 host2 = 'accounts%s' % dominio
             elif host[:5] == 'gmail':
                 host2 = 'mail%s' % dominio

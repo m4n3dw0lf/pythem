@@ -32,8 +32,11 @@ class URLMonitor:
         self.sustitucion["www.facebook.com"] = "social.facebook.com"
         self.real["social.facebook.com"] = "www.facebook.com"
 
-        self.sustitucion["accounts.google.com"] = "contas.google.com"
-        self.real["contas.google.com"] = "accounts.google.com"
+	self.sustitucion["m.facebook.com"] = "mobile.facebook.com"
+	self.real["mobile.facebook.com"] = "m.facebook.com"
+
+        self.sustitucion["accounts.google.com"] = "acounts.google.com"
+        self.real["acounts.google.com"] = "accounts.google.com"
 
         self.sustitucion["accounts.google.es"] = "contas.google.es"
         self.real["contas.google.es"] = "accounts.google.es"
