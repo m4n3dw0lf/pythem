@@ -428,9 +428,9 @@ class Sniffer(object):
 	                print "\n" + color("[$$$] Password found: ","yellow") + str(passwords[0][1]) + "\n"
 		if proxy:
 			try:
-				print "\n" + color("[$$$] Proxy credentials: ","yellow") + str(l[1]).decode('base64') + "\n"
+				print "\n" + color("[$$$] Proxy credentials: ","yellow") + str(proxy[0][1]).decode('base64') + "\n"
 			except:
-				print "\n" + color("[$$$] Proxy credentials: ","yellow") + str(l[1]) + "\n"
+				print "\n" + color("[$$$] Proxy credentials: ","yellow") + str(proxy[0][1]) + "\n"
 
 	def start(self):
 		if self.filter == None:
