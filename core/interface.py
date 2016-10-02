@@ -554,11 +554,11 @@ class Processor(object):
 
 					elif self.input_list[0] == "geoip":
 						try:
+							self.targets = self.input_list[1]
 							from modules.geoip import Geoip
 							path = "config/GeoLiteCity.dat"
 							iptracker = Geoip(self.targets,path)
 							# 这句话应该放在try的最下面。如果放在前面则其后的语句无法执行。
-							self.targets = self.input_list[1]
 
 						except IndexError:
 							if self.targets is not None:
