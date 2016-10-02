@@ -1,9 +1,9 @@
 # PytheM - Penetration Testing Framework v0.4.0
 
 在我的`floodlight`虚拟机上成功了，其他的`kali` `mininet` 还有我的Mac上都没有成功。不知道为什么。
-安装成功</br>![](屏幕快照 2016-08-01 上午2.29.18.png)
+安装成功</br>![](img/屏幕快照 2016-08-01 上午2.29.18.png)
 进入交互式命令行</br>
-![](屏幕快照 2016-08-01 上午4.07.32.png)
+![](img/屏幕快照 2016-08-01 上午4.07.32.png)
 PytheM is a python penetration testing framework. It has been developed in the hope that it will be useful and I don't take responsibility for any misapplication of it. Only runs on GNU/Linux OS.
 
 #Installation

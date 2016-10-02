@@ -13,7 +13,7 @@ def pythem(self, text, state):
 ```
 这样写有点bug，就是只要按TAB键时，已经输入的字符串包含"set"，即便是"seta"也可以出现提示。</br>
 而且，将前面的已经有的词清除之后留下空白，依然可以得到之前得到的提示。
-![](屏幕快照 2016-08-01 下午3.35.07.png)
+![](img/屏幕快照 2016-08-01 下午3.35.07.png)
 
 `pythem> service ssh start`
 这里的`service`并不在`interface.py`里的`self.input_list[0]`判断之列，应该是用的操作系统命令。
@@ -28,6 +28,6 @@ if self.targets is not None and self.interface is not None:
 		self.scan = Scanner(self.targets, self.interface, mode)
 ```
 看来这些开源软件漏洞也是蛮多的嘛，
-![](屏幕快照 2016-08-01 下午5.28.49.png)
+![](img/屏幕快照 2016-08-01 下午5.28.49.png)
 重新输入有效的ip之后成功了。
 
