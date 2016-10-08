@@ -262,32 +262,32 @@ class Sniffer(object):
 		if p.haslayer(ARP):
 				# who-has
 			if p[ARP].op == 1:
-				print color("[ARP] ","grey") + p[ARP].hwsrc + " ---> " + p[ARP].hwdst + " Request: " + p[ARP].psrc + " who has " + p[ARP].pdst + "?"
+				print color("[ARP] ","grey") + p[ARP].hwsrc + " ---> " + p[ARP].hwdst + " Request: " + p[ARP].psrc + color(" who has ","blue") + p[ARP].pdst + "?"
 				# is-at
 			if p[ARP].op == 2:
-				print color("[ARP] ","grey") + p[ARP].hwsrc + " ---> " + p[ARP].hwdst + " Response: " + p[ARP].psrc + " is at " + p[ARP].hwsrc
+				print color("[ARP] ","grey") + p[ARP].hwsrc + " ---> " + p[ARP].hwdst + " Response: " + p[ARP].psrc + color(" is at ","red") + p[ARP].hwsrc
 
 			# ICMP Core events
 		elif p.haslayer(ICMP):
 			type = p[ICMP].type
 			if p[ICMP].type == 0:
-                        	type = "echo-reply."
+                        	type = color("echo-reply.","red")
                         elif type == 3:
-                        	type = "destination unreachable."
+                        	type = color("destination unreachable.","grey")
                         elif type == 5:
-                                type = "redirect."
+                                type = color("redirect.","yellow")
                         elif type == 8:
-                                type = "echo-request."
+                                type = color("echo-request.","blue")
                         elif type == 32:
-                        	type = "mobile host redirect."
+                        	type = color("mobile host redirect.","yellow")
                         elif type == 33:
-                                type = "IPv6 where-are-you."
+                                type = color("IPv6 where-are-you.","blue")
                         elif type == 34:
-                                type = "IPv6 i-am-here."
+                                type = color("IPv6 i-am-here.","red")
                         elif type == 37:
-                                type = "domain name request."
+                                type = color("domain name request.","blue")
                         elif type == 38:
-                                type = "domain name reply."
+                                type = color("domain name reply.","red")
 
 			print color("[ICMP] ","red") + p[IP].src + " ---> " + p[IP].dst + " {} ".format(type)
 
@@ -296,20 +296,20 @@ class Sniffer(object):
 			if p.haslayer(DNS) and p.getlayer(DNS).qr == 0:
 				try:
 
-					print color("[DNS] ","blue") + p[IP].src + " ---> " + p[IP].dst + " domain name query: " + "{}".format(p.getlayer(DNS).qd.qname)
+					print color("[DNS] ","blue") + "{}:{}".format(p[IP].src, str(p[UDP].sport)) + " ---> " + "{}:{}".format(p[IP].dst, str(p[UDP].dport)) + " domain name "+ color("query: ","blue") + color("{}".format(p.getlayer(DNS).qd.qname),"yellow")
 				except:
 					pass
 
 			elif p.haslayer(DNSRR):
 				try:
-					print color("[DNS] ","blue") + p[IP].src + " ---> " + p[IP].dst + " domain name response: " + "{}".format(p[DNSRR].rdata)
+					print color("[DNS] ","blue") + p[IP].src + ":" + str(p[UDP].sport) + " ---> " + p[IP].dst + ":" + str(p[UDP].dport) + " domain name "+ color("response: ","red") + color("{}".format(p[DNSRR].rdata),"yellow")
 				except:
 					pass
-				# DHCP Message types
+				#DHCP Message types
 			elif p.haslayer(DHCP):
 				mtype = p[DHCP].options
 				if mtype[0][1] == 1:
-					msg_type = "DHCP Discover message: "
+					msg_type = "DHCP "+ color("Discover","blue") + " message: "
 					try:
 						for x,y in mtype:
 							if x == "client_id":
@@ -321,7 +321,7 @@ class Sniffer(object):
 					except:
 						pass
 				elif mtype[0][1] == 2:
-					msg_type = "DHCP offer message: "
+					msg_type = "DHCP "+ color("Offer","red")+" message: "
                                         try:
                                         	for x,y in mtype:
                                                 	if x == "server_id":
@@ -338,7 +338,7 @@ class Sniffer(object):
                                         	pass
 
 				elif mtype[0][1] == 3:
-					msg_type = "DHCP request message: "
+					msg_type = "DHCP "+ color("Request","blue")+" message: "
 					try:
 						for x,y in mtype:
 							if x == "requested_addr":
@@ -348,9 +348,9 @@ class Sniffer(object):
 					except:
 						pass
 				elif mtype[0][1] == 4:
-					msg_type = "DHCP decline message."
+					msg_type = "DHCP "+ color("Decline","grey")+" message."
 				elif mtype[0][1] == 5:
-					msg_type = "DHCP acknowledgment message: "
+					msg_type = "DHCP "+ color("Acknowledgment","red")+" message: "
                                         try:
                                         	for x,y in mtype:
                                                 	if x == "server_id":
@@ -367,11 +367,11 @@ class Sniffer(object):
                                         	pass
 
 				elif mtype[0][1] == 6:
-					msg_type = "DHCP negative Acknowledgment message."
+					msg_type = "DHCP "+ color("Negative Acknowledgment","grey")+" message."
 				elif mtype[0][1] == 7:
-					msg_type = "DHCP release message."
+					msg_type = "DHCP "+ color("Release","magenta")+" message."
 				elif mtype[0][1] == 8:
-					msg_type = "DHCP informational message."
+					msg_type = "DHCP "+ color("Informational","magenta")+" message."
 					try:
 						for x,y in mtype:
 							if x == "server_id":
@@ -388,7 +388,7 @@ class Sniffer(object):
 						pass
 				else:
 					msg_type = "[!] INVALID MESSAGE TYPE"
-				print color("[DHCP] ","magenta") + p[Ether].src + " ---> " + p[Ether].dst + " : " + msg_type
+				print color("[DHCP] ","magenta") + p[Ether].src + " ---> " + p[Ether].dst + " : " + color(msg_type,"yellow")
 
 			# TCP Core events
 		elif p.haslayer(TCP) and p.haslayer(Raw):
@@ -406,7 +406,7 @@ class Sniffer(object):
 				except:
 					host = str(p[IP].dst)
 
-				print color("[TCP] ","white") + p[IP].src + " ---> "+ host +" - GET: " + get[0]
+				print color("[TCP] ","white") + p[IP].src + " ---> "+ host +" - " + color("GET: {}".format(get[0]),"yellow")
 			elif load.startswith('USER'):
 				method = load.split("USER")
 				user = str(method[1]).split("\r")
