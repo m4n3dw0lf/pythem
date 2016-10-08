@@ -264,9 +264,12 @@ class Sniffer(object):
 			if p[ARP].op == 1:
 				print color("[ARP] ","grey") + p[ARP].hwsrc + " ---> " + p[ARP].hwdst + " Request: " + p[ARP].psrc + color(" who has ","blue") + p[ARP].pdst + "?"
 				# is-at
-			if p[ARP].op == 2:
+			elif p[ARP].op == 2:
 				print color("[ARP] ","grey") + p[ARP].hwsrc + " ---> " + p[ARP].hwdst + " Response: " + p[ARP].psrc + color(" is at ","red") + p[ARP].hwsrc
-
+			elif p[ARP].op == 3:
+				print color("[RARP] ","grey") + p[ARP].hwsrc + " ---> " + p[ARP].hwdst + " Request: " + p[Ether].src + color(" IP address of MAC ","blue") + p[ARP].hwdst + "?"
+			elif p[ARP].op == 4:
+				print color("[RARP] ","grey") + p[ARP].hwsrc + " ---> " + p[ARP].hwdst + " Response: " + p[Ether].src + color(" IP address is ","red") + p[ARP].psrc
 			# ICMP Core events
 		elif p.haslayer(ICMP):
 			type = p[ICMP].type
