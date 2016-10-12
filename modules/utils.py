@@ -230,7 +230,7 @@ def print_help():
 	print color("  pythem> ","red") + "dnsspoof status"
 	print
 	print
-	print color("[*] dhcpspoof			Start a dhcp ACK injection spoofing attack.","blue")
+	print color("[*] dhcpspoof			Start a DHCP ACK Injection spoofing attack.","blue")
 	print
 	print "If the real DHCP server ACK is faster than your host the spoofing will not work, check it with the sniffer"
 	print
