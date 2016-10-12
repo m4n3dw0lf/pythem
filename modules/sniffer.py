@@ -38,7 +38,7 @@ class Sniffer(object):
 	def __init__(self, interface, filter):
 		self.interface = interface
 		self.filter = filter
-		self.wrpcap = raw_input("[*] Wish to write a .pcap file with the results in the actual directory?[y/n]: ")
+		self.wrpcap = raw_input("[*] Wish to write a .pcap file with the sniffed packets in the actual directory?[y/n]: ")
 
 	def customsniff(self, p):
 

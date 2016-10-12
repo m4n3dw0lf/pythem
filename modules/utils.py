@@ -202,6 +202,8 @@ def print_help():
 	print
 	print color("  - start","yellow")
  	print color("  - stop","yellow")
+	print color("  - status","yellow")
+	print color("  - help","yellow")
 	print
   	print color(" examples:","green")
 	print
@@ -218,6 +220,8 @@ def print_help():
 	print
 	print color(" - start","yellow")
 	print color(" - stop","yellow")
+	print color(" - status","yellow")
+	print color(" - help","yellow")
 	print
 	print color(" examples:","green")
 	print
@@ -226,7 +230,25 @@ def print_help():
 	print color("  pythem> ","red") + "dnsspoof status"
 	print
 	print
-	print color("[+] bdfproxy			Start BDFProxy and Metasploit combo.","blue")
+	print color("[*] dhcpspoof			Start a dhcp ACK injection spoofing attack.","blue")
+	print
+	print "If the real DHCP server ACK is faster than your host the spoofing will not work, check it with the sniffer"
+	print
+	print color(" arguments:","red")
+	print
+	print color(" - start","yellow")
+	print color(" - stop","yellow")
+	print color(" - status","yellow")
+	print color(" - help","yellow")
+	print
+	print color(" examples:","green")
+	print
+	print color("  pythem> ","red") + "dhcpspoof start"
+	print color("  pythem> ","red") + "dhcpspoof stop"
+	print color("  pythem> ","red") + "dhcpspoof status"
+	print
+	print
+	print color("[*] bdfproxy			Start BDFProxy and Metasploit combo.","blue")
 	print color("			by:Joshua Pitts_|		|_by: rapid7","red")
 	print
 	print "Should be called after an ARP spoofing attack has been started."
@@ -261,6 +283,7 @@ def print_help():
 	print
 	print color("  - start","yellow")
 	print color("  - stop","yellow")
+	print color("  - help","yellow")
 	print
 	print color(" examples:","green")
 	print

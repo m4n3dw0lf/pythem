@@ -53,8 +53,9 @@ class Processor(object):
 
 		#Status
 		self.arpspoof_status = False
-		self.inject_status = False
 		self.dnsspoof_status = False
+		self.dhcpspoof_status = False
+		self.inject_status = False
 		self.dnsdrop_status = 0
 		self.dnsamplification_status = 0
 		self.synflood_status = 0
@@ -385,6 +386,7 @@ class Processor(object):
 								print " - start"
 								print " - stop"
 								print " - status"
+								print " - help"
 								print "example:"
 								print "{} set interface eth0".format(console)
 								print "{} set gateway 192.168.0.1".format(console)
@@ -401,6 +403,43 @@ class Processor(object):
 							pass
 						except Exception as e:
 							print "[!] Exception caught: {}".format(e)
+
+					elif self.input_list[0] == "dhcpspoof":
+						try:
+							if self.input_list[1] == "start":
+								from modules.dhcpoisoner import DHCPspoof
+								self.dhcpspoof_status = True
+								self.dhcpspoof = DHCPspoof("silent")
+								print "[+] DHCP spoofing initialized."
+
+							elif self.input_list[1] == "stop":
+								print "[+] DHCP spoofing finalized."
+								exit(0)
+
+							elif self.input_list[1] == "status":
+								if self.dhcpspoof_status:
+									stat = "running"
+								else:
+									stat = "down"
+								print "[*] DHCP spoofing status: {}".format(stat)
+
+							elif self.input_list[1] == "help":
+								print "\n[Help] Start a DHCP ACK Injection spoofing attack."
+								print "parameters:"
+								print " - start"
+								print " - stop"
+								print " - status"
+								print " - help"
+								print "example:"
+								print "{} dhcpspoof start\n".format(console)
+								continue
+							else:
+								print "[!] Select a valid option, call help to check syntax."
+						except IndexError:
+							print "[!] You probably forgot to type start, stop, status or help after dhcpspoof."
+						except Exception as e:
+							print "[!] Exception caught: {}".format(e)
+
 
 					elif self.input_list[0] == "dnsspoof":
 						try:
@@ -453,6 +492,7 @@ class Processor(object):
 								print " - start"
 								print " - stop"
 								print " - status"
+								print " - help"
 								print "example:"
 								print "{} dnsspoof start".format(console)
 								print "[!] Type all to spoof all domains"
@@ -502,6 +542,7 @@ class Processor(object):
 								print " - start"
 								print " - stop"
 								print " - status"
+								print " - help"
 								print "example:"
 								print "{} inject start".format(console)
   								print "[+] Enter the script source: http://192.168.1.6:3000/hook.js\n"

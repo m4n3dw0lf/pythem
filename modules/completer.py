@@ -43,6 +43,10 @@ class Completer(object):
 			self.suboptions = ['start','stop','status','help']
 			completer = readline.set_completer(self.suboption)
 
+		elif "dhcpspoof" in text and state == 1:
+			self.suboptions = ['start','stop','status','help']
+			completer = readline.set_completer(self.suboption)
+
 		elif "inject" in text and state == 1:
 			self.suboptions = ['start','stop','status','help']
 			completer = readline.set_completer(self.suboption)
@@ -68,7 +72,7 @@ class Completer(object):
 			completer = readline.set_completer(self.suboption)
 
 		else:
-	        	self.words = ['clear','help','exit','quit','set','print','scan','arpspoof','dnsspoof','inject','sniff','pforensic','dos','xploit','brute','geoip','decode','encode','cookiedecode','hstsbypass','harvest','bdfproxy']
+	        	self.words = ['clear','help','exit','quit','set','print','scan','arpspoof','dnsspoof','inject','sniff','pforensic','dos','xploit','brute','geoip','decode','encode','cookiedecode','hstsbypass','harvest','bdfproxy','dhcpspoof']
 			results = [x for x in self.words if x.startswith(text)] + [None]
 			return results[state]
 
