@@ -291,7 +291,7 @@ def print_help():
 	print color("  pythem> ","red") + "inject stop"
 	print
 	print
-	print color("[*] sniff			Start to sniff network traffic with custom scapy filter.","blue")
+	print color("[*] sniff			Start to sniff network traffic on desired network interface","blue")
 	print
 	print "Should be called after setting an interface"
 	print
