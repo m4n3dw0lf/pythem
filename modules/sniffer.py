@@ -42,12 +42,13 @@ class Sniffer(object):
 		self.packetcounter = 0
 	def customsniff(self, p):
 		self.packetcounter += 1
-		print "\n[PACKET N:{}]".format(self.packetcounter)
+		print "\n------------------------------[PACKET N:{}]------------------------------".format(self.packetcounter)
 		p.show()
-		print "\n"
+		print "-------------------------------------------------------------------------\n"
 
 	def coresniff(self, p):
 			# ARP Core events
+	   try:
 		if p.haslayer(ARP):
 				# who-has
 			if p[ARP].op == 1:
@@ -213,6 +214,10 @@ class Sniffer(object):
 			        proxy = re.findall(pxy_regex, load)
 				self.creds(users,passwords,proxy)
 
+           except Exception as e:
+		print "[!]Exception caught: {}".format(e)
+		pass
+
 	def creds(self,users,passwords,proxy):
 	        if users:
 			print "\n" + color("[$$$] Login found: ","yellow") + str(users[0][1]) + "\n"
@@ -271,8 +276,7 @@ class Sniffer(object):
 					if "Interrupted system call" in e or "not found" in e:
 						self.start()
 					else:
-						print "[!] Exception caught: {}".format(e)
-
+	   					print "[!] Exception caught: {}".format(e)
 
 if __name__ == "__main__":
 
