@@ -82,7 +82,7 @@ class Sniffer(object):
                         elif type == 38:
                                 type = color("domain name reply.","red")
 
-			print color("[ICMP] ","red") + p[IP].src + " ---> " + p[IP].dst + " {} ".format(type)
+			print color("[ICMP] ","white") + p[IP].src + " ---> " + p[IP].dst + " {} ".format(type)
 
 			# UDP Core events
 		elif p.haslayer(UDP):
@@ -184,36 +184,39 @@ class Sniffer(object):
 				print color("[DHCP] ","magenta") + p[Ether].src + " ---> " + p[Ether].dst + " : " + color(msg_type,"yellow")
 
 			# TCP Core events
-		elif p.haslayer(TCP) and p.haslayer(Raw):
-	    		user_regex = '([Ee]mail|[Uu]ser|[Uu]sername|[Ll]ogin|[Ll]ogin[Ii][Dd]|[Uu]name|[Uu]suario)=([^&|;]*)'
-            		pw_regex = '([Pp]assword|[Pp]ass|[Pp]asswd|[Pp]wd|[Pp][Ss][Ww]|[Pp]asswrd|[Pp]assw)=([^&|;]*)'
-			pxy_regex = '([Ww]ww-[Aa]uthorization:|[Ww]ww-[Aa]uthentication:|[Pp]roxy-[Aa]uthorization:|[Pp]roxy-[Aa]uthentication:) Basic (.*?) '
+		elif p.haslayer(TCP): 
+			if p.haslayer(Raw):
+	    			user_regex = '([Ee]mail|[Uu]ser|[Uu]sername|[Ll]ogin|[Ll]ogin[Ii][Dd]|[Uu]name|[Uu]suario)=([^&|;]*)'
+            			pw_regex = '([Pp]assword|[Pp]ass|[Pp]asswd|[Pp]wd|[Pp][Ss][Ww]|[Pp]asswrd|[Pp]assw)=([^&|;]*)'
+				pxy_regex = '([Ww]ww-[Aa]uthorization:|[Ww]ww-[Aa]uthentication:|[Pp]roxy-[Aa]uthorization:|[Pp]roxy-[Aa]uthentication:) Basic (.*?) '
 
-			load = str(p[Raw].load).replace("\n"," ")
-			if load.startswith('GET'):
-				method = load.split("GET")
-				get = str(method[1]).split("HTTP")
-				try:
-					ghost = socket.gethostbyaddr(str(p[IP].dst))
-					host = "{}/{}".format(ghost[0],str(p[IP].dst))
-				except:
-					host = str(p[IP].dst)
+				load = str(p[Raw].load).replace("\n"," ")
+				if load.startswith('GET'):
+					method = load.split("GET")
+					get = str(method[1]).split("HTTP")
+					try:
+						ghost = socket.gethostbyaddr(str(p[IP].dst))
+						host = "{}/{}".format(ghost[0],str(p[IP].dst))
+					except:
+						host = str(p[IP].dst)
 
-				print color("[TCP] ","white") + p[IP].src + " ---> "+ host +" - " + color("GET: {}".format(get[0]),"yellow")
-			elif load.startswith('USER'):
-				method = load.split("USER")
-				user = str(method[1]).split("\r")
-				print "\n" + color("[$$$] FTP Login found: ","yellow") + ''.join(user) + "\n"
-			elif load.startswith('PASS'):
-				method = load.split("PASS")
-				passw = str(method[1]).split("\r")
-				print "\n" + color("[$$$] FTP Password found: ","yellow") + ''.join(passw) + "\n"
-			else:
-				users = re.findall(user_regex, load)
-				passwords = re.findall(pw_regex, load)
-			        proxy = re.findall(pxy_regex, load)
-				self.creds(users,passwords,proxy)
+					print color("[TCP]({})".format(p.sprintf('%TCP.flags%')),"red") + p[IP].src + ":" + str(p[TCP].sport) + " ---> "+ host +":"+str(p[TCP].dport) +" - " + color("GET: {}".format(get[0]),"yellow")
 
+				elif load.startswith('USER'):
+					method = load.split("USER")
+					user = str(method[1]).split("\r")
+					print "\n" + color("[$$$] FTP Login found: ","yellow") + ''.join(user) + "\n"
+				elif load.startswith('PASS'):
+					method = load.split("PASS")
+					passw = str(method[1]).split("\r")
+					print "\n" + color("[$$$] FTP Password found: ","yellow") + ''.join(passw) + "\n"
+				else:
+					users = re.findall(user_regex, load)
+					passwords = re.findall(pw_regex, load)
+				        proxy = re.findall(pxy_regex, load)
+					self.creds(users,passwords,proxy)
+			#else:
+				#print color("[TCP]({})".format(p.sprintf('%TCP.flags%')),"white") + p[IP].src + ":" + str(p[TCP].sport) + " ---> " + p[IP].dst + ":"+str(p[TCP].dport) + " seq: {} /ack: {}".format(p[TCP].seq,p[TCP].ack)
            except Exception as e:
 		print "[!]Exception caught: {}".format(e)
 		pass
