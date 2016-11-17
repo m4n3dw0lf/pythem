@@ -49,21 +49,42 @@ class Sniffer(object):
 
 	def httpsniff(self, p):
 		try:
-			if p.haslayer(TCP): 
+			if p.haslayer(TCP):
 				if p.haslayer(Raw):
 					if p[Raw].load.startswith('GET') or p[Raw].load.startswith('POST'):
 						print "\n------------------------------[PACKET N:{}]------------------------------".format(self.packetcounter)
 						print color("CLIENT: ","blue") + p[IP].dst + " ---> " + color("SERVER: ","red") + p[IP].dst
 						print "  FLAGS:{} SEQ:{} ACK:{}\n".format(p.sprintf('%TCP.flags%'),p[TCP].seq, p[TCP].ack)
 						print color("\nLoad:\n","yellow")
-						print p[Raw].load
+						try:
+							header,body = p[Raw].load.split("\r\n\r\n")
+							print color("\nHeaders:\n","yellow")
+							print header
+							print color("\nBody:\n","yellow")
+							print body
+						except:
+							print color("\nCouldn't split header and body, printing load anyway:\n","red")
+							print p[Raw].load
 						print "-------------------------------------------------------------------------\n"
 
 					if p[Raw].load.startswith('HTTP'):
 						print color("SERVER: ","red") + p[IP].dst + " ---> " + color("CLIENT: ","blue") + p[IP].dst
 						print "  FLAGS:{} SEQ:{} ACK:{}\n".format(p.sprintf('%TCP.flags%'),p[TCP].seq, p[TCP].ack)
 						print color("\nLoad:\n","yellow")
-						print p[Raw].load
+						try:
+							header,body = p[Raw].load.split("\r\n\r\n")
+							print color("\nHeaders:\n","yellow")
+							print header
+							for l in str(header).split("\n"):
+								if l.startswith("Content-Encoding:"):
+									print color("\nBody encoded:","red") + l.strip("Content-Encoding:") + "\n"
+								if l.startswith("Content-Type: image/"):
+									print color("\n Image found, format:","red") + l.strip("Content-Type:") + "\n"
+							print color("\nBody:\n","yellow")
+							print body
+						except:
+							print color("\nCouldn't split header and body, printing load anyway:\n","red")
+							print p[Raw].load
 						print "-------------------------------------------------------------------------\n"
 				else:
 					pass
