@@ -805,9 +805,7 @@ class Processor(object):
 						try:
 							hasfilter = self.input_list[1]
 							self.filter = " ".join(self.input_list[1:])
-							if self.filter == "http":
-								self.filter = "port 80"
-							elif self.filter == "dns":
+							if self.filter == "dns":
 								self.filter = "port 53"
 							self.sniff = Sniffer(self.interface, self.filter)
 							print "\n[+] PytheM sniffer initialized.\n"
@@ -816,9 +814,7 @@ class Processor(object):
 						except IndexError:
 							try:
 								self.filter = raw_input("[+] Enter the filter(empty for core sniffer): ")
-								if self.filter == "http":
-									self.filter = "port 80"
-								elif self.filter == "dns":
+								if self.filter == "dns":
 									self.filter = "port 53"
 								if not self.filter:
 									self.filter = None

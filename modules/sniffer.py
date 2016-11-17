@@ -34,6 +34,7 @@ class Sniffer(object):
 	name = "Sniffer"
 	desc = "Custom scapy sniffer."
 	version = "1.2"
+	obs = "TO DO: Decompress data and generate images on http sniffer"
 
 	def __init__(self, interface, filter):
 		self.interface = interface
@@ -45,6 +46,30 @@ class Sniffer(object):
 		print "\n------------------------------[PACKET N:{}]------------------------------".format(self.packetcounter)
 		p.show()
 		print "-------------------------------------------------------------------------\n"
+
+	def httpsniff(self, p):
+		try:
+			if p.haslayer(TCP): 
+				if p.haslayer(Raw):
+					if p[Raw].load.startswith('GET') or p[Raw].load.startswith('POST'):
+						print "\n------------------------------[PACKET N:{}]------------------------------".format(self.packetcounter)
+						print color("CLIENT: ","blue") + p[IP].dst + " ---> " + color("SERVER: ","red") + p[IP].dst
+						print "  FLAGS:{} SEQ:{} ACK:{}\n".format(p.sprintf('%TCP.flags%'),p[TCP].seq, p[TCP].ack)
+						print color("\nLoad:\n","yellow")
+						print p[Raw].load
+						print "-------------------------------------------------------------------------\n"
+
+					if p[Raw].load.startswith('HTTP'):
+						print color("SERVER: ","red") + p[IP].dst + " ---> " + color("CLIENT: ","blue") + p[IP].dst
+						print "  FLAGS:{} SEQ:{} ACK:{}\n".format(p.sprintf('%TCP.flags%'),p[TCP].seq, p[TCP].ack)
+						print color("\nLoad:\n","yellow")
+						print p[Raw].load
+						print "-------------------------------------------------------------------------\n"
+				else:
+					pass
+         	except Exception as e:
+                	print "[!]Exception caught: {}".format(e)
+                	pass
 
 	def coresniff(self, p):
 			# ARP Core events
@@ -233,6 +258,7 @@ class Sniffer(object):
 				print "\n" + color("[$$$] Proxy credentials: ","yellow") + str(proxy[0][1]) + "\n"
 
 	def start(self):
+		print "FILTER: " + self.filter
 		if self.filter == None:
 			self.filter = 'core'
 		if self.filter == "core":
@@ -257,6 +283,27 @@ class Sniffer(object):
 					else:
 						print "[!] Exception caught: {}".format(e)
 
+		elif self.filter == 'http':
+                        if self.wrpcap == 'y':
+                                try:
+                                        p = sniff(iface=self.interface, prn = self.httpsniff)
+                                        time = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
+                                        wrpcap("pythem{}.pcap".format(time),p)
+                                        print "\n[!] PytheM sniffer finalized."
+                                except Exception as e:
+                                        if "Interrupted system call" in e or "not found" in e:
+                                                self.start()
+                                        else:
+                                                print "[!] Exception caught: {}".format(e)
+                        else:
+                                try:
+                                        p = sniff(iface=self.interface,prn = self.httpsniff)
+                                        print "\n[!] PytheM sniffer finalized."
+                                except Exception as e:
+                                        if "Interrupted system call" in e or "not found" in e:
+                                                self.start()
+                                        else:
+                                                print "[!] Exception caught: {}".format(e)
 
 		else:
 			if self.wrpcap == 'y':
