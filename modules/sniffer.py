@@ -262,7 +262,7 @@ class Sniffer(object):
 				        proxy = re.findall(pxy_regex, load)
 					self.creds(users,passwords,proxy)
 			#else:
-				#print color("[TCP]({})".format(p.sprintf('%TCP.flags%')),"white") + p[IP].src + ":" + str(p[TCP].sport) + " ---> " + p[IP].dst + ":"+str(p[TCP].dport) + " seq: {} /ack: {}".format(p[TCP].seq,p[TCP].ack)
+			#	print color("[TCP]({})".format(p.sprintf('%TCP.flags%')),"white") + p[IP].src + ":" + str(p[TCP].sport) + " ---> " + p[IP].dst + ":"+str(p[TCP].dport) + " seq: {} /ack: {}".format(p[TCP].seq,p[TCP].ack)
            except Exception as e:
 		print "[!]Exception caught: {}".format(e)
 		pass
@@ -279,7 +279,7 @@ class Sniffer(object):
 				print "\n" + color("[$$$] Proxy credentials: ","yellow") + str(proxy[0][1]) + "\n"
 
 	def start(self):
-		print "FILTER: " + self.filter
+		#print "FILTER: " + self.filter
 		if self.filter == None:
 			self.filter = 'core'
 		if self.filter == "core":
