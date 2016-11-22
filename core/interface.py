@@ -1060,7 +1060,7 @@ class Processor(object):
 					pass
 
 				except Exception as e:
-					print "Exception caught: {}".format(e)
+					print "[!] Exception caught: {}".format(e)
 
 
 
