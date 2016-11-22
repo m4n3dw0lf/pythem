@@ -58,7 +58,7 @@ class PcapReader(object):
 		print color("[*] conversations:		Display pictogram with conversations between hosts from the analyzed file.","blue")
 		print
 		print
-		print color("[*] filter	<string/layer>	Run the PytheM custom filter in the packets.","blue")
+		print color("[*] filter	<string/layer>	Run a custom filter in the packets.","blue")
 		print
 		print
 		print color("[*] packetdisplay [num]:	Display the full content of index selected packet.","blue")
@@ -66,20 +66,24 @@ class PcapReader(object):
 	def custom_filter(self,packets,filter):
 		x = 0
 		if filter == "string":
+			from StringIO import StringIO
 			try:
 				find = raw_input("[+] String to search on packets (case sensitive): ")
 				for p in packets:
+					capture = StringIO()
+					save_stdout = sys.stdout
+					sys.stdout = capture
+					p.show()
+					sys.stdout = save_stdout
 					pkt = "\r\n\n\n------------------------[Packet n:{}]------------------------\r\n".format(x)
 					end = "\r\n------------------------------------------------------------\r\n"
-					if find in p:
+					if find in capture.getvalue():
 						print pkt
 						p.show()
 						print end
 					x += 1
 			except KeyboardInterrupt:
 				print "[-] User requested shutdown."
-			except Exception as e:
-				print "[!] Exception caught: {}".format(e)
 
 		elif filter == "layer":
 			try:
@@ -87,7 +91,7 @@ class PcapReader(object):
                                 for p in packets:
                                         pkt = "\r\n\n\n------------------------[Packet n:{}]------------------------\r\n".format(x)
                                         end = "\r\n------------------------------------------------------------\r\n"
-                                        if find in p:
+                                        if p.haslayer(find):
                                                 print pkt
                                                 p.show()
                                                 print end
