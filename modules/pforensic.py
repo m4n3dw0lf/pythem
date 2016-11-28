@@ -43,13 +43,13 @@ class PcapReader(object):
 		print color("	ARQUIVO - [ {} ]".format(self.file),"red")
 		print
 		print
-		print color("[*] help:   		Print the help message","blue")
+		print color("[*] help:   			Print the help message","blue")
 		print
 		print
 		print color("[*] clear:			Clean the screen, same as GNU/Linux OS 'clear'","blue")
 		print
 		print
-		print color("[*] exit/quit:		Return to pythem","blue")
+		print color("[*] exit/quit:			Return to pythem","blue")
 		print
 		print
 		print color("[*] show:			Display all the packets and their index numbers.","blue")
@@ -58,7 +58,7 @@ class PcapReader(object):
 		print color("[*] conversations:		Display pictogram with conversations between hosts from the analyzed file.","blue")
 		print
 		print
-		print color("[*] filter	<string/layer>	Run a custom filter in the packets.","blue")
+		print color("[*] filter <string/layer>:	Run a custom filter in the packets.","blue")
 		print
 		print
 		print color("[*] packetdisplay [num]:	Display the full content of index selected packet.","blue")
@@ -125,6 +125,8 @@ class PcapReader(object):
 						try:
 							self.filter = self.input_list[1]
 							self.custom_filter(self.packets,self.filter)
+						except IndexError:
+							print "[!] Select a option to filter, string or layer"
 						except Exception as e:
 							print "[!] Exception caught: {}".format(e)
 
