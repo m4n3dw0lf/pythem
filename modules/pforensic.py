@@ -62,6 +62,9 @@ class PcapReader(object):
 		print
 		print
 		print color("[*] packetdisplay [num]:	Display the full content of index selected packet.","blue")
+		print
+		print
+		print color("[*] count :		Display how much packets the .pcap file have.","blue")
 
 	def custom_filter(self,packets,filter):
 		x = 0
@@ -84,6 +87,8 @@ class PcapReader(object):
 					x += 1
 			except KeyboardInterrupt:
 				print "[-] User requested shutdown."
+			except Exception as e:
+				print "[!] Exception caught: {}".format(e)
 
 		elif filter == "layer":
 			try:
@@ -158,6 +163,11 @@ class PcapReader(object):
                             				self.packets.show()
 						except Exception as e: 
                             				print "[!] Exception caught: {}".format(e)	
+					elif self.input_list[0] == 'count':
+						try:
+							print "[+] Number of packets: {}".format(len(self.packets))
+						except 	Exception as e:
+							print "[!] Exception caught: {}".format(e)
 					elif self.input_list[0] == 'conversations':
 						try:
                             				self.packets.conversations()

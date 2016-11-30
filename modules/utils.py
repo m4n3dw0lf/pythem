@@ -275,7 +275,7 @@ def print_help():
 	print color("  pythem> ","red") + "harvest"
 	print
 	print
-	print color("[*] inject			Start and redirect clients to web server with a script to inject in header field","blue")
+	print color("[*] inject			Start to redirect clients to web server with a script tag to inject in html response","blue")
 	print
 	print "Should be used after a ARP spoof has been started"
 	print
