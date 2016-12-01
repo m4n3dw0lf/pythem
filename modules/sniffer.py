@@ -44,6 +44,7 @@ class Sniffer(object):
 		self.filter = filter
 		self.wrpcap = raw_input("[*] Wish to write a .pcap file with the sniffed packets in the actual directory?[y/n]: ")
 		self.packetcounter = 0
+		self.beta_status = False
 	def customsniff(self, p):
 		self.packetcounter += 1
 		print "\n------------------------------[PACKET N:{}]------------------------------".format(self.packetcounter)
@@ -82,40 +83,38 @@ class Sniffer(object):
 						#try:
 						print color("\nHeaders:\n","yellow")
 						print header
-						for l in str(header).split("\n"):
-							if l.startswith("Content-Encoding:"):
-								print color("\nBody encoded:","red") + l.strip("Content-Encoding:") + "\n"
-								encoded_status = True
-								aux = l.split("/")
-								try:
-									encoded = aux[1]
-								except:
+						if self.beta_status:
+							for l in str(header).split("\n"):
+								if l.startswith("Content-Encoding:"):
+									print color("\nBody encoded:","red") + l.strip("Content-Encoding:") + "\n"
+									encoded_status = True
 									encoded = l.strip("Content-Encoding: ")
-							if l.startswith("Content-Type: image/"):
-								print color("\n Image found, format:","red") + l.strip("Content-Type: image/") + "\n"
-								image_status = True
-								aux = l.split("/")
-								try:
-									image = aux[1]
-								except:
-									image = l.strip("Content-Type: image/")
-						if encoded_status:
-							if image_status:
-								sleep(0)
-							else:
-								if encoded == 'gzip':
-									with open("tmp.txt.gz","w") as f:
-										f.write(body)
-									f.close()
-									with gzip.open("tmp.txt.gz","rb") as f:
-										decompressed = f.read()
-									print decompressed
-									os.system("rm tmp.txt.gz")
-						elif image_status:
-							time = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
-							if encoded_status:
-								if encoded == 'gzip':
+								if l.startswith("Content-Type: image/"):
+									print color("\n Image found, format:","red") + l.strip("Content-Type: image/") + "\n"
+									image_status = True
+									aux = l.split("/")
 									try:
+										image = aux[1]
+									except:
+										image = l.strip("Content-Type: image/")
+							if encoded_status:
+								print "[!] Trying to decode"
+								if image_status:
+									sleep(0)
+								else:
+									if encoded == 'gzip':
+										with open("tmp.txt.gz","w") as f:
+											f.write(body)
+										f.close()
+										with gzip.open("tmp.txt.gz","rb") as f:
+											decompressed = f.read()
+										print decompressed
+										os.system("rm tmp.txt.gz")
+							elif image_status:
+								print "[!] Trying to display image"
+								time = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
+								if encoded_status:
+									if encoded == 'gzip':
 										with open("compressedimg.gz", "w") as f:
 											f.write(body)
 										f.close()
@@ -126,16 +125,14 @@ class Sniffer(object):
 											f.write(decompressedimg)
 										f.close()
 										os.system("gnome-open {}/log/{}-{}.{}".format(self.path, time, self.packetcounter, image))
-									except:
-										pass
-							else:
-            							try:
+								else:
 									with open("{}/log/{}-{}.{}".format(self.path, time, self.packetcounter, image),"w") as f:
 										f.write(body)
 									f.close()
 									os.system("gnome-open {}/log/{}-{}.{}".format(self.path, time, self.packetcounter, image))
-            							except:
-                							pass
+							else:
+								print color("\nBody:\n","yellow")
+								print body
 						else:
 							print color("\nBody:\n","yellow")
 							print body
@@ -362,6 +359,12 @@ class Sniffer(object):
 						print "[!] Exception caught: {}".format(e)
 
 		elif self.filter == 'http':
+			try:
+				beta_status = raw_input("[?] Try to decompress and display images? (still BETA) [y/n]")
+				if beta_status == "y":
+					self.beta_status = True
+			except:
+				pass
                         if self.wrpcap == 'y':
                                 try:
                                         p = sniff(iface=self.interface, prn = self.httpsniff)
