@@ -28,8 +28,6 @@ import socket
 import re
 from utils import *
 import sys
-from Tkinter import *
-from PIL import ImageTk, Image
 
 class Sniffer(object):
 
