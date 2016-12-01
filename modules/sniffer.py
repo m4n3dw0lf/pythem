@@ -28,15 +28,18 @@ import socket
 import re
 from utils import *
 import sys
+from Tkinter import *
+from PIL import ImageTk, Image
 
 class Sniffer(object):
 
 	name = "Sniffer"
 	desc = "Custom scapy sniffer."
-	version = "1.2"
+	version = "1.3"
 	obs = "TO DO: Decompress data and generate images on http sniffer"
 
-	def __init__(self, interface, filter):
+	def __init__(self, interface, filter, path):
+		self.path = path
 		self.interface = interface
 		self.filter = filter
 		self.wrpcap = raw_input("[*] Wish to write a .pcap file with the sniffed packets in the actual directory?[y/n]: ")
@@ -46,7 +49,6 @@ class Sniffer(object):
 		print "\n------------------------------[PACKET N:{}]------------------------------".format(self.packetcounter)
 		p.show()
 		print "-------------------------------------------------------------------------\n"
-
 	def httpsniff(self, p):
 		try:
 			if p.haslayer(TCP):
@@ -68,23 +70,78 @@ class Sniffer(object):
 						print "-------------------------------------------------------------------------\n"
 
 					if p[Raw].load.startswith('HTTP'):
+						encoded_status = False
+						image_status = False
 						print color("SERVER: ","red") + p[IP].dst + " ---> " + color("CLIENT: ","blue") + p[IP].dst
 						print "  FLAGS:{} SEQ:{} ACK:{}\n".format(p.sprintf('%TCP.flags%'),p[TCP].seq, p[TCP].ack)
 						print color("\nLoad:\n","yellow")
 						try:
 							header,body = p[Raw].load.split("\r\n\r\n")
-							print color("\nHeaders:\n","yellow")
-							print header
-							for l in str(header).split("\n"):
-								if l.startswith("Content-Encoding:"):
-									print color("\nBody encoded:","red") + l.strip("Content-Encoding:") + "\n"
-								if l.startswith("Content-Type: image/"):
-									print color("\n Image found, format:","red") + l.strip("Content-Type:") + "\n"
+						except:
+							header,body = p[Raw].load.split("\r\n")
+						#try:
+						print color("\nHeaders:\n","yellow")
+						print header
+						for l in str(header).split("\n"):
+							if l.startswith("Content-Encoding:"):
+								print color("\nBody encoded:","red") + l.strip("Content-Encoding:") + "\n"
+								encoded_status = True
+								aux = l.split("/")
+								try:
+									encoded = aux[1]
+								except:
+									encoded = l.strip("Content-Encoding: ")
+							if l.startswith("Content-Type: image/"):
+								print color("\n Image found, format:","red") + l.strip("Content-Type: image/") + "\n"
+								image_status = True
+								aux = l.split("/")
+								try:
+									image = aux[1]
+								except:
+									image = l.strip("Content-Type: image/")
+						if encoded_status:
+							if image_status:
+								sleep(0)
+							else:
+								if encoded == 'gzip':
+									with open("tmp.txt.gz","w") as f:
+										f.write(body)
+									f.close()
+									with gzip.open("tmp.txt.gz","rb") as f:
+										decompressed = f.read()
+									print decompressed
+									os.system("rm tmp.txt.gz")
+						elif image_status:
+							time = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
+							if encoded_status:
+								if encoded == 'gzip':
+									try:
+										with open("compressedimg.gz", "w") as f:
+											f.write(body)
+										f.close()
+										with gzip.open("compressedimg.gz","rb") as f:
+											decompressedimg = f.read()
+										os.system("rm compressedimg.gz")
+										with open("{}/log/{}-{}.{}".format(self.path, time, self.packetcounter, image), "w") as f:
+											f.write(decompressedimg)
+										f.close()
+										os.system("gnome-open {}/log/{}-{}.{}".format(self.path, time, self.packetcounter, image))
+									except:
+										pass
+							else:
+            							try:
+									with open("{}/log/{}-{}.{}".format(self.path, time, self.packetcounter, image),"w") as f:
+										f.write(body)
+									f.close()
+									os.system("gnome-open {}/log/{}-{}.{}".format(self.path, time, self.packetcounter, image))
+            							except:
+                							pass
+						else:
 							print color("\nBody:\n","yellow")
 							print body
-						except:
-							print color("\nCouldn't split header and body, printing load anyway:\n","red")
-							print p[Raw].load
+						#except:
+						#	print color("\nCouldn't split header and body, printing load anyway:\n","red")
+						#	print p[Raw].load
 						print "-------------------------------------------------------------------------\n"
 				else:
 					pass

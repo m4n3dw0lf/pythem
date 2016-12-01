@@ -807,7 +807,7 @@ class Processor(object):
 							self.filter = " ".join(self.input_list[1:])
 							if self.filter == "dns":
 								self.filter = "port 53"
-							self.sniff = Sniffer(self.interface, self.filter)
+							self.sniff = Sniffer(self.interface, self.filter,self.path)
 							print "\n[+] PytheM sniffer initialized.\n"
 							self.sniff.start()
 
@@ -818,7 +818,7 @@ class Processor(object):
 									self.filter = "port 53"
 								if not self.filter:
 									self.filter = None
-	                                                        self.sniff = Sniffer(self.interface, self.filter)
+	                                                        self.sniff = Sniffer(self.interface, self.filter,self.path)
 								print "\n[+] PytheM sniffer initialized.\n"
         	                                                self.sniff.start()
 							except KeyboardInterrupt:
