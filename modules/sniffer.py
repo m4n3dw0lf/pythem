@@ -28,6 +28,8 @@ import socket
 import re
 from utils import *
 import sys
+import gzip
+from io import BytesIO
 
 class Sniffer(object):
 
@@ -42,7 +44,6 @@ class Sniffer(object):
 		self.filter = filter
 		self.wrpcap = raw_input("[*] Wish to write a .pcap file with the sniffed packets in the actual directory?[y/n]: ")
 		self.packetcounter = 0
-		self.beta_status = False
 	def customsniff(self, p):
 		self.packetcounter += 1
 		print "\n------------------------------[PACKET N:{}]------------------------------".format(self.packetcounter)
@@ -77,60 +78,59 @@ class Sniffer(object):
 						try:
 							header,body = p[Raw].load.split("\r\n\r\n")
 						except:
-							header,body = p[Raw].load.split("\r\n")
+							header = p[Raw].load
+							body = ''
 						#try:
 						print color("\nHeaders:\n","yellow")
 						print header
-						if self.beta_status:
-							for l in str(header).split("\n"):
-								if l.startswith("Content-Encoding:"):
-									print color("\nBody encoded:","red") + l.strip("Content-Encoding:") + "\n"
-									encoded_status = True
-									encoded = l.strip("Content-Encoding: ")
-								if l.startswith("Content-Type: image/"):
-									print color("\n Image found, format:","red") + l.strip("Content-Type: image/") + "\n"
-									image_status = True
-									aux = l.split("/")
+						for l in str(header).split("\n"):
+							if l.startswith("Content-Encoding:"):
+								encoded_status = True
+								aux = l.split("Content-Encoding: ")
+								encoded = aux[1].split("\r")
+								encoded = str(encoded[0])
+								print color("\nBody encoded:","red") + encoded + "\n"
+							if l.startswith("Content-Type: image/"):
+								image_status = True
+								aux = l.split("/")
+								try:
+									image = aux[1].split("\r")
+									image = str(image[0])
+								except:
+									image = l.strip("Content-Type: image/")
+									image = image.split("\r")
+									image = str(image[0])
+								print color("\n Image found, format:","red") + image + "\n"
+						if encoded_status and not image_status:
+							print "\n[!] Trying to decode\n"
+							if encoded == 'gzip':
+								with gzip.GzipFile(fileobj=BytesIO(body)) as f:
 									try:
-										image = aux[1]
-									except:
-										image = l.strip("Content-Type: image/")
+										body = f.read()
+									except Exception as e:
+										print "[!] Exception caught: {}".format(e)
+										print "[!] Couldn't decompress data, printing as is."
+							else:
+								print "[!] Compression format {} not supported, printing as is".format(encoded)
+						if image_status:
+							print "\n[!] Trying to save image\n"
+							time = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
 							if encoded_status:
-								print "[!] Trying to decode"
-								if image_status:
-									sleep(0)
+								if encoded == 'gzip':
+									print "[!] Image is compressed, saving as .gz, will need to manually decompress"
+									with open("{}/log/{}-{}.{}.gz".format(self.path, time, self.packetcounter, image), "w") as f:
+										f.write(body)
+									f.close()
 								else:
-									if encoded == 'gzip':
-										with open("tmp.txt.gz","w") as f:
-											f.write(body)
-										f.close()
-										with gzip.open("tmp.txt.gz","rb") as f:
-											decompressed = f.read()
-										print decompressed
-										os.system("rm tmp.txt.gz")
-							elif image_status:
-								print "[!] Trying to display image"
-								time = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
-								if encoded_status:
-									if encoded == 'gzip':
-										with open("compressedimg.gz", "w") as f:
-											f.write(body)
-										f.close()
-										with gzip.open("compressedimg.gz","rb") as f:
-											decompressedimg = f.read()
-										os.system("rm compressedimg.gz")
-										with open("{}/log/{}-{}.{}".format(self.path, time, self.packetcounter, image), "w") as f:
-											f.write(decompressedimg)
-										f.close()
-										os.system("gnome-open {}/log/{}-{}.{}".format(self.path, time, self.packetcounter, image))
-								else:
+									print "[!] Encoding not supported, saving as is"
 									with open("{}/log/{}-{}.{}".format(self.path, time, self.packetcounter, image),"w") as f:
 										f.write(body)
 									f.close()
-									os.system("gnome-open {}/log/{}-{}.{}".format(self.path, time, self.packetcounter, image))
 							else:
-								print color("\nBody:\n","yellow")
-								print body
+								with open("{}/log/{}-{}.{}".format(self.path, time, self.packetcounter, image),"w") as f:
+									f.write(body)
+								f.close()
+							print color("\n[+] Image {}-{}.{} saved on: {}/log/\n".format(time, self.packetcounter, image, self.path),"yellow")
 						else:
 							print color("\nBody:\n","yellow")
 							print body
@@ -357,12 +357,6 @@ class Sniffer(object):
 						print "[!] Exception caught: {}".format(e)
 
 		elif self.filter == 'http':
-			try:
-				beta_status = raw_input("[?] Try to decompress and display images? (still BETA) [y/n]")
-				if beta_status == "y":
-					self.beta_status = True
-			except:
-				pass
                         if self.wrpcap == 'y':
                                 try:
                                         p = sniff(iface=self.interface, prn = self.httpsniff)
