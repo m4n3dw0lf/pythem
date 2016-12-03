@@ -235,6 +235,8 @@ class Sniffer(object):
 							if x == "requested_addr":
 								msg_type += "request address {} , ".format(y)
 							if x == "vendor_class_id":
+								msg_type += "vendor-id is {} , ".format(y)
+							if x == "hostname":
 								msg_type += "hostname is {} , ".format(y)
 					except:
 						pass
