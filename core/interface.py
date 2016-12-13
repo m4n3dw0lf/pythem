@@ -81,6 +81,12 @@ class Processor(object):
 		# Main
 	def start(self):
 		try:
+        	        animation = "|/-\\"
+	                for i in range(15):
+        	            time.sleep(0.1)
+        	            sys.stdout.write("\r" + "[" + animation[i % len(animation)] + "]" + "PytheM is loading ...")
+        	            sys.stdout.flush()
+			print
 				#Untill break or CTRL+C
 			while 1:
 					#Call the object Completer code in modules/completer.py
