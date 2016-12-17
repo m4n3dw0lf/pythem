@@ -55,7 +55,7 @@ class Sniffer(object):
 				if p.haslayer(Raw):
 					if p[Raw].load.startswith('GET') or p[Raw].load.startswith('POST'):
 						print "\n------------------------------[PACKET N:{}]------------------------------".format(self.packetcounter)
-						print color("CLIENT: ","blue") + p[IP].dst + " ---> " + color("SERVER: ","red") + p[IP].dst
+						print color("CLIENT: ","blue") + p[IP].src + " ---> " + color("SERVER: ","red") + p[IP].dst
 						print "  FLAGS:{} SEQ:{} ACK:{}\n".format(p.sprintf('%TCP.flags%'),p[TCP].seq, p[TCP].ack)
 						print color("\nLoad:\n","yellow")
 						try:
@@ -72,7 +72,7 @@ class Sniffer(object):
 					if p[Raw].load.startswith('HTTP'):
 						encoded_status = False
 						image_status = False
-						print color("SERVER: ","red") + p[IP].dst + " ---> " + color("CLIENT: ","blue") + p[IP].dst
+						print color("SERVER: ","red") + p[IP].src + " ---> " + color("CLIENT: ","blue") + p[IP].dst
 						print "  FLAGS:{} SEQ:{} ACK:{}\n".format(p.sprintf('%TCP.flags%'),p[TCP].seq, p[TCP].ack)
 						print color("\nLoad:\n","yellow")
 						try:
