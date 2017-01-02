@@ -24,11 +24,11 @@ class Completer(object):
 		#print text
 		#print state
 		if "set" in text and state == 1:
-			self.suboptions = ['interface','arpmode','target','gateway','file','domain','port','script','redirect','help']
+			self.suboptions = ['interface','arpmode','target','gateway','file','domain','port','script','help']
 			completer = readline.set_completer(self.suboption)
 
 		elif "print" in text and state == 1:
-			self.suboptions = ['interface', 'arpmode', 'target', 'gateway','file','domain','port','script','redirect','help']
+			self.suboptions = ['interface', 'arpmode', 'target', 'gateway','file','domain','port','script','help']
 			completer = readline.set_completer(self.suboption)
 
 		elif "scan" in text and state == 1:
@@ -72,7 +72,7 @@ class Completer(object):
 			completer = readline.set_completer(self.suboption)
 
 		else:
-	        	self.words = ['clear','help','exit','quit','set','print','scan','arpspoof','dnsspoof','inject','sniff','pforensic','dos','xploit','brute','geoip','decode','encode','cookiedecode','hstsbypass','harvest','bdfproxy','dhcpspoof']
+	        	self.words = ['clear','help','exit','quit','set','print','scan','arpspoof','dnsspoof','inject','sniff','pforensic','dos','xploit','brute','geoip','decode','encode','cookiedecode','hstsbypass','dhcpspoof']
 			results = [x for x in self.words if x.startswith(text)] + [None]
 			return results[state]
 

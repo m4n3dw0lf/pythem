@@ -248,31 +248,14 @@ def print_help():
 	print color("  pythem> ","red") + "dhcpspoof status"
 	print
 	print
-	print color("[*] bdfproxy			Start BDFProxy and Metasploit combo.","blue")
-	print color("			by:Joshua Pitts_|		|_by: rapid7","red")
+	print color("[*] hstsbypass			Start sslkill module","blue")
+	print color("					  |_by:m4n3dw0lf","red")
 	print
-	print "Should be called after an ARP spoofing attack has been started."
-	print
-	print color(" exmample:","green")
-	print
-	print color("  pythem> ","red") + "bdfproxy"
-	print
-	print
-	print color("[*] hstsbypass			Start sslstrip+ and dns2proxy","blue")
-	print color("	by:LeonardoNve && M.Marlinspike	_|	     |_by:LeonardNve","red")
-	print
-	print "Should be called after an ARP spoofing attack has been started."
+	print "Should be called after a target, gateway and interface have been set."
 	print
 	print color(" example:","green")
 	print
 	print color("  pythem> ","red") + "hstsbypass"
-	print
-	print
-	print color("[*] harvest			Harvest credentials inside file, default file: sslstrip.log","blue")
-	print
-	print color(" example:","green")
-	print
-	print color("  pythem> ","red") + "harvest"
 	print
 	print
 	print color("[*] inject			Start to redirect clients to web server with a script tag to inject in html response","blue")
