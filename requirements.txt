@@ -1,4 +1,5 @@
 git+git://github.com/kti/python-netfilterqueue
+pyOpenSSL==16.2.0
 decorator==4.0.10
 ecdsa==0.13
 mechanize==0.2.5
