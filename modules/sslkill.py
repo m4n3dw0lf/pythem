@@ -468,14 +468,19 @@ class SSLKiller(object):
 		if not self.targetMAC or not self.gatewayMAC:
 			print "[!] Failed to resolve MAC Address, check if IP Address is online, exiting ..."
 			exit(0)
+		animation = "|/-\\"
+		for i in range(15):
+		    time.sleep(0.1)
+		    sys.stdout.write("\r" + "[" + animation[i % len(animation)] + "]" + " Loading SSL Kill ...")
+	    	    sys.stdout.flush()
 		self.ArpPoisoner()
 		sys.stdout.write("\n[+] ARP Poisoner thread loaded")
 		self.DnsPoisoner()
 		print "\n[+] DNS Poisoner thread loaded"
 		if debug:
-			print "[+]Debugger is on!"
+			print "\n[+]Debugger is on!"
 		else:
-			print "[-]Debugger is off!"
+			print "\n[-]Debugger is off!"
 
 	def ArpPoisoner(self):
 		#ARP Spoof both ways, target and gateway

