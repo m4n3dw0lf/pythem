@@ -9,7 +9,6 @@ scapy==2.3.2
 six==1.10.0
 update-checker==0.11
 cffi==1.7.0
-cryptography==1.4
 pycparser==2.14
 pyasn1==0.1.9
 paramiko==2.0.1
