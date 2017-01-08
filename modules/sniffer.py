@@ -82,7 +82,7 @@ class Sniffer(object):
 								print color("\nBody encoded:","red") + encoded + "\n"
 							if l.startswith("Content-Type: image/"):
 								image_status = True
-								print color("\n Image found, format:","red") + image + "\n"
+								print color("\n Image, skipping \n","red")
 						if encoded_status:
 							print "\n[!] Trying to decode\n"
 							if encoded in ('gzip','x-gzip'):
