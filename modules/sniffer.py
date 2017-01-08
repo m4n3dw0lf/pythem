@@ -50,6 +50,7 @@ class Sniffer(object):
 		p.show()
 		print "-------------------------------------------------------------------------\n"
 	def httpsniff(self, p):
+		self.packetcounter += 1
 		try:
 			if p.haslayer(TCP):
 				if p.haslayer(Raw):
@@ -64,6 +65,7 @@ class Sniffer(object):
 					if p[Raw].load.startswith('HTTP'):
 						encoded_status = False
 						image_status = False
+						print "\n------------------------------[PACKET N:{}]------------------------------".format(self.packetcounter)
 						print color("SERVER: ","red") + p[IP].src + " ---> " + color("CLIENT: ","blue") + p[IP].dst
 						print "  FLAGS:{} SEQ:{} ACK:{}\n".format(p.sprintf('%TCP.flags%'),p[TCP].seq, p[TCP].ack)
 						print color("\nLoad:\n","yellow")
