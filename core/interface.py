@@ -33,7 +33,7 @@ from time import sleep
 class Processor(object):
 	name = "Interface-Processor"
 	desc = "Console to process commands"
-	version = "1.2"
+	version = "1.4"
 
 
 	def __init__(self):
@@ -867,9 +867,16 @@ class Processor(object):
                                                         print "[!] Exception caught: {}".format(e)
                                                         pass
 
-					elif self.command == "cookiedecode":
+					elif self.input_list[0] == "cookiedecode":
 						try:
-							cookiedecode()
+							try:
+								if self.input_list[1] == "help":
+                                                        	        print "\n[Help] Decode a base64 unquoted Cookie."
+                                                        	      	print "example:"
+                                         	        	  	print "{} cookiedecode".format(console)
+                                                        	      	print "[+] Enter the cookie value:\n"
+							except IndexError:
+								cookiedecode()
 						except KeyboardInterrupt:
 							pass
 						except Exception as e:
@@ -879,10 +886,17 @@ class Processor(object):
 
 					elif self.input_list[0] == "decode":
 						try:
+							if self.input_list[1] == "help":
+                                                        	print "\n[Help] Decode a base64 string."
+                                                                print "example:"
+                                                        	print "{} decode".format(console)
+								print "[+] Decode: <encoding>"
+                                                                print "[+] Enter the string to be decoded:\n"
+								continue
 							print decode(self.input_list[1])
 						except IndexError:
 							try:
-								msg = raw_input("Decode: ")
+								msg = raw_input("[+] Decode: ")
 								print decode(msg)
 							except KeyboardInterrupt:
 								pass
@@ -891,10 +905,17 @@ class Processor(object):
 
 					elif self.input_list[0] == "encode":
 						try:
+							if self.input_list[1] == "help":
+                                                        	print "\n[Help] Encode a base64 string."
+                                                                print "example:"
+                                                        	print "{} encode".format(console)
+								print "[+] Encode: <encoding>"
+                                                                print "[+] Enter the string to be encoded:\n"
+								continue
 							print encode(self.input_list[1])
 						except IndexError:
 							try:
-								msg = raw_input("Encode:")
+								msg = raw_input("[+] Encode:")
 								print decode(msg)
 							except KeyboardInterrupt:
 								pass
@@ -903,6 +924,15 @@ class Processor(object):
 
 					elif self.input_list[0] == "geoip":
 						try:
+							if self.input_list[1] == "help":
+								print "\n[Help] Approximately geolocate the location of a IP address."
+								print "[Required] Target IP Address"
+								print "examples:"
+								print "{} set target 8.8.8.8".format(console)
+  								print "{} geoip".format(console)
+     								print "	    or"
+  								print "{} geoip 8.8.8.8".format(console)
+								continue
 							self.targets = self.input_list[1]
 							from modules.geoip import Geoip
 							path = self.path + "/config/GeoLiteCity.dat"
