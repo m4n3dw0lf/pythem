@@ -931,7 +931,7 @@ class Processor(object):
 								print "{} set target 8.8.8.8".format(console)
   								print "{} geoip".format(console)
      								print "	    or"
-  								print "{} geoip 8.8.8.8".format(console)
+  								print "{} geoip 8.8.8.8\n".format(console)
 								continue
 							self.targets = self.input_list[1]
 							from modules.geoip import Geoip
