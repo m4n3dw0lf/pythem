@@ -1,7 +1,7 @@
 #!/usr/bin/env python2.7
 #coding=UTF-8
 
-# Copyright (c) 2016 Angelo Moura
+# Copyright (c) 2016-2017 Angelo Moura
 #
 # This file is part of the program PytheM
 #
@@ -24,7 +24,7 @@ import sys
 from core.interface import Processor
 from modules.utils import banner,color
 
-version = "0.6.4"
+version = "0.6.5"
 Processor = Processor()
 
 if os.geteuid() != 0:

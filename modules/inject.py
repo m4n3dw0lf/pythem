@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# Copyright (c) 2016 Angelo Moura
+# Copyright (c) 2016-2017 Angelo Moura
 #
 # This file is part of the program PytheM
 #
