@@ -150,18 +150,60 @@ class Sniffer(object):
 
 			# UDP Core events
 		elif p.haslayer(UDP):
-			if p.haslayer(DNS) and p.getlayer(DNS).qr == 0:
-				try:
+			if p.haslayer(DNS):
+				types = {1:"A (Address Record)",
+				28:"AAAA (IPv6 Address Record)",
+				18:"AFSDB (AFS Database Record)",
+				42:"APL (Address Prefix List)",
+				257:"CAA (Certification Authority Authorization)",
+				60:"CDNSKEY (Child DNSKey)",
+				59:"CDS (Child DS)",
+				37:"CERT (Certificate Record)",
+				5:"CNAME (Cannonical Name Record)",
+				49:"DHCID (DHCP Identifier)",
+				32769:"DNSKEY (DNS Key Record)",
+				43:"DS (Delegation Signer)",
+				45:"IPSECKEY (IP Sec Key)",
+				25:"KEY (Key Record)",
+				36:"KX (Key Exchanger Record)",
+				29:"LOC (Location Record)",
+				15:"MX (Mail Exchange Record)",
+				35:"NAPTR (Naming Authority Pointer)",
+				2:"NS (Name Server Record)",
+				47:"NSEC (Next Secure Record)",
+				50:"NSEC3 (Next Secure Record Version 3)",
+				51:"NSEC3PARAM (NSEC3 Parameters)",
+				12:"PTR (Pointer Record [Reverse])",
+				46:"RRSIG (DNSSEC Signature)",
+				17:"RP (Responsible Person)",
+				24:"SIG (Signature)",
+				6:"SOA (Start of [a Zone of] Authority Record)",
+				33:"SRV (Service Locator)",
+				44:"SSHFP (SSH Public Key Fingerprint)",
+				32768:"TA (DNSSEC Trust Authorities)",
+				249:"TKEY Transaction Key Record",
+				52:"TLSA (TLSA Certificate Association)",
+				250:"TSIG (Transaction Signature)",
+				16:"TXT (Text Record)",
+				256:"URI (Uniform Resource Identifier)",
+				39:"DNAME"
+				}
 
-					print color("[DNS] ","blue") + "{}:{}".format(p[IP].src, str(p[UDP].sport)) + " ---> " + "{}:{}".format(p[IP].dst, str(p[UDP].dport)) + " domain name "+ color("query: ","blue") + color("{}".format(p.getlayer(DNS).qd.qname),"yellow")
-				except:
-					pass
+				if p.getlayer(DNS).qr == 0:
+					try:
+						type_id = p.getlayer(DNS).qd.qtype
+						type = types[type_id]
+						print color("[DNS] ","blue") + "{}:{}".format(p[IP].src, str(p[UDP].sport)) + " ---> " + "{}:{} ".format(p[IP].dst, str(p[UDP].dport))+ color("{} query: ".format(type),"blue") + color("{}".format(p.getlayer(DNS).qd.qname),"yellow")
+					except:
+						pass
 
-			elif p.haslayer(DNSRR):
-				try:
-					print color("[DNS] ","blue") + p[IP].src + ":" + str(p[UDP].sport) + " ---> " + p[IP].dst + ":" + str(p[UDP].dport) + " domain name "+ color("response: ","red") + color("{}".format(p[DNSRR].rdata),"yellow")
-				except:
-					pass
+				elif p.haslayer(DNSRR):
+					try:
+						type_id = p[DNSRR].type
+						type = types[type_id]
+						print color("[DNS] ","blue") + p[IP].src + ":" + str(p[UDP].sport) + " ---> " + "{}:{} ".format(p[IP].dst, str(p[UDP].dport)) + color("{} response: ".format(type),"red") + color("{}".format(p[DNSRR].rdata),"yellow")
+					except:
+						pass
 				#DHCP Message types
 			elif p.haslayer(DHCP):
 				mtype = p[DHCP].options
