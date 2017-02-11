@@ -27,13 +27,17 @@ import readline
 class Completer(object):
 	name = "TAB completer"
 	desc = "Auto complete PytheM commands with tab"
-	version = "0.3"
+	version = "0.4"
 
 
-        def __init__(self,console):
+        def __init__(self,path, console):
 		tab = readline.parse_and_bind("tab: complete")
+		historyPath = "{}/.PytheM_history".format(path)
+		readline.read_history_file(historyPath)
+
 		if console == "pythem":
 			completer = readline.set_completer(self.pythem)
+			readline.write_history_file(historyPath)
 
 	def suboption(self, text, state):
 		#print text
@@ -97,5 +101,6 @@ class Completer(object):
 			results = [x for x in self.words if x.startswith(text)] + [None]
 			return results[state]
 
+			
 
 
