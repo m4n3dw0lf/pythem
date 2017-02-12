@@ -33,7 +33,7 @@ class Completer(object):
         def __init__(self,path, console):
 		tab = readline.parse_and_bind("tab: complete")
 		historyPath = "{}/.PytheM_history".format(path)
-		#readline.read_history_file(historyPath)
+		readline.read_history_file(historyPath)
 
 		if console == "pythem":
 			completer = readline.set_completer(self.pythem)
