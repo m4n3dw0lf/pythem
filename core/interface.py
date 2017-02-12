@@ -88,16 +88,17 @@ class Processor(object):
 			print
 				#Untill break or CTRL+C
 			while 1:
-				f = open("{}/.PytheM_history".format(self.path),"w")
+				#f = open("{}/.PytheM_history".format(self.path),"w")
+				os.system("touch {}/.PytheM_history".format(self.path))
 					#Call the object Completer code in modules/completer.py
 				completer = Completer(self.path,"pythem")
 					#Use termocolor import to set the default commandline red
 				console = termcolor.colored("pythem>","red", attrs=["bold"])
 					#Iterable console shell commands with the while 1
 				self.command = raw_input("{} ".format(console))
-
-				f.write(self.command)
-				f.close()
+				os.system("echo {} >> {}/.PytheM_history".format(self.command, self.path))
+				#f.write(self.command)
+				#f.close()
 					# Separate the user input by spaces " ", can use like this too: self.input_list = [str(a) for a in self.argv] 
 				self.input_list = self.command.split()
 				
