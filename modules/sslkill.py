@@ -307,9 +307,6 @@ class SSLStripRequestHandler(ProxyRequestHandler):
 				if p in req.headers[h]:
 					req.headers[h] = req.headers[h].replace(p, p[1:])
 					modified = True
-		for h in req.headers:
-			proxy = re.findall(pxy_regex, h)
-			cookie = re.findall(cookie_regex, h)
 	if req_body:
 		modified = False
 		for p in prefixes:
