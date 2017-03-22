@@ -2,9 +2,9 @@
 
 PytheM is a python multi-purpose pentest framework. It has been developed in the hope that it will be useful and I don't take responsibility for any misapplication of it. Only runs on GNU/Linux OS.
 
-![alt text] (config/pythembkg.png)
+![alt text](config/pythembkg.png)
 
-##Installation
+## Installation
 
 - [Installation guide](https://github.com/m4n3dw0lf/PytheM/wiki/Installation#installation)
 
