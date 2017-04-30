@@ -49,11 +49,11 @@ class Completer(object):
 		#print text
 		#print state
 		if "set" in text and state == 1:
-			self.suboptions = ['interface','arpmode','target','gateway','file','domain','port','script','help']
+			self.suboptions = ['interface','target','gateway','file','domain','port','script','help']
 			completer = readline.set_completer(self.suboption)
 
 		elif "print" in text and state == 1:
-			self.suboptions = ['interface', 'arpmode', 'target', 'gateway','file','domain','port','script','help']
+			self.suboptions = ['interface','target', 'gateway','file','domain','port','script','help']
 			completer = readline.set_completer(self.suboption)
 
 		elif "scan" in text and state == 1:

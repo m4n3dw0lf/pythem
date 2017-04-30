@@ -154,7 +154,6 @@ def print_help():
  	print color("  - gateway","yellow")
  	print color("  - target","yellow")
  	print color("  - file","yellow")
- 	print color("  - arpmode","yellow")
 	print color("  - domain","yellow")
 	print color("  - redirect","yellow")
 	print color("  - script","yellow")
@@ -193,9 +192,6 @@ def print_help():
 	print
 	print
 	print color("[*] arpspoof			Start or stop an arpspoofing attack.","blue")
-	print
-	print "Optional setting arpmode to select arpspoofing mode should be filled with rep or req"
-	print "rep to spoof responses, req to spoof requests"
 	print
 	print color(" arguments:","red")
 	print

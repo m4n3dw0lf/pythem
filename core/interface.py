@@ -50,7 +50,6 @@ class Processor(object):
 		self.redirect = None
 		self.script = None
 		self.filter = None
-		self.arpmode = "rep"
 
 		#Status
 		self.arpspoof_status = False
@@ -226,14 +225,6 @@ class Processor(object):
 										self.file = raw_input("[+] Enter the path to the file: ")
 									except KeyboardInterrupt:
 										pass
-							elif self.input_list[1] == "arpmode":
-								try:
-									self.arpmode = self.input_list[2]
-								except IndexError:
-									try:
-										self.arpmode = raw_input("[+] Enter the arpmode: ")
-									except KeyboardInterrupt:
-										pass
 
 							elif self.input_list[1] == "filter":
 								try:
@@ -251,7 +242,6 @@ class Processor(object):
 								print " - gateway"
 								print " - target"
 								print " - file"
-								print " - arpmode"
 								print " - domain"
 								print " - redirect"
 								print " - script"
@@ -281,8 +271,6 @@ class Processor(object):
 								print "[+] Target(s): {}".format(self.targets)
 							elif self.input_list[1] == "file":
 								print "[+] File path: {}".format(self.file)
-							elif self.input_list[1] == "arpmode":
-								print "[+] ARP spoofing mode: {}".format(self.arpmode)
 							elif self.input_list[1] == "help":
 								print "\n[Help] Print a variable value."
 								print "example:"
@@ -338,7 +326,7 @@ class Processor(object):
 						                myip = get_myip(self.interface)
 	                					mymac = get_mymac(self.interface)
 								self.arpspoof_status = True
-								self.spoof = ARPspoof(self.gateway, self.targets, self.interface,self.arpmode ,myip, mymac)
+								self.spoof = ARPspoof(self.gateway, self.targets, self.interface, myip, mymac)
 								self.spoof.start()
 								print "[+] ARP spoofing initialized."
 
@@ -356,7 +344,7 @@ class Processor(object):
 
 							elif self.input_list[1] == "help":
 								print "\n[Help] Start a ARP spoofing attack."
-								print "[Optional] set arpmode with rep to spoof with responses and req to spoof with requests"
+								print
 								print "parameters:"
 								print " - start"
 								print " - stop"
