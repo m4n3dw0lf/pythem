@@ -38,19 +38,18 @@ class ARPspoof(object):
 			self.gateway = str(IPAddress(gateway))
 		except AddrFormatError as e:
 			print "[-] Select a valid IP address as gateway"
-		else:
-			iptables()
-			set_ip_forwarding(1)
-			self.gateway_mac = None
-			self.range       = False
-			self.targets	 = self.get_range(targets)
-			self.send	 = True
-			self.interval	 = 3
-			self.interface	 = interface
-			self.myip	 = myip
-			self.mymac	 = mymac
-			self.socket      = conf.L3socket(iface=self.interface)
-			self.socket2     = conf.L2socket(iface=self.interface)
+		iptables()
+		set_ip_forwarding(1)
+		self.gateway_mac = None
+		self.range       = False
+		self.targets	 = self.get_range(targets)
+		self.send	 = True
+		self.interval	 = 3
+		self.interface	 = interface
+		self.myip	 = myip
+		self.mymac	 = mymac
+		self.socket      = conf.L3socket(iface=self.interface)
+		self.socket2     = conf.L2socket(iface=self.interface)
 
 	def start(self):
 		t = threading.Thread(name='ARPspoof', target=self.spoof)
