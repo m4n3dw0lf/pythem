@@ -343,7 +343,7 @@ def print_help():
 	print
   	print color(" examples:","green")
 	print
-   	print color("  pythem> ","red") + "set file ./exec"
+   	print color("  pythem> ","red") + "set file exec"
 	print
    	print color("  pythem> ","red") + "xploit stdin"
 	print color("  xploit> ","blue") + "help"
