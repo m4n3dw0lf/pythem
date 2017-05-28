@@ -1,4 +1,4 @@
-![alt text](config/donate.svg)1Eggia3JXwWiR4mkVqztionNUfs2N3ghAd
+![alt text](config/donate.png)1Eggia3JXwWiR4mkVqztionNUfs2N3ghAd
 
 # PytheM - Penetration Testing Framework v0.6.8
 
