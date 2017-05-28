@@ -1,5 +1,6 @@
 # PytheM - Penetration Testing Framework v0.6.8
 
+
 PytheM is a python multi-purpose pentest framework. It has been developed in the hope that it will be useful and I don't take responsibility for any misapplication of it. Only runs on GNU/Linux OS.
 
 ![alt text](config/pythembkg.png)
@@ -7,6 +8,19 @@ PytheM is a python multi-purpose pentest framework. It has been developed in the
 ## Installation
 
 - [Installation guide](https://github.com/m4n3dw0lf/PytheM/wiki/Installation#installation)
+
+#### Quick-Start
+```
+$sudo apt-get update
+$sudo apt-get install build-essential python-dev tcpdump python-capstone
+$sudo apt-get install libnetfilter-queue-dev libffi-dev libssl-dev
+$sudo git clone https://github.com/m4n3dw0lf/PytheM
+$cd PytheM
+$sudo pip install -r requirements.txt 
+
+Run with:
+$sudo ./pythem.py
+```
 
 ## Examples
 
