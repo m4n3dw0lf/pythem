@@ -283,6 +283,9 @@ class Exploit(object):
 					elif self.input_list[0] == 'shellcode':
 						self.getshellcode(self.input_list[1])
 
+					elif self.input_list[0] == 'cheatsheet':
+						self.gdbCheatSheet()
+
 					elif self.input_list[0] == 'xploit':
 						self.run()
 
@@ -387,8 +390,9 @@ class Exploit(object):
 					else:
 						try:
 							cmd = ' '.join(self.input_list[0:])
-
-							self.gdb(cmd)
+							data = self.gdb(cmd)
+							if data:
+								print color("{}".format(data),"blue")
 						except Exception as e:
 							print "[!] Select a valid option, type help to check sintax."
 							print e
@@ -441,14 +445,14 @@ class Exploit(object):
 		print
 		print color("[*] print		Print a variable's value.","blue")
 		print
-		print color(" examples:","green")
+		print color(" examples:","red")
 		print
    		print color("  xploit> ","blue") + "print offset"
 		print
 		print
 		print color("[*] decode/encode   	Decode or encode a string with a chosen pattern.","blue")
 		print
-		print color(" examples:","green")
+		print color(" examples:","red")
 		print
 		print color("  xploit> ","blue") + "decode hex"
    		print color("  xploit> ","blue") + "encode hex"
@@ -456,7 +460,7 @@ class Exploit(object):
 		print
 		print color("[*] shellcode	Get the shellcode of executable file","blue")
 		print
-		print color(" examples:","green")
+		print color(" examples:","red")
 		print
 		print color("  xploit> ","blue") + "shellcode compiled_program"
 		print
@@ -483,9 +487,16 @@ class Exploit(object):
 		print
 		print color("[*] xploit		Run the exploit after all the settings.","blue")
 		print
-  		print color("example:","green")
+  		print color(" examples:","red")
 		print
-   		print color("xploit> ", "blue") + "xploit"
+   		print color("  xploit> ", "blue") + "xploit"
+		print
+		print
+		print color("[*] cheatsheet		Display a GDB cheatsheet ;).","blue")
+		print
+  		print color(" examples:","red")
+		print
+   		print color("  xploit> ", "blue") + "cheatsheet"
 		print
 		print
 		print color("[*] fuzz		Start fuzzing on subject.","blue")
@@ -508,6 +519,84 @@ class Exploit(object):
 		print
 		print color("* Anything else will be executed in GNU debugger shell with {} as file *".format(self.target),"red")
 		print
+
+	def gdbCheatSheet(self):
+		print " ____________________________________________________________________________________ "
+		print "|<where>:				|<what>:				     |"
+		print "|---------------------------------------|--------------------------------------------|"
+		print "|function_name				|expression			             |"
+		print "|*function_name+<point> (disas function	|address				     |"
+		print "|line_number	        to get <point>) |$register				     |"
+		print "|file:line_number			|filename::variable_name		     |"
+		print "|					|function::variable_name		     |"
+		print "|_______________________________________|____________________________________________|"
+		print " ____________________________________________________________________________________ "
+		print "|Registers:				|Formats:				     |"
+		print "|---------------------------------------|--------------------------------------------|"
+		print "|General Purpose Registers:		|					     |"
+		print "|ax - Accumulator register		|a     Pointer				     |"
+		print "|bx - Base register			|c     Read as integer,print as char 	     |"
+		print "|cx - Counter register			|d     Integer 				     |"
+		print "|dx - Data register (I/O)		|f     Float 				     |"
+		print "|					|o     Integer as octal			     |"
+		print "|Index Registers:			|s     String				     |"
+		print "|si - Source index (string)		|t     Integer as binary		     |"
+		print "|di - Destination index (string)	|u     Integer, unsigned decimal	     |"
+		print "|ip - Instruction pointer	        |x     Integer, as hexadecimal	             |"
+		print "|					|					     |"
+		print "|Stack Registers:			|					     |"
+		print "|bp - Base pointer			|					     |"
+		print "|sp - Stack pointer			|					     |"
+		print "|_______________________________________|____________________________________________|"
+		print " ____________________________________________________________________________________ "
+		print "|Conditions:				|Signals:				     |"
+		print "|---------------------------------------|--------------------------------------------|"
+		print "|break/watch <where> if <condition>	|handle <signal> <options>		     |"
+		print "|condition <breakpoint#> <condition>	|<options>:				     |"
+		print "|					|(no)print				     |"
+		print "|					|(no)stop				     |"
+		print "|					|(no)pass				     |"
+		print "|_______________________________________|____________________________________________|"
+		print " ____________________________________________________________________________________ "
+		print "|Manipulating the program:		|Running:				     |"
+		print "|---------------------------------------|--------------------------------------------|"
+		print "|set var <variable_name>=<value>	|run / r	    			     |"
+		print "|return <expression>			|kill / k				     |"
+		print "|_______________________________________|____________________________________________|"
+		print " ____________________________________________________________________________________ "
+		print "|Variables and memory:			|Informations: 				     |"
+		print "|---------------------------------------|--------------------------------------------|"
+		print "|print/format <what>			|disassemble / disas			     |"
+		print "|display/format <what>			|disassemble / disas <where>		     |"
+		print "|undisplay <display#>			|info args				     |"
+		print "|enable display <display#>		|info breakpoints			     |"
+		print "|disable display <display#>		|info display				     |"
+		print "|x/nf <address/variable/register>	|info locals				     |"
+		print "|n:how many units to print		|info sharedlibrary			     |"
+		print "|f: format character			|info threads				     |"
+		print "|					|info directories			     |"
+		print "|					|info registers				     |"
+		print "|					|whatis variable_name			     |"
+		print "|_______________________________________|____________________________________________|"
+		print " ____________________________________________________________________________________ "
+		print "|Watchpoints:				|Stepping:				     |"
+		print "|---------------------------------------|--------------------------------------------|"
+		print "|watch <where>				|step / s				     |"
+		print "|delete/enable/disable <watchpoint#>	|next / n				     |"
+		print "|					|finish / f				     |"
+		print "|					|continue / c				     |"
+		print "|_______________________________________|____________________________________________|"
+		print " ____________________________________________________________________________________ "
+		print "|Breakpoints:			        | Examining the stack:                       |"
+		print "|---------------------------------------|--------------------------------------------|"
+		print "| break / br <where>                    | backtrace / bt                             |"
+		print "| delete <breakpoint#>                  | where                                      |"
+		print "| clear                                 | backtrace full                             |"
+		print "| enable <breakpoint#>                  | where full                                 |"
+		print "| disable <breakpoint#>                 | frame <frame#>	 		     |"
+		print "|_______________________________________|____________________________________________|"
+
+
 if __name__ == "__main__":
 	xploit = Exploit(sys.argv[1],"stdin")
 	xploit.start()

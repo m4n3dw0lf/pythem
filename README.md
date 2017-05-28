@@ -1,5 +1,5 @@
 [![alt text](https://img.shields.io/badge/donate-bitcoin-orange.svg)](https://blockchain.info/address/1Eggia3JXwWiR4mkVqztionNUfs2N3ghAd)
-![alt text](https://img.shields.io/badge/version-v0.6.8-yellow.svg)
+![alt text](https://img.shields.io/badge/version-v0.6.9-yellow.svg)
 ![alt text](https://img.shields.io/badge/python-2.7-blue.svg)
 ![alt text](https://img.shields.io/badge/OS-GNU%2FLinux-000000.svg)
 
@@ -85,8 +85,8 @@ $sudo ./pythem.py
     - [shellcode](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#shellcode)
     - [search](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#search)
     - [xploit](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#xploit-1)
+    - [cheatsheet](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#cheatsheet)
     - [fuzz](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#fuzz)
-
 #### Brute Force<br>
   - [brute](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#brute)
 

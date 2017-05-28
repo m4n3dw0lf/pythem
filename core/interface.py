@@ -815,7 +815,7 @@ class Processor(object):
 
 					elif self.input_list[0] == "xploit":
 						try:
-							from modules.exploit import Exploit
+							from modules.xploit import Exploit
 							if self.targets is not None and self.input_list[1] == "tcp":
 								self.xploit = Exploit(self.targets, self.input_list[1])
 								self.xploit.start()
