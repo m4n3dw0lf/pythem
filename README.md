@@ -30,13 +30,13 @@ PytheM is a python multi-purpose pentest framework. It has been developed in the
 
 ### Index
 
-#### SECTION - CORE
+#### Core
   - [help](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#help)
   - [exit/quit](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#exitquit)
   - [set](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#set)
   - [print](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#print)
 
-#### SECTION - NETWORK, MAN-IN-THE-MIDDLE AND DENIAL OF SERVICE (DOS)<br>
+#### Network, Man-in-the-middle and Denial of service (DOS)<br>
   - [arpspoof](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#arpspoof)
   - [dhcpspoof](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#dhcpspoof)
   - [dnsspoof](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#dnsspoof)
@@ -45,7 +45,7 @@ PytheM is a python multi-purpose pentest framework. It has been developed in the
   - [sniff](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#sniff)
   - [dos](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#dos)
   - [pforensic](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#pforensic)
-    <br>**PFORENSIC COMMANDS REFERECE**<br>
+    <br>**pforensic: Commands Reference**<br>
     - [help](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#help-1)
     - [clear](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#clear)
     - [exit/quit](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#exitquit-1)
@@ -54,7 +54,7 @@ PytheM is a python multi-purpose pentest framework. It has been developed in the
     - [packetdisplay](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#packetdisplay-num)
     - [filter](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#filter-stringlayer)
 
-#### SECTION - EXPLOIT DEVELOPMENT AND REVERSE ENGINEERING<br>
+#### Exploit development and Reverse Engineering<br>
   - [xploit](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#xploit)
     <br>**XPLOIT COMMANDS REFERENCE**<br>
     - [help](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#help-2)
@@ -67,10 +67,10 @@ PytheM is a python multi-purpose pentest framework. It has been developed in the
     - [xploit](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#xploit-1)
     - [fuzz](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#fuzz)
 
-#### SECTION - BRUTE-FORCE<br>
+#### Brute Force<br>
   - [brute](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#brute)
 
-#### SECTION - UTILS<br>
+#### Utils<br>
   - [geoip](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#geoip)
   - [decode/encode](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#decodeencode-1)
   - [cookiedecode](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#cookiedecode)
