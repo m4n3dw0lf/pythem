@@ -1,6 +1,10 @@
 [![alt text](config/donate.png)](https://blockchain.info/address/1Eggia3JXwWiR4mkVqztionNUfs2N3ghAd)
+[![alt text](https://img.shields.io/badge/version-v0.6.8-yellow.svg)]
+[![alt text](https://img.shields.io/badge/python-2.7-blue.svg)]
+[![alt text](https://img.shields.io/badge/OS-GNU%2FLinux-000000.svg)]
 
-# PytheM - Penetration Testing Framework v0.6.8
+
+# PytheM - Penetration Testing Framework
 
 
 PytheM is a python multi-purpose pentest framework. It has been developed in the hope that it will be useful and I don't take responsibility for any misapplication of it. Only runs on GNU/Linux OS.
