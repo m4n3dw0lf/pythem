@@ -56,7 +56,7 @@ PytheM is a python multi-purpose pentest framework. It has been developed in the
 
 #### Exploit development and Reverse Engineering<br>
   - [xploit](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#xploit)
-    <br>**XPLOIT COMMANDS REFERENCE**<br>
+    <br>**xploit: Commands Reference**<br>
     - [help](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#help-2)
     - [clear](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#clear-1)
     - [exit/quit](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#exitquit-2)
