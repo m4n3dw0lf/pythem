@@ -28,10 +28,49 @@ PytheM is a python multi-purpose pentest framework. It has been developed in the
 
 ## Commands Reference
 
-- [SECTION - CORE](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#section---core)
-- [SECTION - NETWORK, MAN-IN-THE-MIDDLE AND DENIAL OF SERVICE (DOS)](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#section---network-man-in-the-middle-and-denial-of-service-dos)
- - [PFORENSIC COMMANDS REFERENCE](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#pforensic-commands-reference)
-- [SECTION - EXPLOIT DEVELOPMENT AND REVERSE ENGINEERING](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#section---exploit-development-and-reverse-engineering)
- - [XPLOIT COMMANDS REFERENCE](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#xploit-commands-reference)
-- [SECTION - BRUTE-FORCE](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#section---brute-force)
-- [SECTION - UTILS](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#section---utils)
+### Index
+
+#### SECTION - CORE
+  - [help](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#help)
+  - [exit/quit](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#exitquit)
+  - [set](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#set)
+  - [print](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#print)
+
+#### SECTION - NETWORK, MAN-IN-THE-MIDDLE AND DENIAL OF SERVICE (DOS)<br>
+  - [arpspoof](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#arpspoof)
+  - [dhcpspoof](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#dhcpspoof)
+  - [dnsspoof](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#dnsspoof)
+  - [hstsbypass](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#hstsbypass)
+  - [inject](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#inject)
+  - [sniff](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#sniff)
+  - [dos](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#dos)
+  - [pforensic](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#pforensic)
+    <br>**PFORENSIC COMMANDS REFERECE**<br>
+    - [help](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#help-1)
+    - [clear](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#clear)
+    - [exit/quit](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#exitquit-1)
+    - [show](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#show)
+    - [conversations](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#conversations)
+    - [packetdisplay](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#packetdisplay-num)
+    - [filter](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#filter-stringlayer)
+
+#### SECTION - EXPLOIT DEVELOPMENT AND REVERSE ENGINEERING<br>
+  - [xploit](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#xploit)
+    <br>**XPLOIT COMMANDS REFERENCE**<br>
+    - [help](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#help-2)
+    - [clear](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#clear-1)
+    - [exit/quit](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#exitquit-2)
+    - [set](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#set-1)
+    - [decode/encode](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#decodeencode)
+    - [shellcode](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#shellcode)
+    - [search](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#search)
+    - [xploit](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#xploit-1)
+    - [fuzz](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#fuzz)
+
+#### SECTION - BRUTE-FORCE<br>
+  - [brute](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#brute)
+
+#### SECTION - UTILS<br>
+  - [geoip](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#geoip)
+  - [decode/encode](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#decodeencode-1)
+  - [cookiedecode](https://github.com/m4n3dw0lf/PytheM/wiki/Commands-Reference#cookiedecode)
