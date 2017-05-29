@@ -36,16 +36,15 @@ from socket import *
 from ropper import RopperService
 import termcolor
 from time import sleep
-
+from completer import Completer
 
 class Exploit(object):
 
 	name = "Exploit development interactive shell."
 	desc = "use gdb plus ROPgadget + offset generator and memaddresses to create exploits."
-	version = "0.2"
 
 	def __init__(self, target, mode):
-		self.version = '0.0.2'		
+		self.version = '0.0.4'		
 		self.target = target
 		self.mode = mode
 		self.xtype = 'bufferoverflow'
@@ -59,6 +58,8 @@ class Exploit(object):
 		self.port = 0
 		self.p1 = Popen(['gdb',"--silent", "./{}".format(self.target)], stdin=PIPE, stdout=PIPE, bufsize=1)
 		gdbout = self.p1.stdout.readline()
+		completer = Completer(".gdb_history","xploit")
+
 
 	def gdb(self,cmd):
 		def signal_handler(signum, frame):
@@ -228,6 +229,7 @@ class Exploit(object):
 			try:
 				console = termcolor.colored("xploit>","blue", attrs=["bold"])
 				self.command = raw_input("{} ".format(console))
+				os.system("echo {} >> .gdb_history".format(self.command))
 				self.argv = self.command.split()
 				self.input_list = [str(a) for a in self.argv]
 
@@ -323,8 +325,11 @@ class Exploit(object):
 						elif self.input_list[1] == "arch":
 							print "[+] Target system arch"
 							print "[+] Architecture: {}".format(self.arch)
-						else:
-						 	print "[-] Select a valid variable name."
+                                                else:
+                                                        cmd = ' '.join(self.input_list[0:])
+                                                        data = self.gdb(cmd)
+                                                        if data:
+                                                                print color("{}".format(data),"blue")
 
 
 					elif self.input_list[0] == "set" or self.input_list[0] == "SET":
@@ -385,7 +390,10 @@ class Exploit(object):
 									pass
 
 						else:
-							print "[!] Select a valid variable to set."
+							cmd = ' '.join(self.input_list[0:])
+							data = self.gdb(cmd)
+							if data:
+								print color("{}".format(data),"blue")
 
 					else:
 						try:
@@ -562,6 +570,7 @@ class Exploit(object):
 		print "|---------------------------------------|--------------------------------------------|"
 		print "|set var <variable_name>=<value>	|run / r	    			     |"
 		print "|return <expression>			|kill / k				     |"
+		print "|jump <where>				|					     |"
 		print "|_______________________________________|____________________________________________|"
 		print " ____________________________________________________________________________________ "
 		print "|Variables and memory:			|Informations: 				     |"

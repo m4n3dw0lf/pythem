@@ -32,18 +32,28 @@ class Completer(object):
 
         def __init__(self,path, console):
 		tab = readline.parse_and_bind("tab: complete")
-		historyPath = "{}/.PytheM_history".format(path)
-		readline.read_history_file(historyPath)
-
 		if console == "pythem":
+	                historyPath = "{}/.PytheM_history".format(path)
+	                readline.read_history_file(historyPath)
 			completer = readline.set_completer(self.pythem)
 			#readline.write_history_file(historyPath)
+		if console == "xploit":
+			readline.read_history_file(path)
+			completer = readline.set_completer(self.xploit)
 
 	def suboption(self, text, state):
 		#print text
 		#print state
 		results = [x for x in self.suboptions if x.startswith(text)] + [None]
 		return results[state]
+
+	def xploit(self, text, state):
+                self.words = ['clear','help','quit','disassemble','print','display','undisplay','enable','disable',
+		'run','continue','finish','step','next','backtrace','where','break','return','jump', 'set','info',
+		'handle','watch','whatis','frame','fuzz','cheatsheet','xploit','search','shellcode','decode','encode']
+                results = [x for x in self.words if x.startswith(text)] + [None]
+                return results[state]
+
 
         def pythem(self, text, state):
 		#print text
@@ -72,7 +82,7 @@ class Completer(object):
 			self.suboptions = ['start','stop','status','help']
 			completer = readline.set_completer(self.suboption)
 
-		elif "inject" in text and state == 1:
+		elif "redirect" in text and state == 1:
 			self.suboptions = ['start','stop','status','help']
 			completer = readline.set_completer(self.suboption)
 
@@ -97,7 +107,7 @@ class Completer(object):
 			completer = readline.set_completer(self.suboption)
 
 		else:
-	        	self.words = ['clear','help','exit','quit','set','print','scan','arpspoof','dnsspoof','inject','sniff','pforensic','dos','xploit','brute','geoip','decode','encode','cookiedecode','hstsbypass','dhcpspoof']
+	        	self.words = ['clear','help','exit','quit','set','print','scan','arpspoof','dnsspoof','redirect','sniff','pforensic','dos','xploit','brute','geoip','decode','encode','cookiedecode','hstsbypass','dhcpspoof']
 			results = [x for x in self.words if x.startswith(text)] + [None]
 			return results[state]
 

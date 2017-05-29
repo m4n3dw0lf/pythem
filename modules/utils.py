@@ -253,7 +253,7 @@ def print_help():
 	print color("  pythem> ","red") + "hstsbypass"
 	print
 	print
-	print color("[*] inject			Start to redirect clients to web server with a script tag to inject in html response","blue")
+	print color("[*] redirect			Start to redirect clients to web server with a script tag to inject in html response","blue")
 	print
 	print "Should be used after a ARP spoof has been started"
 	print
@@ -265,8 +265,8 @@ def print_help():
 	print
 	print color(" examples:","green")
 	print
-	print color("  pythem> ","red") + "inject start"
-	print color("  pythem> ","red") + "inject stop"
+	print color("  pythem> ","red") + "redirect start"
+	print color("  pythem> ","red") + "redirect stop"
 	print
 	print
 	print color("[*] sniff			Start to sniff network traffic on desired network interface","blue")

@@ -23,11 +23,11 @@ import sys
 import threading
 
 
-class Inject(object):
+class Redirect(object):
 
-	name = "Injection"
+	name = "Redirect"
 	desc = "Redirect to page with script then let client go"
-	version = "0.2"
+	version = "0.3"
 	ps = "Will need to change the way of injection to netfilter packet injection."
 
 
@@ -59,19 +59,19 @@ Content-Type: text/html
 """.format(self.js)
 
 	def start(self):
-		self.t = threading.Thread(name='Injection', target=self.server)
+		self.t = threading.Thread(name='Redirection', target=self.server)
 		self.t.setDaemon(True)
 		self.t.start
 
 	def stop(self):
 		try:
 			self.t.stop()
-			print "[-] Script Injection finalized."
+			print "[-] Redirect with script injection finalized."
 		except Exception as e:
 			print "[!] Exception caught: {}".format(e)
 
 	def server(self):
-		print "[+] Script Injection initialized."
+		print "[+] Redirect with script injection initialized."
                 self.dnsspoof.start(None,"Inject")
 
 		server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

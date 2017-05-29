@@ -55,7 +55,7 @@ class Processor(object):
 		self.arpspoof_status = False
 		self.dnsspoof_status = False
 		self.dhcpspoof_status = False
-		self.inject_status = False
+		self.redirect_status = False
 		self.dnsdrop_status = 0
 		self.dnsamplification_status = 0
 		self.synflood_status = 0
@@ -470,15 +470,15 @@ class Processor(object):
 						except Exception as e:
 							print "[!] Exception caught: {}".format(e)
 
-					elif self.input_list[0] == "inject":
+					elif self.input_list[0] == "redirect":
 						try:
 							if self.input_list[1] == "start":
 								myip = get_myip(self.interface)
 								try:
-									from modules.inject import Inject
-									self.inject = Inject(myip,self.port,self.script)
-									self.inject_status = True
-									self.inject.server()
+									from modules.redirect import Redirect
+									self.redirect = Redirect(myip,self.port,self.script)
+									self.redirect_status = True
+									self.redirect.server()
 								except AttributeError:
 									print "\n[!] Select a valid script source path or url."
 								except Exception as e:
@@ -486,20 +486,20 @@ class Processor(object):
 
 							elif self.input_list[1] == "stop":
 								try:
-									self.inject.stop()
-									self.inject_status = False
+									self.redirect.stop()
+									self.redirect_status = False
 								except Exception as e:
 									print "[!] Exception caught: {}".format(e)
 
 							elif self.input_list[1] == "status":
-								if self.inject_status:
+								if self.redirect_status:
 									stat = "running"
 								else:
 									stat = "down"
-								print "[*] Script injection status: {}".format(stat)
+								print "[*] Script redirect status: {}".format(stat)
 
 							elif self.input_list[1] == "help":
-								print "\n[Help] Start to inject a source script into target browser."
+								print "\n[Help] Start to inject a source script into target browser then redirect to original destination."
 								print "[Required] ARP spoof started."
 								print "parameters:"
 								print " - start"
@@ -507,14 +507,14 @@ class Processor(object):
 								print " - status"
 								print " - help"
 								print "example:"
-								print "{} inject start".format(console)
+								print "{} redirect start".format(console)
   								print "[+] Enter the script source: http://192.168.1.6:3000/hook.js\n"
 								continue
 
 							else:
-								print "[!] You need to specify  start, stop or status after the inject module call."
+								print "[!] You need to specify  start, stop or status after the redirect module call."
 						except IndexError:
-							print "[!] You probably forgot to start or stop the inject module."
+							print "[!] You probably forgot to start or stop the redirect module."
 						except TypeError:
 							print "[!] You probably forgot to start an arpspoof attack ."
 						except Exception as e:
