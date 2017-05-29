@@ -6,8 +6,7 @@
 
 # PytheM - Penetration Testing Framework
 
-
-PytheM is a python multi-purpose pentest framework. It has been developed in the hope that it will be useful and I don't take responsibility for any misapplication of it. Only runs on GNU/Linux OS.
+PytheM is a python multi-purpose pentest framework. It has been developed to be used by security researchers and security professional. The tool intended to be used only for acts within the law. I am not liable for any undue and unlawful act practiced by this tool, for more information, read the license. Only runs on GNU/Linux OS.
 
 ![alt text](config/pythembkg.png)
 
