@@ -1,4 +1,4 @@
-![alt text](https://img.shields.io/badge/version-v0.7.0-yellow.svg)
+![alt text](https://img.shields.io/badge/version-v0.7.1-yellow.svg)
 ![alt text](https://img.shields.io/badge/python-2.7-blue.svg)
 ![alt text](https://img.shields.io/badge/OS-GNU%2FLinux-000000.svg)
 [![alt text](https://img.shields.io/badge/donate-bitcoin-orange.svg)](https://blockchain.info/address/1Eggia3JXwWiR4mkVqztionNUfs2N3ghAd)
@@ -8,7 +8,7 @@
 
 pythem is a multi-purpose pentest framework written in the Python programming language. It has been developed to be used by security researchers and security professionals. The tool intended to be used only for acts within the law. I am not liable for any undue and unlawful act practiced by this tool, for more information, read the license. Only runs on GNU/Linux OS.
 
-![alt text](config/pythembkg.png)
+![alt text](config/pythembg.png)
 
 ## Installation
 
