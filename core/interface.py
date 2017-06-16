@@ -3,9 +3,9 @@
 
 # Copyright (c) 2016-2017 Angelo Moura
 #
-# This file is part of the program PytheM
+# This file is part of the program pythem
 #
-# PytheM is free software; you can redistribute it and/or
+# pythem is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation; either version 3 of the
 # License, or (at your option) any later version.
@@ -82,20 +82,20 @@ class Processor(object):
         	        animation = "|/-\\"
 	                for i in range(15):
         	            time.sleep(0.1)
-        	            sys.stdout.write("\r" + "[" + animation[i % len(animation)] + "]" + "PytheM is loading ...")
+        	            sys.stdout.write("\r" + "[" + animation[i % len(animation)] + "]" + "pythem is loading ...")
         	            sys.stdout.flush()
 			print
 				#Untill break or CTRL+C
 			while 1:
-				#f = open("{}/.PytheM_history".format(self.path),"w")
-				os.system("touch .PytheM_history")
+				#f = open("{}/.pythem_history".format(self.path),"w")
+				os.system("touch .pythem_history")
 					#Call the object Completer code in modules/completer.py
 				completer = Completer(self.path,"pythem")
 					#Use termocolor import to set the default commandline red
 				console = termcolor.colored("pythem>","red", attrs=["bold"])
 					#Iterable console shell commands with the while 1
 				self.command = raw_input("{} ".format(console))
-				os.system("echo {} >> .PytheM_history".format(self.command))
+				os.system("echo {} >> .pythem_history".format(self.command))
 				#f.write(self.command)
 				#f.close()
 					# Separate the user input by spaces " ", can use like this too: self.input_list = [str(a) for a in self.argv] 
@@ -771,7 +771,7 @@ class Processor(object):
 							if self.filter == "dns":
 								self.filter = "port 53"
 							self.sniff = Sniffer(self.interface, self.filter,self.path)
-							print "\n[+] PytheM sniffer initialized.\n"
+							print "\n[+] pythem sniffer initialized.\n"
 							self.sniff.start()
 
 						except IndexError:
@@ -782,7 +782,7 @@ class Processor(object):
 								if not self.filter:
 									self.filter = None
 	                                                        self.sniff = Sniffer(self.interface, self.filter,self.path)
-								print "\n[+] PytheM sniffer initialized.\n"
+								print "\n[+] pythem sniffer initialized.\n"
         	                                                self.sniff.start()
 							except KeyboardInterrupt:
                                                 		pass

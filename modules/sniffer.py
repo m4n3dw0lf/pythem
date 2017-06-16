@@ -3,9 +3,9 @@
 
 # Copyright (c) 2016-2017 Angelo Moura
 #
-# This file is part of the program PytheM
+# This file is part of the program pythem
 #
-# PytheM is free software; you can redistribute it and/or
+# pythem is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation; either version 3 of the
 # License, or (at your option) any later version.
@@ -350,7 +350,7 @@ class Sniffer(object):
 					p = sniff(iface=self.interface, prn = self.coresniff)
 					time = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
 					wrpcap("pythem{}.pcap".format(time),p)
-					print "\n[!] PytheM sniffer finalized."
+					print "\n[!] pythem sniffer finalized."
 				except Exception as e:
 					if "Interrupted system call" in e or "not found" in e:
 						self.start()
@@ -359,7 +359,7 @@ class Sniffer(object):
 			else:
 				try:
 					p = sniff(iface=self.interface,prn =self.coresniff)
-					print "\n[!] PytheM sniffer finalized."
+					print "\n[!] pythem sniffer finalized."
 				except Exception as e:
 					if "Interrupted system call" in e or "not found" in e:
 						self.start()
@@ -372,7 +372,7 @@ class Sniffer(object):
                                         p = sniff(iface=self.interface, prn = self.httpsniff)
                                         time = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
                                         wrpcap("pythem{}.pcap".format(time),p)
-                                        print "\n[!] PytheM sniffer finalized."
+                                        print "\n[!] pythem sniffer finalized."
                                 except Exception as e:
                                         if "Interrupted system call" in e or "not found" in e:
                                                 self.start()
@@ -381,7 +381,7 @@ class Sniffer(object):
                         else:
                                 try:
                                         p = sniff(iface=self.interface,prn = self.httpsniff)
-                                        print "\n[!] PytheM sniffer finalized."
+                                        print "\n[!] pythem sniffer finalized."
                                 except Exception as e:
                                         if "Interrupted system call" in e or "not found" in e:
                                                 self.start()
@@ -394,7 +394,7 @@ class Sniffer(object):
 					p = sniff(iface=self.interface,filter = "{}".format(self.filter), prn = self.customsniff)
 				        time = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
                         	       	wrpcap("pythem{}.pcap".format(time),p)
-					print "\n[!] PytheM sniffer finalized."
+					print "\n[!] pythem sniffer finalized."
 				except Exception as e:
 					if "Interrupted system call" in e or "not found" in e:
 						self.start()
@@ -404,7 +404,7 @@ class Sniffer(object):
 			else:
 				try:
 					p = sniff(iface=self.interface,filter ="{}".format(self.filter), prn = self.customsniff, store = 0)
-					print "\n[!] PytheM sniffer finalized."
+					print "\n[!] pythem sniffer finalized."
 				except Exception as e:
 					if "Interrupted system call" in e or "not found" in e:
 						self.start()
@@ -416,7 +416,7 @@ if __name__ == "__main__":
 		# Change the import for utils to run sniffer alone.
 	try:
 		if sys.argv[1] == "-h" or sys.argv[1] == "--help":
-			print "[PytheM Sniffer]"
+			print "[pythem Sniffer]"
 			print
 			print "usage:"
 			print "  python sniffer.py interface filter"
@@ -428,7 +428,7 @@ if __name__ == "__main__":
 			Sniffer.start()
 	except IndexError:
 		print "[+] Starting Default Sniffer"
-		print "[PytheM Sniffer initialized]"
+		print "[pythem Sniffer initialized]"
 		Sniffer = Sniffer(None,None)
 		Sniffer.start()
 

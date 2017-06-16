@@ -3,9 +3,9 @@
 
 # Copyright (c) 2016-2017 Angelo Moura
 #
-# This file is part of the program PytheM
+# This file is part of the program pythem
 #
-# PytheM is free software; you can redistribute it and/or
+# pythem is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation; either version 3 of the
 # License, or (at your option) any later version.
@@ -26,14 +26,14 @@ import readline
 
 class Completer(object):
 	name = "TAB completer"
-	desc = "Auto complete PytheM commands with tab"
+	desc = "Auto complete pythem commands with tab"
 	version = "0.4"
 
 
         def __init__(self,path, console):
 		tab = readline.parse_and_bind("tab: complete")
 		if console == "pythem":
-	                historyPath = "{}/.PytheM_history".format(path)
+	                historyPath = "{}/.pythem_history".format(path)
 	                readline.read_history_file(historyPath)
 			completer = readline.set_completer(self.pythem)
 			#readline.write_history_file(historyPath)

@@ -3,9 +3,9 @@
 
 # Copyright (c) 2016-2017 Angelo Moura
 #
-# This file is part of the program PytheM
+# This file is part of the program pythem
 #
-# PytheM is free software; you can redistribute it and/or
+# pythem is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation; either version 3 of the
 # License, or (at your option) any later version.
@@ -99,7 +99,7 @@ class DHCPspoof(object):
 if __name__ == "__main__":
 	try:
 		if sys.argv[2] == "-h" or sys.argv[2] == "--help":
-			print "[PytheM DHCP spoofer]"
+			print "[pythem DHCP spoofer]"
 			print
 			print "usage:"
 			print "	 python dhcpoisoner.py"
