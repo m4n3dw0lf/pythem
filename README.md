@@ -1,4 +1,4 @@
-![alt text](https://img.shields.io/badge/version-v0.7.1-yellow.svg)
+![alt text](https://img.shields.io/badge/version-v0.7.2-yellow.svg)
 ![alt text](https://img.shields.io/badge/python-2.7-blue.svg)
 ![alt text](https://img.shields.io/badge/OS-GNU%2FLinux-000000.svg)
 [![alt text](https://img.shields.io/badge/donate-bitcoin-orange.svg)](https://blockchain.info/address/1Eggia3JXwWiR4mkVqztionNUfs2N3ghAd)
