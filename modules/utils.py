@@ -366,6 +366,7 @@ def print_help():
 	print color("  - ssh		| ip address as target","yellow")
 	print color("  - url		| url (with http:// or https://) as target","yellow")
  	print color("  - form	| url (with http:// or https://) as target","yellow")
+	print color("  - hash	| hash as target","yellow")
 	print
   	print color(" examples:","green")
 	print

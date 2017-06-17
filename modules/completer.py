@@ -91,7 +91,7 @@ class Completer(object):
 			completer = readline.set_completer(self.suboption)
 
 		elif "brute" in text and state == 1:
-			self.suboptions = ['ssh','url','form','help']
+			self.suboptions = ['ssh','url','form','help','hash']
 			completer = readline.set_completer(self.suboption)
 
 		elif "dos" in text and state == 1:

@@ -953,9 +953,27 @@ class Processor(object):
 								print " - ssh"
 								print " - form"
 								print " - url"
+								print " - hash"
 								print "example:"
 								print "{} brute ssh help\n".format(console)
 								continue
+
+							if self.input_list[1] == "hash":
+								try:
+									if self.input_list[2] == "help":
+										print "\n[Help] Hash Brute-Force"
+										print "[Optional]File as wordlist, hash as target."
+										print "example:"
+										print "{} set file wordlist.txt".format(console)
+										print "{} set target 35f5de5eb59e2ac7f73d5821f9f2e4f6".format(console)
+										print "{} brute hash\n".format(console)
+									else:
+										print "[!] Invalid option."
+								except IndexError:
+									from modules.hashcracker import HashCracker
+									hashcrack = HashCracker(self.targets,self.file)
+								except KeyboardInterrupt:
+									pass
 
 							if self.input_list[1] == "ssh":
 								try:
