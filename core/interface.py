@@ -1067,14 +1067,26 @@ class Processor(object):
 
 
 
+				except KeyboardInterrupt:
+					print "\n[*] User requested shutdown."
+					if self.dnsdrop_status == 1:
+						self.dos.dnsdropstop()
+					if self.sslkill_status == True:
+						print "[*] SSLKill finalized."
+                        		        os.system("echo 0 > /proc/sys/net/ipv4/ip_forward")
+                        		        os.system('iptables -t nat -F')
+					if self.arpspoof_status == True:
+						iptables()
+						set_ip_forwarding(0)
+					exit()
 		except KeyboardInterrupt:
 			print "\n[*] User requested shutdown."
 			if self.dnsdrop_status == 1:
 				self.dos.dnsdropstop()
 			if self.sslkill_status == True:
 				print "[*] SSLKill finalized."
-                                os.system("echo 0 > /proc/sys/net/ipv4/ip_forward")
-                                os.system('iptables -t nat -F')
+                       	        os.system("echo 0 > /proc/sys/net/ipv4/ip_forward")
+                       	        os.system('iptables -t nat -F')
 			if self.arpspoof_status == True:
 				iptables()
 				set_ip_forwarding(0)
