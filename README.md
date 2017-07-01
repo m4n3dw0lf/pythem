@@ -19,15 +19,17 @@ pythem is a multi-purpose pentest framework written in Python programming langua
 
 #### Quick-Start
 ```
-$sudo apt-get update
-$sudo apt-get install build-essential python-dev tcpdump python-capstone
-$sudo apt-get install libnetfilter-queue-dev libffi-dev libssl-dev
-$sudo git clone https://github.com/m4n3dw0lf/pythem
-$cd pythem
-$sudo pip install -r requirements.txt 
-
-Run with:
-$sudo ./pythem.py
+sudo apt-get update
+sudo apt-get install build-essential python-dev tcpdump python-capstone
+sudo apt-get install libnetfilter-queue-dev libffi-dev libssl-dev
+sudo git clone https://github.com/m4n3dw0lf/pythem
+cd pythem
+sudo pip install -r requirements.txt
+chmod +x pythem.py
+```
+> Run with:
+```
+./pythem.py
 ```
 
 ## Examples
