@@ -49,8 +49,6 @@ $sudo ./pythem.py
 
 ## Commands Reference
 
-![](config/pythem_sample.gif)
-
 ### Index
 
 #### Core
