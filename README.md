@@ -51,7 +51,7 @@ $sudo ./pythem.py
 
 ### Index
 
-![](config/pythem.gif)
+![](config/pythem_sample.gif)
 
 #### Core
   - [help](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#help)
