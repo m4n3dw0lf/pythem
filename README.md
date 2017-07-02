@@ -23,6 +23,8 @@ pythem is a multi-purpose pentest framework written in Python. It has been devel
 
 #### Quick-Start
 ```
+git clone https://github.com/m4n3dw0lf/pythem
+cd pythem
 chmod +x install
 ./install
 ```
