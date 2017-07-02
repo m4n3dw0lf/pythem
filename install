@@ -18,13 +18,11 @@
 # USA
 sudo apt-get update
 sudo apt-get install build-essential python-dev tcpdump python-capstone libnetfilter-queue-dev libffi-dev libssl-dev -y
-git clone https://github.com/m4n3dw0lf/pythem
-cd pythem
 sudo pip install -r requirements.txt
-executable_path=$(echo $PATH | cut -d ":" -f 2)
-echo "cd $PWD && sudo ./pythem.py" | sudo tee --append $executable_path/pythem
-sudo chmod +x $executable_path/pythem
-cat <<EOT >> ~/.local/share/applications/pythem.desktop
+sudo touch /usr/bin/pythem
+echo "cd $PWD && sudo ./pythem.py" | sudo tee /usr/bin/pythem
+sudo chmod +x /usr/bin/pythem
+cat <<EOT > ~/.local/share/applications/pythem.desktop
 [Desktop Entry]
 Name=pythem
 Exec=pythem
@@ -33,3 +31,4 @@ Terminal=true
 Type=Application
 Icon=$PWD/config/pythemico.png
 EOT
+
