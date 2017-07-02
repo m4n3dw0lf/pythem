@@ -1,4 +1,4 @@
-![](https://img.shields.io/badge/version-v0.7.2-yellow.svg)
+![](https://img.shields.io/badge/version-v0.7.3-yellow.svg)
 ![](https://img.shields.io/badge/python-2.7-blue.svg)
 ![](https://img.shields.io/badge/OS-GNU%2FLinux-000000.svg)
 [![](https://img.shields.io/badge/donate-bitcoin-orange.svg)](https://blockchain.info/address/1Eggia3JXwWiR4mkVqztionNUfs2N3ghAd)
@@ -23,17 +23,12 @@ pythem is a multi-purpose pentest framework written in Python. It has been devel
 
 #### Quick-Start
 ```
-sudo apt-get update
-sudo apt-get install build-essential python-dev tcpdump python-capstone
-sudo apt-get install libnetfilter-queue-dev libffi-dev libssl-dev
-sudo git clone https://github.com/m4n3dw0lf/pythem
-cd pythem
-sudo pip install -r requirements.txt
-chmod +x pythem.py
+chmod +x install
+./install
 ```
 > Run with:
 ```
-./pythem.py
+pythem
 ```
 
 ## Examples
