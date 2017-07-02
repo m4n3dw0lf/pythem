@@ -8,7 +8,7 @@
 
 pythem is a multi-purpose pentest framework written in Python. It has been developed to be used by security researchers and security professionals. The tool intended to be used only for acts within the law. I am not liable for any undue and unlawful act practiced by this tool, for more information, read the license. Only runs on GNU/Linux OS.
 
-![](config/pythem_sample.gif)
+![](config/pythem.gif)
 
 [![](https://img.shields.io/badge/%20wiki--grey.svg)](https://github.com/m4n3dw0lf/pythem/wiki)
 ## Installation
