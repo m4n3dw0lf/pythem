@@ -10,7 +10,7 @@ pythem is a multi-purpose pentest framework written in Python. It has been devel
 
 ![](config/pythem.gif)
 
-[![](https://img.shields.io/badge/%20wiki--grey.svg)](https://github.com/m4n3dw0lf/pythem/wiki)
+[![](https://img.shields.io/badge/wiki--green.svg)](https://github.com/m4n3dw0lf/pythem/wiki)
 ## Installation
 
 #### Step-by-step
