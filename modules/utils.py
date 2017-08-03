@@ -322,6 +322,9 @@ def print_help():
 	print
 	print color("  - dhcpstarvation    | Start a DHCP starvation attack on network DHCP server. Multiple spoofed MAC dhcp discovers.","yellow")
 	print
+	print color("  - httpflood         | Start to flood HTTP requests on a target URL, *Only GET method supported by now.","yellow")
+	print
+	print
 	print color(" examples:","green")
 	print
 	print color("  pythem> ","red") + "dos dnsdrop"

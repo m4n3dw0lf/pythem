@@ -33,7 +33,7 @@ from time import sleep
 class Processor(object):
 	name = "Interface-Processor"
 	desc = "Console to process commands"
-	version = "1.5"
+	version = "1.6"
 
 
 	def __init__(self):
@@ -521,8 +521,8 @@ class Processor(object):
 							print "[!] Exception caught: {}".format(e)
 
 					elif self.input_list[0] == "dos":
-						from modules.jammer import Jam
-						self.dos = Jam()
+						from modules.dos import Doser
+						self.dos = Doser()
 						try:
 							if self.input_list[1] == "dnsdrop":
 								try:
@@ -542,6 +542,23 @@ class Processor(object):
 											print "[!] Exception caught: {}".format(e)
 									else:
 										print "[!] You need to start a arpspoof on a target (IP/Range) to start dnsdrop."
+
+							if self.input_list[1] == "httpflood":
+								try:
+									if self.input_list[2] == "help":
+										print "\n[Help] Start a HTTP request flood on a target URL, *Only GET method supported by now."
+										print "example:"
+										print "{} set target http://localhost/".format(console)
+										print "{} dos httpflood\n".format(console)
+								except IndexError:
+									if self.targets == None:
+										print "[!] You probably forgot to set an URL as target."
+									else:
+										try:
+											self.dos.httpflood(self.targets)
+										except Exception as e:
+											print "[!] Exception caught: {}".format(e)
+								
 
 
 							elif self.input_list[1] == "dnsamplification":
@@ -737,6 +754,8 @@ class Processor(object):
 								print " - icmpsmurf"
 								print " - dhcpstarvation"
 								print " - dnsamplification"
+								print " - httpflood"
+								print
 								print "example:"
 								print "{} dos icmpsmurf help\n".format(console)
 
