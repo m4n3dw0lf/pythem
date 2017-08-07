@@ -17,7 +17,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 sudo apt-get update
-sudo apt-get install build-essential python-dev tcpdump python-capstone libnetfilter-queue-dev libffi-dev libssl-dev -y
+sudo apt-get install python-pip build-essential python-dev tcpdump python-capstone libnetfilter-queue-dev libffi-dev libssl-dev -y
 sudo pip install -r requirements.txt
 sudo touch /usr/bin/pythem
 echo "cd $PWD && sudo ./pythem.py" | sudo tee /usr/bin/pythem
