@@ -16,12 +16,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
-sudo apt-get update
-sudo apt-get install python-pip build-essential python-dev tcpdump python-capstone libnetfilter-queue-dev libffi-dev libssl-dev -y
-sudo pip install -r requirements.txt
-sudo touch /usr/bin/pythem
-echo "cd $PWD && sudo ./pythem.py" | sudo tee /usr/bin/pythem
-sudo chmod +x /usr/bin/pythem
+apt-get update
+apt-get install python-pip build-essential python-dev tcpdump python-capstone libnetfilter-queue-dev libffi-dev libssl-dev -y
+pip install -r requirements.txt
+touch /usr/bin/pythem
+echo "cd $PWD && sudo ./pythem.py" | tee /usr/bin/pythem
+chmod +x /usr/bin/pythem
 cat <<EOT > ~/.local/share/applications/pythem.desktop
 [Desktop Entry]
 Name=pythem
