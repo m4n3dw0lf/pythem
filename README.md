@@ -28,8 +28,8 @@ pythem is a multi-purpose pentest framework written in Python. It has been devel
 
 ```
 sudo apt-get update
-sudo apt-get install build-essential python-dev tcpdump python-capstone
-sudo apt-get install libnetfilter-queue-dev libffi-dev libssl-dev
+sudo apt-get install -y build-essential python-dev python-pip tcpdump python-capstone \
+libnetfilter-queue-dev libffi-dev libssl-dev
 ```
 
 #### Installation
@@ -37,7 +37,7 @@ sudo apt-get install libnetfilter-queue-dev libffi-dev libssl-dev
 - With **pip**:
 
 ```
-pip install pythem
+sudo pip install pythem
 ```
 
 - With **source**:
@@ -53,7 +53,7 @@ sudo python setup.py install
 git clone https://github.com/m4n3dw0lf/pythem
 cd pythem
 sudo python setup.py sdist
-pip install dist/*
+sudo pip install dist/*
 ```
 
 #### Running
