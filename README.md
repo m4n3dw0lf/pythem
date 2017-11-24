@@ -1,6 +1,7 @@
 ![](https://img.shields.io/badge/version-v0.7.6-yellow.svg)
 ![](https://img.shields.io/badge/python-2.7-blue.svg)
 ![](https://img.shields.io/badge/OS-GNU%2FLinux-000000.svg)
+[![Docker Automated build](https://img.shields.io/docker/automated/jrottenberg/ffmpeg.svg)]()
 [![](https://img.shields.io/badge/donate-bitcoin-orange.svg)](https://blockchain.info/address/1Eggia3JXwWiR4mkVqztionNUfs2N3ghAd)
 
 
