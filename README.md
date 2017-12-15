@@ -72,7 +72,7 @@ $ sudo pythem
 - Requires Docker
 
 ```
-docker run -it --net=host --name pythem m4n3dw0lf/pythem
+docker run -it --net=host --rm --name pythem m4n3dw0lf/pythem
 ```
 
 <br><br>
