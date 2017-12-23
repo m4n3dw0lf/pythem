@@ -1,4 +1,4 @@
-![](https://img.shields.io/badge/version-v0.7.6-yellow.svg)
+![](https://img.shields.io/badge/version-v0.7.7-yellow.svg)
 ![](https://img.shields.io/badge/python-2.7-blue.svg)
 ![](https://img.shields.io/badge/OS-GNU%2FLinux-000000.svg)
 [![Docker Automated build](https://img.shields.io/docker/automated/jrottenberg/ffmpeg.svg)](https://hub.docker.com/r/m4n3dw0lf/pythem/)
@@ -82,7 +82,6 @@ docker run -it --net=host --rm --name pythem m4n3dw0lf/pythem
 ### Examples
 
 - [ARP spoofing - Man-in-the-middle](https://github.com/m4n3dw0lf/pythem/wiki/Examples#arp-spoofing---man-in-the-middle).
-- [Man-in-the-middle HSTS bypass - Strip SSL](https://github.com/m4n3dw0lf/pythem/wiki/Examples#man-in-the-middle-hsts-bypass---strip-ssl)
 - [ARP+DNS spoof - fake page redirect to credential harvester](https://github.com/m4n3dw0lf/pythem/wiki/Examples#arpdns-spoof---fake-page-redirect-to-credential-harvester)
 - [DHCP ACK Injection spoofing - Man-in-the-middle](https://github.com/m4n3dw0lf/pythem/wiki/Examples#man-in-the-middle-dhcp-spoofing---dhcp-ack-injection)
 - [Man-in-the-middle inject BeEF hook](https://github.com/m4n3dw0lf/pythem/wiki/Examples#inject-beef-hook)
@@ -111,7 +110,6 @@ docker run -it --net=host --rm --name pythem m4n3dw0lf/pythem
   - [arpspoof](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#arpspoof)
   - [dhcpspoof](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#dhcpspoof)
   - [dnsspoof](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#dnsspoof)
-  - [hstsbypass](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#hstsbypass)
   - [redirect](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#redirect)
   - [sniff](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#sniff)
   - [dos](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#dos)

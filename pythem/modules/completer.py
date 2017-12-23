@@ -106,7 +106,7 @@ class Completer(object):
 			completer = readline.set_completer(self.suboption)
 
 		else:
-	        	self.words = ['clear','help','exit','quit','set','print','scan','arpspoof','dnsspoof','redirect','sniff','pforensic','dos','xploit','brute','decode','encode','cookiedecode','hstsbypass','dhcpspoof']
+	        	self.words = ['clear','help','exit','quit','set','print','scan','arpspoof','dnsspoof','redirect','sniff','pforensic','dos','xploit','brute','decode','encode','cookiedecode','dhcpspoof']
 			results = [x for x in self.words if x.startswith(text)] + [None]
 			return results[state]
 

