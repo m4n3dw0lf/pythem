@@ -33,14 +33,16 @@ class PcapReader(object):
 	obs = "need to filter for images and decode encoded gzip content"
 
 	def __init__(self, file):
-		self.file = file
-		self.packets = rdpcap(file)
+		try:
+		  self.packets = rdpcap(file)
+                except:
+                  print "You probably forgot to set a file to be analyzed."
 
 	def printHelp(self):
 		print
-		print color("	[ pythem - Leitor Forense de arquivos pcap ]","grey")
+		print color("	[ pythem - Forensic pcap reader ]","grey")
 		print
-		print color("	ARQUIVO - [ {} ]".format(self.file),"red")
+		print color("	FILE - [ {} ]".format(self.file),"red")
 		print
 		print
 		print color("[*] help:   			Print the help message","blue")
