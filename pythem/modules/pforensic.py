@@ -34,6 +34,7 @@ class PcapReader(object):
 
 	def __init__(self, file):
 		try:
+                  self.file = file
 		  self.packets = rdpcap(file)
                 except:
                   print "You probably forgot to set a file to be analyzed."

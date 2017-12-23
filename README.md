@@ -1,6 +1,6 @@
 # pythem - Penetration Testing Framework
 
-![](https://img.shields.io/badge/version-v0.7.8-yellow.svg)
+![](https://img.shields.io/badge/version-v0.7.9-yellow.svg)
 ![](https://img.shields.io/badge/python-2.7-blue.svg)
 ![](https://img.shields.io/badge/OS-GNU%2FLinux-000000.svg)
 [![Docker Automated build](https://img.shields.io/docker/automated/jrottenberg/ffmpeg.svg)](https://hub.docker.com/r/m4n3dw0lf/pythem/)
