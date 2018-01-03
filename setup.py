@@ -19,26 +19,6 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-import os
-import sys
-from pythem.core.interface import Processor
-from pythem.modules.utils import banner,color
-
-version = "0.7.9"
-Processor = Processor()
-
-
-if __name__ == '__main__':
-        if os.geteuid() != 0:
-            sys.exit("[-] Only for roots kido! ")
-        try:
-                print banner(version)
-                print color("by: ","blue") + color("m4n3dw0lf","red")
-                print
-                Processor.start()
-        except Exception as e:
-                print "[!] Exception caught: {}".format(e)
-
 
 from distutils.core import setup
 
