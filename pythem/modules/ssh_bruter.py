@@ -1,6 +1,6 @@
 """Part of the pythem framework. """
 #
-# Copyright (c) 2016-2017 Angelo Moura
+# Copyright (c) 2016-2018 Angelo Moura
 #
 # This file is part of the program pythem
 #
