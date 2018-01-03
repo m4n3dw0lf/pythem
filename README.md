@@ -1,11 +1,11 @@
 # pythem - Penetration Testing Framework
 
-![](https://img.shields.io/badge/version-v0.7.9-yellow.svg)
+![](https://img.shields.io/pypi/v/pythem.svg)
 ![](https://img.shields.io/badge/python-2.7-blue.svg)
 ![](https://img.shields.io/badge/OS-GNU%2FLinux-000000.svg)
-[![Docker Automated build](https://img.shields.io/docker/automated/jrottenberg/ffmpeg.svg)](https://hub.docker.com/r/m4n3dw0lf/pythem/)
+![](https://img.shields.io/docker/automated/m4n3dw0lf/pythem.svg)
 ![](https://img.shields.io/docker/build/m4n3dw0lf/pythem.svg)
-[![](https://img.shields.io/badge/donate-bitcoin-orange.svg)](https://blockchain.info/address/1Eggia3JXwWiR4mkVqztionNUfs2N3ghAd)
+[![](https://img.shields.io/badge/donate-bitcoin-yellow.svg)](https://blockchain.info/address/1Eggia3JXwWiR4mkVqztionNUfs2N3ghAd)
 
 pythem is a multi-purpose pentest framework written in Python. It has been developed to be used by security researchers and security professionals. The tool intended to be used only for acts within the law. I am not liable for any undue and unlawful act practiced by this tool, for more information, read the license. Only runs on GNU/Linux OS.
 
