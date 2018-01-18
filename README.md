@@ -93,6 +93,9 @@ docker run -it --net=host --rm --name pythem m4n3dw0lf/pythem
 - [URL content buster](https://github.com/m4n3dw0lf/pythem/wiki/Examples#url-content-buster)
 - [Overthrow the DNS of LAN range/IP address](https://github.com/m4n3dw0lf/pythem/wiki/Examples#overthrow-the-dns-of-lan-rangeip-address)
 - [Redirect all possible DNS queries to host](https://github.com/m4n3dw0lf/pythem/wiki/Examples#redirect-all-possible-dns-queries-to-host)
+- [Get Shellcode from binary](https://github.com/m4n3dw0lf/pythem/wiki/Examples#get-shellcode-from-binary)
+- [Filter strings on pcap files](https://github.com/m4n3dw0lf/pythem/wiki/Examples#filter-strings-on-pcap-files)
+
 
 ### Exploit Development with pythem
 
