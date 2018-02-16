@@ -300,12 +300,49 @@ class Exploit(object):
 							print decode(self.input_list[1])
 						except KeyboardInterrupt:
 							pass
+                                                except:
+                                                        type = raw_input("[+] Type of decoding: ")
+                                                        print decode(type)
 
 					elif self.input_list[0] == "encode":
 						try:
 							print encode(self.input_list[1])
 						except KeyboardInterrupt:
 							pass
+                                                except:
+                                                        type = raw_input("[+] Type of encoding: ")
+                                                        print decode(type)
+
+					elif self.input_list[0] == "shellcoder":
+                                                try:
+  						  if self.input_list[1]:
+    						    string = " ".join(self.input_list[1:])
+						except:
+  						  string = raw_input("[+] String to encode: ")
+						try:
+						  opt = raw_input("[?] Output, [A]Address/[S]Shellcode/[L]LittleEndian (A/S/L): ")
+						  rev_string_hex = string[::-1].encode('hex')
+						  if opt.lower() == "a":
+					            if len(string) > 8:
+    						      print "[-] String overflow the 64bit address space."
+  						    else:
+						      print "0x" + rev_string_hex
+  						  elif opt.lower() == "s":
+						    array = []
+						    for i in rev_string_hex:
+						      array.append(i)
+						    result = zip(*[array[x::2] for x in (0, 1)])
+						    buf = ""
+						    for x,y in result:
+						      buf += "\\x{}{}".format(x,y)
+						    print buf
+						  elif opt.lower() == "l":
+						    print rev_string_hex
+
+						  else:
+						    print "[!] Invalid option"
+                                                except KeyboardInterrupt:
+                                                        pass
 
 					elif self.input_list[0] == "print":
 						if self.input_list[1] == "offset":
@@ -469,6 +506,15 @@ class Exploit(object):
 		print color("  xploit> ","blue") + "decode hex"
    		print color("  xploit> ","blue") + "encode hex"
 		print
+		print
+		print color("[*] shellcoder	Encode string as address / shellcode / little endian","blue")
+                print
+		print color(" examples:","red")
+                print
+		print color("  xploit> ","blue") + "shellcoder abcde"
+                print "  Output, [A]Address/[S]Shellcode/[L]LittleEndian (A/S/L): s"
+                print "  \x66\x65\x64\x63\x62\x61"
+                print
 		print
 		print color("[*] shellcode	Get the shellcode of executable file","blue")
 		print

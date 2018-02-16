@@ -137,6 +137,7 @@ docker run -it --net=host --rm --name pythem m4n3dw0lf/pythem
     - [exit/quit](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#exitquit-2)
     - [set](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#set-1)
     - [decode/encode](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#decodeencode)
+    - [shellcoder](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#shellcoder)
     - [shellcode](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#shellcode)
     - [search](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#search)
     - [xploit](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#xploit-1)
