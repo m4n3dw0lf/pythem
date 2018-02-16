@@ -511,9 +511,9 @@ class Exploit(object):
                 print
 		print color(" examples:","red")
                 print
-		print color("  xploit> ","blue") + "shellcoder abcde"
-                print "  Output, [A]Address/[S]Shellcode/[L]LittleEndian (A/S/L): s"
-                print "  \x66\x65\x64\x63\x62\x61"
+		print color("  xploit> ","blue") + "shellcoder abcd"
+                print "  [?] Output, [A]Address/[S]Shellcode/[L]LittleEndian (A/S/L): s"
+                print "\x64\x63\x62\x61"
                 print
 		print
 		print color("[*] shellcode	Get the shellcode of executable file","blue")
