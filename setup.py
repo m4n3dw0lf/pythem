@@ -25,7 +25,7 @@ from distutils.core import setup
 setup(
     name='pythem',
     packages=['pythem','pythem/modules','pythem/core'],
-    version='0.7.9',
+    version='0.8.0',
     description="pentest framework",
     author='Angelo Moura',
     author_email='m4n3dw0lf@gmail.com',

@@ -24,7 +24,7 @@ import sys
 from pythem.core.interface import Processor
 from pythem.modules.utils import banner,color
 
-version = "0.7.9"
+version = "0.8.0"
 Processor = Processor()
 
 

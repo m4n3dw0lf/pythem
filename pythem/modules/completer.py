@@ -49,7 +49,7 @@ class Completer(object):
 	def xploit(self, text, state):
                 self.words = ['clear','help','quit','disassemble','print','display','undisplay','enable','disable',
 		'run','continue','finish','step','next','backtrace','where','break','return','jump', 'set','info',
-		'handle','watch','whatis','frame','fuzz','cheatsheet','xploit','search','shellcode','shellcoder','decode','encode']
+		'handle','watch','whatis','frame','fuzz','cheatsheet','xploit','search','shellcode','encoder','decoder','decode','encode']
                 results = [x for x in self.words if x.startswith(text)] + [None]
                 return results[state]
 

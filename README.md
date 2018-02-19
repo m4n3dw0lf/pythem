@@ -136,13 +136,14 @@ docker run -it --net=host --rm --name pythem m4n3dw0lf/pythem
     - [clear](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#clear-1)
     - [exit/quit](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#exitquit-2)
     - [set](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#set-1)
-    - [decode/encode](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#decodeencode)
-    - [shellcoder](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#shellcoder)
     - [shellcode](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#shellcode)
+    - [encoder](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#encoder)
+    - [decoder](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#decoder)
     - [search](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#search)
     - [xploit](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#xploit-1)
     - [cheatsheet](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#cheatsheet)
     - [fuzz](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#fuzz)
+    - [decode/encode](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#decodeencode)
 
 ##### Brute Force<br>
   - [brute](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#brute)

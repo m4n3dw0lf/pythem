@@ -313,7 +313,7 @@ class Exploit(object):
                                                         type = raw_input("[+] Type of encoding: ")
                                                         print decode(type)
 
-					elif self.input_list[0] == "shellcoder":
+					elif self.input_list[0] == "encoder":
                                                 try:
   						  if self.input_list[1]:
     						    string = " ".join(self.input_list[1:])
@@ -343,6 +343,31 @@ class Exploit(object):
 						    print "[!] Invalid option"
                                                 except KeyboardInterrupt:
                                                         pass
+
+                                        elif self.input_list[0] == "decoder":
+						try:
+						  if self.input_list[1]:
+                                                    string = " ".join(self.input_list[1:])
+                                                except:
+                                                   string = raw_input("[+] Shellcode/Address/LittleEndian String to decode: ")
+                                                try:
+                                                  string = string.strip("\\x")
+                                                except: pass
+                                                try:
+                                                  string = string.strip("0x")
+                                                except: pass
+                                                try:
+                                                  array = []
+                                                  for i in string:
+                                                    array.append(i)
+                                                  result = zip(*[array[x::2] for x in (0,1)])
+                                                  result = result[::-1]
+                                                  buf = ""
+                                                  for x,y in result:
+                                                    buf += "{}{}".format(x,y)
+                                                  print buf.decode("hex")
+                                                except Exception as e:
+                                                  print "[!] Exception caught: {}".format(e)
 
 					elif self.input_list[0] == "print":
 						if self.input_list[1] == "offset":
@@ -507,13 +532,21 @@ class Exploit(object):
    		print color("  xploit> ","blue") + "encode hex"
 		print
 		print
-		print color("[*] shellcoder	Encode string as address / shellcode / little endian","blue")
+		print color("[*] encoder	Encode string as address / shellcode / little endian","blue")
                 print
 		print color(" examples:","red")
                 print
-		print color("  xploit> ","blue") + "shellcoder abcd"
+		print color("  xploit> ","blue") + "encoder abcd"
                 print "  [?] Output, [A]Address/[S]Shellcode/[L]LittleEndian (A/S/L): s"
                 print "\x64\x63\x62\x61"
+                print
+                print
+		print color("[*] decoder	Decode address / shellcode / little endian into ASCII","blue")
+                print
+		print color(" examples:","red")
+                print
+		print color("  xploit> ","blue") + "decoder 0x636261"
+                print "  abc"
                 print
 		print
 		print color("[*] shellcode	Get the shellcode of executable file","blue")
@@ -657,5 +690,10 @@ class Exploit(object):
 
 
 if __name__ == "__main__":
-	xploit = Exploit(sys.argv[1],"stdin")
-	xploit.start()
+        try:
+          if sys.argv[1]:
+            xploit = Exploit(sys.argv[1],"stdin")
+          xploit.start()
+        except:
+          xploit = Exploit(None,"stdin")
+          xploit.start()
