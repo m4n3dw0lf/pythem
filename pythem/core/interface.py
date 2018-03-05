@@ -245,6 +245,33 @@ class Processor(object):
 						except IndexError:
 							print "[!] Select a valid variable name."
 
+                                        elif self.input_list[0] == "webcrawl":
+                                                if self.input_list[1] == "help":
+                                                        print "\n[Help] Start a webcrawler in target URL."
+                                                        print "[Required] URL as target"
+                                                        print "example:"
+                                                        print "{} set target http://10.0.0.1/app".format(console)
+                                                        print "{} webcrawl start\n".format(console)
+                                                        continue
+                                                elif self.input_list[1] == "start":
+                                                  from pythem.modules.webcrawler import WebCrawler
+                                                  self.webcrawl = WebCrawler()
+						  try:
+                                                        self.webcrawl.start(self.input_list[2])
+                                                  except IndexError:
+                                                        try:
+                                                             if self.targets:
+                                                               self.webcrawl.start(self.targets)
+                                                             else:
+                                                               self.targets = raw_input("[+] Enter the target URL: ")
+                                                               self.webcrawl.start(self.targets)
+							except KeyboardInterrupt:
+								pass
+                                                        except Exception as e:
+                                                             print "[!] Exception caught: {}".format(e)
+                                                  except Exception as e:
+                                                      print "[!] Exception caught: {}".format(e)
+
 					elif self.input_list[0] == "scan":
 						try:
 							if self.input_list[1] == "help":

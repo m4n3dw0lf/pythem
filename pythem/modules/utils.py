@@ -190,6 +190,18 @@ def print_help():
    	print color("  pythem> ","red") + "scan manual"
    	print "  [+] Enter the port, ports (separated by commas): 21,22,25,80"
 	print
+        print
+        print color("[*] webcrawl                       Start to crawl an URL target finding links.","blue")
+        print
+        print color(" arguments:","red")
+        print
+        print color("  - start","yellow")
+        print color("  - help","yellow")
+        print
+        print color(" examples:","green")
+        print
+        print color("  pythem> ","red") + "webcrawl start"
+        print
 	print
 	print color("[*] arpspoof			Start or stop an arpspoofing attack.","blue")
 	print

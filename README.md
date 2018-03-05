@@ -113,6 +113,8 @@ docker run -it --net=host --rm --name pythem m4n3dw0lf/pythem
   - [print](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#print)
 
 ##### Network, Man-in-the-middle and Denial of service (DOS)<br>
+  - [scan](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#scan)
+  - [webcrawl](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#webcrawl)
   - [arpspoof](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#arpspoof)
   - [dhcpspoof](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#dhcpspoof)
   - [dnsspoof](https://github.com/m4n3dw0lf/pythem/wiki/Commands-Reference#dnsspoof)

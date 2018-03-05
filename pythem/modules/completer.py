@@ -27,7 +27,7 @@ import readline
 class Completer(object):
 	name = "TAB completer"
 	desc = "Auto complete pythem commands with tab"
-	version = "0.4"
+	version = "0.5"
 
 
         def __init__(self,path, console):
@@ -105,11 +105,15 @@ class Completer(object):
 			self.suboptions = ['help']
 			completer = readline.set_completer(self.suboption)
 
+                elif "webcrawl" in text and state == 1:
+                        self.suboptions = ['help','start']
+                        completer = readline.set_completer(self.suboption)
+
 		else:
-	        	self.words = ['clear','help','exit','quit','set','print','scan','arpspoof','dnsspoof','redirect','sniff','pforensic','dos','xploit','brute','decode','encode','cookiedecode','dhcpspoof']
+	        	self.words = ['clear','help','exit','quit','set','print','scan','arpspoof','dnsspoof','redirect','sniff','pforensic','dos','xploit','brute','decode','encode','cookiedecode','dhcpspoof','webcrawl']
 			results = [x for x in self.words if x.startswith(text)] + [None]
 			return results[state]
 
-			
+
 
 
