@@ -1047,7 +1047,7 @@ class Processor(object):
                                 pass
                             except Exception as e:
                                 print "[!] Select a valid option, type help to check syntax."
-                                pass
+                                continue
                     except IndexError:
                         pass
 
