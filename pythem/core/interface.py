@@ -33,6 +33,15 @@ import threading
 from time import sleep
 
 
+def save_command_history(cmd):
+    try:
+        with open(".pythem_history", "a+") as hist_file:
+            hist_file.write(cmd)
+    except Exception:
+        print "ERRO "
+        pass
+
+
 class Processor(object):
     name = "Interface-Processor"
     desc = "Console to process commands"
@@ -87,19 +96,17 @@ class Processor(object):
                 sys.stdout.write("\r" + "[" + animation[i % len(animation)] + "]" + "pythem is loading ...")
                 sys.stdout.flush()
                 print
+                # Create .pythem_history (if it does not exists, Completer will fail
+                save_command_history("")
                 #Untill break or CTRL+C
                 while 1:
-                    #f = open("{}/.pythem_history".format(self.path),"w")
-                    os.system("touch .pythem_history")
                     #Call the object Completer code in modules/completer.py
                     completer = Completer(self.path,"pythem")
                     #Use termocolor import to set the default commandline red
                     console = termcolor.colored("pythem>","red", attrs=["bold"])
                     #Iterable console shell commands with the while 1
                     self.command = raw_input("{} ".format(console))
-                    os.system("echo {} >> .pythem_history".format(self.command))
-                    #f.write(self.command)
-                    #f.close()
+                    save_command_history(self.command)
                     # Separate the user input by spaces " ", can use like this too: self.input_list = [str(a) for a in self.argv] 
                     self.input_list = self.command.split()
                              
