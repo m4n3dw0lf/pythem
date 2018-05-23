@@ -28,121 +28,124 @@ from netaddr import IPAddress, AddrFormatError
 from subprocess import *
 import socket
 
+
 class SimpleFuzz(object):
 
-	name = "Fuzzer"
-	desc = "Used in the xploit module. simple 'A' generation through tcp or stdin"
-	version = "0.3"
+    name = "Fuzzer"
+    desc = "Used in the xploit module. simple 'A' generation through tcp or stdin"
+    version = "0.3"
 
-	def __init__(self, target, type, offset):
-		self.offset = offset
-		self.target = target
-		if type == "tcp":
-			self.port = input("[+]Enter the tcp port to fuzz: ")
-			self.tcpfuzz()
-		elif type == "stdin":
-			self.stdinfuzz()
-		else:
-			print "[!] Select a valid fuzzer type (stdin or tcp)."
+    def __init__(self, target, type, offset):
+        self.offset = offset
+        self.target = target
+        if type == "tcp":
+            self.port = input("[+]Enter the tcp port to fuzz: ")
+            self.tcpfuzz()
+        elif type == "stdin":
+            self.stdinfuzz()
+        else:
+            print "[!] Select a valid fuzzer type (stdin or tcp)."
 
-	def stdinfuzz(self):
+    def stdinfuzz(self):
+        buf = ''
+        while True:
+            try:
+                first = True
+                buf += '\x41' * self.offset
+                resource.setrlimit(resource.RLIMIT_STACK, (-1, -1))
+                resource.setrlimit(resource.RLIMIT_CORE, (-1, -1))
+                P = Popen(self.target, stdin=PIPE)
+                print "[*] Sending buffer with lenght: "+str(len(buf))
+                P.stdin.write(buf+'\n')
+                line = sys.stdin.readline()
+                P.poll()
+                ret = P.returncode
 
-		buf = ''
-		while True:
-			try:
-				first = True
-				buf += '\x41' * self.offset
-				resource.setrlimit(resource.RLIMIT_STACK, (-1, -1))
-				resource.setrlimit(resource.RLIMIT_CORE, (-1, -1))
-				P = Popen(self.target, stdin=PIPE)
-				print "[*] Sending buffer with lenght: "+str(len(buf))
-				P.stdin.write(buf+'\n')
-				line = sys.stdin.readline()
-				P.poll()
-				ret = P.returncode
-				if ret is None:
-					continue
-				else:
-					if ret == -4:
-						print "\n[+] Instruction Pointer may be at: {}\n".format(str(len(buf)))
-						break
-					elif ret == -7:
-						print "\n[+] Instruction Pointer may be near: {}\n".format(str(len(buf)))
-						print "[*] Child program crashed with code: %d\n" % ret
-						continue
-					elif ret == -11:
-						print "[*] Child program crashed with SIGSEGV code: %d\n" % ret
-						print "\n[*] Hit enter to continue.\n"
-						continue
-					else:
-						print "[*] Child program exited with code: %d\n" % ret
-						print "\n[*] Hit enter to continue.\n"
-						continue
-
-
-			except KeyboardInterrupt:
-				break
+                if ret is None:
+                    continue
+                else:
+                    if ret == -4:
+                        print "\n[+] Instruction Pointer may be at: {}\n".format(str(len(buf)))
+                        break
+                    elif ret == -7:
+                        print "\n[+] Instruction Pointer may be near: {}\n".format(str(len(buf)))
+                        print "[*] Child program crashed with code: %d\n" % ret
+                        continue
+                    elif ret == -11:
+                        print "[*] Child program crashed with SIGSEGV code: %d\n" % ret
+                        print "\n[*] Hit enter to continue.\n"
+                        continue
+                    else:
+                        print "[*] Child program exited with code: %d\n" % ret
+                        print "\n[*] Hit enter to continue.\n"
+                        continue
 
 
+            except KeyboardInterrupt:
+                break
 
-	def tcpfuzz(self):
-		buf = ''
-		try:
-			self.target = str(IPAddress(self.target))
-		except AddrFormatError as e:
-			try:
-				self.target = socket.gethostbyname(self.target)
-			except Exception as e:
-				print "[-] Select a valid IP Address as target."
-				print "[!] Exception caught: {}".format(e)
-				return
 
-		buf = '\x41'*self.offset
-		print "[+] TCP fuzzing initialized, wait untill crash."
-		while True:
-			try:
-				self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-				self.socket.settimeout(2)
-				self.socket.connect((self.target,self.port))
-				print "[+] Fuzzing with [{}] bytes.".format(len(buf))
-				try:
-					response = self.socket.recv(1024)
-					print "[*] Response: {}".format(response)
-					self.socket.send(buf)
-					try:
-						response = self.socket.recv(1024)
-						print "[*] Response: {}".format(response)
-						self.socket.close()
-						buf += '\x41'*self.offset
-					except:
-						self.socket.close()
-						buf += '\x41'*self.offset
-				except:
-					self.socket.send(buf)
-					try:
-						response = self.socket.recv(1024)
-						print "[*] Response: {}".format(response)
-						self.socket.close()
-						buf += '\x41'*self.offset
+    def tcpfuzz(self):
+        buf = ''
+        try:
+            self.target = str(IPAddress(self.target))
+        except AddrFormatError as e:
+            try:
+                self.target = socket.gethostbyname(self.target)
+            except Exception as e:
+                print "[-] Select a valid IP Address as target."
+                print "[!] Exception caught: {}".format(e)
+                return
 
-					except:
-						self.socket.close()
-						buf += '\x41'*self.offset
+        buf = '\x41'*self.offset
+        print "[+] TCP fuzzing initialized, wait untill crash."
+        while True:
+            try:
+                self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                self.socket.settimeout(2)
+                self.socket.connect((self.target,self.port))
+                print "[+] Fuzzing with [{}] bytes.".format(len(buf))
 
-			except KeyboardInterrupt:
-				break
-			except Exception as e:
-				if 'Connection refused' in e:
-					print "[-] Connection refused."
-					time.sleep(4)
+                try:
+                    response = self.socket.recv(1024)
+                    print "[*] Response: {}".format(response)
+                    self.socket.send(buf)
 
-				else:
-					try:
-						response = self.socket.recv(1024)
-						print "[*] Response: {}".format(response)
-					except Exception as e:
-						if 'timed out' in e:
-							print "[-] Timed out."
-							time.sleep(2)
-					print "[+] Crash occured with buffer length: {}".format(str(len(buf)))
-					print "[!] Exception caught: {}".format(e)
+                    try:
+                        response = self.socket.recv(1024)
+                        print "[*] Response: {}".format(response)
+                        self.socket.close()
+                        buf += '\x41'*self.offset
+                    except:
+                        self.socket.close()
+                        buf += '\x41'*self.offset
+                except:
+                    self.socket.send(buf)
+                    try:
+                        response = self.socket.recv(1024)
+                        print "[*] Response: {}".format(response)
+                        self.socket.close()
+                        buf += '\x41'*self.offset
+                    except:
+                        self.socket.close()
+                        buf += '\x41'*self.offset
+
+            except KeyboardInterrupt:
+                break
+            except Exception as e:
+                if 'Connection refused' in e:
+                    print "[-] Connection refused."
+                    time.sleep(4)
+
+                else:
+                    try:
+                        response = self.socket.recv(1024)
+                        print "[*] Response: {}".format(response)
+                    except Exception as e:
+                        if 'timed out' in e:
+                            print "[-] Timed out."
+                            time.sleep(2)
+
+                    print "[+] Crash occured with buffer length: {}".format(str(len(buf)))
+                    print "[!] Exception caught: {}".format(e)
+
