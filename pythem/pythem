@@ -29,12 +29,13 @@ Processor = Processor()
 
 
 if __name__ == '__main__':
-        if os.geteuid() != 0:
-	    sys.exit("[-] Only for roots kido! ")
-	try:
-		print banner(version)
-		print color("by: ","blue") + color("m4n3dw0lf","red")
-		print
-		Processor.start()
-	except Exception as e:
-		print "[!] Exception caught: {}".format(e)
+    if os.geteuid() != 0:
+        sys.exit("[-] Only for roots kido! ")
+    try:
+        print banner(version)
+        print color("by: ","blue") + color("m4n3dw0lf","red")
+        print
+        Processor.start()
+    except Exception as e:
+        print "[!] Exception caught: {}".format(e)
+
