@@ -36,9 +36,9 @@ from time import sleep
 def save_command_history(cmd):
     try:
         with open(".pythem_history", "a+") as hist_file:
-            hist_file.write(cmd)
-    except Exception:
-        print "ERRO "
+            hist_file.write("{}\n".format(cmd))
+    except Exception as e:
+        print "[!] Exception caught: {} ".format(e)
         pass
 
 
@@ -90,12 +90,6 @@ class Processor(object):
     # Main
     def start(self):
         try:
-            animation = "|/-\\"
-            for i in range(15):
-                time.sleep(0.1)
-                sys.stdout.write("\r" + "[" + animation[i % len(animation)] + "]" + "pythem is loading ...")
-                sys.stdout.flush()
-                print
                 # Create .pythem_history (if it does not exists, Completer will fail
                 save_command_history("")
                 #Untill break or CTRL+C
