@@ -75,9 +75,9 @@ class WebCrawler(object):
                 address = "/".join(address[:-1])
                 link = "{}/{}".format(address,l)
                 if link in self.links:
-                continue
+                    continue
                 else:
-                self.links.append(link)
+                    self.links.append(link)
             else:
                 link = l
                 if link in self.links:
@@ -118,9 +118,9 @@ class WebCrawler(object):
                         continue
                 except Exception as e:
                     try:
-                    self.status[l] = e.getcode()
+                        self.status[l] = e.getcode()
                     except:
-                    print "Exception caught: {}".format(e)
+                        print "Exception caught: {}".format(e)
                     continue
             new_links = self.links
 

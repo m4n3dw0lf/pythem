@@ -39,8 +39,7 @@ class Sniffer(object):
     desc = "Custom scapy sniffer."
     version = "1.4"
 
-    def __init__(self, interface, filter, path):
-        self.path = path
+    def __init__(self, interface, filter):
         self.interface = interface
         self.filter = filter
         self.wrpcap = raw_input("[*] Wish to write a .pcap file with the sniffed packets in the actual directory?[y/n]: ")
@@ -258,9 +257,9 @@ class Sniffer(object):
                                         msg_type += "hostname is {} , ".format(y)
                             except:
                                 pass
-                         elif mtype[0][1] == 4:
-                                        msg_type = "DHCP "+ color("Decline","grey")+" message."
-                         elif mtype[0][1] == 5:
+                        elif mtype[0][1] == 4:
+                             msg_type = "DHCP "+ color("Decline","grey")+" message."
+                        elif mtype[0][1] == 5:
                              msg_type = "DHCP "+ color("Acknowledgment","red")+" message: "
                              try:
                                 for x,y in mtype:
@@ -277,11 +276,11 @@ class Sniffer(object):
                              except:
                                  pass
 
-                         elif mtype[0][1] == 6:
+                        elif mtype[0][1] == 6:
                              msg_type = "DHCP "+ color("Negative Acknowledgment","grey")+" message."
-                         elif mtype[0][1] == 7:
+                        elif mtype[0][1] == 7:
                              msg_type = "DHCP "+ color("Release","magenta")+" message."
-                         elif mtype[0][1] == 8:
+                        elif mtype[0][1] == 8:
                              msg_type = "DHCP "+ color("Informational","magenta")+" message."
                              try:
                                  for x,y in mtype:
@@ -295,11 +294,10 @@ class Sniffer(object):
                                          msg_type += "domain is {} , ".format(y)
                                      if x == "name_server":
                                          msg_type += "DNS server at {} , ".format(y)
-                                 except:
-                                     pass
-                          else:
-                              msg_type = "[!] INVALID MESSAGE TYPE"
-
+                             except:
+                                  pass
+                        else:
+                          msg_type = "[!] INVALID MESSAGE TYPE"
                           print color("[DHCP] ","magenta") + p[Ether].src + " ---> " + p[Ether].dst + " : " + color(msg_type,"yellow")
 
             # TCP Core events
@@ -323,17 +321,17 @@ class Sniffer(object):
 
                     elif load.startswith('USER'):
                                     method = load.split("USER")
-                                        user = str(method[1]).split("\r")
-                                        print "\n" + color("[$$$] FTP Login found: ","yellow") + ''.join(user) + "\n"
+                                    user = str(method[1]).split("\r")
+                                    print "\n" + color("[$$$] FTP Login found: ","yellow") + ''.join(user) + "\n"
                     elif load.startswith('PASS'):
-                                        method = load.split("PASS")
-                                        passw = str(method[1]).split("\r")
-                                        print "\n" + color("[$$$] FTP Password found: ","yellow") + ''.join(passw) + "\n"
+                                    method = load.split("PASS")
+                                    passw = str(method[1]).split("\r")
+                                    print "\n" + color("[$$$] FTP Password found: ","yellow") + ''.join(passw) + "\n"
                     else:
-                                        users = re.findall(user_regex, load)
-                                        passwords = re.findall(pw_regex, load)
-                                        proxy = re.findall(pxy_regex, load)
-                                        self.creds(users,passwords,proxy)
+                                    users = re.findall(user_regex, load)
+                                    passwords = re.findall(pw_regex, load)
+                                    proxy = re.findall(pxy_regex, load)
+                                    self.creds(users,passwords,proxy)
                     #else:
                     #       print color("[TCP]({})".format(p.sprintf('%TCP.flags%')),"white") + p[IP].src + ":" + str(p[TCP].sport) + " ---> " + p[IP].dst + ":"+str(p[TCP].dport) + " seq: {} /ack: {}".format(p[TCP].seq,p[TCP].ack)
         except Exception as e:
@@ -364,41 +362,40 @@ class Sniffer(object):
                     wrpcap("pythem{}.pcap".format(time),p)
                     print "\n[!] pythem sniffer finalized."
                 except Exception as e:
-                                        if "Interrupted system call" in e or "not found" in e:
-                                                self.start()
-                                        else:
-                                                print "[!] Exception caught: {}".format(e)
-                        else:
-                                try:
-                                        p = sniff(iface=self.interface,prn =self.coresniff)
-                                        print "\n[!] pythem sniffer finalized."
-                                except Exception as e:
-                                        if "Interrupted system call" in e or "not found" in e:
-                                                self.start()
-                                        else:
-                                                print "[!] Exception caught: {}".format(e)
-
+                    if "Interrupted system call" in e or "not found" in e:
+                      self.start()
+                    else:
+                      print "[!] Exception caught: {}".format(e)
+            else:
+                try:
+                    p = sniff(iface=self.interface,prn =self.coresniff)
+                    print "\n[!] pythem sniffer finalized."
+                except Exception as e:
+                    if "Interrupted system call" in e or "not found" in e:
+                        self.start()
+                    else:
+                        print "[!] Exception caught: {}".format(e)
         elif self.filter == 'http':
-                        if self.wrpcap == 'y':
-                            try:
-                                p = sniff(iface=self.interface, prn = self.httpsniff)
-                                time = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
-                                wrpcap("pythem{}.pcap".format(time),p)
-                                print "\n[!] pythem sniffer finalized."
-                            except Exception as e:
-                                if "Interrupted system call" in e or "not found" in e:
-                                    self.start()
-                                else:
-                                    print "[!] Exception caught: {}".format(e)
-                        else:
-                                try:
-                                    p = sniff(iface=self.interface,prn = self.httpsniff)
-                                    print "\n[!] pythem sniffer finalized."
-                                except Exception as e:
-                                    if "Interrupted system call" in e or "not found" in e:
-                                        self.start()
-                                    else:
-                                        print "[!] Exception caught: {}".format(e)
+            if self.wrpcap == 'y':
+                try:
+                    p = sniff(iface=self.interface, prn = self.httpsniff)
+                    time = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
+                    wrpcap("pythem{}.pcap".format(time),p)
+                    print "\n[!] pythem sniffer finalized."
+                except Exception as e:
+                    if "Interrupted system call" in e or "not found" in e:
+                        self.start()
+                    else:
+                        print "[!] Exception caught: {}".format(e)
+            else:
+                try:
+                    p = sniff(iface=self.interface,prn = self.httpsniff)
+                    print "\n[!] pythem sniffer finalized."
+                except Exception as e:
+                    if "Interrupted system call" in e or "not found" in e:
+                        self.start()
+                    else:
+                        print "[!] Exception caught: {}".format(e)
 
         else:
             if self.wrpcap == 'y':
@@ -412,7 +409,6 @@ class Sniffer(object):
                         self.start()
                     else:
                         print "[!] Exception caught: {}".format(e)
-
             else:
                 try:
                     p = sniff(iface=self.interface,filter ="{}".format(self.filter), prn = self.customsniff, store = 0)
@@ -441,7 +437,7 @@ if __name__ == "__main__":
     except IndexError:
         print "[+] Starting Default Sniffer"
         print "[pythem Sniffer initialized]"
-        Sniffer = Sniffer(None,None)
+        Sniffer= Sniffer(None,None)
         Sniffer.start()
 
     except Exception as e:

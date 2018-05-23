@@ -57,8 +57,7 @@ class Scanner(object):
 
                         try:
                             end_addr = IPAddress(target.split('-')[1])
-                           ip_range = IPRange(start_addr, end_addr)
-
+                            ip_range = IPRange(start_addr, end_addr)
                         except AddrFormatError:
                             end_addr = list(start_addr.words)
                             end_addr[-1] = target.split('-')[1]

