@@ -78,9 +78,7 @@ pw_regex = '([Pp]assword|[Pp]ass|[Pp]wd|[Pp]asswd|[Pp]wd|[Pp][Ss][Ww]|[Pp]asswrd
 
 
 def credentials_harvest(file = 'sslstrip.log'):
-    path = os.getcwd()
-
-    file = os.path.join(path, file)
+    file = os.path.join(os.getcwd(), file)
     print "[$] Credential Harvester:"
 
     with open(file,"r+") as f:
