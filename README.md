@@ -95,12 +95,12 @@ docker run -it --net=host --rm --name pythem m4n3dw0lf/pythem
 - [Redirect all possible DNS queries to host](https://github.com/m4n3dw0lf/pythem/wiki/Examples#redirect-all-possible-dns-queries-to-host)
 - [Get Shellcode from binary](https://github.com/m4n3dw0lf/pythem/wiki/Examples#get-shellcode-from-binary)
 - [Filter strings on pcap files](https://github.com/m4n3dw0lf/pythem/wiki/Examples#filter-strings-on-pcap-files)
-
-
-### Exploit Development with pythem
-
 - [Exploit Development 1: Overwriting Instruction Pointer](https://github.com/m4n3dw0lf/pythem/wiki/Exploit-development#exploit-development-1-overwriting-instruction-pointer)
 - [Exploit Development 2: Ret2libc](https://github.com/m4n3dw0lf/pythem/wiki/Exploit-development#exploit-development-2-ret2libc)
+
+### Developing
+
+- [Running tests](https://github.com/m4n3dw0lf/pythem/wiki/Developing#running-tests).
 
 ### Commands Reference
 
