@@ -59,7 +59,6 @@ class SSHbrutus(object):
         self.usr = usr
         self.fobj = fobj
 
-
     def exists(self):
         """Tests if the file exists and if the executing user has read access
         to the file. Returns file if both tests are passed. """
@@ -73,7 +72,6 @@ class SSHbrutus(object):
 
         if os.path.isfile(self.fobj) and os.access(self.fobj, R_OK):
             return self.fobj
-
 
     def ssh_connect(self, passwd, code=0):
         """Connects to the SSH server, attempts to authenticate and returns the
@@ -90,7 +88,6 @@ class SSHbrutus(object):
 
         ssh.close()
         return code
-
 
     def start(self):
         """Itterates trough the password list and checks wheter or not the

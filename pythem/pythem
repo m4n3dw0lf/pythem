@@ -1,5 +1,5 @@
 #!/usr/bin/env python2.7
-#coding=UTF-8
+# coding=UTF-8
 
 # Copyright (c) 2016-2018 Angelo Moura
 #
@@ -22,20 +22,18 @@
 import os
 import sys
 from pythem.core.interface import Processor
-from pythem.modules.utils import banner,color
+from pythem.modules.utils import banner, color
 
 version = "0.8.1"
 Processor = Processor()
-
 
 if __name__ == '__main__':
     if os.geteuid() != 0:
         sys.exit("[-] Only for roots kido! ")
     try:
         print banner(version)
-        print color("by: ","blue") + color("m4n3dw0lf","red")
+        print color("by: ", "blue") + color("m4n3dw0lf", "red")
         print
         Processor.start()
     except Exception as e:
         print "[!] Exception caught: {}".format(e)
-

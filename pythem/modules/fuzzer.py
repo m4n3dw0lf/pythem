@@ -30,7 +30,6 @@ import socket
 
 
 class SimpleFuzz(object):
-
     name = "Fuzzer"
     desc = "Used in the xploit module. simple 'A' generation through tcp or stdin"
     version = "0.3"
@@ -38,6 +37,8 @@ class SimpleFuzz(object):
     def __init__(self, target, type, offset):
         self.offset = offset
         self.target = target
+        if type == "test":
+            return
         if type == "tcp":
             self.port = input("[+]Enter the tcp port to fuzz: ")
             self.tcpfuzz()
@@ -55,8 +56,8 @@ class SimpleFuzz(object):
                 resource.setrlimit(resource.RLIMIT_STACK, (-1, -1))
                 resource.setrlimit(resource.RLIMIT_CORE, (-1, -1))
                 P = Popen(self.target, stdin=PIPE)
-                print "[*] Sending buffer with lenght: "+str(len(buf))
-                P.stdin.write(buf+'\n')
+                print "[*] Sending buffer with lenght: " + str(len(buf))
+                P.stdin.write(buf + '\n')
                 line = sys.stdin.readline()
                 P.poll()
                 ret = P.returncode
@@ -84,7 +85,6 @@ class SimpleFuzz(object):
             except KeyboardInterrupt:
                 break
 
-
     def tcpfuzz(self):
         buf = ''
         try:
@@ -97,13 +97,13 @@ class SimpleFuzz(object):
                 print "[!] Exception caught: {}".format(e)
                 return
 
-        buf = '\x41'*self.offset
+        buf = '\x41' * self.offset
         print "[+] TCP fuzzing initialized, wait untill crash."
         while True:
             try:
                 self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 self.socket.settimeout(2)
-                self.socket.connect((self.target,self.port))
+                self.socket.connect((self.target, self.port))
                 print "[+] Fuzzing with [{}] bytes.".format(len(buf))
 
                 try:
@@ -115,20 +115,20 @@ class SimpleFuzz(object):
                         response = self.socket.recv(1024)
                         print "[*] Response: {}".format(response)
                         self.socket.close()
-                        buf += '\x41'*self.offset
+                        buf += '\x41' * self.offset
                     except:
                         self.socket.close()
-                        buf += '\x41'*self.offset
+                        buf += '\x41' * self.offset
                 except:
                     self.socket.send(buf)
                     try:
                         response = self.socket.recv(1024)
                         print "[*] Response: {}".format(response)
                         self.socket.close()
-                        buf += '\x41'*self.offset
+                        buf += '\x41' * self.offset
                     except:
                         self.socket.close()
-                        buf += '\x41'*self.offset
+                        buf += '\x41' * self.offset
 
             except KeyboardInterrupt:
                 break
@@ -148,4 +148,3 @@ class SimpleFuzz(object):
 
                     print "[+] Crash occured with buffer length: {}".format(str(len(buf)))
                     print "[!] Exception caught: {}".format(e)
-

@@ -40,7 +40,6 @@ from completer import Completer
 
 
 class Exploit(object):
-
     name = "Exploit development interactive shell."
     desc = "use gdb plus ROPgadget + offset generator and memaddresses to create exploits."
 
@@ -58,52 +57,52 @@ class Exploit(object):
         self.arch = 'x86'
         self.port = 0
         if self.target:
-            self.p1 = Popen(['gdb',"--silent", "{}".format(self.target)], stdin=PIPE, stdout=PIPE, bufsize=1)
+            self.p1 = Popen(['gdb', "--silent", "{}".format(self.target)], stdin=PIPE, stdout=PIPE, bufsize=1)
             gdbout = self.p1.stdout.readline()
         else:
-            self.p1 = Popen(['gdb','--silent'], stdin=PIPE, stdout=PIPE, bufsize=1)
-            #gdbout = self.p1.stdout.readline()
-        completer = Completer(".gdb_history","xploit")
+            self.p1 = Popen(['gdb', '--silent'], stdin=PIPE, stdout=PIPE, bufsize=1)
+            # gdbout = self.p1.stdout.readline()
+        completer = Completer(".gdb_history", "xploit")
 
-
-    def gdb(self,cmd):
+    def gdb(self, cmd):
         def signal_handler(signum, frame):
             print 1 + "that's ugly"
+
         signal.signal(signal.SIGALRM, signal_handler)
         signal.alarm(1)
         try:
-          print >> self.p1.stdin, cmd
-          for line in iter(self.p1.stdout.readline, b''):
-            print line
+            print >> self.p1.stdin, cmd
+            for line in iter(self.p1.stdout.readline, b''):
+                print line
         except KeyboardInterrupt:
-          pass
+            pass
         except Exception as e:
-          #print "[!] Exception caught: {}".format(e)
-          pass
+            # print "[!] Exception caught: {}".format(e)
+            pass
 
     def getshellcode(self, file):
         os.system("for i in $(objdump -d {} |grep '^ ' |cut -f2); do echo -n '\\x'$i; done; echo".format(file))
 
     def search(self, file, search, find):
-        options = {'color' : True,
-                'detailed': True}
+        options = {'color': True,
+                   'detailed': True}
         rs = RopperService(options)
         ls = file
         rs.addFile(ls)
         rs.setArchitectureFor(name=ls, arch=self.arch)
         if search == "instructions":
-            os.system('ropper --file {} --search "{}"'.format(self.target,find))
+            os.system('ropper --file {} --search "{}"'.format(self.target, find))
         elif search == "opcode":
-            os.system('ropper --file {} --opcode "{}"'.format(self.target,find))
+            os.system('ropper --file {} --opcode "{}"'.format(self.target, find))
         else:
             print "[!] Select a valid search (instructions/opcode)."
             return
 
-    def pattern(self,size=1024):
-        return "\x41"*size
+    def pattern(self, size=1024):
+        return "\x41" * size
 
-    def nops(self,size=1024):
-        return "\x90"*size
+    def nops(self, size=1024):
+        return "\x90" * size
 
     def int2hexstr(self, num, intsize=4):
         if intsize == 8:
@@ -133,7 +132,6 @@ class Exploit(object):
         padding = self.pattern(self.offset)
         payload = [padding]
 
-
         if self.xtype == "bufferoverflow":
             if self.arch == "x86":
                 if self.addr1 is not None:
@@ -154,9 +152,9 @@ class Exploit(object):
 
             elif self.arch == "x64":
                 if self.addr1 is not None:
-                    payload += struct.pack("<Q",int(self.addr1))
+                    payload += struct.pack("<Q", int(self.addr1))
                 if self.addr2 is not None:
-                    payload += struct.pack("<Q",int(self.addr2))
+                    payload += struct.pack("<Q", int(self.addr2))
                 if self.nops > 0:
                     payload += ["{}".format(self.nops(self.nops))]
 
@@ -185,7 +183,7 @@ class Exploit(object):
         resource.setrlimit(resource.RLIMIT_STACK, (-1, -1))
         resource.setrlimit(resource.RLIMIT_CORE, (-1, -1))
         P = Popen(self.target, stdin=PIPE)
-        print "[*] Sending buffer with lenght: "+str(len(payload))
+        print "[*] Sending buffer with lenght: " + str(len(payload))
         P.stdin.write(payload)
         while True:
             line = sys.stdin.readline()
@@ -216,7 +214,7 @@ class Exploit(object):
         try:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.socket.settimeout(4)
-            self.socket.connect((self.target,self.port))
+            self.socket.connect((self.target, self.port))
             self.socket.send(payload)
             while True:
                 self.socket.recv(1024)
@@ -228,11 +226,10 @@ class Exploit(object):
                 print "[-] Connection refused."
                 return
 
-
     def start(self):
         while True:
             try:
-                console = termcolor.colored("xploit>","blue", attrs=["bold"])
+                console = termcolor.colored("xploit>", "blue", attrs=["bold"])
                 self.command = raw_input("{} ".format(console))
                 os.system("echo {} >> .gdb_history".format(self.command))
                 self.argv = self.command.split()
@@ -273,7 +270,7 @@ class Exploit(object):
                                 find = raw_input("[+] Find: ")
                             except KeyboardInterrupt:
                                 pass
-                            self.search(file , search, find)
+                            self.search(file, search, find)
 
                         except Exception as e:
                             print "[!] Exception caught: {}".format(e)
@@ -281,7 +278,7 @@ class Exploit(object):
                     elif self.input_list[0] == 'fuzz':
                         try:
                             from fuzzer import SimpleFuzz
-                            self.fuzz = SimpleFuzz(self.target,self.mode,self.offset)
+                            self.fuzz = SimpleFuzz(self.target, self.mode, self.offset)
                         except KeyboardInterrupt:
                             pass
                         except Exception as e:
@@ -337,8 +334,8 @@ class Exploit(object):
                                     array.append(i)
                                 result = zip(*[array[x::2] for x in (0, 1)])
                                 buf = ""
-                                for x,y in result:
-                                    buf += "\\x{}{}".format(x,y)
+                                for x, y in result:
+                                    buf += "\\x{}{}".format(x, y)
                                 print buf
 
                             elif opt.lower() == "l":
@@ -370,11 +367,11 @@ class Exploit(object):
                             array = []
                             for i in string:
                                 array.append(i)
-                            result = zip(*[array[x::2] for x in (0,1)])
+                            result = zip(*[array[x::2] for x in (0, 1)])
                             result = result[::-1]
                             buf = ""
-                            for x,y in result:
-                                buf += "{}{}".format(x,y)
+                            for x, y in result:
+                                buf += "{}{}".format(x, y)
                             print buf.decode("hex")
                         except Exception as e:
                             print "[!] Exception caught: {}".format(e)
@@ -405,7 +402,7 @@ class Exploit(object):
                             cmd = ' '.join(self.input_list[0:])
                             data = self.gdb(cmd)
                             if data:
-                                print color("{}".format(data),"blue")
+                                print color("{}".format(data), "blue")
 
 
                     elif self.input_list[0] == "set" or self.input_list[0] == "SET":
@@ -469,18 +466,18 @@ class Exploit(object):
                             cmd = ' '.join(self.input_list[0:])
                             data = self.gdb(cmd)
                             if data:
-                                print color("{}".format(data),"blue")
+                                print color("{}".format(data), "blue")
 
                     else:
                         try:
                             cmd = ' '.join(self.input_list[0:])
                             data = self.gdb(cmd)
                             if data:
-                                print color("{}".format(data),"blue")
+                                print color("{}".format(data), "blue")
                         except Exception as e:
-                            #DEBUG
-                            #print "[!] Select a valid option, type help to check sintax."
-                            #print e
+                            # DEBUG
+                            # print "[!] Select a valid option, type help to check sintax."
+                            # print e
                             continue
 
                 except IndexError:
@@ -495,114 +492,123 @@ class Exploit(object):
 
     def printHelp(self):
         print
-        print color("             [XPLOIT v{}]".format(self.version),"grey")
+        print color("             [XPLOIT v{}]".format(self.version), "grey")
         print
         print
-        print color("           TARGET - [ {} ]".format(self.target),"red")
+        print color("           TARGET - [ {} ]".format(self.target), "red")
         print
         print
-        print color("[*] help:          Print this help message.","blue")
+        print color("[*] help:          Print this help message.", "blue")
         print
         print
-        print color("[*] clear:         Clean the screen, same as GNU/Linux OS 'clear'.","blue")
+        print color("[*] clear:         Clean the screen, same as GNU/Linux OS 'clear'.", "blue")
         print
         print
-        print color("[*] exit/quit:             Return to pythem.","blue")
+        print color("[*] exit/quit:             Return to pythem.", "blue")
         print
         print
-        print color("[*] set                    Set the variables values.","blue")
+        print color("[*] set                    Set the variables values.", "blue")
         print
-        print color(" parameters:","red")
+        print color(" parameters:", "red")
         print
-        print color("  - offset                 | Number os 'A's to overwrite the instruction pointer.","yellow")
+        print color("  - offset                 | Number os 'A's to overwrite the instruction pointer.", "yellow")
         print
-        print color("  - addr1                  | (Optional) Hexa(0xaddress) First address to overwrite after the offset.","yellow")
+        print color(
+            "  - addr1                  | (Optional) Hexa(0xaddress) First address to overwrite after the offset.",
+            "yellow")
         print
-        print color("  - addr2                  | (Optional) Hexa(0xaddress) Second address to overwrite after the offset.","yellow")
+        print color(
+            "  - addr2                  | (Optional) Hexa(0xaddress) Second address to overwrite after the offset.",
+            "yellow")
         print
-        print color("  - nops                   | (Optional) Number of NOPs after IP overwrite or after the addr1 and addr2 if they are set.","yellow")
+        print color(
+            "  - nops                   | (Optional) Number of NOPs after IP overwrite or after the addr1 and addr2 if they are set.",
+            "yellow")
         print
-        print color("  - shellcode                      | (Optional) Shellcode (could be generated by msfvenom or any other).","yellow")
+        print color(
+            "  - shellcode                      | (Optional) Shellcode (could be generated by msfvenom or any other).",
+            "yellow")
         print
-        print color("  - lenght                 | Total lenght of the payload.","yellow")
+        print color("  - lenght                 | Total lenght of the payload.", "yellow")
         print
-        print color("  - arch                   | Target system processor architecture.","yellow")
-        print
-        print
-        print color("[*] print          Print a variable's value.","blue")
-        print
-        print color(" examples:","red")
-        print
-        print color("  xploit> ","blue") + "print offset"
-        print
-        print
-        print color("[*] decode/encode          Decode or encode a string with a chosen pattern.","blue")
-        print
-        print color(" examples:","red")
-        print
-        print color("  xploit> ","blue") + "decode hex"
-        print color("  xploit> ","blue") + "encode hex"
+        print color("  - arch                   | Target system processor architecture.", "yellow")
         print
         print
-        print color("[*] encoder        Encode string as address / shellcode / little endian","blue")
+        print color("[*] print          Print a variable's value.", "blue")
         print
-        print color(" examples:","red")
+        print color(" examples:", "red")
         print
-        print color("  xploit> ","blue") + "encoder abcd"
+        print color("  xploit> ", "blue") + "print offset"
+        print
+        print
+        print color("[*] decode/encode          Decode or encode a string with a chosen pattern.", "blue")
+        print
+        print color(" examples:", "red")
+        print
+        print color("  xploit> ", "blue") + "decode hex"
+        print color("  xploit> ", "blue") + "encode hex"
+        print
+        print
+        print color("[*] encoder        Encode string as address / shellcode / little endian", "blue")
+        print
+        print color(" examples:", "red")
+        print
+        print color("  xploit> ", "blue") + "encoder abcd"
         print "  [?] Output, [A]Address/[S]Shellcode/[L]LittleEndian (A/S/L): s"
         print "\x64\x63\x62\x61"
         print
         print
-        print color("[*] decoder        Decode address / shellcode / little endian into ASCII","blue")
+        print color("[*] decoder        Decode address / shellcode / little endian into ASCII", "blue")
         print
-        print color(" examples:","red")
+        print color(" examples:", "red")
         print
-        print color("  xploit> ","blue") + "decoder 0x636261"
+        print color("  xploit> ", "blue") + "decoder 0x636261"
         print "  abc"
         print
         print
-        print color("[*] shellcode      Get the shellcode of executable file","blue")
+        print color("[*] shellcode      Get the shellcode of executable file", "blue")
         print
-        print color(" examples:","red")
+        print color(" examples:", "red")
         print
-        print color("  xploit> ","blue") + "shellcode compiled_program"
+        print color("  xploit> ", "blue") + "shellcode compiled_program"
         print
         print
-        print color("[*] search         Automatically search for instructions or opcode in the binary executable.","blue")
+        print color("[*] search         Automatically search for instructions or opcode in the binary executable.",
+                    "blue")
         print
-        print color(" parameters:","red")
+        print color(" parameters:", "red")
         print
-        print color("  - instructions","yellow")
+        print color("  - instructions", "yellow")
         print
-        print color("  - opcode","yellow")
+        print color("  - opcode", "yellow")
         print
-        print color(" examples:","red")
+        print color(" examples:", "red")
         print
-        print color("  xploit> ","blue") + "search"
+        print color("  xploit> ", "blue") + "search"
         print "  [+] Search (instructions/opcode):"
         print "     or"
-        print color("  xploit> ","blue") + "search instructions"+color("                ? - any character","green")
-        print "  [+] Find: pop ?di"+color("                     % - any character","green")
+        print color("  xploit> ", "blue") + "search instructions" + color("                ? - any character", "green")
+        print "  [+] Find: pop ?di" + color("                     % - any character", "green")
         print
-        print color("  xploit>","blue") + "search opcode"
+        print color("  xploit>", "blue") + "search opcode"
         print "  [+] Find: ffe4"
         print
         print
-        print color("[*] xploit         Run the exploit after all the settings.","blue")
+        print color("[*] xploit         Run the exploit after all the settings.", "blue")
         print
-        print color(" examples:","red")
+        print color(" examples:", "red")
         print
         print color("  xploit> ", "blue") + "xploit"
         print
         print
-        print color("[*] cheatsheet             Display a GDB cheatsheet ;).","blue")
+        print color("[*] cheatsheet             Display a GDB cheatsheet ;).", "blue")
         print
-        print color(" examples:","red")
+        print color(" examples:", "red")
         print
         print color("  xploit> ", "blue") + "cheatsheet"
         print
         print
-        print color("[*] fuzz           Start fuzzing on subject.","blue")
+        print color("[*] fuzz           Start fuzzing on subject.", "blue")
         print
         print "If file is passed to xploit will fuzz stdin"
         print "If target is passed to xploit will fuzz tcp"
@@ -615,12 +621,13 @@ class Exploit(object):
         print "[offset = 10]"
         print "will be increased in 10 by 10."
         print
-        print color(" examples:","green")
+        print color(" examples:", "green")
         print
-        print color("  xploit> ","blue") + "fuzz"
+        print color("  xploit> ", "blue") + "fuzz"
         print
         print
-        print color("* Anything else will be executed in GNU debugger shell with {} as file *".format(self.target),"red")
+        print color("* Anything else will be executed in GNU debugger shell with {} as file *".format(self.target),
+                    "red")
         print
 
     def gdbCheatSheet(self):
@@ -704,9 +711,8 @@ class Exploit(object):
 if __name__ == "__main__":
     try:
         if sys.argv[1]:
-            xploit = Exploit(sys.argv[1],"stdin")
+            xploit = Exploit(sys.argv[1], "stdin")
         xploit.start()
     except:
-        xploit = Exploit(None,"stdin")
+        xploit = Exploit(None, "stdin")
         xploit.start()
-

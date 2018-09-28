@@ -1,5 +1,5 @@
 #!/usr/bin/env python2.7
-#coding=UTF-8
+# coding=UTF-8
 
 # Copyright (c) 2016-2018 Angelo Moura
 #
@@ -30,73 +30,74 @@ class Completer(object):
     desc = "Auto complete pythem commands with tab"
     version = "0.5"
 
-
-    def __init__(self,path, console):
+    def __init__(self, path, console):
         tab = readline.parse_and_bind("tab: complete")
         if console == "pythem":
             historyPath = ".pythem_history".format(path)
             readline.read_history_file(historyPath)
             completer = readline.set_completer(self.pythem)
-            #readline.write_history_file(historyPath)
+            # readline.write_history_file(historyPath)
 
         if console == "xploit":
             completer = readline.set_completer(self.xploit)
 
     def suboption(self, text, state):
-        #print text
-        #print state
+        # print text
+        # print state
         results = [x for x in self.suboptions if x.startswith(text)] + [None]
         return results[state]
 
     def xploit(self, text, state):
-        self.words = ['clear','help','quit','disassemble','print','display','undisplay','enable','disable',
-            'run','continue','finish','step','next','backtrace','where','break','return','jump', 'set','info',
-            'handle','watch','whatis','frame','fuzz','cheatsheet','xploit','search','shellcode','encoder','decoder','decode','encode']
+        self.words = ['clear', 'help', 'quit', 'disassemble', 'print', 'display', 'undisplay', 'enable', 'disable',
+                      'run', 'continue', 'finish', 'step', 'next', 'backtrace', 'where', 'break', 'return', 'jump',
+                      'set', 'info',
+                      'handle', 'watch', 'whatis', 'frame', 'fuzz', 'cheatsheet', 'xploit', 'search', 'shellcode',
+                      'encoder', 'decoder', 'decode', 'encode']
         results = [x for x in self.words if x.startswith(text)] + [None]
         return results[state]
 
-
     def pythem(self, text, state):
-        #print text
-        #print state
+        # print text
+        # print state
         if "set" in text and state == 1:
-            self.suboptions = ['interface','target','gateway','file','domain','port','script','help']
+            self.suboptions = ['interface', 'target', 'gateway', 'file', 'domain', 'port', 'script', 'help']
             completer = readline.set_completer(self.suboption)
 
         elif "print" in text and state == 1:
-            self.suboptions = ['interface','target', 'gateway','file','domain','port','script','help']
+            self.suboptions = ['interface', 'target', 'gateway', 'file', 'domain', 'port', 'script', 'help']
             completer = readline.set_completer(self.suboption)
 
         elif "scan" in text and state == 1:
-            self.suboptions = ['tcp','arp','manual','help']
+            self.suboptions = ['tcp', 'arp', 'manual', 'help']
             completer = readline.set_completer(self.suboption)
 
         elif "arpspoof" in text and state == 1:
-            self.suboptions = ['start', 'stop','status','help']
+            self.suboptions = ['start', 'stop', 'status', 'help']
             completer = readline.set_completer(self.suboption)
 
         elif "dnsspoof" in text and state == 1:
-            self.suboptions = ['start','stop','status','help']
+            self.suboptions = ['start', 'stop', 'status', 'help']
             completer = readline.set_completer(self.suboption)
 
         elif "dhcpspoof" in text and state == 1:
-            self.suboptions = ['start','stop','status','help']
+            self.suboptions = ['start', 'stop', 'status', 'help']
             completer = readline.set_completer(self.suboption)
 
         elif "redirect" in text and state == 1:
-            self.suboptions = ['start','stop','status','help']
+            self.suboptions = ['start', 'stop', 'status', 'help']
             completer = readline.set_completer(self.suboption)
 
         elif "xploit" in text and state == 1:
-            self.suboptions = ['stdin', 'tcp','help']
+            self.suboptions = ['stdin', 'tcp', 'help']
             completer = readline.set_completer(self.suboption)
 
         elif "brute" in text and state == 1:
-            self.suboptions = ['ssh','url','form','help','hash']
+            self.suboptions = ['ssh', 'url', 'form', 'help', 'hash']
             completer = readline.set_completer(self.suboption)
 
         elif "dos" in text and state == 1:
-            self.suboptions = ['dnsdrop','dnsamplification','synflood','udpflood','icmpsmurf','icmpflood','dhcpstarvation','teardrop','pingofdeath','land','httpflood','help']
+            self.suboptions = ['dnsdrop', 'dnsamplification', 'synflood', 'udpflood', 'icmpsmurf', 'icmpflood',
+                               'dhcpstarvation', 'teardrop', 'pingofdeath', 'land', 'httpflood', 'help']
             completer = readline.set_completer(self.suboption)
 
         elif "sniff" in text and state == 1:
@@ -108,11 +109,12 @@ class Completer(object):
             completer = readline.set_completer(self.suboption)
 
         elif "webcrawl" in text and state == 1:
-            self.suboptions = ['help','start']
+            self.suboptions = ['help', 'start']
             completer = readline.set_completer(self.suboption)
 
         else:
-            self.words = ['clear','help','exit','quit','set','print','scan','arpspoof','dnsspoof','redirect','sniff','pforensic','dos','xploit','brute','decode','encode','cookiedecode','dhcpspoof','webcrawl']
+            self.words = ['clear', 'help', 'exit', 'quit', 'set', 'print', 'scan', 'arpspoof', 'dnsspoof', 'redirect',
+                          'sniff', 'pforensic', 'dos', 'xploit', 'brute', 'decode', 'encode', 'cookiedecode',
+                          'dhcpspoof', 'webcrawl']
             results = [x for x in self.words if x.startswith(text)] + [None]
             return results[state]
-

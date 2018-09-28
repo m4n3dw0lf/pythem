@@ -1,5 +1,5 @@
 #!/usr/bin/env python2.7
-#coding=UTF-8
+# coding=UTF-8
 
 # Copyright (c) 2016-2018 Angelo Moura
 #
@@ -35,9 +35,9 @@ class HashCracker(object):
         if not wordlist:
             wordlist = raw_input("[+] Select file as wordlist: ")
 
-        self.wordlist = open(wordlist,"r")
+        self.wordlist = open(wordlist, "r")
         print "[+] Supported Hashes: md5, sha1, sha224, sha256, sha512"
-        hash_type = {32:"md5",40:"sha1",56:"sha224",64:"sha256",128:"sha512"}
+        hash_type = {32: "md5", 40: "sha1", 56: "sha224", 64: "sha256", 128: "sha512"}
 
         try:
             print "[+] Most likely: {}".format(hash_type[len(self.hash)])
@@ -84,5 +84,4 @@ class HashCracker(object):
 
 
 if __name__ == "__main__":
-    HashCracker(argv[1],argv[2])
-
+    HashCracker(argv[1], argv[2])

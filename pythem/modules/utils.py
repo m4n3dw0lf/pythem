@@ -1,5 +1,5 @@
 #!/usr/bin/env python2.7
-#coding=UTF-8
+# coding=UTF-8
 
 # Copyright (c) 2016-2018 Angelo Moura
 #
@@ -77,12 +77,12 @@ user_regex = '([Ee]mail|[Uu]ser|[Uu]sr|[Uu]sername|[Nn]ame|[Ll]ogin|[Ll]og|[Ll]o
 pw_regex = '([Pp]assword|[Pp]ass|[Pp]wd|[Pp]asswd|[Pp]wd|[Pp][Ss][Ww]|[Pp]asswrd|[Pp]assw)=([^&|;]*)'
 
 
-def credentials_harvest(file = 'sslstrip.log'):
+def credentials_harvest(file='sslstrip.log'):
     file = os.path.join(os.getcwd(), file)
     print "[$] Credential Harvester:"
 
-    with open(file,"r+") as f:
-        content = f.read().replace('\n','')
+    with open(file, "r+") as f:
+        content = f.read().replace('\n', '')
 
     users = re.findall(user_regex, content)
     passwords = re.findall(pw_regex, content)
@@ -91,7 +91,7 @@ def credentials_harvest(file = 'sslstrip.log'):
 
 def get_mymac(interface):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    info = fcntl.ioctl(s.fileno(), 0x8927,  struct.pack('256s', interface[:15]))
+    info = fcntl.ioctl(s.fileno(), 0x8927, struct.pack('256s', interface[:15]))
     return ''.join(['%02x:' % ord(char) for char in info[18:24]])[:-1]
 
 
@@ -102,20 +102,23 @@ def set_ip_forwarding(value):
 
 
 def iptables():
-    os.system('iptables -P INPUT ACCEPT && iptables -P FORWARD ACCEPT && iptables -F && iptables -X && iptables -t nat -F && iptables -t nat -X')
+    os.system(
+        'iptables -P INPUT ACCEPT && iptables -P FORWARD ACCEPT && iptables -F && iptables -X && iptables -t nat -F && iptables -t nat -X')
     print "[*] Iptables redefined"
 
 
 def module_check(module):
-    confirm = raw_input("[-] Do you checked if your system has [%s] installed?, do you like to try installing? (apt-get install %s will be executed if yes [y/n]: " % (modules,module))
-    if confirm == 'y':
+    confirm = raw_input(
+        "[-] Do you checked if your system has [%s] installed?, do you like to try installing? (apt-get install %s will be executed if yes [y/n]: " % (
+        modules, module))
+    if confirm.lower() == 'y':
         os.system('apt-get install %s' % module)
     else:
         print "[-] Terminated"
         sys.exit(1)
 
 
-def color(message,color):
+def color(message, color):
     msg = termcolor.colored(str(message), str(color), attrs=["bold"])
     return msg
 
@@ -140,270 +143,279 @@ def banner(version):
 
         [ pythem - Penetration Testing Framework v{} ]\n
     """.format(version)
-    return color(banner,"blue")
+    return color(banner, "blue")
 
 
 def print_help():
     print
-    print color("[*] help:                  Print the help message.","blue")
+    print color("[*] help: Print the help message.", "blue")
     print
     print
-    print color("[*] exit/quit:                     Leave the program.","blue")
+    print color("[*] exit/quit: Leave the program.", "blue")
     print
     print
-    print color("[*] set                            Set a variable's value.","blue")
+    print color("[*] set: Set a variable's value.", "blue")
     print
-    print color(" parameters:","red")
+    print color(" parameters:", "red")
     print
-    print color("  - interface","yellow")
-    print color("  - gateway","yellow")
-    print color("  - target","yellow")
-    print color("  - file","yellow")
-    print color("  - domain","yellow")
-    print color("  - redirect","yellow")
-    print color("  - script","yellow")
-    print color("  - filter","yellow")
+    print color("  - interface", "yellow")
+    print color("  - gateway", "yellow")
+    print color("  - target", "yellow")
+    print color("  - file", "yellow")
+    print color("  - domain", "yellow")
+    print color("  - redirect", "yellow")
+    print color("  - script", "yellow")
+    print color("  - filter", "yellow")
     print
-    print color(" examples:","green")
+    print color(" examples:", "green")
     print
-    print color("  pythem> ","red") + "set interface         | open input to set"
+    print color("  pythem> ", "red") + "set interface | open input to set"
     print "     or"
-    print color("  pythem> ","red") + "set interface wlan0   | don't open input to set value."
+    print color("  pythem> ", "red") + "set interface wlan0 | don't open input to set value."
     print
     print
-    print color("[*] print                  Print a variable's value.","blue")
+    print color("[*] print Print a variable's value.", "blue")
     print
-    print color(" examples:","green")
+    print color(" examples:", "green")
     print
-    print color("  pythem> ","red") + "print gateway"
-    print
-    print
-    print color("[SECTION - NETWORK, MAN-IN-THE-MIDDLE AND DENIAL OF SERVICE (DOS)]","grey")
+    print color("  pythem> ", "red") + "print gateway"
     print
     print
-    print color("[*] scan                   Make a tcp/manual/arp scan.","blue")
+    print color("[SECTION - NETWORK, MAN-IN-THE-MIDDLE AND DENIAL OF SERVICE (DOS)]", "grey")
+    print
+    print
+    print color("[*] scan: Make a tcp/manual/arp scan.", "blue")
     print
     print "Should be called after setting an interface and a target"
     print
-    print color(" examples:","green")
-    print color("  pythem> ","red") + "scan"
+    print color(" examples:", "green")
+    print color("  pythem> ", "red") + "scan"
     print "  [*] Select one scan mode, options = tcp/arp/manual"
     print "  [+] Scan mode: arp"
     print "     or"
-    print color("  pythem> ","red") + "scan tcp"
+    print color("  pythem> ", "red") + "scan tcp"
     print
-    print color("  pythem> ","red") + "scan manual"
+    print color("  pythem> ", "red") + "scan manual"
     print "  [+] Enter the port, ports (separated by commas): 21,22,25,80"
     print
     print
-    print color("[*] webcrawl                       Start to crawl an URL target finding links.","blue")
+    print color("[*] webcrawl: Start to crawl an URL target finding links.", "blue")
     print
-    print color(" arguments:","red")
+    print color(" arguments:", "red")
     print
-    print color("  - start","yellow")
-    print color("  - help","yellow")
+    print color("  - start", "yellow")
+    print color("  - help", "yellow")
     print
-    print color(" examples:","green")
+    print color(" examples:", "green")
     print
-    print color("  pythem> ","red") + "webcrawl start"
-    print
-    print
-    print color("[*] arpspoof                       Start or stop an arpspoofing attack.","blue")
-    print
-    print color(" arguments:","red")
-    print
-    print color("  - start","yellow")
-    print color("  - stop","yellow")
-    print color("  - status","yellow")
-    print color("  - help","yellow")
-    print
-    print color(" examples:","green")
-    print
-    print color("  pythem> ","red") + "arpspoof start"
-    print color("  pythem> ","red") + "arspoof stop"
-    print color("  pythem> ","red") + "arpspoof status"
+    print color("  pythem> ", "red") + "webcrawl start"
     print
     print
-    print color("[*] dnsspoof                       Start a dnsspoofing attack.","blue")
+    print color("[*] arpspoof: Start or stop an arpspoofing attack.", "blue")
+    print
+    print color(" arguments:", "red")
+    print
+    print color("  - start", "yellow")
+    print color("  - stop", "yellow")
+    print color("  - status", "yellow")
+    print color("  - help", "yellow")
+    print
+    print color(" examples:", "green")
+    print
+    print color("  pythem> ", "red") + "arpspoof start"
+    print color("  pythem> ", "red") + "arspoof stop"
+    print color("  pythem> ", "red") + "arpspoof status"
+    print
+    print
+    print color("[*] dnsspoof: Start a dnsspoofing attack.", "blue")
     print
     print "Should be called after an ARP spoofing attack has been started"
     print
-    print color(" arguments:","red")
+    print color(" arguments:", "red")
     print
-    print color(" - start","yellow")
-    print color(" - stop","yellow")
-    print color(" - status","yellow")
-    print color(" - help","yellow")
+    print color(" - start", "yellow")
+    print color(" - stop", "yellow")
+    print color(" - status", "yellow")
+    print color(" - help", "yellow")
     print
-    print color(" examples:","green")
+    print color(" examples:", "green")
     print
-    print color("  pythem> ","red")+ "dnsspoof start"
-    print color("  pythem> ","red") + "dnsspoof stop"
-    print color("  pythem> ","red") + "dnsspoof status"
+    print color("  pythem> ", "red") + "dnsspoof start"
+    print color("  pythem> ", "red") + "dnsspoof stop"
+    print color("  pythem> ", "red") + "dnsspoof status"
     print
     print
-    print color("[*] dhcpspoof                      Start a DHCP ACK Injection spoofing attack.","blue")
+    print color("[*] dhcpspoof: Start a DHCP ACK Injection spoofing attack.", "blue")
     print
     print "If the real DHCP server ACK is faster than your host the spoofing will not work, check it with the sniffer"
     print
-    print color(" arguments:","red")
+    print color(" arguments:", "red")
     print
-    print color(" - start","yellow")
-    print color(" - stop","yellow")
-    print color(" - status","yellow")
-    print color(" - help","yellow")
+    print color(" - start", "yellow")
+    print color(" - stop", "yellow")
+    print color(" - status", "yellow")
+    print color(" - help", "yellow")
     print
-    print color(" examples:","green")
+    print color(" examples:", "green")
     print
-    print color("  pythem> ","red") + "dhcpspoof start"
-    print color("  pythem> ","red") + "dhcpspoof stop"
-    print color("  pythem> ","red") + "dhcpspoof status"
+    print color("  pythem> ", "red") + "dhcpspoof start"
+    print color("  pythem> ", "red") + "dhcpspoof stop"
+    print color("  pythem> ", "red") + "dhcpspoof status"
     print
     print
-    print color("[*] redirect                       Start to redirect clients to web server with a script tag to inject in html response","blue")
+    print color("[*] redirect: Start to redirect clients to web server with a script tag to inject in html response",
+                "blue")
     print
     print "Should be used after a ARP spoof has been started"
     print
     print color(" arguments:", "red")
     print
-    print color("  - start","yellow")
-    print color("  - stop","yellow")
-    print color("  - help","yellow")
+    print color("  - start", "yellow")
+    print color("  - stop", "yellow")
+    print color("  - help", "yellow")
     print
-    print color(" examples:","green")
+    print color(" examples:", "green")
     print
-    print color("  pythem> ","red") + "redirect start"
-    print color("  pythem> ","red") + "redirect stop"
+    print color("  pythem> ", "red") + "redirect start"
+    print color("  pythem> ", "red") + "redirect stop"
     print
     print
-    print color("[*] sniff                  Start to sniff network traffic on desired network interface","blue")
+    print color("[*] sniff: Start to sniff network traffic on desired network interface", "blue")
     print
     print "Should be called after setting an interface"
     print
-    print color(" sniff custom filters:","red")
+    print color(" sniff custom filters:", "red")
     print
-    print color("  - http","yellow")
-    print color("  - dns","yellow")
-    print color("  - core","yellow")
+    print color("  - http", "yellow")
+    print color("  - dns", "yellow")
+    print color("  - core", "yellow")
     print
-    print color(" examples:","green")
+    print color(" examples:", "green")
     print
-    print color("  pythem> ","red")+ 'sniff http'
+    print color("  pythem> ", "red") + 'sniff http'
     print "     or"
-    print color("  pythem> ","red")+ 'sniff'
-    print "  [+] Enter the filter: port 1337 and host 10.0.1.5  | tcpdump like format or http,dns,core specific filter."
+    print color("  pythem> ", "red") + 'sniff'
+    print "  [+] Enter the filter: port 1337 and host 10.0.1.5 | tcpdump like format or http,dns,core specific filter."
     print
     print
-    print color("[*] pforensic                      Start a packet-analyzer","blue")
+    print color("[*] pforensic: Start a packet-analyzer", "blue")
     print
     print "Should be called after setting file with a .pcap file"
     print
-    print color(" examples:","green")
+    print color(" examples:", "green")
     print
-    print color("  pythem> ","red") + 'pforensic'
+    print color("  pythem> ", "red") + 'pforensic'
     print
-    print color("  pforensic> ","yellow") + 'help'
-    print
-    print
-    print color("[*] dos                            Start a Denial of Service attack (DOS).","blue")
-    print
-    print color(" arguments:","red")
-    print
-    print color("  - dnsdrop           | Start to drop DNS queries that pass through man-in-the-middle traffic.","yellow")
-    print
-    print color("  - dnsamplification  | Start a DNS amplification attack on target address with given DNS servers to amplificate.","yellow")
-    print
-    print color("  - synflood             | Start a SYN flood attack on target address, default port = 80, set port to change.","yellow")
-    print
-    print color("  - udpflood             | Start a UDP flood attack on target address, default port = 80, set port to change.","yellow")
-    print
-    print color("  - teardrop          | Start a UDP teardrop fragmentation attack.","yellow")
-    print
-    print color("  - land         | Start a LAND attack on target address, default port = 80, set port to change.","yellow")
-    print
-    print color("  - icmpflood            | Start a ICMP flood attack on target address.","yellow")
-    print
-    print color("  - pingofdeath          | Start a ping of death (P.O.D) attack on target address.","yellow")
-    print
-    print color("  - icmpsmurf            | Start a ICMP smurf attack on target host. Send echo-requests to hosts with spoofed target address.","yellow")
-    print
-    print color("  - dhcpstarvation    | Start a DHCP starvation attack on network DHCP server. Multiple spoofed MAC dhcp discovers.","yellow")
-    print
-    print color("  - httpflood         | Start to flood HTTP requests on a target URL, *Only GET method supported by now.","yellow")
+    print color("  pforensic> ", "yellow") + 'help'
     print
     print
-    print color(" examples:","green")
+    print color("[*] dos: Start a Denial of Service attack (DOS).", "blue")
     print
-    print color("  pythem> ","red") + "dos dnsdrop"
-    print color("  pythem> ","red") + "dos synflood help"
+    print color(" arguments:", "red")
+    print
+    print color("  - dnsdrop | Start to drop DNS queries that pass through man-in-the-middle traffic.", "yellow")
+    print
+    print color(
+        "  - dnsamplification  | Start a DNS amplification attack on target address with given DNS servers to amplificate.",
+        "yellow")
+    print
+    print color("  - synflood | Start a SYN flood attack on target address, default port = 80, set port to change.",
+                "yellow")
+    print
+    print color("  - udpflood | Start a UDP flood attack on target address, default port = 80, set port to change.",
+                "yellow")
+    print
+    print color("  - teardrop | Start a UDP teardrop fragmentation attack.", "yellow")
+    print
+    print color("  - land | Start a LAND attack on target address, default port = 80, set port to change.", "yellow")
+    print
+    print color("  - icmpflood | Start a ICMP flood attack on target address.", "yellow")
+    print
+    print color("  - pingofdeath | Start a ping of death (P.O.D) attack on target address.", "yellow")
+    print
+    print color(
+        "  - icmpsmurf | Start a ICMP smurf attack on target host. Send echo-requests to hosts with spoofed target address.",
+        "yellow")
+    print
+    print color(
+        "  - dhcpstarvation | Start a DHCP starvation attack on network DHCP server. Multiple spoofed MAC dhcp discovers.",
+        "yellow")
+    print
+    print color("  - httpflood | Start to flood HTTP requests on a target URL, *Only GET method supported by now.",
+                "yellow")
     print
     print
-    print color("[SECTION - EXPLOIT DEVELOPMENT AND REVERSE ENGINERING]","grey")
+    print color(" examples:", "green")
+    print
+    print color("  pythem> ", "red") + "dos dnsdrop"
+    print color("  pythem> ", "red") + "dos synflood help"
     print
     print
-    print color("[*] xploit                 Interactive stdin or tcp exploit development shell.","blue")
+    print color("[SECTION - EXPLOIT DEVELOPMENT AND REVERSE ENGINERING]", "grey")
+    print
+    print
+    print color("[*] xploit: Interactive stdin or tcp exploit development shell.", "blue")
     print
     print "The stdin should be called after setting file"
     print "The tcp should be called after setting target"
     print
-    print color(" arguments:","red")
+    print color(" arguments:", "red")
     print
-    print color("  - stdin  | set file before","yellow")
-    print color("  - tcp            | set target before","yellow")
+    print color("  - stdin | set file before", "yellow")
+    print color("  - tcp | set target before", "yellow")
     print
-    print color(" examples:","green")
+    print color(" examples:", "green")
     print
-    print color("  pythem> ","red") + "set file exec"
+    print color("  pythem> ", "red") + "set file exec"
     print
-    print color("  pythem> ","red") + "xploit stdin"
-    print color("  xploit> ","blue") + "help"
+    print color("  pythem> ", "red") + "xploit stdin"
+    print color("  xploit> ", "blue") + "help"
     print "     or"
-    print color("  pythem> ","red") + "xploit"
+    print color("  pythem> ", "red") + "xploit"
     print "  [*] Select one xploit mode, options = stdin/tcp"
     print "  [+] Exploit mode: stdin"
-    print color("  xploit> ","blue") + "help"
+    print color("  xploit> ", "blue") + "help"
     print
     print
-    print color("[SECTION - BRUTE-FORCE]","grey")
+    print color("[SECTION - BRUTE-FORCE]", "grey")
     print
     print
-    print color("[*] brute                  Start a brute-force attack.","blue")
+    print color("[*] brute: Start a brute-force attack.", "blue")
     print
     print "Should be called after setting a target and a wordlist file path"
     print
-    print color(" arguments:","red")
+    print color(" arguments:", "red")
     print
-    print color("  - ssh            | ip address as target","yellow")
-    print color("  - url            | url (with http:// or https://) as target","yellow")
-    print color("  - form   | url (with http:// or https://) as target","yellow")
-    print color("  - hash   | hash as target","yellow")
+    print color("  - ssh | ip address as target", "yellow")
+    print color("  - url | url (with http:// or https://) as target", "yellow")
+    print color("  - form | url (with http:// or https://) as target", "yellow")
+    print color("  - hash | hash as target", "yellow")
     print
-    print color(" examples:","green")
+    print color(" examples:", "green")
     print
-    print color("  pythem> ","red") + "brute webform"
-    print color("  pythem> ","red") + "brute ssh help"
-    print
-    print
-    print color("[SECTION - UTILS]","grey")
+    print color("  pythem> ", "red") + "brute webform"
+    print color("  pythem> ", "red") + "brute ssh help"
     print
     print
-    print color("[*] decode and encode              Decode or encode a string with a chosen pattern.","blue")
-    print
-    print color(" examples:","green")
-    print
-    print color("  pythem> ","red") + "decode base64"
-    print color("  pythem> ","red") + "encode ascii"
+    print color("[SECTION - UTILS]", "grey")
     print
     print
-    print color("[*] cookiedecode           Decode a base64 url encoded cookie value.","blue")
+    print color("[*] decode and encode: Decode or encode a string with the choosed encoding.", "blue")
     print
-    print color(" example:","green")
+    print color(" examples:", "green")
     print
-    print color("  pythem> ","red") + "cookiedecode"
+    print color("  pythem> ", "red") + "decode base64"
+    print color("  pythem> ", "red") + "encode ascii"
     print
     print
-    print color("* Anything else will be executed in the terminal like ls, nano, cat, etc. *","yellow")
+    print color("[*] cookiedecode: Decode a base64 url encoded cookie value.", "blue")
     print
-    print color("by: ","red") + color("m4n3dw0lf","blue")
+    print color(" example:", "green")
     print
-
+    print color("  pythem> ", "red") + "cookiedecode"
+    print
+    print
+    print color("* Anything else will be executed in the terminal like ls, nano, cat, etc. *", "yellow")
+    print
+    print color("by: ", "red") + color("m4n3dw0lf", "blue")
+    print

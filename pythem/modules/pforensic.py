@@ -1,5 +1,5 @@
 #!/usr/bin/env python2.7
-#coding=UTF-8
+# coding=UTF-8
 
 # Copyright (c) 2016-2018 Angelo Moura
 #
@@ -27,7 +27,6 @@ from utils import color
 
 
 class PcapReader(object):
-
     name = "Simple pcap analyzer"
     desc = "Use some functions to analyze a pcap file"
     version = "0.3"
@@ -38,39 +37,43 @@ class PcapReader(object):
             self.file = file
             self.packets = rdpcap(file)
         except:
+            if file == "pythem_module_test":
+                return
             print "You probably forgot to set a file to be analyzed."
 
     def printHelp(self):
         print
-        print color("   [ pythem - Forensic pcap reader ]","grey")
+        print color("   [ pythem - Forensic pcap reader ]", "grey")
         print
-        print color("   FILE - [ {} ]".format(self.file),"red")
-        print
-        print
-        print color("[*] help:                          Print the help message","blue")
+        print color("   FILE - [ {} ]".format(self.file), "red")
         print
         print
-        print color("[*] clear:                 Clean the screen, same as GNU/Linux OS 'clear'","blue")
+        print color("[*] help:                          Print the help message", "blue")
         print
         print
-        print color("[*] exit/quit:                     Return to pythem","blue")
+        print color("[*] clear:                 Clean the screen, same as GNU/Linux OS 'clear'", "blue")
         print
         print
-        print color("[*] show:                  Display all the packets and their index numbers.","blue")
+        print color("[*] exit/quit:                     Return to pythem", "blue")
         print
         print
-        print color("[*] conversations:         Display pictogram with conversations between hosts from the analyzed file.","blue")
+        print color("[*] show:                  Display all the packets and their index numbers.", "blue")
         print
         print
-        print color("[*] filter <string/layer>: Run a custom filter in the packets.","blue")
+        print color(
+            "[*] conversations:         Display pictogram with conversations between hosts from the analyzed file.",
+            "blue")
         print
         print
-        print color("[*] packetdisplay [num]:   Display the full content of index selected packet.","blue")
+        print color("[*] filter <string/layer>: Run a custom filter in the packets.", "blue")
         print
         print
-        print color("[*] count :                Display how much packets the .pcap file have.","blue")
+        print color("[*] packetdisplay [num]:   Display the full content of index selected packet.", "blue")
+        print
+        print
+        print color("[*] count :                Display how much packets the .pcap file have.", "blue")
 
-    def custom_filter(self,packets,filter):
+    def custom_filter(self, packets, filter):
         x = 0
         if filter == "string":
             from StringIO import StringIO
@@ -122,13 +125,13 @@ class PcapReader(object):
     def start(self):
         while True:
             try:
-                console = termcolor.colored("pforensic>","yellow", attrs=["bold"])
+                console = termcolor.colored("pforensic>", "yellow", attrs=["bold"])
                 self.command = raw_input("{} ".format(console))
                 self.argv = self.command.split()
                 self.input_list = [str(a) for a in self.argv]
 
                 try:
-                    if self.input_list[0]  == 'packetdisplay':
+                    if self.input_list[0] == 'packetdisplay':
                         try:
                             self.packets[int(self.input_list[1])].show()
                         except Exception as e:
@@ -137,7 +140,7 @@ class PcapReader(object):
                     elif self.input_list[0] == "filter":
                         try:
                             self.filter = self.input_list[1]
-                            self.custom_filter(self.packets,self.filter)
+                            self.custom_filter(self.packets, self.filter)
                         except IndexError:
                             print "[!] Select a option to filter, string or layer"
                         except Exception as e:
@@ -148,13 +151,13 @@ class PcapReader(object):
                             print "[+] Packet {} payload: ".format(self.input_list[1])
                             self.filter_lookup(self.packets[int(self.input_list[1])])
 
-                        except Exception as e: 
+                        except Exception as e:
                             print "[!] Exception caught: {}".format(e)
 
-                    elif self.input_list[0]  == 'exit':
-                            break
+                    elif self.input_list[0] == 'exit':
+                        break
                     elif self.input_list[0] == 'quit':
-                            break
+                        break
                     elif self.input_list[0] == 'help':
                         self.printHelp()
                     elif self.input_list[0] == 'clear':
@@ -164,13 +167,13 @@ class PcapReader(object):
                     elif self.input_list[0] == 'summary':
                         try:
                             self.packets.summary()
-                        except Exception as e: 
+                        except Exception as e:
                             print "[!] Exception caught: {}".format(e)
                     elif self.input_list[0] == 'show':
                         try:
                             self.packets.show()
-                        except Exception as e: 
-                            print "[!] Exception caught: {}".format(e)      
+                        except Exception as e:
+                            print "[!] Exception caught: {}".format(e)
                     elif self.input_list[0] == 'count':
                         try:
                             print "[+] Number of packets: {}".format(len(self.packets))
@@ -179,13 +182,12 @@ class PcapReader(object):
                     elif self.input_list[0] == 'conversations':
                         try:
                             self.packets.conversations()
-                        except Exception as e: 
+                        except Exception as e:
                             print "[!] Exception caught: {}".format(e)
                     else:
-                        print "[-] Select a valid option."                              
+                        print "[-] Select a valid option."
 
                 except IndexError:
                     pass
             except KeyboardInterrupt:
                 break
-

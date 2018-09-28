@@ -1,5 +1,5 @@
 #!/usr/bin/env python2.7
-#coding=UTF-8
+# coding=UTF-8
 
 # Copyright (c) 2016-2018 Angelo Moura
 #
@@ -28,25 +28,24 @@ import mechanize
 
 
 class WEBbrutus(object):
-
     name = "WEB brute forcer"
     desc = "Perform web password and directory brute-force"
     version = "0.3"
 
-    def __init__ (self, target,file):
+    def __init__(self, target, file):
         self.threads = 5
         self.target_url = target
         self.wordlist = file
         self.resume = None
         self.user_agent = "Mozilla/5.0 (X11; Linux x86_64; rv:19.0) Gecko/20100101 Firefor/19.0"
         self.word_queue = self.build_wordlist(self.wordlist)
-        self.extensions = [".txt",".php",".bak",".orig",".inc",".doc"]
+        self.extensions = [".txt", ".php", ".bak", ".orig", ".inc", ".doc"]
         self.line = "\n------------------------------------------------------------------------\n"
 
     def build_wordlist(self, wordlist):
         # Le a lista de palavras
         wordlist = self.wordlist
-        fd = open(self.wordlist,"rb")
+        fd = open(self.wordlist, "rb")
         raw_words = fd.readlines()
         fd.close()
         found_resume = False
@@ -66,8 +65,7 @@ class WEBbrutus(object):
 
         return words
 
-
-    def form_attempt(self,password):
+    def form_attempt(self, password):
         br = mechanize.Browser()
         br.set_handle_robots(False)
         br.open(self.target_url)
@@ -76,7 +74,7 @@ class WEBbrutus(object):
         br['{}'.format(self.psswd)] = password
         br.submit()
         response = br.response()
-        print "[+] [User:{} Pass:{}] = {}".format(self.user,password,response.geturl())
+        print "[+] [User:{} Pass:{}] = {}".format(self.user, password, response.geturl())
         print
 
     def form_bruter(self):
@@ -95,8 +93,7 @@ class WEBbrutus(object):
         except Exception as e:
             print "[!] Exception caught, check the fields according to the HTML page, Error: {}".format(e)
 
-
-    def dir_bruter(self, word_queue,extensions=None):
+    def dir_bruter(self, word_queue, extensions=None):
         while not self.word_queue.empty():
             attempt = self.word_queue.get()
             attempt_list = []
@@ -107,32 +104,31 @@ class WEBbrutus(object):
                 attempt_list.append("%s" % attempt)
             if extensions:
                 for extension in extensions:
-                    attempt_list.append("%s%s" % (attempt,extension))
-
+                    attempt_list.append("%s%s" % (attempt, extension))
 
             try:
                 for brute in attempt_list:
-                    url = "%s%s" % (self.target_url,urllib.quote(brute))
+                    url = "%s%s" % (self.target_url, urllib.quote(brute))
 
                     try:
                         headers = {}
                         headers["User-Agent"] = self.user_agent
-                        r = urllib2.Request(url,headers=headers)
+                        r = urllib2.Request(url, headers=headers)
                         response = urllib2.urlopen(r)
                         if len(response.read()):
-                            print "[%d] ==> %s" % (response.code,url)
-                    except urllib2.URLError,e:
+                            print "[%d] ==> %s" % (response.code, url)
+                    except urllib2.URLError, e:
                         if e.code != 404:
-                            print "!!! %d => %s" % (e.code,url)
+                            print "!!! %d => %s" % (e.code, url)
                         pass
             except KeyboardInterrupt:
                 break
 
-    def start(self,mode):
+    def start(self, mode):
         if mode == 'url':
             print "[+] Content URL bruter initialized."
             try:
-                self.dir_bruter(self.word_queue,self.extensions,)
+                self.dir_bruter(self.word_queue, self.extensions, )
             except KeyboardInterrupt:
                 print "[*] User requested shutdown."
 
@@ -143,7 +139,7 @@ class WEBbrutus(object):
             except KeyboardInterrupt:
                 print "[*] User requested shutdown."
 
-    def stop(self,mode):
+    def stop(self, mode):
         if mode == 'url':
             try:
                 print "[-] Content URL bruter finalized."
@@ -155,4 +151,3 @@ class WEBbrutus(object):
                 print "[-] Brute-Form authentication finalized."
             except Exception as e:
                 print "[!] Exception caught: {}".format(e)
-
