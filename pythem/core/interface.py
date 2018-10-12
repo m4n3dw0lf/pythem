@@ -98,7 +98,10 @@ class Processor(object):
                 # Use termocolor import to set the default commandline red
                 console = termcolor.colored("pythem>", "red", attrs=["bold"])
                 # Iterable console shell commands with the while 1
-                self.command = raw_input("{} ".format(console))
+                try:
+                    self.command = raw_input("{} ".format(console))
+                except EOFError:
+                    self.command = "exit"
                 save_command_history(self.command)
                 # Separate the user input by spaces " ", can use like this too: self.input_list = [str(a) for a in self.argv]
                 self.input_list = self.command.split()
