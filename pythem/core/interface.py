@@ -119,7 +119,7 @@ class Processor(object):
                         if self.arpspoof_status:
                             iptables()
                             set_ip_forwarding(0)
-                            exit()
+                        exit()
 
                     elif self.input_list[0] == "set" or self.input_list[0] == "SET":
                         try:
@@ -1054,7 +1054,7 @@ class Processor(object):
                     if self.arpspoof_status:
                         iptables()
                         set_ip_forwarding(0)
-                        exit()
+                    exit()
 
         except KeyboardInterrupt:
             print "\n[*] User requested shutdown."
