@@ -27,11 +27,10 @@ from scapy.all import *
 class DHCPspoof(object):
     name = "DHCP Spoofing"
     desc = "DHCP ACK injection with DHCP Request monitor callback"
-    version = "0.1"
+    version = "0.2"
 
-    def __init__(self, mode):
-        if mode == "test":
-            return
+
+    def start(self, mode):
         try:
             self.dhcp_server_ip = raw_input("[+] DHCP Server IP address: ")
             self.lease = 43200  # input("[+] Lease time: ")
@@ -46,7 +45,6 @@ class DHCPspoof(object):
             print "[!] Exception caught: {}".format(e)
         except KeyboardInterrupt:
             exit(0)
-
         if mode == "silent":
             t = threading.Thread(name="DHCPspoof", target=self.spoof)
             t.setDaemon(True)
@@ -107,6 +105,17 @@ class DHCPspoof(object):
                 except Exception as e:
                     print "[!] Exception at try at line 110: {}".format(e)
                     pass
+
+dhcpoisoner_help = """\n
+[Help] Start a DHCP ACK Injection spoofing attack.
+parameters:
+ - start
+ - stop
+ - status
+ - help
+example:
+pythem> dhcpspoof start
+\n"""
 
 
 if __name__ == "__main__":

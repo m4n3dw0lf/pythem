@@ -29,10 +29,10 @@ import threading
 class DNSspoof(object):
     name = "DNS spoofing"
     desc = "Filter DNS packets while in man-in-the-middle and modify packet."
-    version = "0.4"
+    version = "0.5"
 
-    def __init__(self, fake):
-        self.fake = fake
+    def __init__(self):
+        self.fake = None
 
     def callback(self, packet):
         payload = packet.get_payload()
@@ -84,10 +84,25 @@ class DNSspoof(object):
     def getdomain(self):
         return self.currentdomain
 
-    def start(self, domain, inject):
+    def start(self, domain, inject, redirect):
         os.system('iptables -t nat -A PREROUTING -p udp --dport 53 -j NFQUEUE --queue-num 1')
         self.domain = domain
         self.inject = inject
+        self.fake = redirect
         t = threading.Thread(name='DNSspoof', target=self.spoof)
         t.setDaemon(True)
         t.start()
+
+dnspoisoner_help = """\n
+[Help] Start to DNS spoof.
+[Required] ARP spoof started.
+parameters:
+ - start
+ - stop
+ - status
+ - help
+example:
+pythem> dnsspoof start
+[!] Type all to spoof all domains
+[+] Domain to be spoofed: www.google.com
+\n"""

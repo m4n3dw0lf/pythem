@@ -30,20 +30,19 @@ import socket
 class Scanner(object):
     name = "Multi purpose scanner"
     desc = "Scan hosts"
-    version = "0.8"
+    version = "0.9"
 
-    def __init__(self, target, interface, mode):
-        self.interface = interface
-        self.targets = target
-        self.arprange = target
-        self.range = self.get_range(target)
+    def __init__(self):
+        self.interface = None
+        self.targets = None
+        self.arprange = None
         self.portRange = [21, 22, 23, 25, 53, 57, 79, 80, 107, 109, 110, 111, 115, 118, 123, 135, 137, 138, 139, 143,
                           161, 389, 443, 445, 465, 995, 1025, 1026, 1027, 1035, 1234, 1243, 3000, 3128, 3306, 3389,
                           3872, 4444, 5000, 5001, 5002, 5003, 5004, 5005, 5006, 5100, 5190, 5222, 5223, 5228, 5631,
                           5632, 5900, 6000, 6005, 6346, 6667, 6667, 8080, 8443, 8888, 9999, 12345, 12346, 16660, 18753,
                           20034, 20432, 20433, 27374, 27444, 27665, 31335, 31337, 33270, 33567, 33568, 40421, 60008,
                           65000]
-        self.mode = mode
+        self.mode = None
         self.portManual = None
 
     def get_range(self, targets):
@@ -202,7 +201,11 @@ class Scanner(object):
             print "\n[*] User requested shutdown."
             sys.exit(1)
 
-    def start(self):
+    def start(self, target, interface, mode):
+        self.target = target
+        self.interface = interface
+        self.mode = mode
+        self.range = self.get_range(target)
         if self.mode == 'manual':
             try:
                 self.MANUALscanner()
@@ -230,3 +233,16 @@ class Scanner(object):
 
         else:
             print "[!] Invalid scan mode ./pythem.py --help to check your sintax."
+
+scanner_help = """\n
+[Help] Start a scanner in target host.
+[Required] interface and target
+parameters:
+ - tcp
+ - arp
+ - manual
+example:
+pythem> set target www.google.com
+pythem> set interface eth0
+pythem> scan tcp
+\n"""
