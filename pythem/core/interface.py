@@ -38,6 +38,7 @@ from pythem.modules.arpoisoner import *
 from pythem.modules.dnspoisoner import *
 from pythem.modules.redirect import *
 from pythem.modules.dhcpoisoner import *
+from pythem.modules.xploit import *
 from pythem.modules.completer import Completer
 
 
@@ -670,48 +671,16 @@ class Processor(object):
                     elif self.input_list[0] == "xploit":
                         try:
                             from pythem.modules.xploit import Exploit
-                            if self.targets is not None and self.input_list[1] == "tcp":
-                                self.xploit = Exploit(self.targets, self.input_list[1])
-                                self.xploit.start()
-                            elif self.file is not None and self.input_list[1] == "stdin":
-                                self.xploit = Exploit(self.file, self.input_list[1])
-                                self.xploit.start()
-                            elif self.input_list[1] == "help":
-                                print "\n[Help] Interactive stdin or tcp exploit development shell."
-                                print "[Optional] File as target to stdin and IP address as target to tcp"
-                                print "parameters:"
-                                print " - tcp"
-                                print " - stdin"
-                                print "example:"
-                                print "{} set target 192.168.1.1".format(console)
-                                print "{} xploit tcp\n".format(console)
+                            if len(self.input_list) > 1:
+                                if self.input_list[1] == "help":
+                                    print(xploit_help)
+                                    continue
+                            elif self.file:
+                                self.xploit = Exploit()
+                                self.xploit.start(self.file)
                             else:
-                                self.xploit = Exploit(None, "stdin")
-                                self.xploit.start()
-                        except IndexError:
-                            try:
-                                print "[*] Select xploit mode (or press enter to enter xploit console), options = stdin/tcp"
-                                mode = raw_input("[+] Exploit mode: ")
-                                if mode == "stdin" or mode == "tcp":
-                                    from pythem.modules.xploit import Exploit
-                                    if self.targets is not None:
-                                        self.xploit = Exploit(self.targets, mode)
-                                        self.xploit.start()
-                                    elif self.file is not None:
-                                        self.xploit = Exploit(self.file, mode)
-                                        self.xploit.start()
-                                    else:
-                                        print "[!] You need to set or a file or a target to xploit."
-                                        self.xploit = Exploit(None, "stdin")
-                                    self.xploit.start()
-                                else:
-                                    self.xploit = Exploit(None, "stdin")
-                                    self.xploit.start()
-                            except KeyboardInterrupt:
-                                pass
-                        except TypeError:
-                            print "[!] You probably forgot to set the file"
-                            pass
+                                self.xploit = Exploit()
+                                self.xploit.start(None)
                         except KeyboardInterrupt:
                             pass
                         except Exception as e:

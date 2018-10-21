@@ -354,26 +354,18 @@ def print_help():
     print color("[SECTION - EXPLOIT DEVELOPMENT AND REVERSE ENGINERING]", "grey")
     print
     print
-    print color("[*] xploit: Interactive stdin or tcp exploit development shell.", "blue")
+    print color("[*] xploit: Interactive stdin exploit development shell.", "blue")
     print
-    print "The stdin should be called after setting file"
-    print "The tcp should be called after setting target"
+    print "Should be called after setting an executable file"
     print
     print color(" arguments:", "red")
     print
-    print color("  - stdin | set file before", "yellow")
-    print color("  - tcp | set target before", "yellow")
     print
     print color(" examples:", "green")
     print
-    print color("  pythem> ", "red") + "set file exec"
+    print color("  pythem> ", "red") + "set file executable"
     print
-    print color("  pythem> ", "red") + "xploit stdin"
-    print color("  xploit> ", "blue") + "help"
-    print "     or"
     print color("  pythem> ", "red") + "xploit"
-    print "  [*] Select one xploit mode, options = stdin/tcp"
-    print "  [+] Exploit mode: stdin"
     print color("  xploit> ", "blue") + "help"
     print
     print
