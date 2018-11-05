@@ -39,6 +39,7 @@ from pythem.modules.dnspoisoner import *
 from pythem.modules.redirect import *
 from pythem.modules.dhcpoisoner import *
 from pythem.modules.xploit import *
+from pythem.modules.bruteforcer import *
 from pythem.modules.completer import Completer
 
 
@@ -691,10 +692,8 @@ class Processor(object):
                         try:
                             try:
                                 if self.input_list[1] == "help":
-                                    print "\n[Help] Decode a base64 unquoted Cookie."
-                                    print "example:"
-                                    print "{} cookiedecode".format(console)
-                                    print "[+] Enter the cookie value:\n"
+                                    print(cookiedecode_help)
+                                    continue
                             except IndexError:
                                 cookiedecode()
                         except KeyboardInterrupt:
@@ -706,11 +705,7 @@ class Processor(object):
                     elif self.input_list[0] == "decode":
                         try:
                             if self.input_list[1] == "help":
-                                print "\n[Help] Decode a base64 string."
-                                print "example:"
-                                print "{} decode".format(console)
-                                print "[+] Decode: <encoding>"
-                                print "[+] Enter the string to be decoded:\n"
+                                print(decode_help)
                                 continue
                         except IndexError:
                             try:
@@ -724,11 +719,7 @@ class Processor(object):
                     elif self.input_list[0] == "encode":
                         try:
                             if self.input_list[1] == "help":
-                                print "\n[Help] Encode a base64 string."
-                                print "example:"
-                                print "{} encode".format(console)
-                                print "[+] Encode: <encoding>"
-                                print "[+] Enter the string to be encoded:\n"
+                                print(encode_help)
                                 continue
                             print encode(self.input_list[1])
                         except IndexError:
@@ -743,30 +734,17 @@ class Processor(object):
                     elif self.input_list[0] == "brute":
                         try:
                             if self.input_list[1] == "help":
-                                print "\n[Help] Brute-Force attacks, good luck padawan."
-                                print "[Required] File as password wordlist and target as URL or IP."
-                                print "parameters:"
-                                print " - ssh"
-                                print " - form"
-                                print " - url"
-                                print " - hash"
-                                print "example:"
-                                print "{} brute ssh help\n".format(console)
+                                print(brute_help)
                                 continue
 
                             if self.input_list[1] == "hash":
                                 try:
                                     if self.input_list[2] == "help":
-                                        print "\n[Help] Hash Brute-Force"
-                                        print "[Optional]File as wordlist, hash as target."
-                                        print "example:"
-                                        print "{} set file wordlist.txt".format(console)
-                                        print "{} set target 35f5de5eb59e2ac7f73d5821f9f2e4f6".format(console)
-                                        print "{} brute hash\n".format(console)
+                                        print(brute_hash_help)
+                                        continue
                                     else:
                                         print "[!] Invalid option."
                                 except IndexError:
-                                    from pythem.modules.hashcracker import HashCracker
                                     hashcrack = HashCracker(self.targets, self.file)
                                 except KeyboardInterrupt:
                                     pass
@@ -774,21 +752,15 @@ class Processor(object):
                             if self.input_list[1] == "ssh":
                                 try:
                                     if self.input_list[2] == "help":
-                                        print "\n[Help] SSH Brute-Force"
-                                        print "[Required] IP address as target."
-                                        print "example:"
-                                        print "{} set file wordlist.txt".format(console)
-                                        print "{} set target 192.168.1.5".format(console)
-                                        print "{} brute ssh\n".format(console)
+                                        print(brute_ssh_help)
                                         continue
                                     else:
                                         print "[!] Invalid option."
                                 except IndexError:
                                     try:
                                         username = raw_input("[+] Enter the username to bruteforce: ")
-                                        from pythem.modules.ssh_bruter import SSHbrutus
-                                        brutus = SSHbrutus(self.targets, username, self.file)
-                                        brutus.start()
+                                        brutus = SSHbrutus()
+                                        brutus.start(self.targets,username,self.file)
                                     except KeyboardInterrupt:
                                         pass
                                     except TypeError:
@@ -798,25 +770,17 @@ class Processor(object):
                             elif self.input_list[1] == "url":
                                 try:
                                     if self.input_list[2] == "help":
-                                        print "\n[Help] URL Brute-Force"
-                                        print "[Required] URL (with http:// or https://) as target"
-                                        print "example:"
-                                        print "{} set file wordlist.txt".format(console)
-                                        print "{} set target http://testphp.vulnweb.com/products.php?id=".format(
-                                            console)
-                                        print "{} brute url\n".format(console)
+                                        print(brute_url_help)
                                         continue
                                     else:
                                         print "[!] Invalid option."
 
                                 except IndexError:
                                     try:
-                                        url = 'url'
-                                        from pythem.modules.web_bruter import WEBbrutus
-                                        brutus = WEBbrutus(self.targets, self.file)
-                                        brutus.start(url)
+                                        brutus = WEBbrutus()
+                                        brutus.start('url',self.targets,self.file)
                                     except KeyboardInterrupt:
-                                        brutus.stop(url)
+                                        brutus.stop('url')
                                         pass
                                     except TypeError:
                                         print "[!] You probably forgot to set the wordlist file path."
@@ -825,24 +789,17 @@ class Processor(object):
                             elif self.input_list[1] == "form":
                                 try:
                                     if self.input_list[2] == "help":
-                                        print "\n[Help] Formulary Brute-Force"
-                                        print "[Required] URL (with http:// or https://) as target"
-                                        print "example:"
-                                        print "{} set file wordlist.txt".format(console)
-                                        print "{} set target http://testphp.vulnweb.com/login.php".format(console)
-                                        print "{} brute form\n".format(console)
+                                        print(brute_form_help)
                                         continue
                                     else:
                                         print "[!] Invalid option."
 
                                 except IndexError:
                                     try:
-                                        form = 'form'
-                                        from pythem.modules.web_bruter import WEBbrutus
-                                        brutus = WEBbrutus(self.targets, self.file)
-                                        brutus.start(form)
+                                        brutus = WEBbrutus()
+                                        brutus.start('form',self.targets,self.file)
                                     except KeyboardInterrupt:
-                                        brutus.stop(form)
+                                        brutus.stop('form')
                                         pass
                                     except TypeError:
                                         print "[!] You probably forgot to set the wordlist file path."

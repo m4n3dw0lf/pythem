@@ -41,8 +41,7 @@ class Sniffer(object):
     def __init__(self):
         self.interface = None
         self.filter = None
-        self.wrpcap = raw_input(
-            "[*] Wish to write a .pcap file with the sniffed packets in the actual directory?[y/n]: ")
+        self.wrpcap = None
         self.packetcounter = 0
 
     def customsniff(self, p):
@@ -367,6 +366,8 @@ class Sniffer(object):
     def start(self, interface=None, filter=None):
         self.interface = interface
         self.filter = filter
+        self.wrpcap = raw_input(
+            "[*] Wish to write a .pcap file with the sniffed packets in the actual directory?[y/n]: ")
         # print "FILTER: " + self.filter
         if not self.filter:
             self.filter = 'core'

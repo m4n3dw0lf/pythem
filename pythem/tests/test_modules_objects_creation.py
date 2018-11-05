@@ -4,38 +4,46 @@ logging.getLogger("scapy.loading").setLevel(logging.ERROR)
 
 import unittest
 
-class TestModuleImports(unittest.TestCase):
-    def test_redirect_import(self):
+class TestModulesObjectsCreation(unittest.TestCase):
+    def test_redirect(self):
         from pythem.modules.redirect import Redirect
-    def test_arpspoof_import(self):
+        redirect = Redirect()
+    def test_arpspoof(self):
         from pythem.modules.arpoisoner import ARPspoof
-    def test_dhcpspoof_import(self):
+        arpspoof = ARPspoof()
+    def test_dhcpspoof(self):
         from pythem.modules.dhcpoisoner import DHCPspoof
-    def test_completer_import(self):
-        from pythem.modules.completer import Completer
-    def test_dnsspoof_import(self):
+        dhcpspoof = DHCPspoof()
+    def test_dnsspoof(self):
         from pythem.modules.dnspoisoner import DNSspoof
-    def test_dos_import(self):
+        dnsspoof = DNSspoof()
+    def test_dos(self):
         from pythem.modules.dos import DOSer
-    def test_fuzzer_import(self):
+        dos = DOSer()
+    def test_fuzzer(self):
         from pythem.modules.fuzzer import SimpleFuzz
-    def test_cracker_import(self):
-        from pythem.modules.hashcracker import HashCracker
-    def test_pforensic_import(self):
+        fuzzer = SimpleFuzz()
+    def test_pforensic(self):
         from pythem.modules.pforensic import PcapReader
-    def test_scanner_import(self):
+        pforensic = PcapReader()
+    def test_scanner(self):
         from pythem.modules.scanner import Scanner
-    def test_sniffer_import(self):
+        scanner = Scanner()
+    def test_sniffer(self):
         from pythem.modules.sniffer import Sniffer
-    def test_sshbrute_import(self):
-        from pythem.modules.ssh_bruter import SSHbrutus
-    def test_webbrute_import(self):
-        from pythem.modules.web_bruter import WEBbrutus
-    def test_webcrawler_import(self):
+        sniffer = Sniffer()
+    def test_webcrawler(self):
         from pythem.modules.webcrawler import WebCrawler
-    def test_xploit_import(self):
+        crawler = WebCrawler()
+    def test_xploit(self):
         from pythem.modules.xploit import Exploit
-    def test_utils_functions(self):
+        xploit = Exploit()
+    def test_bruteforcer(self):
+        from pythem.modules.bruteforcer import HashCracker, SSHbrutus, WEBbrutus
+        hash_cracker = HashCracker()
+        ssh_brute = SSHbrutus()
+        web_brute = WEBbrutus()
+    def test_utils(self):
         from pythem.modules.utils import decode
         from pythem.modules.utils import encode
         from pythem.modules.utils import credentials
@@ -50,7 +58,7 @@ class TestModuleImports(unittest.TestCase):
         from pythem.modules.utils import cookiedecode
         from pythem.modules.utils import set_ip_forwarding
         from pythem.modules.utils import print_help
-    def test_interface_import(self):
+    def test_interface(self):
         from pythem.core import interface
 
 if __name__ == "__main__":

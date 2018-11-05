@@ -36,6 +36,14 @@ def decode(base):
     result = "[+] Result: {}".format(decode)
     return result
 
+decode_help = """\n
+[Help] Decode a base64 string.
+example:
+pythem> decode
+[+] Decode: <encoding>
+[+] Enter the string to be decoded:
+\n"""
+
 
 def encode(base):
     text = raw_input("[*] String to be encoded: ")
@@ -43,12 +51,27 @@ def encode(base):
     result = "[+] Result: {}".format(encode)
     return result
 
+encode_help = """\n
+[Help] Encode a base64 string.
+example:
+pythem> encode
+[+] Encode: <encoding>
+[+] Enter the string to be encoded:
+\n"""
+
 
 def cookiedecode():
     cookie = raw_input("[+] Enter the cookie value: ")
     res = base64.b64decode(urllib.unquote(cookie))
     print
     print res
+
+cookiedecode_help = """\n
+[Help] Decode a base64 unquoted Cookie.
+example:
+pythem> cookiedecode
+[+] Enter the cookie value:
+\n"""
 
 
 def get_myip(interface):

@@ -141,6 +141,7 @@ class Exploit(object):
                 print "[+] Writing payload into buffer.txt"
                 f = open("buffer.txt", "w")
                 f.write(payload)
+                f.close()
 
             elif self.arch == "x64":
                 if self.addr1 is not None:
@@ -158,18 +159,13 @@ class Exploit(object):
                 print "\n[+] Writing payload into buffer.txt\n"
                 f = open("buffer.txt", "w")
                 f.write(payload)
+                f.close()
             else:
                 print "[!] Select a valid processor architecture."
                 return
 
-        if self.mode == "tcp":
-            self.port = input("[+] Enter the tcp port to fuzz: ")
-            self.tcppwn(payload)
-
         elif self.mode == "stdin":
             self.stdinpwn(payload)
-        else:
-            print "[!] Select a valid mode (stdin or tcp)."
 
     def stdinpwn(self, payload):
         resource.setrlimit(resource.RLIMIT_STACK, (-1, -1))
@@ -200,7 +196,6 @@ class Exploit(object):
             gdbout = self.p1.stdout.readline()
         else:
             self.p1 = Popen(['gdb', '--silent'], stdin=PIPE, stdout=PIPE, bufsize=1)
-            # gdbout = self.p1.stdout.readline()
         completer = Completer(".gdb_history", "xploit")
         while True:
             try:
@@ -209,7 +204,6 @@ class Exploit(object):
                 os.system("echo {} >> .gdb_history".format(self.command))
                 self.argv = self.command.split()
                 self.input_list = [str(a) for a in self.argv]
-
                 try:
                     if self.input_list[0] == 'exit' or self.input_list[0] == 'quit':
                         break
@@ -253,7 +247,9 @@ class Exploit(object):
                     elif self.input_list[0] == 'fuzz':
                         try:
                             from fuzzer import SimpleFuzz
-                            self.fuzz = SimpleFuzz(self.target, self.mode, self.offset)
+                            self.fuzz = SimpleFuzz()
+                            self.fuzz.stdinfuzz(self.target,self.offset)
+
                         except KeyboardInterrupt:
                             pass
                         except Exception as e:
@@ -329,7 +325,7 @@ class Exploit(object):
                             string = raw_input("[+] Shellcode/Address/LittleEndian String to decode: ")
 
                         try:
-                            string = string.strip("\\x")
+                            string = string.replace("\\x","")
                         except:
                             pass
 
@@ -586,7 +582,6 @@ class Exploit(object):
         print color("[*] fuzz           Start fuzzing on subject.", "blue")
         print
         print "If file is passed to xploit will fuzz stdin"
-        print "If target is passed to xploit will fuzz tcp"
         print
         print "The offset's value will be the number of 'A's to send."
         print
