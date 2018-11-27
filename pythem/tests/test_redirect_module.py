@@ -10,7 +10,7 @@ import unittest
 from time import sleep
 
 class TestModulesObjectsCreation(unittest.TestCase):
-    def test_redirect_startup(self):
+    def test_redirect(self):
         from pythem.modules.utils import get_myip
         myip = get_myip('lo')
         from pythem.modules.redirect import Redirect

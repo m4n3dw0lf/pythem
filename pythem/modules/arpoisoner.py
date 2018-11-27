@@ -90,7 +90,7 @@ class ARPspoof(object):
     def resolve_mac(self, targetip):
         try:
             conf.verb = 0
-            ans, unans = srp(Ether(dst="ff:ff:ff:ff:ff:ff") / ARP(op="who-has", pdst=targetip), timeout=2)
+            ans, unans = srp(Ether(dst="ff:ff:ff:ff:ff:ff") / ARP(op="who-has", pdst=targetip), timeout=2, iface=self.interface)
             for snd, rcv in ans:
                 return str(rcv[Ether].src)
         except socket.gaierror:

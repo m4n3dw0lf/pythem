@@ -49,7 +49,7 @@ Content-Type: text/html
 <head>
 <script src="{}"></script>
 </head>
-""".format(self.js)
+""".format(js)
         self.response = self.js
         self.host = host
         self.port = int(port)
@@ -81,7 +81,7 @@ Content-Type: text/html
 <head>
 <script src="{}"></script>
 </head>
-""".format(self.js)
+""".format(js)
         self.response = self.js
         self.host = host
         self.port = int(port)
@@ -111,6 +111,7 @@ Content-Type: text/html
                     if self.dnsspoof:
                       self.dnsspoof.stop()
                 except AttributeError:
+                    domain = None
                     pass
                 try:
                     connection, client_address = server.accept()
