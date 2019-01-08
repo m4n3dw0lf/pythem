@@ -6,6 +6,9 @@ from netaddr import IPAddress
 from scapy.all import *
 from threading import Thread
 from time import sleep
+import os, sys
+
+sys.stdout = open(os.devnull, 'w')
 
 class TestMacTarget(Thread):
     def __init__(self, group=None, target=None, name=None, args=(), kwargs=None, verbose=None):
@@ -20,12 +23,11 @@ class TestMacTarget(Thread):
                 socket.send(Ether(src='aa:bb:cc:dd:ee:ff', dst='ff:ff:ff:ff:ff:ff') / ARP(op="is-at", pdst='127.0.0.1',
                                     psrc='127.0.0.1',hwdst="ff:ff:ff:ff:ff:ff",hwsrc='aa:bb:cc:dd:ee:ff'))
             if p[ARP].op == 2 and p[ARP].hwsrc == 'ff:ee:dd:cc:bb:aa':
-                p.show()
                 exit(0)
     def run(self):
         p = sniff(iface='lo', prn=self.test_sniffer_callback)
     
-class TestModulesObjectsCreation(unittest.TestCase):
+class TestARPspoofModule(unittest.TestCase):
     def test_arpspoof(self):
         from pythem.modules.utils import get_myip, get_mymac
         myip = get_myip('lo')

@@ -228,6 +228,7 @@ class SSHbrutus(object):
         self.trgt = None
         self.usr = None
         self.fobj = None
+        self.port = None
 
     def exists(self):
         """Tests if the file exists and if the executing user has read access
@@ -250,7 +251,7 @@ class SSHbrutus(object):
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
         try:
-            ssh.connect(self.trgt, port=22, username=self.usr, password=passwd, timeout=2)
+            ssh.connect(self.trgt, port=self.port, username=self.usr, password=passwd, timeout=2)
         except paramiko.AuthenticationException:
             code = 1
         except socket.error, err:
@@ -259,14 +260,14 @@ class SSHbrutus(object):
         ssh.close()
         return code
 
-    def start(self, trgt, usr, fobj):
+    def start(self, trgt, usr, fobj, port):
         self.trgt = trgt
         self.usr = usr
         self.fobj = fobj
+        self.port = port
         """Itterates trough the password list and checks wheter or not the
         correct password has been found. """
-        fobj = self.exists()
-        wlist = open(fobj)
+        wlist = open(self.fobj)
 
         for i in wlist.readlines():
             passwd = i.strip("\n")

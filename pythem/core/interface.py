@@ -67,6 +67,7 @@ class Processor(object):
         self.interface = None
         self.gateway = None
         self.port = 80
+        self.ssh_port = 22
         self.domain = None
         self.redirect = None
         self.script = None
@@ -760,7 +761,7 @@ class Processor(object):
                                     try:
                                         username = raw_input("[+] Enter the username to bruteforce: ")
                                         brutus = SSHbrutus()
-                                        brutus.start(self.targets,username,self.file)
+                                        brutus.start(self.targets, username, self.file, self.ssh_port)
                                     except KeyboardInterrupt:
                                         pass
                                     except TypeError:
