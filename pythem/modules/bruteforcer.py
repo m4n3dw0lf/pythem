@@ -37,6 +37,7 @@ class HashCracker(object):
     def __init__(self):
         self.hash = None
         self.wordlist = None
+        self.type = None
 
     def hashcrack(self, hash=None, wordlist=None):
         if not hash:
@@ -47,47 +48,45 @@ class HashCracker(object):
         if not wordlist:
             wordlist = raw_input("[+] Select file as wordlist: ")
 
-        self.wordlist = open(wordlist, "r")
-        print "[+] Supported Hashes: md5, sha1, sha224, sha256, sha512"
+        self.wordlist = open(wordlist).readlines()
         hash_type = {32: "md5", 40: "sha1", 56: "sha224", 64: "sha256", 128: "sha512"}
-        try:
-            print "[+] Most likely: {}".format(hash_type[len(self.hash)])
-        except:
-            pass
-        self.type = raw_input("[+] Hash: ")
-        found = False
+        if not self.type:
+            print "[+] Supported Hashes: md5, sha1, sha224, sha256, sha512"
+            try:
+                print "[+] Most likely: {}".format(hash_type[len(self.hash)])
+            except:
+                pass
+            self.type = raw_input("[+] Hash Type: ")
         if self.type.lower() == "md5":
             for word in self.wordlist:
                 if md5(word).hexdigest() == self.hash:
-                    print "[+] MD5 Cracked: {}".format(word)
-                    found = True
+                    return "[+] MD5 Cracked: {}".format(word)
+            return "[-] Hash not cracked, try with another wordlist."
 
         if self.type.lower() == "sha1":
             for word in self.wordlist:
                 if sha1(word).hexdigest() == self.hash:
-                    print "[+] SHA1 Cracked: {}".format(word)
-                    found = True
+                    return "[+] SHA1 Cracked: {}".format(word)
+            return "[-] Hash not cracked, try with another wordlist."
 
         if self.type.lower() == "sha224":
             for word in self.wordlist:
                 if sha224(word).hexdigest() == self.hash:
-                    print "[+] SHA224 Cracked: {}".format(word)
-                    found = True
+                    return "[+] SHA224 Cracked: {}".format(word)
+            return "[-] Hash not cracked, try with another wordlist."
 
         if self.type.lower() == "sha256":
             for word in self.wordlist:
                 if sha256(word).hexdigest() == self.hash:
-                    print "[+] SHA256 Cracked: {}".format(word)
-                    found = True
+                    return "[+] SHA256 Cracked: {}".format(word)
+            return "[-] Hash not cracked, try with another wordlist."
 
         if self.type.lower() == "sha512":
             for word in self.wordlist:
                 if sha512(word).hexdigest() == self.hash:
-                    print "[+] SHA512 Cracked: {}".format(word)
-                    found = True
+                    return "[+] SHA512 Cracked: {}".format(word)
+            return "[-] Hash not cracked, try with another wordlist."
 
-        if not found:
-            print "[!] Hash crack failed, try with another wordlist."
 
 
 class WEBbrutus(object):

@@ -3,6 +3,7 @@ logging.disable(logging.ERROR)
 from multiprocessing.pool import ThreadPool
 from mock import patch, mock_open
 from paramiko import RSAKey
+from time import sleep
 import threading
 import paramiko
 import unittest
@@ -51,7 +52,7 @@ def listener():
 pool = ThreadPool(processes=1)
 
 class TestSSHModule(unittest.TestCase):
-    def test_bruteforcer(self):
+    def test_ssh_bruteforcer(self):
         from pythem.modules.bruteforcer import SSHbrutus
         async_result = pool.apply_async(listener,)
         bruter = SSHbrutus()
@@ -59,6 +60,13 @@ class TestSSHModule(unittest.TestCase):
             bruter.start("127.0.0.1","username",wordlist,2222)
             return_val = async_result.get()
             assert return_val == 1
-        
+    def test_hash_bruteforcer(self):
+        from pythem.modules.bruteforcer import HashCracker
+        bruter = HashCracker()
+        bruter.type = "md5"
+        with patch("__builtin__.open", mock_open(read_data="test_password\n")) as wordlist: 
+            result = bruter.hashcrack(hash="1a4d7a1d27600bdb006f9d126a4c4a81",wordlist=wordlist)
+            assert result.startswith("[+] MD5 Cracked: test_password")
+
 if __name__ == "__main__":
     unittest.main()

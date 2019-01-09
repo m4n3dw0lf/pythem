@@ -745,7 +745,9 @@ class Processor(object):
                                     else:
                                         print "[!] Invalid option."
                                 except IndexError:
-                                    hashcrack = HashCracker(self.targets, self.file)
+                                    cracker = HashCracker()
+                                    found = cracker.hashcrack(self.targets, self.file)
+                                    if found: print found
                                 except KeyboardInterrupt:
                                     pass
 
