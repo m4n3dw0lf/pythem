@@ -47,7 +47,7 @@ class HashCracker(object):
 
         if not wordlist:
             wordlist = raw_input("[+] Select file as wordlist: ")
-
+        
         self.wordlist = open(wordlist).readlines()
         hash_type = {32: "md5", 40: "sha1", 56: "sha224", 64: "sha256", 128: "sha512"}
         if not self.type:
@@ -57,37 +57,22 @@ class HashCracker(object):
             except:
                 pass
             self.type = raw_input("[+] Hash Type: ")
-        if self.type.lower() == "md5":
+
+        hash_mapping = {
+                        "md5":md5, "sha1":sha1, "sha224":sha224, 
+                        "sha256":sha256, "sha512":sha512
+                       }
+        if self.type not in hash_mapping.keys():
+            return "[-] Hash type not supported."
+
+        try:
             for word in self.wordlist:
-                if md5(word).hexdigest() == self.hash:
-                    return "[+] MD5 Cracked: {}".format(word)
-            return "[-] Hash not cracked, try with another wordlist."
-
-        if self.type.lower() == "sha1":
-            for word in self.wordlist:
-                if sha1(word).hexdigest() == self.hash:
-                    return "[+] SHA1 Cracked: {}".format(word)
-            return "[-] Hash not cracked, try with another wordlist."
-
-        if self.type.lower() == "sha224":
-            for word in self.wordlist:
-                if sha224(word).hexdigest() == self.hash:
-                    return "[+] SHA224 Cracked: {}".format(word)
-            return "[-] Hash not cracked, try with another wordlist."
-
-        if self.type.lower() == "sha256":
-            for word in self.wordlist:
-                if sha256(word).hexdigest() == self.hash:
-                    return "[+] SHA256 Cracked: {}".format(word)
-            return "[-] Hash not cracked, try with another wordlist."
-
-        if self.type.lower() == "sha512":
-            for word in self.wordlist:
-                if sha512(word).hexdigest() == self.hash:
-                    return "[+] SHA512 Cracked: {}".format(word)
-            return "[-] Hash not cracked, try with another wordlist."
-
-
+                if hash_mapping[self.type](word).hexdigest() == self.hash:
+                    return "[+] {} Cracked: {}".format(self.type.upper(), word)
+            return "[-] Hash not cracked, try another wordlist."
+        except Exception as e:
+            print "[!] Exception caught: {}".format(e)
+        
 
 class WEBbrutus(object):
     name = "WEB brute forcer"
