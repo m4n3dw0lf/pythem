@@ -72,8 +72,16 @@ $ sudo pythem
 
 - Requires Docker
 
+Stable:
+
 ```
-docker run -it --net=host --rm --name pythem m4n3dw0lf/pythem
+docker run -it --net=host --rm --name pythem m4n3dw0lf/pythem:latest
+```
+
+Pythem-dev:
+
+```
+docker run -it --net=host --rm --name pythem m4n3dw0lf/pythem:pythem-dev
 ```
 
 <br><br>

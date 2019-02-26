@@ -38,11 +38,10 @@ class Sniffer(object):
     desc = "Custom scapy sniffer."
     version = "1.4"
 
-    def __init__(self, interface, filter):
-        self.interface = interface
-        self.filter = filter
-        self.wrpcap = raw_input(
-            "[*] Wish to write a .pcap file with the sniffed packets in the actual directory?[y/n]: ")
+    def __init__(self):
+        self.interface = None
+        self.filter = None
+        self.wrpcap = None
         self.packetcounter = 0
 
     def customsniff(self, p):
@@ -364,9 +363,13 @@ class Sniffer(object):
             except:
                 print "\n" + color("[$$$] Proxy credentials: ", "yellow") + str(proxy[0][1]) + "\n"
 
-    def start(self):
+    def start(self, interface=None, filter=None):
+        self.interface = interface
+        self.filter = filter
+        self.wrpcap = raw_input(
+            "[*] Wish to write a .pcap file with the sniffed packets in the actual directory?[y/n]: ")
         # print "FILTER: " + self.filter
-        if self.filter == None:
+        if not self.filter:
             self.filter = 'core'
         if self.filter == "core":
             if self.wrpcap == 'y':
@@ -434,6 +437,19 @@ class Sniffer(object):
                         print "[!] Exception caught: {}".format(e)
 
 
+sniff_help = """\n
+[Help] Start to sniff network traffic with custom scapy filter.
+[Required] Interface
+[Optional] Filter in tcpdump format
+[Custom filters]:
+ - http (Quick 'port 80')
+ - dns  (Quick 'port 53')
+ - core (Core network events)
+examples:
+pythem> set interface wlan0
+pythem> sniff port 1337 and host 192.168.1.1
+\n"""
+
 if __name__ == "__main__":
 
     # Change the import for utils to run sniffer alone.
@@ -447,13 +463,13 @@ if __name__ == "__main__":
             print "run default:"
             print "  python sniffer.py"
         else:
-            Sniffer = Sniffer(sys.argv[2], sys.argv[3])
-            Sniffer.start()
+            Sniffer = Sniffer()
+            Sniffer.start(sys.argv[2],sys.argv[3])
     except IndexError:
         print "[+] Starting Default Sniffer"
         print "[pythem Sniffer initialized]"
-        Sniffer = Sniffer(None, None)
-        Sniffer.start()
+        Sniffer = Sniffer()
+        Sniffer.start(None, None)
 
     except Exception as e:
         print "[!] Exception caught: {}".format(e)

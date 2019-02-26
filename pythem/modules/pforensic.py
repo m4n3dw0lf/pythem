@@ -29,16 +29,13 @@ from utils import color
 class PcapReader(object):
     name = "Simple pcap analyzer"
     desc = "Use some functions to analyze a pcap file"
-    version = "0.3"
+    version = "0.4"
     obs = "need to filter for images and decode encoded gzip content"
 
-    def __init__(self, file):
+    def __init__(self):
         try:
-            self.file = file
-            self.packets = rdpcap(file)
+            self.file = None
         except:
-            if file == "pythem_module_test":
-                return
             print "You probably forgot to set a file to be analyzed."
 
     def printHelp(self):
@@ -48,13 +45,13 @@ class PcapReader(object):
         print color("   FILE - [ {} ]".format(self.file), "red")
         print
         print
-        print color("[*] help:                          Print the help message", "blue")
+        print color("[*] help:                  Print the help message", "blue")
         print
         print
         print color("[*] clear:                 Clean the screen, same as GNU/Linux OS 'clear'", "blue")
         print
         print
-        print color("[*] exit/quit:                     Return to pythem", "blue")
+        print color("[*] exit/quit:             Return to pythem", "blue")
         print
         print
         print color("[*] show:                  Display all the packets and their index numbers.", "blue")
@@ -122,7 +119,9 @@ class PcapReader(object):
             print "[-] Select a valid filter: 'string' or 'layer'"
             return
 
-    def start(self):
+    def start(self, file):
+        self.file = file
+        self.packets = rdpcap(file)
         while True:
             try:
                 console = termcolor.colored("pforensic>", "yellow", attrs=["bold"])
@@ -191,3 +190,12 @@ class PcapReader(object):
                     pass
             except KeyboardInterrupt:
                 break
+
+
+pforensic_help = """\n
+[Help] Start a packet-analyzer.
+[Required] Set a file with a .pcap file
+example:
+pythem> set file capture.pcap
+pythem> pforensic
+\n"""

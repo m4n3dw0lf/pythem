@@ -134,5 +134,11 @@ class WebCrawler(object):
         if message:
             buf += message
         print buf
-        # except Exception as e:
-        #  print "Exception caught 2: {}".format(e)
+
+webcrawler_help = """\n
+[Help] Start a webcrawler in target URL.
+[Required] URL as target
+example:
+pythem> set target http://10.0.0.1/app
+pythem> webcrawl start
+\n"""

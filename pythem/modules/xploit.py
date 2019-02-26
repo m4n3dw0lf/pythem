@@ -43,10 +43,9 @@ class Exploit(object):
     name = "Exploit development interactive shell."
     desc = "use gdb plus ROPgadget + offset generator and memaddresses to create exploits."
 
-    def __init__(self, target, mode):
+    def __init__(self):
         self.version = '0.0.5'
-        self.target = target
-        self.mode = mode
+        self.target = None
         self.xtype = 'bufferoverflow'
         self.offset = 1
         self.nops = 0
@@ -56,13 +55,6 @@ class Exploit(object):
         self.addr2 = None
         self.arch = 'x86'
         self.port = 0
-        if self.target:
-            self.p1 = Popen(['gdb', "--silent", "{}".format(self.target)], stdin=PIPE, stdout=PIPE, bufsize=1)
-            gdbout = self.p1.stdout.readline()
-        else:
-            self.p1 = Popen(['gdb', '--silent'], stdin=PIPE, stdout=PIPE, bufsize=1)
-            # gdbout = self.p1.stdout.readline()
-        completer = Completer(".gdb_history", "xploit")
 
     def gdb(self, cmd):
         def signal_handler(signum, frame):
@@ -149,6 +141,7 @@ class Exploit(object):
                 print "[+] Writing payload into buffer.txt"
                 f = open("buffer.txt", "w")
                 f.write(payload)
+                f.close()
 
             elif self.arch == "x64":
                 if self.addr1 is not None:
@@ -166,18 +159,13 @@ class Exploit(object):
                 print "\n[+] Writing payload into buffer.txt\n"
                 f = open("buffer.txt", "w")
                 f.write(payload)
+                f.close()
             else:
                 print "[!] Select a valid processor architecture."
                 return
 
-        if self.mode == "tcp":
-            self.port = input("[+] Enter the tcp port to fuzz: ")
-            self.tcppwn(payload)
-
         elif self.mode == "stdin":
             self.stdinpwn(payload)
-        else:
-            print "[!] Select a valid mode (stdin or tcp)."
 
     def stdinpwn(self, payload):
         resource.setrlimit(resource.RLIMIT_STACK, (-1, -1))
@@ -200,33 +188,15 @@ class Exploit(object):
 
         print "\n If it does not work automatically, run on terminal: (cat buffer.txt ; cat) | {}".format(self.target)
 
-    def tcppwn(self, payload):
-        try:
-            self.target = str(IPAddress(self.target))
-        except AddrFormatError as e:
-            try:
-                self.target = gethostbyname(self.target)
-            except Exception as e:
-                print "[-] Select a valid IP address or domain name as target."
-                print "[!] Exception caught: {}".format(e)
-                return
 
-        try:
-            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.socket.settimeout(4)
-            self.socket.connect((self.target, self.port))
-            self.socket.send(payload)
-            while True:
-                self.socket.recv(1024)
-        except KeyboardInterrupt:
-            return
-
-        except Exception as e:
-            if 'Connection refused' in e:
-                print "[-] Connection refused."
-                return
-
-    def start(self):
+    def start(self,target):
+        self.target=target
+        if self.target:
+            self.p1 = Popen(['gdb', "--silent", "{}".format(self.target)], stdin=PIPE, stdout=PIPE, bufsize=1)
+            gdbout = self.p1.stdout.readline()
+        else:
+            self.p1 = Popen(['gdb', '--silent'], stdin=PIPE, stdout=PIPE, bufsize=1)
+        completer = Completer(".gdb_history", "xploit")
         while True:
             try:
                 console = termcolor.colored("xploit>", "blue", attrs=["bold"])
@@ -234,7 +204,6 @@ class Exploit(object):
                 os.system("echo {} >> .gdb_history".format(self.command))
                 self.argv = self.command.split()
                 self.input_list = [str(a) for a in self.argv]
-
                 try:
                     if self.input_list[0] == 'exit' or self.input_list[0] == 'quit':
                         break
@@ -278,7 +247,9 @@ class Exploit(object):
                     elif self.input_list[0] == 'fuzz':
                         try:
                             from fuzzer import SimpleFuzz
-                            self.fuzz = SimpleFuzz(self.target, self.mode, self.offset)
+                            self.fuzz = SimpleFuzz()
+                            self.fuzz.stdinfuzz(self.target,self.offset)
+
                         except KeyboardInterrupt:
                             pass
                         except Exception as e:
@@ -354,7 +325,7 @@ class Exploit(object):
                             string = raw_input("[+] Shellcode/Address/LittleEndian String to decode: ")
 
                         try:
-                            string = string.strip("\\x")
+                            string = string.replace("\\x","")
                         except:
                             pass
 
@@ -611,7 +582,6 @@ class Exploit(object):
         print color("[*] fuzz           Start fuzzing on subject.", "blue")
         print
         print "If file is passed to xploit will fuzz stdin"
-        print "If target is passed to xploit will fuzz tcp"
         print
         print "The offset's value will be the number of 'A's to send."
         print
@@ -631,81 +601,93 @@ class Exploit(object):
         print
 
     def gdbCheatSheet(self):
-        print " ____________________________________________________________________________________ "
-        print "|<where>:                                |<what>:                                     |"
-        print "|---------------------------------------|--------------------------------------------|"
-        print "|function_name                           |expression                                  |"
-        print "|*function_name+<point> (disas function  |address                                     |"
-        print "|line_number             to get <point>) |$register                                   |"
-        print "|file:line_number                        |filename::variable_name                     |"
-        print "|                                        |function::variable_name                     |"
-        print "|_______________________________________|____________________________________________|"
-        print " ____________________________________________________________________________________ "
-        print "|Registers:                              |Formats:                                    |"
-        print "|---------------------------------------|--------------------------------------------|"
-        print "|General Purpose Registers:              |                                            |"
-        print "|ax - Accumulator register               |a     Pointer                               |"
-        print "|bx - Base register                      |c     Read as integer,print as char         |"
-        print "|cx - Counter register                   |d     Integer                               |"
-        print "|dx - Data register (I/O)                |f     Float                                 |"
-        print "|                                        |o     Integer as octal                      |"
-        print "|Index Registers:                        |s     String                                |"
-        print "|si - Source index (string)              |t     Integer as binary                     |"
-        print "|di - Destination index (string) |u     Integer, unsigned decimal             |"
-        print "|ip - Instruction pointer                |x     Integer, as hexadecimal               |"
-        print "|                                        |                                            |"
-        print "|Stack Registers:                        |                                            |"
-        print "|bp - Base pointer                       |                                            |"
-        print "|sp - Stack pointer                      |                                            |"
-        print "|_______________________________________|____________________________________________|"
-        print " ____________________________________________________________________________________ "
-        print "|Conditions:                             |Signals:                                    |"
-        print "|---------------------------------------|--------------------------------------------|"
-        print "|break/watch <where> if <condition>      |handle <signal> <options>                   |"
-        print "|condition <breakpoint#> <condition>     |<options>:                                  |"
-        print "|                                        |(no)print                                   |"
-        print "|                                        |(no)stop                                    |"
-        print "|                                        |(no)pass                                    |"
-        print "|_______________________________________|____________________________________________|"
-        print " ____________________________________________________________________________________ "
-        print "|Manipulating the program:               |Running:                                    |"
-        print "|---------------------------------------|--------------------------------------------|"
-        print "|set var <variable_name>=<value> |run / r                                     |"
-        print "|return <expression>                     |kill / k                                    |"
-        print "|jump <where>                            |                                            |"
-        print "|_______________________________________|____________________________________________|"
-        print " ____________________________________________________________________________________ "
-        print "|Variables and memory:                   |Informations:                               |"
-        print "|---------------------------------------|--------------------------------------------|"
-        print "|print/format <what>                     |disassemble / disas                         |"
-        print "|display/format <what>                   |disassemble / disas <where>                 |"
-        print "|undisplay <display#>                    |info args                                   |"
-        print "|enable display <display#>               |info breakpoints                            |"
-        print "|disable display <display#>              |info display                                |"
-        print "|x/nf <address/variable/register>        |info locals                                 |"
-        print "|n:how many units to print               |info sharedlibrary                          |"
-        print "|f: format character                     |info threads                                |"
-        print "|                                        |info directories                            |"
-        print "|                                        |info registers                              |"
-        print "|                                        |whatis variable_name                        |"
-        print "|_______________________________________|____________________________________________|"
-        print " ____________________________________________________________________________________ "
-        print "|Watchpoints:                            |Stepping:                                   |"
-        print "|---------------------------------------|--------------------------------------------|"
-        print "|watch <where>                           |step / s                                    |"
-        print "|delete/enable/disable <watchpoint#>     |next / n                                    |"
-        print "|                                        |finish / f                                  |"
-        print "|                                        |continue / c                                |"
-        print "|_______________________________________|____________________________________________|"
-        print " ____________________________________________________________________________________ "
-        print "|Breakpoints:                            | Examining the stack:                       |"
-        print "|---------------------------------------|--------------------------------------------|"
-        print "| break / br <where>                    | backtrace / bt                             |"
-        print "| delete <breakpoint#>                  | where                                      |"
-        print "| clear                                 | backtrace full                             |"
-        print "| enable <breakpoint#>                  | where full                                 |"
-        print "| disable <breakpoint#>                 | frame <frame#>                      |"
-        print "|_______________________________________|____________________________________________|"
+        print """\n
+         _____________________________________________________________________________________
+        |<where>:                                |<what>:                                     |
+        |----------------------------------------|--------------------------------------------|
+        |function_name                           |expression                                  |
+        |*function_name+<point> (disas function  |address                                     |
+        |line_number             to get <point>) |$register                                   |
+        |file:line_number                        |filename::variable_name                     |
+        |                                        |function::variable_name                     |
+        |________________________________________|____________________________________________|
+         _____________________________________________________________________________________ 
+        |Registers:                              |Formats:                                    |
+        |----------------------------------------|--------------------------------------------|
+        |General Purpose Registers:              |                                            |
+        |ax - Accumulator register               |a     Pointer                               |
+        |bx - Base register                      |c     Read as integer,print as char         |
+        |cx - Counter register                   |d     Integer                               |
+        |dx - Data register (I/O)                |f     Float                                 |
+        |                                        |o     Integer as octal                      |
+        |Index Registers:                        |s     String                                |
+        |si - Source index (string)              |t     Integer as binary                     |
+        |di - Destination index (string)         |u     Integer, unsigned decimal             |
+        |ip - Instruction pointer                |x     Integer, as hexadecimal               |
+        |                                        |                                            |
+        |Stack Registers:                        |                                            |
+        |bp - Base pointer                       |                                            |
+        |sp - Stack pointer                      |                                            |
+        |________________________________________|____________________________________________|
+         _____________________________________________________________________________________
+        |Conditions:                             |Signals:                                    |
+        |----------------------------------------|--------------------------------------------|
+        |break/watch <where> if <condition>      |handle <signal> <options>                   |
+        |condition <breakpoint#> <condition>     |<options>:                                  |
+        |                                        |(no)print                                   |
+        |                                        |(no)stop                                    |
+        |                                        |(no)pass                                    |
+        |________________________________________|____________________________________________|
+         _____________________________________________________________________________________ 
+        |Manipulating the program:               |Running:                                    |
+        |----------------------------------------|--------------------------------------------|
+        |set var <variable_name>=<value>         |run / r                                     |
+        |return <expression>                     |kill / k                                    |
+        |jump <where>                            |                                            |
+        |________________________________________|____________________________________________|
+         _____________________________________________________________________________________ 
+        |Variables and memory:                   |Informations:                               |
+        |----------------------------------------|--------------------------------------------|
+        |print/format <what>                     |disassemble / disas                         |
+        |display/format <what>                   |disassemble / disas <where>                 |
+        |undisplay <display#>                    |info args                                   |
+        |enable display <display#>               |info breakpoints                            |
+        |disable display <display#>              |info display                                |
+        |x/nf <address/variable/register>        |info locals                                 |
+        |n:how many units to print               |info sharedlibrary                          |
+        |f: format character                     |info threads                                |
+        |                                        |info directories                            |
+        |                                        |info registers                              |
+        |                                        |whatis variable_name                        |
+        |________________________________________|____________________________________________|
+         _____________________________________________________________________________________ 
+        |Watchpoints:                            |Stepping:                                   |
+        |----------------------------------------|--------------------------------------------|
+        |watch <where>                           |step / s                                    |
+        |delete/enable/disable <watchpoint#>     |next / n                                    |
+        |                                        |finish / f                                  |
+        |                                        |continue / c                                |
+        |________________________________________|____________________________________________|
+         _____________________________________________________________________________________ 
+        |Breakpoints:                            | Examining the stack:                       |
+        |----------------------------------------|--------------------------------------------|
+        | break / br <where>                     | backtrace / bt                             |
+        | delete <breakpoint#>                   | where                                      |
+        | clear                                  | backtrace full                             |
+        | enable <breakpoint#>                   | where full                                 |
+        | disable <breakpoint#>                  | frame <frame#>                             |
+        |________________________________________|____________________________________________|
+        \n"""
+
+
+xploit_help = """\n
+[Help] Interactive stdin exploit development shell.
+[Optional] File as target
+example:
+pythem> set file executable
+pythem> xploit
+
+\n"""
 
 
 if __name__ == "__main__":

@@ -34,10 +34,10 @@ class TestCommand(Command):
 
     def test(self):
         import os, sys, subprocess
-        print ()
         tests = os.listdir('pythem/tests')
         for file in sorted(tests):
             if file.endswith('.py') and file != "full_test.py":
+                print("Testing: {}".format(file))
                 new_test = subprocess.call([sys.executable, 'pythem/tests/'+file])
                 if new_test != 0:
                     break

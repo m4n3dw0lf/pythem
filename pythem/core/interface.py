@@ -24,14 +24,23 @@ import logging
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 
 from scapy.all import *
-from pythem.modules.utils import *
-from pythem.modules.completer import Completer
 import os, sys
 import termcolor
-import readline
 import psutil
-import threading
-from time import sleep
+
+from pythem.modules.utils import *
+from pythem.modules.dos import *
+from pythem.modules.sniffer import *
+from pythem.modules.pforensic import *
+from pythem.modules.scanner import *
+from pythem.modules.webcrawler import *
+from pythem.modules.arpoisoner import *
+from pythem.modules.dnspoisoner import *
+from pythem.modules.redirect import *
+from pythem.modules.dhcpoisoner import *
+from pythem.modules.xploit import *
+from pythem.modules.bruteforcer import *
+from pythem.modules.completer import Completer
 
 
 def save_command_history(cmd):
@@ -46,7 +55,7 @@ def save_command_history(cmd):
 class Processor(object):
     name = "Interface-Processor"
     desc = "Console to process commands"
-    version = "1.6"
+    version = "1.7"
 
     def __init__(self):
         # Script path
@@ -105,12 +114,10 @@ class Processor(object):
                 save_command_history(self.command)
                 # Separate the user input by spaces " ", can use like this too: self.input_list = [str(a) for a in self.argv]
                 self.input_list = self.command.split()
-
                 try:
                     # HELP
                     if self.command == "help":
                         print_help()
-
                     # EXIT
                     elif self.command == "exit" or self.command == "quit":
                         print "[*] User requested shutdown."
@@ -120,7 +127,6 @@ class Processor(object):
                             iptables()
                             set_ip_forwarding(0)
                         exit()
-
                     elif self.input_list[0] == "set" or self.input_list[0] == "SET":
                         try:
                             if self.input_list[1] == "interface":
@@ -139,7 +145,6 @@ class Processor(object):
                                         self.port = input("[+] Enter the default port: ")
                                     except KeyboardInterrupt:
                                         pass
-
                             elif self.input_list[1] == "domain":
                                 try:
                                     self.domain = self.input_list[2]
@@ -148,7 +153,6 @@ class Processor(object):
                                         self.domain = raw_input("[+] Domain to be spoofed: ")
                                     except KeyboardInterrupt:
                                         pass
-
                             elif self.input_list[1] == "redirect":
                                 try:
                                     self.redirect = self.input_list[2]
@@ -157,7 +161,6 @@ class Processor(object):
                                         self.redirect = raw_input("[+] IP address to redirect DNS queries: ")
                                     except KeyboardInterrupt:
                                         pass
-
                             elif self.input_list[1] == "script":
                                 try:
                                     self.script = self.input_list[2]
@@ -166,7 +169,6 @@ class Processor(object):
                                         self.script = raw_input("[+]Script url/path: ")
                                     except KeyboardInterrupt:
                                         pass
-
                             elif self.input_list[1] == "gateway":
                                 try:
                                     self.gateway = self.input_list[2]
@@ -175,7 +177,6 @@ class Processor(object):
                                         self.gateway = raw_input("[+] Enter the gateway: ")
                                     except KeyboardInterrupt:
                                         pass
-
                             elif self.input_list[1] == "target":
                                 try:
                                     self.targets = self.input_list[2]
@@ -184,7 +185,6 @@ class Processor(object):
                                         self.targets = raw_input("[+] Enter the target(s): ")
                                     except KeyboardInterrupt:
                                         pass
-
                             elif self.input_list[1] == "file":
                                 try:
                                     self.file = self.input_list[2]
@@ -193,7 +193,6 @@ class Processor(object):
                                         self.file = raw_input("[+] Enter the path to the file: ")
                                     except KeyboardInterrupt:
                                         pass
-
                             elif self.input_list[1] == "filter":
                                 try:
                                     self.filter = self.input_list[2]
@@ -202,7 +201,6 @@ class Processor(object):
                                         self.filter = raw_input("[+] Enter the sniffer filter: ")
                                     except KeyboardInterrupt:
                                         pass
-
                             elif self.input_list[1] == "help":
                                 print "\n[Help] Select a variable to set."
                                 print "parameters:"
@@ -216,7 +214,6 @@ class Processor(object):
                                 print " - filter"
                                 print "example:"
                                 print "{} set interface\n".format(console)
-
                         except IndexError:
                             print "[!] Select a valid variable to set."
 
@@ -247,11 +244,7 @@ class Processor(object):
 
                     elif self.input_list[0] == "webcrawl":
                         if self.input_list[1] == "help":
-                            print "\n[Help] Start a webcrawler in target URL."
-                            print "[Required] URL as target"
-                            print "example:"
-                            print "{} set target http://10.0.0.1/app".format(console)
-                            print "{} webcrawl start\n".format(console)
+                            print(webcrawler_help)
                             continue
                         elif self.input_list[1] == "start":
                             from pythem.modules.webcrawler import WebCrawler
@@ -269,28 +262,19 @@ class Processor(object):
                                     pass
                                 except Exception as e:
                                     print "[!] Exception caught: {}".format(e)
-                                except Exception as e:
-                                    print "[!] Exception caught: {}".format(e)
+                            except Exception as e:
+                                print "[!] Exception caught: {}".format(e)
 
                     elif self.input_list[0] == "scan":
                         try:
                             if self.input_list[1] == "help":
-                                print "\n[Help] Start a scanner in target host."
-                                print "[Required] interface and target"
-                                print "parameters:"
-                                print " - tcp"
-                                print " - arp"
-                                print " - manual"
-                                print "example:"
-                                print "{} set target www.google.com".format(console)
-                                print "{} set interface eth0".format(console)
-                                print "{} scan tcp\n".format(console)
+                                print(scanner_help)
                                 continue
                             mode = self.input_list[1]
                             if self.targets is not None and self.interface is not None:
                                 from pythem.modules.scanner import Scanner
-                                self.scan = Scanner(self.targets, self.interface, mode)
-                                self.scan.start()
+                                self.scan = Scanner()
+                                self.scan.start(self.targets, self.interface, mode)
                             else:
                                 print "[!] You probably forgot to set the interface or a valid IP address/range."
                         except IndexError:
@@ -299,17 +283,13 @@ class Processor(object):
                                 mode = raw_input("[+] Scan mode: ")
                             except KeyboardInterrupt:
                                 pass
-
                                 if self.targets is not None and self.interface is not None:
                                     from pythem.modules.scanner import Scanner
-                                    self.scan = Scanner(self.targets, self.interface, mode)
-                                    self.scan.start()
+                                    self.scan = Scanner()
+                                    self.scan.start(self.targets, self.interface, mode)
                                 else:
                                     print "[!] You probably forgot to set the interface or a valid IP address/range."
                                     pass
-
-                            except KeyboardInterrupt:
-                                pass
                             except Exception as e:
                                 print "[!] Exception caught: {}".format(e)
                                 pass
@@ -317,40 +297,25 @@ class Processor(object):
                     elif self.input_list[0] == "arpspoof":
                         try:
                             if self.input_list[1] == "start":
-                                from pythem.modules.arpoisoner import ARPspoof
                                 myip = get_myip(self.interface)
                                 mymac = get_mymac(self.interface)
                                 self.arpspoof_status = True
-                                self.spoof = ARPspoof(self.gateway, self.targets, self.interface, myip, mymac)
-                                self.spoof.start()
+                                self.spoof = ARPspoof()
+                                self.spoof.start(self.gateway,self.targets,self.interface,myip,mymac)
                                 print "[+] ARP spoofing initialized."
-
                             elif self.input_list[1] == "stop":
                                 self.spoof.stop()
                                 self.arpspoof_status = False
                                 print "[+] ARP spoofing finalized."
-
                             elif self.input_list[1] == "status":
                                 if self.arpspoof_status:
                                     stat = "running"
                                 else:
                                     stat = "down"
                                     print "[*] ARP spoofing status: {}".format(stat)
-
                             elif self.input_list[1] == "help":
-                                print "\n[Help] Start an ARP spoofing attack."
-                                print
-                                print "parameters:"
-                                print " - start"
-                                print " - stop"
-                                print " - status"
-                                print " - help"
-                                print "example:"
-                                print "{} set interface eth0".format(console)
-                                print "{} set gateway 192.168.0.1".format(console)
-                                print "{} arpspoof start\n".format(console)
+                                print(arpoisoner_help)
                                 continue
-
                             else:
                                 print "[!] Select a valid option, call help to check syntax."
                         except TypeError:
@@ -365,31 +330,21 @@ class Processor(object):
                     elif self.input_list[0] == "dhcpspoof":
                         try:
                             if self.input_list[1] == "start":
-                                from pythem.modules.dhcpoisoner import DHCPspoof
                                 self.dhcpspoof_status = True
-                                self.dhcpspoof = DHCPspoof("test")
+                                self.dhcpspoof = DHCPspoof()
+                                self.dhcpspoof.start("silent")
                                 print "[+] DHCP spoofing initialized."
-
                             elif self.input_list[1] == "stop":
                                 print "[+] DHCP spoofing finalized."
                                 exit(0)
-
                             elif self.input_list[1] == "status":
                                 if self.dhcpspoof_status:
                                     stat = "running"
                                 else:
                                     stat = "down"
                                     print "[*] DHCP spoofing status: {}".format(stat)
-
                             elif self.input_list[1] == "help":
-                                print "\n[Help] Start a DHCP ACK Injection spoofing attack."
-                                print "parameters:"
-                                print " - start"
-                                print " - stop"
-                                print " - status"
-                                print " - help"
-                                print "example:"
-                                print "{} dhcpspoof start\n".format(console)
+                                print(dhcpoisoner_help)
                                 continue
                             else:
                                 print "[!] Select a valid option, call help to check syntax."
@@ -404,7 +359,6 @@ class Processor(object):
                                 if not self.arpspoof_status:
                                     print "[!] You probably forgot to start an ARP spoofing."
                                     continue
-
                                 if self.domain:
                                     domain = self.domain
                                 else:
@@ -414,7 +368,6 @@ class Processor(object):
                                         self.domain = domain
                                     except KeyboardInterrupt:
                                         pass
-
                                 if self.redirect:
                                     redirect = self.redirect
                                 else:
@@ -429,10 +382,8 @@ class Processor(object):
                                             pass
                                     else:
                                         redirect = myip
-
-                                from pythem.modules.dnspoisoner import DNSspoof
-                                self.dnsspoof = DNSspoof(redirect)
-                                self.dnsspoof.start(domain, None)
+                                self.dnsspoof = DNSspoof()
+                                self.dnsspoof.start(domain, None, redirect)
                                 print "[+] DNS spoofing initialized"
                                 self.dnsspoof_status = True
 
@@ -440,28 +391,15 @@ class Processor(object):
                                 self.dnsspoof.stop()
                                 self.dnsspoof_status = False
                                 print "[+] DNS spoofing finalized"
-
                             elif self.input_list[1] == "status":
                                 if self.dnsspoof_status:
                                     stat = "running"
                                 else:
                                     stat = "down"
                                     print "[*] DNS spoofing status: {}".format(stat)
-
                             elif self.input_list[1] == "help":
-                                print "\n[Help] Start to DNS spoof."
-                                print "[Required] ARP spoof started."
-                                print "parameters:"
-                                print " - start"
-                                print " - stop"
-                                print " - status"
-                                print " - help"
-                                print "example:"
-                                print "{} dnsspoof start".format(console)
-                                print "[!] Type all to spoof all domains"
-                                print "[+] Domain to be spoofed: www.google.com\n"
+                                print(dnspoisoner_help)
                                 continue
-
                             else:
                                 print "[!] Select a valid option, call help to check syntax."
                         except IndexError:
@@ -474,42 +412,28 @@ class Processor(object):
                             if self.input_list[1] == "start":
                                 myip = get_myip(self.interface)
                                 try:
-                                    from pythem.modules.redirect import Redirect
-                                    self.redirect = Redirect(myip, self.port, self.script)
+                                    self.redirect = Redirect()
                                     self.redirect_status = True
-                                    self.redirect.server()
+                                    self.redirect.start(myip, self.port, self.script)
                                 except AttributeError:
                                     print "\n[!] Select a valid script source path or url."
                                 except Exception as e:
                                     print "[!] Exception caught: {}".format(e)
-
                             elif self.input_list[1] == "stop":
                                 try:
                                     self.redirect.stop()
                                     self.redirect_status = False
                                 except Exception as e:
                                     print "[!] Exception caught: {}".format(e)
-
                             elif self.input_list[1] == "status":
                                 if self.redirect_status:
                                     stat = "running"
                                 else:
                                     stat = "down"
                                     print "[*] Script redirect status: {}".format(stat)
-
                             elif self.input_list[1] == "help":
-                                print "\n[Help] Start to inject a source script into target browser then redirect to original destination."
-                                print "[Required] ARP spoof started."
-                                print "parameters:"
-                                print " - start"
-                                print " - stop"
-                                print " - status"
-                                print " - help"
-                                print "example:"
-                                print "{} redirect start".format(console)
-                                print "[+] Enter the script source: http://192.168.1.6:3000/hook.js\n"
+                                print(redirect_help)
                                 continue
-
                             else:
                                 print "[!] You need to specify  start, stop or status after the redirect module call."
                         except IndexError:
@@ -520,16 +444,12 @@ class Processor(object):
                             print "[!] Exception caught: {}".format(e)
 
                     elif self.input_list[0] == "dos":
-                        from pythem.modules.dos import DOSer
                         self.dos = DOSer()
                         try:
                             if self.input_list[1] == "dnsdrop":
                                 try:
                                     if self.input_list[2] == "help":
-                                        print "\n[Help] Start to drop DNS queries that pass through man-in-the-middle traffic."
-                                        print "[Required] ARP spoof started"
-                                        print "example:"
-                                        print "{} dos dnsdrop\n".format(console)
+                                        print(dnsdrop_help)
                                         continue
                                 except IndexError:
                                     if self.arpspoof_status:
@@ -545,10 +465,8 @@ class Processor(object):
                             if self.input_list[1] == "httpflood":
                                 try:
                                     if self.input_list[2] == "help":
-                                        print "\n[Help] Start a HTTP request flood on a target URL, *Only GET method supported by now."
-                                        print "example:"
-                                        print "{} set target http://localhost/".format(console)
-                                        print "{} dos httpflood\n".format(console)
+                                        print(httpflood_help)
+                                        continue
                                 except IndexError:
                                     if not self.targets:
                                         print "[!] You probably forgot to set an URL as target."
@@ -561,11 +479,8 @@ class Processor(object):
                             elif self.input_list[1] == "dnsamplification":
                                 try:
                                     if self.input_list[2] == "help":
-                                        print "\n[Help] Start a DNS amplification attack on target address with given DNS servers to amplificate."
-                                        print "example:"
-                                        print "{} set target 1.2.3.4".format(console)
-                                        print "{} dos dnsamplification".format(console)
-                                        print "[+] DNS Server to use in amplification attack(separated by commas): 8.8.8.8,8.8.4.4\n"
+                                        print(dnsamplification_help)
+                                        continue
                                 except IndexError:
                                     if not self.targets:
                                         print "[!] You probably forgot to set a IP address as target."
@@ -579,9 +494,7 @@ class Processor(object):
                             elif self.input_list[1] == "dhcpstarvation":
                                 try:
                                     if self.input_list[2] == "help":
-                                        print "\n[Help] Start a DHCP starvation attack on network DHCP server. Multiple spoofed mac dhcp discovers."
-                                        print "example:"
-                                        print "{} dos dhcpstarvation\n".format(console)
+                                        print(dhcpstarvation_help)
                                         continue
                                 except IndexError:
                                     try:
@@ -593,12 +506,7 @@ class Processor(object):
                             elif self.input_list[1] == "land":
                                 try:
                                     if self.input_list[2] == "help":
-                                        print "\n[Help] Start a LAND attack on a target."
-                                        print "[Required] Target"
-                                        print "[Optional] Port, default = 80"
-                                        print "example:"
-                                        print "{} set target 10.0.0.101".format(console)
-                                        print "{} dos land\n".format(console)
+                                        print(land_help)
                                         continue
                                 except IndexError:
                                     if not self.targets:
@@ -613,11 +521,7 @@ class Processor(object):
                             elif self.input_list[1] == "pingofdeath":
                                 try:
                                     if self.input_list[2] == "help":
-                                        print "\n[Help] Start a Ping of Death attack on a target."
-                                        print "[Required] Target"
-                                        print "example:"
-                                        print "{} set target 192.168.1.101".format(console)
-                                        print "{} dos pingofdeath\n".format(console)
+                                        print(pingofdeath_help)
                                         continue
                                 except IndexError:
                                     if not self.targets:
@@ -632,12 +536,7 @@ class Processor(object):
                             elif self.input_list[1] == "udpflood":
                                 try:
                                     if self.input_list[2] == "help":
-                                        print "\n[Help] Start a UDP flood attack on target host, default port = 80, set port to change."
-                                        print "[Required] Target"
-                                        print "[Optional] port"
-                                        print "example:"
-                                        print "{} set target 192.168.1.4".format(console)
-                                        print "{} dos synflood\n".format(console)
+                                        print(udpflood_help)
                                         continue
                                 except IndexError:
 
@@ -654,12 +553,7 @@ class Processor(object):
                             elif self.input_list[1] == "icmpflood":
                                 try:
                                     if self.input_list[2] == "help":
-                                        print "\n[Help] Start a ICMP flood attack on target host."
-                                        print "[Required] Target and interface"
-                                        print "example:"
-                                        print "{} set target 10.0.0.1".format(console)
-                                        print "{} set interface wlan0".format(console)
-                                        print "{} dos icmpflood\n".format(console)
+                                        print(icmpflood_help)
                                         continue
                                 except IndexError:
                                     if not self.targets:
@@ -675,13 +569,7 @@ class Processor(object):
                             elif self.input_list[1] == "synflood":
                                 try:
                                     if self.input_list[2] == "help":
-                                        print "\n[Help] Start a SYN flood attack on target host, default port = 80, set port to change."
-                                        print "[Required] Target and interface"
-                                        print "[Optional] port"
-                                        print "example:"
-                                        print "{} set target 192.168.1.4".format(console)
-                                        print "{} set interface wlan0".format(console)
-                                        print "{} dos synflood\n".format(console)
+                                        print(synflood_help)
                                         continue
                                 except IndexError:
                                     if not self.targets:
@@ -697,12 +585,7 @@ class Processor(object):
                             elif self.input_list[1] == "icmpsmurf":
                                 try:
                                     if self.input_list[2] == "help":
-                                        print "\n[Help] Start a ICMP smurf attack on target host. send echo-requests with spoofed target address."
-                                        print "[Required] Target and interface"
-                                        print "example:"
-                                        print "{} set target 192.168.1.4".format(console)
-                                        print "{} set interface wlan0".format(console)
-                                        print "{} dos icmpsmurf\n".format(console)
+                                        print(icmpsmurf_help)
                                         continue
                                 except IndexError:
                                     if not self.targets:
@@ -717,12 +600,7 @@ class Processor(object):
                             elif self.input_list[1] == "teardrop":
                                 try:
                                     if self.input_list[2] == "help":
-                                        print "\n[Help] Start an UDP teardrop fragmentation attack."
-                                        print "[Required] Target and interface"
-                                        print "example:"
-                                        print "{} set interface wlan0".format(console)
-                                        print "{} set target 192.168.0.6".format(console)
-                                        print "{} dos teardrop\n".format(console)
+                                        print(teardrop_help)
                                         continue
                                 except IndexError:
                                     if not self.targets:
@@ -734,23 +612,9 @@ class Processor(object):
                                         except Exception as e:
                                             print "[!] Exception caught: {}".format(e)
 
-
                             elif self.input_list[1] == "help":
-                                print "\n[Help] Start to perform a choosen denial of service in target."
-                                print "[Required] Depends"
-                                print "parameters:"
-                                print " - dnsdrop"
-                                print " - synflood"
-                                print " - udpflood"
-                                print " - teardrop"
-                                print " - icmpflood"
-                                print " - icmpsmurf"
-                                print " - dhcpstarvation"
-                                print " - dnsamplification"
-                                print " - httpflood"
-                                print
-                                print "example:"
-                                print "{} dos icmpsmurf help\n".format(console)
+                                print(dos_help)
+
                             else:
                                 print"[!] Select a valid option, type help to check syntax."
 
@@ -759,28 +623,18 @@ class Processor(object):
 
                     elif self.command == "sniff help":
                         if self.input_list[1] == "help":
-                            print "\n[Help] Start to sniff network traffic with custom scapy filter."
-                            print "[Required] Interface"
-                            print "[Optional] Filter in tcpdump format"
-                            print "[Custom filters]:"
-                            print " - http (Quick 'port 80')"
-                            print " - dns  (Quick 'port 53')"
-                            print " - core (Core network events)"
-                            print "examples:"
-                            print "{} set interface wlan0".format(console)
-                            print "{} sniff port 1337 and host 192.168.1.1\n".format(console)
+                            print(sniff_help)
                             continue
 
                     elif self.input_list[0] == "sniff":
-                        from pythem.modules.sniffer import Sniffer
                         try:
                             hasfilter = self.input_list[1]
                             self.filter = " ".join(self.input_list[1:])
                             if self.filter == "dns":
                                 self.filter = "port 53"
-                                self.sniff = Sniffer(self.interface, self.filter)
+                                self.sniff = Sniffer()
                                 print "\n[+] pythem sniffer initialized.\n"
-                                self.sniff.start()
+                                self.sniff.start(self.interface, self.filter)
 
                         except IndexError:
                             try:
@@ -789,29 +643,23 @@ class Processor(object):
                                     self.filter = "port 53"
                                 if not self.filter:
                                     self.filter = None
-                                self.sniff = Sniffer(self.interface, self.filter)
+                                self.sniff = Sniffer()
                                 print "\n[+] pythem sniffer initialized.\n"
-                                self.sniff.start()
+                                self.sniff.start(self.interface, self.filter)
                             except KeyboardInterrupt:
                                 pass
 
                     elif self.input_list[0] == "pforensic":
                         try:
                             if self.input_list[1] == "help":
-                                print "\n[Help] Start a packet-analyzer."
-                                print "[Required] Set a file with a .pcap file"
-                                print "example:"
-                                print "{} set file capture.pcap".format(console)
-                                print "{} pforensic\n".format(console)
+                                print(pforensic_help)
                                 continue
-
                             else:
                                 print "[!] Invalid option."
                         except IndexError:
                             try:
-                                from pythem.modules.pforensic import PcapReader
-                                self.pcapread = PcapReader(self.file)
-                                self.pcapread.start()
+                                self.pcapread = PcapReader()
+                                self.pcapread.start(self.file)
                             except KeyboardInterrupt:
                                 pass
                             except TypeError:
@@ -824,48 +672,16 @@ class Processor(object):
                     elif self.input_list[0] == "xploit":
                         try:
                             from pythem.modules.xploit import Exploit
-                            if self.targets is not None and self.input_list[1] == "tcp":
-                                self.xploit = Exploit(self.targets, self.input_list[1])
-                                self.xploit.start()
-                            elif self.file is not None and self.input_list[1] == "stdin":
-                                self.xploit = Exploit(self.file, self.input_list[1])
-                                self.xploit.start()
-                            elif self.input_list[1] == "help":
-                                print "\n[Help] Interactive stdin or tcp exploit development shell."
-                                print "[Optional] File as target to stdin and IP address as target to tcp"
-                                print "parameters:"
-                                print " - tcp"
-                                print " - stdin"
-                                print "example:"
-                                print "{} set target 192.168.1.1".format(console)
-                                print "{} xploit tcp\n".format(console)
+                            if len(self.input_list) > 1:
+                                if self.input_list[1] == "help":
+                                    print(xploit_help)
+                                    continue
+                            elif self.file:
+                                self.xploit = Exploit()
+                                self.xploit.start(self.file)
                             else:
-                                self.xploit = Exploit(None, "stdin")
-                                self.xploit.start()
-                        except IndexError:
-                            try:
-                                print "[*] Select xploit mode (or press enter to enter xploit console), options = stdin/tcp"
-                                mode = raw_input("[+] Exploit mode: ")
-                                if mode == "stdin" or mode == "tcp":
-                                    from pythem.modules.xploit import Exploit
-                                    if self.targets is not None:
-                                        self.xploit = Exploit(self.targets, mode)
-                                        self.xploit.start()
-                                    elif self.file is not None:
-                                        self.xploit = Exploit(self.file, mode)
-                                        self.xploit.start()
-                                    else:
-                                        print "[!] You need to set or a file or a target to xploit."
-                                        self.xploit = Exploit(None, "stdin")
-                                    self.xploit.start()
-                                else:
-                                    self.xploit = Exploit(None, "stdin")
-                                    self.xploit.start()
-                            except KeyboardInterrupt:
-                                pass
-                        except TypeError:
-                            print "[!] You probably forgot to set the file"
-                            pass
+                                self.xploit = Exploit()
+                                self.xploit.start(None)
                         except KeyboardInterrupt:
                             pass
                         except Exception as e:
@@ -876,10 +692,8 @@ class Processor(object):
                         try:
                             try:
                                 if self.input_list[1] == "help":
-                                    print "\n[Help] Decode a base64 unquoted Cookie."
-                                    print "example:"
-                                    print "{} cookiedecode".format(console)
-                                    print "[+] Enter the cookie value:\n"
+                                    print(cookiedecode_help)
+                                    continue
                             except IndexError:
                                 cookiedecode()
                         except KeyboardInterrupt:
@@ -891,11 +705,7 @@ class Processor(object):
                     elif self.input_list[0] == "decode":
                         try:
                             if self.input_list[1] == "help":
-                                print "\n[Help] Decode a base64 string."
-                                print "example:"
-                                print "{} decode".format(console)
-                                print "[+] Decode: <encoding>"
-                                print "[+] Enter the string to be decoded:\n"
+                                print(decode_help)
                                 continue
                         except IndexError:
                             try:
@@ -909,11 +719,7 @@ class Processor(object):
                     elif self.input_list[0] == "encode":
                         try:
                             if self.input_list[1] == "help":
-                                print "\n[Help] Encode a base64 string."
-                                print "example:"
-                                print "{} encode".format(console)
-                                print "[+] Encode: <encoding>"
-                                print "[+] Enter the string to be encoded:\n"
+                                print(encode_help)
                                 continue
                             print encode(self.input_list[1])
                         except IndexError:
@@ -928,52 +734,40 @@ class Processor(object):
                     elif self.input_list[0] == "brute":
                         try:
                             if self.input_list[1] == "help":
-                                print "\n[Help] Brute-Force attacks, good luck padawan."
-                                print "[Required] File as password wordlist and target as URL or IP."
-                                print "parameters:"
-                                print " - ssh"
-                                print " - form"
-                                print " - url"
-                                print " - hash"
-                                print "example:"
-                                print "{} brute ssh help\n".format(console)
+                                print(brute_help)
                                 continue
 
                             if self.input_list[1] == "hash":
                                 try:
                                     if self.input_list[2] == "help":
-                                        print "\n[Help] Hash Brute-Force"
-                                        print "[Optional]File as wordlist, hash as target."
-                                        print "example:"
-                                        print "{} set file wordlist.txt".format(console)
-                                        print "{} set target 35f5de5eb59e2ac7f73d5821f9f2e4f6".format(console)
-                                        print "{} brute hash\n".format(console)
+                                        print(brute_hash_help)
+                                        continue
                                     else:
                                         print "[!] Invalid option."
                                 except IndexError:
-                                    from pythem.modules.hashcracker import HashCracker
-                                    hashcrack = HashCracker(self.targets, self.file)
+                                    cracker = HashCracker()
+                                    found = cracker.hashcrack(self.targets, self.file)
+                                    if found: print found
                                 except KeyboardInterrupt:
                                     pass
 
                             if self.input_list[1] == "ssh":
                                 try:
                                     if self.input_list[2] == "help":
-                                        print "\n[Help] SSH Brute-Force"
-                                        print "[Required] IP address as target."
-                                        print "example:"
-                                        print "{} set file wordlist.txt".format(console)
-                                        print "{} set target 192.168.1.5".format(console)
-                                        print "{} brute ssh\n".format(console)
+                                        print(brute_ssh_help)
                                         continue
                                     else:
                                         print "[!] Invalid option."
                                 except IndexError:
                                     try:
                                         username = raw_input("[+] Enter the username to bruteforce: ")
-                                        from pythem.modules.ssh_bruter import SSHbrutus
-                                        brutus = SSHbrutus(self.targets, username, self.file)
-                                        brutus.start()
+                                        port = raw_input("[+] Enter SSH port (Enter for 22):")
+                                        if not port:
+                                            ssh_port = 22 
+                                        else: 
+                                            ssh_port = int(port)
+                                        brutus = SSHbrutus()
+                                        brutus.start(self.targets, username, self.file, ssh_port)
                                     except KeyboardInterrupt:
                                         pass
                                     except TypeError:
@@ -983,25 +777,17 @@ class Processor(object):
                             elif self.input_list[1] == "url":
                                 try:
                                     if self.input_list[2] == "help":
-                                        print "\n[Help] URL Brute-Force"
-                                        print "[Required] URL (with http:// or https://) as target"
-                                        print "example:"
-                                        print "{} set file wordlist.txt".format(console)
-                                        print "{} set target http://testphp.vulnweb.com/products.php?id=".format(
-                                            console)
-                                        print "{} brute url\n".format(console)
+                                        print(brute_url_help)
                                         continue
                                     else:
                                         print "[!] Invalid option."
 
                                 except IndexError:
                                     try:
-                                        url = 'url'
-                                        from pythem.modules.web_bruter import WEBbrutus
-                                        brutus = WEBbrutus(self.targets, self.file)
-                                        brutus.start(url)
+                                        brutus = WEBbrutus()
+                                        brutus.start('url',self.targets,self.file)
                                     except KeyboardInterrupt:
-                                        brutus.stop(url)
+                                        brutus.stop('url')
                                         pass
                                     except TypeError:
                                         print "[!] You probably forgot to set the wordlist file path."
@@ -1010,24 +796,17 @@ class Processor(object):
                             elif self.input_list[1] == "form":
                                 try:
                                     if self.input_list[2] == "help":
-                                        print "\n[Help] Formulary Brute-Force"
-                                        print "[Required] URL (with http:// or https://) as target"
-                                        print "example:"
-                                        print "{} set file wordlist.txt".format(console)
-                                        print "{} set target http://testphp.vulnweb.com/login.php".format(console)
-                                        print "{} brute form\n".format(console)
+                                        print(brute_form_help)
                                         continue
                                     else:
                                         print "[!] Invalid option."
 
                                 except IndexError:
                                     try:
-                                        form = 'form'
-                                        from pythem.modules.web_bruter import WEBbrutus
-                                        brutus = WEBbrutus(self.targets, self.file)
-                                        brutus.start(form)
+                                        brutus = WEBbrutus()
+                                        brutus.start('form',self.targets,self.file)
                                     except KeyboardInterrupt:
-                                        brutus.stop(form)
+                                        brutus.stop('form')
                                         pass
                                     except TypeError:
                                         print "[!] You probably forgot to set the wordlist file path."

@@ -36,6 +36,14 @@ def decode(base):
     result = "[+] Result: {}".format(decode)
     return result
 
+decode_help = """\n
+[Help] Decode a base64 string.
+example:
+pythem> decode
+[+] Decode: <encoding>
+[+] Enter the string to be decoded:
+\n"""
+
 
 def encode(base):
     text = raw_input("[*] String to be encoded: ")
@@ -43,12 +51,27 @@ def encode(base):
     result = "[+] Result: {}".format(encode)
     return result
 
+encode_help = """\n
+[Help] Encode a base64 string.
+example:
+pythem> encode
+[+] Encode: <encoding>
+[+] Enter the string to be encoded:
+\n"""
+
 
 def cookiedecode():
     cookie = raw_input("[+] Enter the cookie value: ")
     res = base64.b64decode(urllib.unquote(cookie))
     print
     print res
+
+cookiedecode_help = """\n
+[Help] Decode a base64 unquoted Cookie.
+example:
+pythem> cookiedecode
+[+] Enter the cookie value:
+\n"""
 
 
 def get_myip(interface):
@@ -354,26 +377,18 @@ def print_help():
     print color("[SECTION - EXPLOIT DEVELOPMENT AND REVERSE ENGINERING]", "grey")
     print
     print
-    print color("[*] xploit: Interactive stdin or tcp exploit development shell.", "blue")
+    print color("[*] xploit: Interactive stdin exploit development shell.", "blue")
     print
-    print "The stdin should be called after setting file"
-    print "The tcp should be called after setting target"
+    print "Should be called after setting an executable file"
     print
     print color(" arguments:", "red")
     print
-    print color("  - stdin | set file before", "yellow")
-    print color("  - tcp | set target before", "yellow")
     print
     print color(" examples:", "green")
     print
-    print color("  pythem> ", "red") + "set file exec"
+    print color("  pythem> ", "red") + "set file executable"
     print
-    print color("  pythem> ", "red") + "xploit stdin"
-    print color("  xploit> ", "blue") + "help"
-    print "     or"
     print color("  pythem> ", "red") + "xploit"
-    print "  [*] Select one xploit mode, options = stdin/tcp"
-    print "  [+] Exploit mode: stdin"
     print color("  xploit> ", "blue") + "help"
     print
     print
